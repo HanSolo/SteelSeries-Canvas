@@ -731,7 +731,7 @@ var steelseries = function() {
                     ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.5560747663551402, imageWidth * 0.5560747663551402, imageHeight * 0.5327102803738317, imageWidth * 0.5560747663551402, imageHeight * 0.5);
                     ctx.bezierCurveTo(imageWidth * 0.5560747663551402, imageHeight * 0.49065420560747663, imageWidth * 0.5, imageHeight * 0.14953271028037382, imageWidth * 0.5, imageHeight * 0.14953271028037382);
                     ctx.closePath();
-                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.49065420560747663 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), ((0.49065420560747663 + 0.0) * imageHeight));
+                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.49065420560747663 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), (0.49065420560747663 * imageHeight));
                     grad.addColorStop(0.0, pointerColor.light.getRgbaColor());
                     grad.addColorStop(0.4999, pointerColor.light.getRgbaColor());
                     grad.addColorStop(0.5, pointerColor.medium.getRgbaColor());
@@ -5227,7 +5227,7 @@ var steelseries = function() {
             lcdColor = newLcdColor;
             init();
             this.repaint();
-        }
+        };
 
         this.setScrolling = function(scroll) {
             if (scrolling) {
@@ -5372,7 +5372,7 @@ var steelseries = function() {
             lcdColor = newLcdColor;
             init();
             this.repaint();
-        }
+        };
 
         this.repaint = function() {
             if (!initialized) {
@@ -6701,7 +6701,7 @@ var steelseries = function() {
             var fontSize = imgWidth * 0.04;
             ctx.font = fontSize + 'px sans-serif';
             ctx.fillStyle = 'rgb(55, 89, 110)';
-            for (var y = imgHeight / 2.0 - stepSizeY ; y > 0 ; y -= stepSizeY) {
+            for (var y = imgHeight / 2.0 - stepSizeY; y > 0; y -= stepSizeY) {
                 if (step <= 80) {
                     if (stepTen) {
                         ctx.fillText(step, (imgWidth - (imgWidth * 0.2)) / 2 - 8, y, imgWidth * 0.375);
@@ -6732,7 +6732,7 @@ var steelseries = function() {
             ctx.stroke();
             ctx.fillStyle = '#FFFFFF';
             ctx.lineWidth = 1.0;
-            for (var y = imgHeight / 2.0 + stepSizeY ; y <= imgHeight ; y += stepSizeY) {
+            for (var y = imgHeight / 2.0 + stepSizeY; y <= imgHeight; y += stepSizeY) {
                 if (step >= -80) {
                     if (stepTen) {
                         ctx.fillText(-step, (imgWidth - (imgWidth * 0.2)) / 2 - 8, y, imgWidth * 0.375);
@@ -6754,7 +6754,7 @@ var steelseries = function() {
             }
 
             ctx.restore();
-        }
+        };
 
         var drawHorizonForegroundImage = function(ctx) {
             ctx.save();
@@ -6793,8 +6793,8 @@ var steelseries = function() {
             ctx.translate(centerX, centerY);
             ctx.rotate(-Math.PI / 2);
             ctx.translate(-centerX, -centerY);
-            
-            for (var angle = -90 ; angle <= 90 ; angle += step) {
+
+            for (var angle = -90; angle <= 90; angle += step) {
                 if (angle % 45 === 0 || angle === 0) {
                     ctx.strokeStyle = pointerColor.medium.getRgbaColor();
                     ctx.lineWidth = 2;
@@ -6826,7 +6826,7 @@ var steelseries = function() {
             }
 
             ctx.restore();
-        }
+        };
 
         var drawIndicatorImage = function(ctx) {
             ctx.save();
@@ -6846,7 +6846,7 @@ var steelseries = function() {
             ctx.stroke();
 
             ctx.restore();
-        }
+        };
 
         // **************   Initialization  ********************
         // Draw all static painting code to background
@@ -6925,19 +6925,19 @@ var steelseries = function() {
                 upsidedown = true;
             } else if (pitch < -90) {
                 pitch = -90 + (-90 - pitch);
-                    if (!upsidedown) {
-                        this.setRoll(roll + 180);
-                    }
+                if (!upsidedown) {
+                    this.setRoll(roll + 180);
+                }
                 upsidedown = true;
             } else {
                 upsidedown = false;
             }
             this.repaint();
-        }
+        };
 
         this.getPitch = function() {
             return pitch;
-        }
+        };
 
         this.setPitchAnimated = function(newPitch) {
             var targetValue = newPitch;
@@ -8851,6 +8851,92 @@ var steelseries = function() {
         drawFunction(buffer.getContext('2d'));
         return buffer;
     }
+
+    function getColorValues(color) {
+        var colorData;
+        var lookupBuffer = drawToBuffer(1, 1, function(ctx) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.rect(0, 0, 1, 1);
+            ctx.fill();
+        });
+        colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
+
+        /*
+        for (var i = 0; i < data.length; i += 4) {
+            var red = data[i];       // red
+            var green = data[i + 1]; // green
+            var blue = data[i + 2];  // blue
+            //var alpha = data[i + 3]; // alpha
+            console.log(red + ", " + green + ", " + blue);
+        }
+        */
+
+        return new Array(colorData[0], colorData[1], colorData[2]);
+    }
+
+    function rgb2Hsb(red, green, blue) {
+        red /= 255;
+        green /= 255;
+        blue /= 255;
+
+        var max = Math.max(red, green, blue), min = Math.min(red, green, blue);
+        var hue, saturation, brightness = (max + min) / 2;
+
+        if (max == min) {
+            hue = saturation = 0; // achromatic
+        } else {
+            var delta = max - min;
+            saturation = brightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+            switch (max) {
+                case red:
+                    hue = (green - blue) / delta + (green < blue ? 6 : 0);
+                    break;
+                case green:
+                    hue = (blue - red) / delta + 2;
+                    break;
+                case blue:
+                    hue = (red - green) / delta + 4;
+                    break;
+            }
+            hue /= 6;
+        }
+        return [hue, saturation, brightness];
+    }
+
+    function hsb2Rgb(hue, saturation, brightness){
+    var red;
+    var green;
+    var blue;
+
+    if (saturation == 0) {
+        red = green = blue = brightness; // achromatic
+    } else {
+        function hue2rgb(p, q, t) {
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) {
+                return p + (q - p) * 6 * t;
+            }
+            if(t < 1/2) {
+                return q;
+            }
+            if(t < 2/3) {
+
+            } return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = brightness < 0.5 ? brightness * (1 + saturation) : brightness + saturation - brightness * saturation;
+        var p = 2 * brightness - q;
+        red = hue2rgb(p, q, hue + 1/3);
+        green = hue2rgb(p, q, hue);
+        blue = hue2rgb(p, q, hue - 1/3);
+    }
+
+    return [red * 255, green * 255, blue * 255];
+}
+            
     //****************************************   C O N S T A N T S   ***************************************************
     var backgroundColorDef;
     (function() {
