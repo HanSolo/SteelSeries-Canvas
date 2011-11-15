@@ -3235,7 +3235,6 @@ var steelseries = function() {
         var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
         var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
         var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var section = 'undefined' === typeof(parameters['section']) ? null : parameters['section'];
         var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
         var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
         var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
@@ -3414,7 +3413,7 @@ var steelseries = function() {
             var txt = value.toFixed(lcdDecimals);
             if (unitString.length > 0 && vertical)
                 txt += " " + unitString;
-            mainContext.fillText(txt, lcdTextX, lcdTextY, lcdTextWidth);
+            mainCtx.fillText(txt, lcdTextX, lcdTextY, lcdTextWidth);
 //            mainCtx.fillText(value.toFixed(lcdDecimals), lcdTextX, lcdTextY, lcdTextWidth);
 
             mainCtx.restore();
@@ -3880,14 +3879,6 @@ var steelseries = function() {
             }
 
             var valueBackgroundGradient = ctx.createLinearGradient(valueStartX, valueStartY, valueStopX, valueStopY);
-            if (null !== section && 0 < section.length) {
-                for (var i=0; i< section.length; i++) {
-                    if (value >= section[i].start && value <= section[i].stop) {
-                        valueColor = section[i].color;
-                        break;
-                    }
-                }
-            }
             valueBackgroundGradient.addColorStop(0.0, valueColor.medium.getRgbaColor());
             valueBackgroundGradient.addColorStop(0.99, valueColor.light.getRgbaColor());
             valueBackgroundGradient.addColorStop(1.0, valueColor.light.getRgbaColor());
