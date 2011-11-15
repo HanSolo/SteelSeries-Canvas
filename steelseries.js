@@ -8875,19 +8875,22 @@ var steelseries = function() {
         return new Array(colorData[0], colorData[1], colorData[2]);
     }
 
-    function rgb2Hsb(red, green, blue) {
+    function rgb2Hsl(red, green, blue) {
         red /= 255;
         green /= 255;
         blue /= 255;
 
-        var max = Math.max(red, green, blue), min = Math.min(red, green, blue);
-        var hue, saturation, brightness = (max + min) / 2;
+        var max = Math.max(red, green, blue);
+        var min = Math.min(red, green, blue);
+        var hue;
+        var saturation;
+        var lightness = (max + min) / 2;
 
         if (max == min) {
             hue = saturation = 0; // achromatic
         } else {
             var delta = max - min;
-            saturation = brightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+            saturation = lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
             switch (max) {
                 case red:
                     hue = (green - blue) / delta + (green < blue ? 6 : 0);
@@ -8901,16 +8904,16 @@ var steelseries = function() {
             }
             hue /= 6;
         }
-        return [hue, saturation, brightness];
+        return [hue, saturation, lightness];
     }
 
-    function hsb2Rgb(hue, saturation, brightness){
+    function hsl2Rgb(hue, saturation, lightness){
     var red;
     var green;
     var blue;
 
     if (saturation == 0) {
-        red = green = blue = brightness; // achromatic
+        red = green = blue = lightness; // achromatic
     } else {
         function hue2rgb(p, q, t) {
             if(t < 0) t += 1;
@@ -8927,8 +8930,8 @@ var steelseries = function() {
             return p;
         }
 
-        var q = brightness < 0.5 ? brightness * (1 + saturation) : brightness + saturation - brightness * saturation;
-        var p = 2 * brightness - q;
+        var q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+        var p = 2 * lightness - q;
         red = hue2rgb(p, q, hue + 1/3);
         green = hue2rgb(p, q, hue);
         blue = hue2rgb(p, q, hue - 1/3);
@@ -8936,6 +8939,16 @@ var steelseries = function() {
 
     return [red * 255, green * 255, blue * 255];
 }
+
+    function hsb2Hsl(hue, saturation, brightness) {
+        var lightness = (brightness - saturation) / 2;
+        return new Array(hue, saturation, lightness)
+    }
+
+    function hsl2Hsb(hue, saturation, lightness) {
+        var brightness = (lightness * 2) + saturation;
+        return new Array(hue, saturation, brightness);
+    }
             
     //****************************************   C O N S T A N T S   ***************************************************
     var backgroundColorDef;
