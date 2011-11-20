@@ -1,8 +1,9 @@
-/**
+/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald
- * Last modified : 27.07.2011
- * Revision      : 0.7.3
+ * Last modified : 15.11.2011
+ * Revision      : 0.7.3*
+ * Modified by M Crossley 20.11.2011
  */
 
 var steelseries = function() {
@@ -11,37 +12,37 @@ var steelseries = function() {
     //*************************************   C O M P O N O N E N T S   ************************************************
     var radial = function(canvas, parameters) {
         parameters = parameters || {};
-        var gaugeType = 'undefined' === typeof(parameters['gaugeType']) ? steelseries.GaugeType.TYPE4 : parameters['gaugeType'];
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
-        var minValue = 'undefined' === typeof(parameters['minValue']) ? 0 : parameters['minValue'];
-        var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
-        var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
-        var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var section = 'undefined' === typeof(parameters['section']) ? null : parameters['section'];
-        var area = 'undefined' === typeof(parameters['area']) ? null : parameters['area'];
-        var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var pointerType = 'undefined' === typeof(parameters['pointerType']) ? steelseries.PointerType.TYPE1 : parameters['pointerType'];
-        var pointerColor = 'undefined' === typeof(parameters['pointerColor']) ? steelseries.ColorDef.RED : parameters['pointerColor'];
-        var knobType = 'undefined' === typeof(parameters['knobType']) ? steelseries.KnobType.STANDARD_KNOB : parameters['knobType'];
-        var knobStyle = 'undefined' === typeof(parameters['knobStyle']) ? steelseries.KnobStyle.SILVER : parameters['knobStyle'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdVisible = 'undefined' === typeof(parameters['lcdVisible']) ? true : parameters['lcdVisible'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var fractionalScaleDecimals = 'undefined' === typeof(parameters['fractionalScaleDecimals']) ? 1 : parameters['fractionalScaleDecimals'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.LedColor.RED_LED : parameters['ledColor'];
-        var ledVisible = 'undefined' === typeof(parameters['ledVisible']) ? true : parameters['ledVisible'];
-        var thresholdVisible = 'undefined' === typeof(parameters['thresholdVisible']) ? true : parameters['thresholdVisible'];
-        var minMeasuredValueVisible = 'undefined' === typeof(parameters['minMeasuredValueVisible']) ? false : parameters['minMeasuredValueVisible'];
-        var maxMeasuredValueVisible = 'undefined' === typeof(parameters['maxMeasuredValueVisible']) ? false : parameters['maxMeasuredValueVisible'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
-        var labelNumberFormat = 'undefined' === typeof(parameters['labelNumberFormat']) ? steelseries.LabelNumberFormat.STANDARD : parameters['labelNumberFormat'];
-        var playAlarm = 'undefined' === typeof(parameters['playAlarm']) ? false : parameters['playAlarm'];
-        var alarmSound = 'undefined' === typeof(parameters['alarmSound']) ? false : parameters['alarmSound'];
-        var customLayer = 'undefined' === typeof(parameters['customLayer']) ? null : parameters['customLayer'];
+        var gaugeType = undefined === parameters.gaugeType ? steelseries.GaugeType.TYPE4 : parameters.gaugeType;
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var minValue = undefined === parameters.minValue ? 0 : parameters.minValue;
+        var maxValue = undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue;
+        var niceScale = undefined === parameters.niceScale ? true : parameters.niceScale;
+        var threshold = undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold;
+        var section = undefined === parameters.section ? null : parameters.section;
+        var area = undefined === parameters.area ? null : parameters.area;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+        var unitString = undefined === parameters.unitString ? "" : parameters.unitString;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var pointerType = undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor;
+        var knobType = undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType;
+        var knobStyle = undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdVisible = undefined === parameters.lcdVisible ? true : parameters.lcdVisible;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var fractionalScaleDecimals = undefined === parameters.fractionalScaleDecimals ? 1 : parameters.fractionalScaleDecimals;
+        var ledColor = undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor;
+        var ledVisible = undefined === parameters.ledVisible ? true : parameters.ledVisible;
+        var thresholdVisible = undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible;
+        var minMeasuredValueVisible = undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible;
+        var maxMeasuredValueVisible = undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var labelNumberFormat = undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat;
+        var playAlarm = undefined === parameters.playAlarm ? false : parameters.playAlarm;
+        var alarmSound = undefined === parameters.alarmSound ? false : parameters.alarmSound;
+        var customLayer = undefined === parameters.customLayer ? null : parameters.customLayer;
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound != false) {
@@ -253,8 +254,8 @@ var steelseries = function() {
             
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.008;
-                mainCtx.shadowOffsetY = imageWidth * 0.008;
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
                 mainCtx.shadowBlur = imageWidth * 0.009;
             }
             if (digitalFont) {
@@ -387,7 +388,7 @@ var steelseries = function() {
             var MINOR_INNER_POINT = imageWidth * 0.36;
             var TEXT_TRANSLATE_X = imageWidth * 0.31;
 //            var TEXT_WIDTH = imageWidth * 0.0375;
-            var TEXT_WIDTH = imageWidth * 0.07;
+            var TEXT_WIDTH = imageWidth * 0.09;
             var HALF_MAX_NO_OF_MINOR_TICKS = maxNoOfMinorTicks / 2;
             var MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2));
 
@@ -501,40 +502,12 @@ var steelseries = function() {
             ctx.translate(-centerX, -centerY);
             ctx.restore();
         };
-
+/*
         var drawPointerImage = function(ctx) {
             ctx.save();
             var grad;
 
             switch (pointerType.type) {
-                case 'type1':
-                    grad = ctx.createLinearGradient(0, imageHeight * 0.4719626168224299, 0, imageHeight * 0.1308411214953271);
-                    grad.addColorStop(0.0, pointerColor.veryDark.getRgbaColor());
-                    grad.addColorStop(0.3, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(0.59, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(1.0, pointerColor.veryDark.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = pointerColor.light.getRgbaColor();
-
-                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-                    ctx.shadowOffsetY = 2;
-                    ctx.shadowBlur = 2;
-
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
-                    ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageHeight * 0.45794392523364486, imageWidth * 0.5093457943925234, imageHeight * 0.4158878504672897, imageWidth * 0.5093457943925234, imageHeight * 0.40186915887850466);
-                    ctx.bezierCurveTo(imageWidth * 0.5046728971962616, imageHeight * 0.38317757009345793, imageWidth * 0.5, imageHeight * 0.1308411214953271, imageWidth * 0.5, imageHeight * 0.1308411214953271);
-                    ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.1308411214953271, imageWidth * 0.49065420560747663, imageHeight * 0.38317757009345793, imageWidth * 0.49065420560747663, imageHeight * 0.397196261682243);
-                    ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.4158878504672897, imageWidth * 0.48598130841121495, imageHeight * 0.45794392523364486, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
-                    ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.48130841121495327, imageWidth * 0.4672897196261682, imageHeight * 0.49065420560747663, imageWidth * 0.4672897196261682, imageHeight * 0.5);
-                    ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.5186915887850467, imageWidth * 0.48130841121495327, imageHeight * 0.5327102803738317, imageWidth * 0.5, imageHeight * 0.5327102803738317);
-                    ctx.bezierCurveTo(imageWidth * 0.5186915887850467, imageHeight * 0.5327102803738317, imageWidth * 0.5327102803738317, imageHeight * 0.5186915887850467, imageWidth * 0.5327102803738317, imageHeight * 0.5);
-                    ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.49065420560747663, imageWidth * 0.5280373831775701, imageHeight * 0.48130841121495327, imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-
                 case 'type2':
                     grad = ctx.createLinearGradient(0, imageHeight * 0.4719626168224299, 0, imageHeight * 0.1308411214953271);
                     grad.addColorStop(0.0, 'black');
@@ -761,6 +734,7 @@ var steelseries = function() {
                     ctx.stroke();
                     break;
 
+                case 'type1':
                 default:
                     grad = ctx.createLinearGradient(0, imageHeight * 0.4719626168224299, 0, imageHeight * 0.1308411214953271);
                     grad.addColorStop(0.0, pointerColor.veryDark.getRgbaColor());
@@ -789,16 +763,16 @@ var steelseries = function() {
             }
             ctx.restore();
         };
-
+*/
         // **************   Initialization  ********************
         // Draw all static painting code to background
         var init = function(parameters) {
             parameters = parameters || {};
-            var drawFrame = 'undefined' === typeof(parameters['frame']) ? false : parameters['frame'];
-            var drawBackground = 'undefined' === typeof(parameters['background']) ? false : parameters['background'];
-            var drawLed = 'undefined' === typeof(parameters['led']) ? false : parameters['led'];
-            var drawPointer = 'undefined' === typeof(parameters['pointer']) ? false : parameters['pointer'];
-            var drawForeground = 'undefined' === typeof(parameters['foreground']) ? false : parameters['foreground'];
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawLed = undefined === parameters.led ? false : parameters.led;
+            var drawPointer = undefined === parameters.pointer ? false : parameters.pointer;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
 
             initialized = true;
 
@@ -888,7 +862,7 @@ var steelseries = function() {
 
             // Create pointer image in pointer buffer (contentBuffer)
             if (drawPointer) {
-                drawPointerImage(pointerContext);
+                drawPointerImage(pointerContext, imageWidth, pointerType, pointerColor);
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
@@ -899,11 +873,11 @@ var steelseries = function() {
 
         var resetBuffers = function(buffers) {
             buffers = buffers || {};
-            var resetFrame = 'undefined' === typeof(buffers['frame']) ? false : buffers['frame'];
-            var resetBackground = 'undefined' === typeof(buffers['background']) ? false : buffers['background'];
-            var resetLed = 'undefined' === typeof(buffers['led']) ? false : buffers['led'];
-            var resetPointer = 'undefined' === typeof(buffers['pointer']) ? false : buffers['pointer'];
-            var resetForeground = 'undefined' === typeof(buffers['foreground']) ? false : buffers['foreground'];
+            var resetFrame = undefined === buffers.frame ? false : buffers.frame;
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetLed = undefined === buffers.led ? false : buffers.led;
+            var resetPointer = undefined === buffers.pointer ? false : buffers.pointer;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
 
             if (resetFrame) {
                 frameBuffer.width = size;
@@ -1333,30 +1307,30 @@ var steelseries = function() {
 
     var radialBargraph = function(canvas, parameters) {
         parameters = parameters || {};
-        var gaugeType = 'undefined' === typeof(parameters['gaugeType']) ? steelseries.GaugeType.TYPE4 : parameters['gaugeType'];
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
-        var minValue = 'undefined' === typeof(parameters['minValue']) ? 0 : parameters['minValue'];
-        var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
-        var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
-        var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var section = 'undefined' === typeof(parameters['section']) ? null : parameters['section'];
-        var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var valueColor = 'undefined' === typeof(parameters['valueColor']) ? steelseries.ColorDef.RED : parameters['valueColor'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdVisible = 'undefined' === typeof(parameters['lcdVisible']) ? true : parameters['lcdVisible'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var fractionalScaleDecimals = 'undefined' === typeof(parameters['fractionalScaleDecimals']) ? 1 : parameters['fractionalScaleDecimals'];
-        var customLayer = 'undefined' === typeof(parameters['customLayer']) ? null : parameters['customLayer'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.LedColor.RED_LED : parameters['ledColor'];
-        var ledVisible = 'undefined' === typeof(parameters['ledVisible']) ? true : parameters['ledVisible'];
-        var labelNumberFormat = 'undefined' === typeof(parameters['labelNumberFormat']) ? steelseries.LabelNumberFormat.STANDARD : parameters['labelNumberFormat'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
-        var playAlarm = 'undefined' === typeof(parameters['playAlarm']) ? false : parameters['playAlarm'];
-        var alarmSound = 'undefined' === typeof(parameters['alarmSound']) ? false : parameters['alarmSound'];
+        var gaugeType = undefined === parameters.gaugeType ? steelseries.GaugeType.TYPE4 : parameters.gaugeType;
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var minValue = undefined === parameters.minValue ? 0 : parameters.minValue;
+        var maxValue = undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue;
+        var niceScale = undefined === parameters.niceScale ? true : parameters.niceScale;
+        var threshold = undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold;
+        var section = undefined === parameters.section ? null : parameters.section;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+        var unitString = undefined === parameters.unitString ? "" : parameters.unitString;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var valueColor = undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdVisible = undefined === parameters.lcdVisible ? true : parameters.lcdVisible;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var fractionalScaleDecimals = undefined === parameters.fractionalScaleDecimals ? 1 : parameters.fractionalScaleDecimals;
+        var customLayer = undefined === parameters.customLayer ? null : parameters.customLayer;
+        var ledColor = undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor;
+        var ledVisible = undefined === parameters.ledVisible ? true : parameters.ledVisible;
+        var labelNumberFormat = undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var playAlarm = undefined === parameters.playAlarm ? false : parameters.playAlarm;
+        var alarmSound = undefined === parameters.alarmSound ? false : parameters.alarmSound;
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound != false) {
@@ -1562,11 +1536,11 @@ var steelseries = function() {
         // Draw all static painting code to background
         var init = function(parameters) {
             parameters = parameters || {};
-            var drawFrame = 'undefined' === typeof(parameters['frame']) ? false : parameters['frame'];
-            var drawBackground = 'undefined' === typeof(parameters['background']) ? false : parameters['background'];
-            var drawLed = 'undefined' === typeof(parameters['led']) ? false : parameters['led'];
-            var drawValue =  'undefined' === typeof(parameters['value']) ? false : parameters['value'];
-            var drawForeground = 'undefined' === typeof(parameters['foreground']) ? false : parameters['foreground'];
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawLed = undefined === parameters.led ? false : parameters.led;
+            var drawValue =  undefined === parameters.value ? false : parameters.value;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
 
             initialized = true;
 
@@ -1628,11 +1602,11 @@ var steelseries = function() {
 
         var resetBuffers = function(buffers) {
             buffers = buffers || {};
-            var resetFrame = 'undefined' === typeof(buffers['frame']) ? false : buffers['frame'];
-            var resetBackground = 'undefined' === typeof(buffers['background']) ? false : buffers['background'];
-            var resetLed = 'undefined' === typeof(buffers['led']) ? false : buffers['led'];
-            var resetValue = 'undefined' === typeof(buffers['value']) ? false : buffers['value'];
-            var resetForeground = 'undefined' === typeof(buffers['foreground']) ? false : buffers['foreground'];
+            var resetFrame = undefined === buffers.frame ? false : buffers.frame;
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetLed = undefined === buffers.led ? false : buffers.led;
+            var resetValue = undefined === buffers.value ? false : buffers.value;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
 
             // Buffer for the frame
             if (resetFrame) {
@@ -1766,8 +1740,8 @@ var steelseries = function() {
             
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.008;
-                mainCtx.shadowOffsetY = imageWidth * 0.008;
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
                 mainCtx.shadowBlur = imageWidth * 0.009;
             }
             
@@ -2064,32 +2038,32 @@ var steelseries = function() {
 
     var radialVertical = function(canvas, parameters) {
         parameters = parameters || {};
-        var orientation = 'undefined' === typeof(parameters['orientation']) ? steelseries.Orientation.NORTH : parameters['orientation'];
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
+        var orientation = undefined === parameters.orientation ? steelseries.Orientation.NORTH : parameters.orientation;
+        var size = undefined === parameters.size ? 200 : parameters.size;
         //var size = undefined === parameters.size ? 200 : parameters.size;
-        var minValue = 'undefined' === typeof(parameters['minValue']) ? 0 : parameters['minValue'];
-        var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
-        var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
-        var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var section = 'undefined' === typeof(parameters['section']) ? null : parameters['section'];
-        var area = 'undefined' === typeof(parameters['area']) ? null : parameters['area'];
-        var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var pointerType = 'undefined' === typeof(parameters['pointerType']) ? steelseries.PointerType.TYPE1 : parameters['pointerType'];
-        var pointerColor = 'undefined' === typeof(parameters['pointerColor']) ? steelseries.ColorDef.RED : parameters['pointerColor'];
-        var knobType = 'undefined' === typeof(parameters['knobType']) ? steelseries.KnobType.STANDARD_KNOB : parameters['knobType'];
-        var knobStyle = 'undefined' === typeof(parameters['knobStyle']) ? steelseries.KnobStyle.SILVER : parameters['knobStyle'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.LedColor.RED_LED : parameters['ledColor'];
-        var ledVisible = 'undefined' === typeof(parameters['ledVisible']) ? true : parameters['ledVisible'];
-        var thresholdVisible = 'undefined' === typeof(parameters['thresholdVisible']) ? true : parameters['thresholdVisible'];
-        var minMeasuredValueVisible = 'undefined' === typeof(parameters['minMeasuredValueVisible']) ? false : parameters['minMeasuredValueVisible'];
-        var maxMeasuredValueVisible = 'undefined' === typeof(parameters['maxMeasuredValueVisible']) ? false : parameters['maxMeasuredValueVisible'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
-        var labelNumberFormat = 'undefined' === typeof(parameters['labelNumberFormat']) ? steelseries.LabelNumberFormat.STANDARD : parameters['labelNumberFormat'];
-        var playAlarm = 'undefined' === typeof(parameters['playAlarm']) ? false : parameters['playAlarm'];
-        var alarmSound = 'undefined' === typeof(parameters['alarmSound']) ? false : parameters['alarmSound'];
+        var minValue = undefined === parameters.minValue ? 0 : parameters.minValue;
+        var maxValue = undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue;
+        var niceScale = undefined === parameters.niceScale ? true : parameters.niceScale;
+        var threshold = undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold;
+        var section = undefined === parameters.section ? null : parameters.section;
+        var area = undefined === parameters.area ? null : parameters.area;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+        var unitString = undefined === parameters.unitString ? "" : parameters.unitString;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var pointerType = undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor;
+        var knobType = undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType;
+        var knobStyle = undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle;
+        var ledColor = undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor;
+        var ledVisible = undefined === parameters.ledVisible ? true : parameters.ledVisible;
+        var thresholdVisible = undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible;
+        var minMeasuredValueVisible = undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible;
+        var maxMeasuredValueVisible = undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var labelNumberFormat = undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat;
+        var playAlarm = undefined === parameters.playAlarm ? false : parameters.playAlarm;
+        var alarmSound = undefined === parameters.alarmSound ? false : parameters.alarmSound;
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound != false) {
@@ -2742,11 +2716,11 @@ var steelseries = function() {
         // Draw all static painting code to background
         var init = function(parameters) {
             parameters = parameters || {};
-            var drawFrame = 'undefined' === typeof(parameters['frame']) ? false : parameters['frame'];
-            var drawBackground = 'undefined' === typeof(parameters['background']) ? false : parameters['background'];
-            var drawLed = 'undefined' === typeof(parameters['led']) ? false : parameters['led'];
-            var drawPointer = 'undefined' === typeof(parameters['pointer']) ? false : parameters['pointer'];
-            var drawForeground = 'undefined' === typeof(parameters['foreground']) ? false : parameters['foreground'];
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawLed = undefined === parameters.led ? false : parameters.led;
+            var drawPointer = undefined === parameters.pointer ? false : parameters.pointer;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
 
             initialized = true;
 
@@ -2865,11 +2839,11 @@ var steelseries = function() {
 
         var resetBuffers = function(buffers) {
             buffers = buffers || {};
-            var resetFrame = 'undefined' === typeof(buffers['frame']) ? false : buffers['frame'];
-            var resetBackground = 'undefined' === typeof(buffers['background']) ? false : buffers['background'];
-            var resetLed = 'undefined' === typeof(buffers['led']) ? false : buffers['led'];
-            var resetPointer = 'undefined' === typeof(buffers['pointer']) ? false : buffers['pointer'];
-            var resetForeground = 'undefined' === typeof(buffers['foreground']) ? false : buffers['foreground'];
+            var resetFrame = undefined === buffers.frame ? false : buffers.frame;
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetLed = undefined === buffers.led ? false : buffers.led;
+            var resetPointer = undefined === buffers.pointer ? false : buffers.pointer;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
 
             if (resetFrame) {
                 frameBuffer.width = size;
@@ -3229,29 +3203,29 @@ var steelseries = function() {
 
     var linear = function(canvas, parameters) {
         parameters = parameters || {};
-        var width = 'undefined' === typeof(parameters['width']) ? 140 : parameters['width'];
-        var height = 'undefined' === typeof(parameters['height']) ? 320 : parameters['height'];
-        var minValue = 'undefined' === typeof(parameters['minValue']) ? 0 : parameters['minValue'];
-        var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
-        var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
-        var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var valueColor = 'undefined' === typeof(parameters['valueColor']) ? steelseries.ColorDef.RED : parameters['valueColor'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdVisible = 'undefined' === typeof(parameters['lcdVisible']) ? true : parameters['lcdVisible'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.LedColor.RED_LED : parameters['ledColor'];
-        var ledVisible = 'undefined' === typeof(parameters['ledVisible']) ? true : parameters['ledVisible'];
-        var thresholdVisible = 'undefined' === typeof(parameters['thresholdVisible']) ? true : parameters['thresholdVisible'];
-        var minMeasuredValueVisible = 'undefined' === typeof(parameters['minMeasuredValueVisible']) ? false : parameters['minMeasuredValueVisible'];
-        var maxMeasuredValueVisible = 'undefined' === typeof(parameters['maxMeasuredValueVisible']) ? false : parameters['maxMeasuredValueVisible'];
-        var labelNumberFormat = 'undefined' === typeof(parameters['labelNumberFormat']) ? steelseries.LabelNumberFormat.STANDARD : parameters['labelNumberFormat'];
-        var playAlarm = 'undefined' === typeof(parameters['playAlarm']) ? false : parameters['playAlarm'];
-        var alarmSound = 'undefined' === typeof(parameters['alarmSound']) ? false : parameters['alarmSound'];
+        var width = undefined === parameters.width ? 140 : parameters.width;
+        var height = undefined === parameters.height ? 320 : parameters.height;
+        var minValue = undefined === parameters.minValue ? 0 : parameters.minValue;
+        var maxValue = undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue;
+        var niceScale = undefined === parameters.niceScale ? true : parameters.niceScale;
+        var threshold = undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+        var unitString = undefined === parameters.unitString ? "" : parameters.unitString;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var valueColor = undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdVisible = undefined === parameters.lcdVisible ? true : parameters.lcdVisible;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var ledColor = undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor;
+        var ledVisible = undefined === parameters.ledVisible ? true : parameters.ledVisible;
+        var thresholdVisible = undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible;
+        var minMeasuredValueVisible = undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible;
+        var maxMeasuredValueVisible = undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible;
+        var labelNumberFormat = undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat;
+        var playAlarm = undefined === parameters.playAlarm ? false : parameters.playAlarm;
+        var alarmSound = undefined === parameters.alarmSound ? false : parameters.alarmSound;
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound != false) {
@@ -3385,8 +3359,8 @@ var steelseries = function() {
             
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.008;
-                mainCtx.shadowOffsetY = imageWidth * 0.008;
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
                 mainCtx.shadowBlur = imageWidth * 0.009;
             }
             
@@ -3611,10 +3585,10 @@ var steelseries = function() {
         // **************   Initialization  ********************
         var init = function(parameters) {
             parameters = parameters || {};
-            var drawFrame = 'undefined' === typeof(parameters['frame']) ? false : parameters['frame'];
-            var drawBackground = 'undefined' === typeof(parameters['background']) ? false : parameters['background'];
-            var drawLed = 'undefined' === typeof(parameters['led']) ? false : parameters['led'];
-            var drawForeground = 'undefined' === typeof(parameters['foreground']) ? false : parameters['foreground'];
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawLed = undefined === parameters.led ? false : parameters.led;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
 
             initialized = true;
 
@@ -3713,10 +3687,10 @@ var steelseries = function() {
                
         var resetBuffers = function(buffers) {
             buffers = buffers || {};
-            var resetFrame = 'undefined' === typeof(buffers['frame']) ? false : buffers['frame'];
-            var resetBackground = 'undefined' === typeof(buffers['background']) ? false : buffers['background'];
-            var resetLed = 'undefined' === typeof(buffers['led']) ? false : buffers['led'];
-            var resetForeground = 'undefined' === typeof(buffers['foreground']) ? false : buffers['foreground'];
+            var resetFrame = undefined === buffers.frame ? false : buffers.frame;
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetLed = undefined === buffers.led ? false : buffers.led;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
 
             if (resetFrame) {
                 frameBuffer.width = width;
@@ -4246,29 +4220,29 @@ var steelseries = function() {
 
     var linearBargraph = function(canvas, parameters) {
         parameters = parameters || {};
-        var width = 'undefined' === typeof(parameters['width']) ? 140 : parameters['width'];
-        var height = 'undefined' === typeof(parameters['height']) ? 320 : parameters['height'];
-        var minValue = 'undefined' === typeof(parameters['minValue']) ? 0 : parameters['minValue'];
-        var maxValue = 'undefined' === typeof(parameters['maxValue']) ? (minValue + 100) : parameters['maxValue'];
-        var niceScale = 'undefined' === typeof(parameters['niceScale']) ? true : parameters['niceScale'];
-        var threshold = 'undefined' === typeof(parameters['threshold']) ? (maxValue - minValue) / 2 : parameters['threshold'];
-        var titleString = 'undefined' === typeof(parameters['titleString']) ? "" : parameters['titleString'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? "" : parameters['unitString'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var valueColor = 'undefined' === typeof(parameters['valueColor']) ? steelseries.ColorDef.RED : parameters['valueColor'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdVisible = 'undefined' === typeof(parameters['lcdVisible']) ? true : parameters['lcdVisible'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.LedColor.RED_LED : parameters['ledColor'];
-        var ledVisible = 'undefined' === typeof(parameters['ledVisible']) ? true : parameters['ledVisible'];
-        var thresholdVisible = 'undefined' === typeof(parameters['thresholdVisible']) ? true : parameters['thresholdVisible'];
-        var minMeasuredValueVisible = 'undefined' === typeof(parameters['minMeasuredValueVisible']) ? false : parameters['minMeasuredValueVisible'];
-        var maxMeasuredValueVisible = 'undefined' === typeof(parameters['maxMeasuredValueVisible']) ? false : parameters['maxMeasuredValueVisible'];
-        var labelNumberFormat = 'undefined' === typeof(parameters['labelNumberFormat']) ? steelseries.LabelNumberFormat.STANDARD : parameters['labelNumberFormat'];
-        var playAlarm = 'undefined' === typeof(parameters['playAlarm']) ? false : parameters['playAlarm'];
-        var alarmSound = 'undefined' === typeof(parameters['alarmSound']) ? false : parameters['alarmSound'];
+        var width = undefined === parameters.width ? 140 : parameters.width;
+        var height = undefined === parameters.height ? 320 : parameters.height;
+        var minValue = undefined === parameters.minValue ? 0 : parameters.minValue;
+        var maxValue = undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue;
+        var niceScale = undefined === parameters.niceScale ? true : parameters.niceScale;
+        var threshold = undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+        var unitString = undefined === parameters.unitString ? "" : parameters.unitString;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var valueColor = undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdVisible = undefined === parameters.lcdVisible ? true : parameters.lcdVisible;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var ledColor = undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor;
+        var ledVisible = undefined === parameters.ledVisible ? true : parameters.ledVisible;
+        var thresholdVisible = undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible;
+        var minMeasuredValueVisible = undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible;
+        var maxMeasuredValueVisible = undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible;
+        var labelNumberFormat = undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat;
+        var playAlarm = undefined === parameters.playAlarm ? false : parameters.playAlarm;
+        var alarmSound = undefined === parameters.alarmSound ? false : parameters.alarmSound;
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound != false) {
@@ -4421,8 +4395,8 @@ var steelseries = function() {
             mainCtx.fillStyle = lcdColor.textColor;
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.008;
-                mainCtx.shadowOffsetY = imageWidth * 0.008;
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
                 mainCtx.shadowBlur = imageWidth * 0.009;
             }
             var lcdTextX;
@@ -4644,11 +4618,11 @@ var steelseries = function() {
         // **************   Initialization  ********************
         var init = function(parameters) {
             parameters = parameters || {};
-            var drawFrame = 'undefined' === typeof(parameters['frame']) ? false : parameters['frame'];
-            var drawBackground = 'undefined' === typeof(parameters['background']) ? false : parameters['background'];
-            var drawLed = 'undefined' === typeof(parameters['led']) ? false : parameters['led'];
-            var drawForeground = 'undefined' === typeof(parameters['foreground']) ? false : parameters['foreground'];
-            var drawBargraphLed = 'undefined' === typeof(parameters['bargraphled']) ? false : parameters['bargraphled'];
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawLed = undefined === parameters.led ? false : parameters.led;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
+            var drawBargraphLed = undefined === parameters.bargraphled ? false : parameters.bargraphled;
 
             initialized = true;
 
@@ -4753,11 +4727,11 @@ var steelseries = function() {
 
         var resetBuffers = function(buffers) {
             buffers = buffers || {};
-            var resetFrame = 'undefined' === typeof(buffers['frame']) ? false : buffers['frame'];
-            var resetBackground = 'undefined' === typeof(buffers['background']) ? false : buffers['background'];
-            var resetLed = 'undefined' === typeof(buffers['led']) ? false : buffers['led'];
-            var resetBargraphLed = 'undefined' === typeof(buffers['bargraphled']) ? false : buffers['bargraphled'];
-            var resetForeground = 'undefined' === typeof(buffers['foreground']) ? false : buffers['foreground'];
+            var resetFrame = undefined === buffers.frame ? false : buffers.frame;
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetLed = undefined === buffers.led ? false : buffers.led;
+            var resetBargraphLed = undefined === buffers.bargraphled ? false : buffers.bargraphled;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
 
             if (resetFrame) {
                 frameBuffer.width = width;
@@ -5353,15 +5327,15 @@ var steelseries = function() {
 
     var displaySingle = function(canvas, parameters) {
         parameters = parameters || {};
-        var width = 'undefined' === typeof(parameters['width']) ? 128 : parameters['width'];
-        var height = 'undefined' === typeof(parameters['height']) ? 48 : parameters['height'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? '' : parameters['unitString'];
-        var unitStringVisible = 'undefined' === typeof(parameters['unitStringVisible']) ? false : parameters['unitStringVisible'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var valuesNumeric = 'undefined' === typeof(parameters['valuesNumeric']) ? true : parameters['valuesNumeric'];
-        var value = 'undefined' === typeof(parameters['value']) ? 0 : parameters['value'];
+        var width = undefined === parameters.width ? 128 : parameters.width;
+        var height = undefined === parameters.height ? 48 : parameters.height;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var unitString = undefined === parameters.unitString ? '' : parameters.unitString;
+        var unitStringVisible = undefined === parameters.unitStringVisible ? false : parameters.unitStringVisible;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var valuesNumeric = undefined === parameters.valuesNumeric ? true : parameters.valuesNumeric;
+        var value = undefined === parameters.value ? 0 : parameters.value;
         var autoScroll = undefined === parameters.autoScroll ? false : parameters.autoScroll;
 //        var oldValue;
         var scrolling = false;
@@ -5399,9 +5373,9 @@ var steelseries = function() {
             mainCtx.fillStyle = lcdColor.textColor;
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageHeight * 0.06;
-                mainCtx.shadowOffsetY = imageHeight * 0.06;
-                mainCtx.shadowBlur = imageHeight * 0.05;
+                mainCtx.shadowOffsetX = imageHeight * 0.05;
+                mainCtx.shadowOffsetY = imageHeight * 0.05;
+                mainCtx.shadowBlur = imageHeight * 0.06;
             }
             // Define the clipping area
             //roundedRectangle(mainCtx, 2, 2, imageWidth - 4, imageHeight - 4, Math.min(imageWidth, imageHeight) * 0.05);
@@ -5558,15 +5532,15 @@ var steelseries = function() {
 
     var displayMulti = function(canvas, parameters) {
         parameters = parameters || {};
-        var width = 'undefined' === typeof(parameters['width']) ? 128 : parameters['width'];
-        var height = 'undefined' === typeof(parameters['height']) ? 64 : parameters['height'];
-        var lcdColor = 'undefined' === typeof(parameters['lcdColor']) ? steelseries.LcdColor.STANDARD : parameters['lcdColor'];
-        var lcdDecimals = 'undefined' === typeof(parameters['lcdDecimals']) ? 2 : parameters['lcdDecimals'];
-        var unitString = 'undefined' === typeof(parameters['unitString']) ? '' : parameters['unitString'];
-        var unitStringVisible = 'undefined' === typeof(parameters['unitStringVisible']) ? false : parameters['unitStringVisible'];
-        var digitalFont = 'undefined' === typeof(parameters['digitalFont']) ? false : parameters['digitalFont'];
-        var valuesNumeric = 'undefined' === typeof(parameters['valuesNumeric']) ? true : parameters['valuesNumeric'];
-        var value = 'undefined' === typeof(parameters['value']) ? 0 : parameters['value'];
+        var width = undefined === parameters.width ? 128 : parameters.width;
+        var height = undefined === parameters.height ? 64 : parameters.height;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdDecimals = undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals;
+        var unitString = undefined === parameters.unitString ? '' : parameters.unitString;
+        var unitStringVisible = undefined === parameters.unitStringVisible ? false : parameters.unitStringVisible;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var valuesNumeric = undefined === parameters.valuesNumeric ? true : parameters.valuesNumeric;
+        var value = undefined === parameters.value ? 0 : parameters.value;
 
         var oldValue = 0;
         
@@ -5602,9 +5576,9 @@ var steelseries = function() {
             mainCtx.fillStyle = lcdColor.textColor;
             if (lcdColor === steelseries.LcdColor.STANDARD) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageHeight * 0.06;
-                mainCtx.shadowOffsetY = imageHeight * 0.06;
-                mainCtx.shadowBlur = imageHeight * 0.05;
+                mainCtx.shadowOffsetX = imageHeight * 0.05;
+                mainCtx.shadowOffsetY = imageHeight * 0.05;
+                mainCtx.shadowBlur = imageHeight * 0.06;
             }
             if (valuesNumeric) {
                 // Numeric value
@@ -5691,13 +5665,13 @@ var steelseries = function() {
 
     var level = function(canvas, parameters) {
         parameters = parameters || {};
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
-        var decimalsVisible = 'undefined' === typeof(parameters['decimalsVisible']) ? false : parameters['decimalsVisible'];
-        var textOrientationFixed = 'undefined' === typeof(parameters['textOrientationFixed']) ? false : parameters['textOrientationFixed'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var pointerColor = 'undefined' === typeof(parameters['pointerColor']) ? steelseries.ColorDef.RED : parameters['pointerColor'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var decimalsVisible = undefined === parameters.decimalsVisible ? false : parameters.decimalsVisible;
+        var textOrientationFixed = undefined === parameters.textOrientationFixed ? false : parameters.textOrientationFixed;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
 
         var tween;
 
@@ -6322,18 +6296,18 @@ var steelseries = function() {
 
     var compass = function(canvas, parameters) {
         parameters = parameters || {};
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var backgroundColor = 'undefined' === typeof(parameters['backgroundColor']) ? steelseries.BackgroundColor.DARK_GRAY : parameters['backgroundColor'];
-        var pointerType = 'undefined' === typeof(parameters['pointerType']) ? steelseries.PointerType.TYPE2 : parameters['pointerType'];
-        var pointerColor = 'undefined' === typeof(parameters['pointerColor']) ? steelseries.ColorDef.RED : parameters['pointerColor'];
-        var knobType = 'undefined' === typeof(parameters['knobType']) ? steelseries.KnobType.METAL_KNOB : parameters['knobType'];
-        var knobStyle = 'undefined' === typeof(parameters['knobStyle']) ? steelseries.KnobStyle.SILVER : parameters['knobStyle'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
-        var pointSymbols = 'undefined' === typeof(parameters['pointSymbols']) ? ["N","NE","E","SE","S","SW","W","NW"] : parameters.pointSymbols;
-        var customLayer = 'undefined' === typeof(parameters['customLayer']) ? null : parameters['customLayer'];
-        var showDegrees = 'undefined' === typeof(parameters['showDegrees']) ? false : parameters['showDegrees'];
-        var showRose = 'undefined' === typeof(parameters['showRose']) ? true : parameters['showRose'];
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var pointerType = undefined === parameters.pointerType ? steelseries.PointerType.TYPE2 : parameters.pointerType;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor;
+        var knobType = undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType;
+        var knobStyle = undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var pointSymbols = undefined === parameters.pointSymbols ? ["N","NE","E","SE","S","SW","W","NW"] : parameters.pointSymbols;
+        var customLayer = undefined === parameters.customLayer ? null : parameters.customLayer;
+        var degreeScale = undefined === parameters.degreeScale ? false : parameters.degreeScale;
+        var roseVisible = undefined === parameters.roseVisible ? true : parameters.roseVisible;
         var tween;
         var value = 0;
         var angleStep = 2 * Math.PI / 360;
@@ -6385,7 +6359,7 @@ var steelseries = function() {
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
 
-            if (!showDegrees) {
+            if (!degreeScale) {
             
                 stdFont = 0.12 * imageWidth + 'px serif';
                 smlFont = 0.06 * imageWidth + 'px serif';
@@ -6473,7 +6447,7 @@ var steelseries = function() {
                     }
                     ctx.restore();
 
-                    if (showRose && (0 == i || 22.5 == i || 45 == i || 67.5 == i || 90 == i || 112.5 == i || 135 == i || 157.5 == i || 180 == i || 202.5 == i || 225 == i || 247.5 == i || 270 == i || 292.5 == i || 315 == i || 337.5 == i || 360 == i)) {
+                    if (roseVisible && (0 == i || 22.5 == i || 45 == i || 67.5 == i || 90 == i || 112.5 == i || 135 == i || 157.5 == i || 180 == i || 202.5 == i || 225 == i || 247.5 == i || 270 == i || 292.5 == i || 315 == i || 337.5 == i || 360 == i)) {
                         // ROSE_LINE
                         ctx.save();
                         ctx.beginPath();
@@ -6556,7 +6530,7 @@ var steelseries = function() {
 
             ctx.translate(centerX, centerY);
             // broken ring
-            for (var i = 0; 360 >= i; i += 15) {
+            for (var i = 0; 360 > i; i += 15) {
                 alternate++;
 
                 ctx.beginPath();
@@ -6578,7 +6552,7 @@ var steelseries = function() {
 
             var fillColorPath = backgroundColor.symbolColor.getRgbaColor();
             ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
-
+/*
             // PATH1_2
             ctx.save();
             ctx.beginPath();
@@ -6721,6 +6695,56 @@ var steelseries = function() {
             ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
             ctx.fill();
             ctx.stroke();
+            ctx.restore();
+*/
+            // Small pointers
+            for (var i = 0; 360 >= i; i += 90) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(imageWidth * 0.5607476635514018, imageHeight * 0.5841121495327103);
+                ctx.lineTo(imageWidth * 0.6401869158878505, imageHeight * 0.6448598130841121);
+                ctx.lineTo(imageWidth * 0.5841121495327103, imageHeight * 0.5607476635514018);
+                ctx.lineTo(imageWidth * 0.5607476635514018, imageHeight * 0.5841121495327103);
+                ctx.closePath();
+                ctx.fillStyle = fillColorPath;
+                ctx.fill();
+                ctx.stroke();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(i * Math.PI / 180);
+                ctx.translate(-centerX, -centerY);
+            }
+
+            // Large pointers
+            for (var i = 0; 360 >= i; i += 90) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(imageWidth * 0.5233644859813084, imageHeight * 0.397196261682243);
+                ctx.lineTo(imageWidth * 0.5, imageHeight * 0.19626168224299065);
+                ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.397196261682243);
+                ctx.lineTo(imageWidth * 0.5233644859813084, imageHeight * 0.397196261682243);
+                ctx.closePath();
+                var PATH5_2_GRADIENT = ctx.createLinearGradient((0.4766355140186916 * imageWidth), (0.3925233644859813 * imageHeight), ((0.4766355140186916 + 0.04205607476635514) * imageWidth), ((0.3925233644859813) * imageHeight));
+                PATH5_2_GRADIENT.addColorStop(0.0, 'rgba(222, 223, 218, 1.0)');
+                PATH5_2_GRADIENT.addColorStop(0.48, 'rgba(222, 223, 218, 1.0)');
+                PATH5_2_GRADIENT.addColorStop(0.49, backgroundColor.symbolColor.getRgbaColor());
+                PATH5_2_GRADIENT.addColorStop(1.0, backgroundColor.symbolColor.getRgbaColor());
+                ctx.fillStyle = PATH5_2_GRADIENT;
+                ctx.fill();
+                ctx.stroke();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(i * Math.PI / 180);
+                ctx.translate(-centerX, -centerY);
+            }
+
+            // Central ring
+            ctx.save();
+            ctx.beginPath();        
+            ctx.translate(centerX, centerY);
+            ctx.arc(0, 0, imageWidth * 0.1, 0, Math.PI * 2, false);
+            ctx.lineWidth = imageWidth * 0.022;
+            ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
+            ctx.stroke();
+            ctx.translate(-centerX, -centerY);
 
             ctx.restore();
         };
@@ -6866,7 +6890,7 @@ var steelseries = function() {
 
             drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
             drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
-            if (showRose) { drawSymbolImage(backgroundContext); }
+            if (roseVisible) { drawSymbolImage(backgroundContext); }
 
             drawTickmarksImage(backgroundContext);
 
@@ -7001,13 +7025,1012 @@ var steelseries = function() {
 
         return this;
     };
+    
+    var windDirection = function(canvas, parameters) {
+        parameters = parameters || {};
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var backgroundColor = undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor;
+        var pointerTypeLatest = undefined === parameters.pointerTypeLatest ? steelseries.PointerType.TYPE1 : parameters.pointerTypeLatest;
+        var pointerTypeAverage = undefined === parameters.pointerTypeAverage ? steelseries.PointerType.TYPE7 : parameters.pointerTypeAverage;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.BLUE : parameters.pointerColor;
+        var pointerColorAverage = undefined === parameters.pointerColorAverage ? steelseries.ColorDef.RED : parameters.pointerColorAverage;
+        var knobType = undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType;
+        var knobStyle = undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var pointSymbols = undefined === parameters.pointSymbols ? ["N","NE","E","SE","S","SW","W","NW"] : parameters.pointSymbols;
+        var customLayer = undefined === parameters.customLayer ? null : parameters.customLayer;
+        var degreeScale = undefined === parameters.degreeScale ? true : parameters.degreeScale;
+        var roseVisible = undefined === parameters.roseVisible ? false : parameters.roseVisible;
+        var lcdColor = undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor;
+        var lcdVisible = undefined === parameters.lcdVisible ? true : parameters.lcdVisible;
+        var digitalFont = undefined === parameters.digitalFont ? false : parameters.digitalFont;
+        var section = undefined === parameters.section ? null : parameters.section;
+        var area = undefined === parameters.area ? null : parameters.area;
+        var lcdTitleStrings = undefined === parameters.lcdTitleStrings ? ["Latest","Average"] : parameters.lcdTitleStrings;
+        var titleString = undefined === parameters.titleString ? "" : parameters.titleString;
+
+        var tweenLatest;
+        var tweenAverage;
+        var valueLatest = 0;
+        var valueAverage = 0;
+        var angleStep = 2 * Math.PI / 360;
+        var angleLatest = this.valueLatest;
+        var angleAverage = this.valueAverage;
+        var rotationOffset = -Math.PI / 2;
+        var angleRange = Math.PI * 2;
+        var range = 360;
+
+        // Get the canvas context and clear it
+        var doc = document;
+        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Set the size
+        mainCtx.canvas.width = size;
+        mainCtx.canvas.height = size;
+
+        var imageWidth = size;
+        var imageHeight = size;
+
+        var centerX = imageWidth / 2.0;
+        var centerY = imageHeight / 2.0;
+
+        var stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
+        var lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+
+        var initialized = false;
+
+        // **************   Buffer creation  ********************
+        // Buffer for all static background painting code
+        var backgroundBuffer = createBuffer(size, size);
+        var backgroundContext = backgroundBuffer.getContext('2d');
+
+        // Buffer for LCD displays
+        var lcdBuffer;
+        
+        // Buffers for pointer images painting code
+        var pointerBufferLatest = createBuffer(size, size);
+        var pointerContextLatest = pointerBufferLatest.getContext('2d');
+
+        var pointerBufferAverage = createBuffer(size, size);
+        var pointerContextAverage = pointerBufferAverage.getContext('2d');
+
+        // Buffer for static foreground painting code
+        var foregroundBuffer = createBuffer(size, size);
+        var foregroundContext = foregroundBuffer.getContext('2d');
+
+        // **************   Image creation  ********************
+        var drawLcdText = function(value, bLatest) {
+            mainCtx.save();
+            mainCtx.textAlign = 'center';
+            mainCtx.textBaseline = 'middle';
+            mainCtx.strokeStyle = lcdColor.textColor;
+            mainCtx.fillStyle = lcdColor.textColor;
+
+            //convert value from -180,180 range into 0-360 range
+            if (value < 0){ value += 360; }
+            value = "00" + Math.round(value);
+            value = value.substring(value.length,value.length-3);
+
+            
+            if (lcdColor === steelseries.LcdColor.STANDARD) {
+                mainCtx.shadowColor = 'gray';
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
+                mainCtx.shadowBlur = imageWidth * 0.01;
+            }
+            if (digitalFont) {
+                mainCtx.font = lcdFont;
+            } else {
+                mainCtx.font = stdFont;
+            }
+            if (bLatest) {
+                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + 2, imageWidth * 0.385, imageWidth * 0.4);
+            } else {
+                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + 2, imageWidth * 0.63, imageWidth * 0.4);
+            }
+
+            mainCtx.restore();
+        };
+        
+        var drawAreaSectionImage = function(ctx, start, stop, color, filled) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = imageWidth * 0.035;
+            var startAngle = (angleRange / range * start);
+            var stopAngle = startAngle + (stop - start) / (range / angleRange);
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotationOffset);
+            ctx.beginPath();
+            if (filled) {
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, imageWidth * 0.365 - ctx.lineWidth / 2, startAngle, stopAngle, false);
+            } else {
+                ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
+            }
+            ctx.moveTo(0, 0);
+            ctx.closePath();
+            if (filled) {
+                ctx.fill();
+            } else {
+                ctx.stroke();
+            }
+
+            ctx.translate(-centerX, -centerY);
+            ctx.restore();
+        };
+
+        var drawTickmarksImage = function(ctx) {
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            var OUTER_POINT = imageWidth * 0.38;
+            var MAJOR_INNER_POINT = imageWidth * 0.35;
+            var MED_INNER_POINT = imageWidth * 0.355;
+            var MINOR_INNER_POINT = imageWidth * 0.36;
+            var TEXT_WIDTH = imageWidth * 0.1;
+            var TEXT_TRANSLATE_X = imageWidth * 0.31;
+            var CARDINAL_TRANSLATE_X = imageWidth * 0.36;
+
+            var stdFont, smlFont;
+//            var stdFont = 0.12 * imageWidth + 'px serif';
+//            var smlFont = 0.06 * imageWidth + 'px serif';
+
+            ctx.save();
+            //ctx.strokeStyle = '#83827E';
+            ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
+            ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
+            ctx.translate(centerX, centerY);
+
+            if (!degreeScale) {
+            
+                stdFont = 0.12 * imageWidth + 'px serif';
+                smlFont = 0.06 * imageWidth + 'px serif';
+ 
+                //var angleStep = 2 * Math.PI / 360;
+
+                for (i = 0; 360 > i; i+= 2.5) {
+
+                    if (0 === i % 5) {
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(imageWidth * 0.38, 0);
+                        ctx.lineTo(imageWidth * 0.36, 0);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+
+                    // Draw the labels
+                    ctx.save();
+                    switch (i) {
+                        case 0:
+                            ctx.translate(imageWidth * 0.35, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+//                            ctx.fillText("E", 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[2], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.35, 0);
+                            break;
+                        case 45:
+                            ctx.translate(imageWidth * 0.29, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = smlFont;
+                            ctx.fillText(pointSymbols[3], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.29, 0);
+                            break;
+                        case 90:
+                            ctx.translate(imageWidth * 0.35, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[4], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.35, 0);
+                            break;
+                        case 135:
+                            ctx.translate(imageWidth * 0.29, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = smlFont;
+                            ctx.fillText(pointSymbols[5], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.29, 0);
+                            break;
+                        case 180:
+                            ctx.translate(imageWidth * 0.35, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[6], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.35, 0);
+                            break;
+                        case 225:
+                            ctx.translate(imageWidth * 0.29, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = smlFont;
+                            ctx.fillText(pointSymbols[7], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.29, 0);
+                            break;
+                        case 270:
+                            ctx.translate(imageWidth * 0.35, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[0], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.35, 0);
+                            break;
+                        case 315:
+                            ctx.translate(imageWidth * 0.29, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = smlFont;
+                            ctx.fillText(pointSymbols[1], 0, 0, imageWidth);
+                            ctx.translate(-imageWidth * 0.29, 0);
+                            break;
+                    }
+                    ctx.restore();
+
+                    if (roseVisible && (0 == i || 22.5 == i || 45 == i || 67.5 == i || 90 == i || 112.5 == i || 135 == i || 157.5 == i || 180 == i || 202.5 == i || 225 == i || 247.5 == i || 270 == i || 292.5 == i || 315 == i || 337.5 == i || 360 == i)) {
+                        // ROSE_LINE
+                        ctx.save();
+                        ctx.beginPath();
+                        // indent the 16 half quadrant lines a bit for visual effect
+                        if (i%45)
+                            ctx.moveTo(imageWidth * 0.29, 0);
+                        else
+                            ctx.moveTo(imageWidth * 0.38, 0);
+                        ctx.lineTo(imageWidth * 0.1, 0);
+                        ctx.closePath();
+                        ctx.restore();
+                        ctx.lineWidth = 1.0;
+                        ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
+                        ctx.stroke();
+                    }
+                    ctx.rotate(angleStep * 2.5);
+                }
+            } else {
+                stdFont = Math.floor(0.1 * imageWidth) + 'px serif bold';
+                smlFont = Math.floor(imageWidth * 0.04) + 'px sans-serif';
+
+                ctx.rotate(angleStep * 5);
+
+                for (i = 5; 360 >= i; i+= 5) {
+                    // Draw the labels
+                    ctx.save();
+                    switch (i) {
+                        case 360:
+                            ctx.translate(CARDINAL_TRANSLATE_X, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[2], 0, 0, TEXT_WIDTH);
+                            ctx.translate(-CARDINAL_TRANSLATE_X, 0);
+                            break;
+                        case 90:
+                            ctx.translate(CARDINAL_TRANSLATE_X, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[4], 0, 0, TEXT_WIDTH);
+                            ctx.translate(-CARDINAL_TRANSLATE_X, 0);
+                            break;
+                       case 180:
+                            ctx.translate(CARDINAL_TRANSLATE_X, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[6], 0, 0, TEXT_WIDTH);
+                            ctx.translate(-CARDINAL_TRANSLATE_X, 0);
+                            break;
+                        case 270:
+                            ctx.translate(CARDINAL_TRANSLATE_X, 0);
+                            ctx.rotate(Math.PI/2);
+                            ctx.font = stdFont;
+                            ctx.fillText(pointSymbols[0], 0, 0, TEXT_WIDTH);
+                            ctx.translate(-CARDINAL_TRANSLATE_X, 0);
+                            break;
+                        case 5:   case 85:  case 95:  case 175:
+                        case 185: case 265: case 275: case 355:
+                            //leave room for ordinal labels
+                            break;
+                        default:
+                            if (!((i+90) % 20)) {
+                                ctx.lineWidth = 1.5;
+                                ctx.beginPath();
+                                ctx.moveTo(OUTER_POINT, 0);
+                                ctx.lineTo(MAJOR_INNER_POINT, 0);
+                                ctx.closePath();
+                                ctx.stroke();
+                                var val = (i+90) % 360;
+//                                ctx.translate(imageWidth * 0.37, 0);
+                                ctx.translate(TEXT_TRANSLATE_X, 0);
+                                ctx.rotate(Math.PI/2);
+                                ctx.font = smlFont;
+                                ctx.fillText(("0".substring(val>=100) + val), 0, 0, TEXT_WIDTH);
+//                                ctx.translate(-imageWidth * 0.37, 0);
+                                ctx.translate(-TEXT_TRANSLATE_X, 0);
+                            } else {
+                                ctx.lineWidth = ((i+90)%5) ? 1.5 : 1.0;
+                                ctx.beginPath();
+                                ctx.moveTo(OUTER_POINT, 0);
+                                var to = (i+90) % 10 ? MINOR_INNER_POINT : MAJOR_INNER_POINT;
+                                ctx.lineTo(to, 0);
+                                ctx.closePath();
+                                ctx.stroke();
+                            }
+                    }
+                    ctx.restore();
+                    ctx.rotate(angleStep * 5);
+                }
+
+            }
+            ctx.translate(-centerX, -centerY);
+            ctx.restore();
+        };
+        
+        var drawSymbolImage = function(ctx) {
+            var alternate = 0;
+            ctx.save();
+
+            ctx.lineWidth = 1.0;
+            ctx.fillStyle = backgroundColor.symbolColor.getRgbaColor();
+            ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
+
+            ctx.translate(centerX, centerY);
+            // broken ring
+            for (var i = 0; 360 > i; i += 15) {
+                alternate++;
+
+                ctx.beginPath();
+                ctx.rotate(i * Math.PI / 180);
+                ctx.moveTo(imageWidth * 0.23, 0);
+                ctx.lineTo(imageWidth * 0.26, 0);
+                ctx.rotate(-i * Math.PI / 180);
+                ctx.arc(0, 0, imageWidth * 0.26, i * Math.PI / 180, (i + 15) * Math.PI / 180, false);
+                ctx.arc(0, 0, imageWidth * 0.23, (i + 15) * Math.PI / 180, i * Math.PI / 180, true);
+                ctx.closePath();
+                if (0 === alternate % 2) {
+                    ctx.fill();
+                }
+                ctx.stroke();
+
+            }
+            ctx.translate(-centerX, -centerY);
+
+
+            var fillColorPath = backgroundColor.symbolColor.getRgbaColor();
+            ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
+            // Small pointers
+            for (var i = 0; 360 >= i; i += 90) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(imageWidth * 0.5607476635514018, imageHeight * 0.5841121495327103);
+                ctx.lineTo(imageWidth * 0.6401869158878505, imageHeight * 0.6448598130841121);
+                ctx.lineTo(imageWidth * 0.5841121495327103, imageHeight * 0.5607476635514018);
+                ctx.lineTo(imageWidth * 0.5607476635514018, imageHeight * 0.5841121495327103);
+                ctx.closePath();
+                ctx.fillStyle = fillColorPath;
+                ctx.fill();
+                ctx.stroke();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(i * Math.PI / 180);
+                ctx.translate(-centerX, -centerY);
+            }
+
+            // Large pointers
+            for (var i = 0; 360 >= i; i += 90) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(imageWidth * 0.5233644859813084, imageHeight * 0.397196261682243);
+                ctx.lineTo(imageWidth * 0.5, imageHeight * 0.19626168224299065);
+                ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.397196261682243);
+                ctx.lineTo(imageWidth * 0.5233644859813084, imageHeight * 0.397196261682243);
+                ctx.closePath();
+                var PATH5_2_GRADIENT = ctx.createLinearGradient((0.4766355140186916 * imageWidth), (0.3925233644859813 * imageHeight), ((0.4766355140186916 + 0.04205607476635514) * imageWidth), ((0.3925233644859813) * imageHeight));
+                PATH5_2_GRADIENT.addColorStop(0.0, 'rgba(222, 223, 218, 1.0)');
+                PATH5_2_GRADIENT.addColorStop(0.48, 'rgba(222, 223, 218, 1.0)');
+                PATH5_2_GRADIENT.addColorStop(0.49, backgroundColor.symbolColor.getRgbaColor());
+                PATH5_2_GRADIENT.addColorStop(1.0, backgroundColor.symbolColor.getRgbaColor());
+                ctx.fillStyle = PATH5_2_GRADIENT;
+                ctx.fill();
+                ctx.stroke();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(i * Math.PI / 180);
+                ctx.translate(-centerX, -centerY);
+            }
+
+            // Central ring
+            ctx.save();
+            ctx.beginPath();        
+            ctx.translate(centerX, centerY);
+            ctx.arc(0, 0, imageWidth * 0.1, 0, Math.PI * 2, false);
+            ctx.lineWidth = imageWidth * 0.022;
+            ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
+            ctx.stroke();
+            ctx.translate(-centerX, -centerY);
+
+            ctx.restore();
+        };
+
+        var drawLcdTitles = function(ctx) {
+            ctx.save();
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
+            ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
+            ctx.font = 0.040 * imageWidth + 'px sans-serif';
+            var titleWidth = ctx.measureText(lcdTitleStrings[0]).width;
+            ctx.fillText(lcdTitleStrings[0], (imageWidth - titleWidth) / 2.0, imageHeight * 0.27, imageWidth * 0.3);
+            titleWidth = ctx.measureText(lcdTitleStrings[1]).width;
+            ctx.fillText(lcdTitleStrings[1], (imageWidth - titleWidth) / 2.0, imageHeight * 0.73, imageWidth * 0.3);
+            if (titleString.length > 0) {
+                ctx.font = 0.0467 * imageWidth + 'px sans-serif';
+                titleWidth = ctx.measureText(titleString).width;
+                ctx.fillText(titleString, (imageWidth - titleWidth) / 2.0, imageHeight * 0.5, imageWidth * 0.3);
+            }
+        }
+/*
+        var drawPointerImage = function(ctx, ptrType, ptrColor) {
+            ctx.save();
+            var grad;
+
+            switch (ptrType.type) {
+                case 'type2':
+                    grad = ctx.createLinearGradient(0, imageHeight * 0.4719626168224299, 0, imageHeight * 0.1308411214953271);
+                    grad.addColorStop(0.0, 'black');
+                    grad.addColorStop(0.36, 'black');
+                    grad.addColorStop(0.361, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.light.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+                    ctx.lineTo(imageWidth * 0.5093457943925234, imageHeight * 0.46261682242990654);
+                    ctx.lineTo(imageWidth * 0.5093457943925234, imageHeight * 0.3411214953271028);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.3411214953271028);
+                    ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.46261682242990654);
+                    ctx.lineTo(imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+
+                case 'type3':
+                    ctx.beginPath();
+                    ctx.rect(imageWidth * 0.4953271028037383, imageHeight * 0.1308411214953271, imageWidth * 0.009345794392523364, imageHeight * 0.37383177570093457);
+                    ctx.closePath();
+                    ctx.fillStyle = ptrColor.light.getRgbaColor();
+                    ctx.fill();
+                    break;
+
+                case 'type4':
+                    grad = ctx.createLinearGradient((0.4672897196261682 * imageWidth), (0.48130841121495327 * imageHeight), ((0.4672897196261682 + 0.06074766355140187) * imageWidth), (0.48130841121495327 * imageHeight));
+                    grad.addColorStop(0.0, ptrColor.dark.getRgbaColor());
+                    grad.addColorStop(0.51, ptrColor.dark.getRgbaColor());
+                    grad.addColorStop(0.52, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.light.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.1261682242990654);
+                    ctx.lineTo(imageWidth * 0.514018691588785, imageHeight * 0.13551401869158877);
+                    ctx.lineTo(imageWidth * 0.5327102803738317, imageHeight * 0.5);
+                    ctx.lineTo(imageWidth * 0.5233644859813084, imageHeight * 0.602803738317757);
+                    ctx.lineTo(imageWidth * 0.4766355140186916, imageHeight * 0.602803738317757);
+                    ctx.lineTo(imageWidth * 0.4672897196261682, imageHeight * 0.5);
+                    ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.13551401869158877);
+                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.1261682242990654);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+
+                case 'type5':
+                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.49065420560747663 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), (0.49065420560747663 * imageHeight));
+                    grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.46, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.47, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.4953271028037383);
+                    ctx.lineTo(imageWidth * 0.5280373831775701, imageHeight * 0.4953271028037383);
+                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.14953271028037382);
+                    ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.4953271028037383);
+                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.4953271028037383);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.lineWidth = 1.0;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'miter';
+                    ctx.strokeStyle = ptrColor.dark.getRgbaColor();
+                    ctx.stroke();
+                    break;
+
+                case 'type6':
+                    ctx.fillStyle = ptrColor.medium.getRgbaColor();
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.48130841121495327, imageHeight * 0.48598130841121495);
+                    ctx.lineTo(imageWidth * 0.48130841121495327, imageHeight * 0.3925233644859813);
+                    ctx.lineTo(imageWidth * 0.48598130841121495, imageHeight * 0.3177570093457944);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.514018691588785, imageHeight * 0.3177570093457944);
+                    ctx.lineTo(imageWidth * 0.5186915887850467, imageHeight * 0.3878504672897196);
+                    ctx.lineTo(imageWidth * 0.5186915887850467, imageHeight * 0.48598130841121495);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.48598130841121495);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.3878504672897196);
+                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.3177570093457944);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.3925233644859813);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.48598130841121495);
+                    ctx.lineTo(imageWidth * 0.48130841121495327, imageHeight * 0.48598130841121495);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+
+                case 'type7':
+                    grad = ctx.createLinearGradient((0.48130841121495327 * imageWidth), (0.49065420560747663 * imageHeight), ((0.48130841121495327 + 0.037383177570093455) * imageWidth), (0.49065420560747663 * imageHeight));
+                    grad.addColorStop(0.0, ptrColor.dark.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.49065420560747663, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.48130841121495327, imageHeight * 0.5);
+                    ctx.lineTo(imageWidth * 0.5186915887850467, imageHeight * 0.5);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.1308411214953271);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+
+                case 'type8':
+                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.49065420560747663 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), (0.49065420560747663 * imageHeight));
+                    grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.46, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.47, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+
+                    ctx.fillStyle = grad;
+                    ctx.strokeStyle = ptrColor.dark.getRgbaColor();
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.5327102803738317);
+                    ctx.lineTo(imageWidth * 0.5327102803738317, imageHeight * 0.5);
+                    ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.5, imageWidth * 0.5093457943925234, imageHeight * 0.45794392523364486, imageWidth * 0.5, imageHeight * 0.14953271028037382);
+                    ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.45794392523364486, imageWidth * 0.4672897196261682, imageHeight * 0.5, imageWidth * 0.4672897196261682, imageHeight * 0.5);
+                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.5327102803738317);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+
+                case 'type9':
+                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.5280373831775701 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), (0.5280373831775701 * imageHeight));
+                    grad.addColorStop(0.0, 'rgba(50, 50, 50, 1.0)');
+                    grad.addColorStop(0.48, 'rgba(102, 102, 102, 1.0)');
+                    grad.addColorStop(1.0, 'rgba(50, 50, 50, 1.0)');
+                    ctx.fillStyle = grad;
+                    ctx.strokeStyle = '#2E2E2E';
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.4953271028037383, imageHeight * 0.2336448598130841);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.2336448598130841);
+                    ctx.lineTo(imageWidth * 0.514018691588785, imageHeight * 0.4392523364485981);
+                    ctx.lineTo(imageWidth * 0.48598130841121495, imageHeight * 0.4392523364485981);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.2336448598130841);
+                    ctx.closePath();
+                    ctx.moveTo(imageWidth * 0.49065420560747663, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.4719626168224299);
+                    ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.5280373831775701);
+                    ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.5280373831775701, imageWidth * 0.4766355140186916, imageHeight * 0.602803738317757, imageWidth * 0.4766355140186916, imageHeight * 0.602803738317757);
+                    ctx.bezierCurveTo(imageWidth * 0.4766355140186916, imageHeight * 0.6074766355140186, imageWidth * 0.48130841121495327, imageHeight * 0.6074766355140186, imageWidth * 0.5, imageHeight * 0.6074766355140186);
+                    ctx.bezierCurveTo(imageWidth * 0.5186915887850467, imageHeight * 0.6074766355140186, imageWidth * 0.5233644859813084, imageHeight * 0.6074766355140186, imageWidth * 0.5233644859813084, imageHeight * 0.602803738317757);
+                    ctx.bezierCurveTo(imageWidth * 0.5233644859813084, imageHeight * 0.602803738317757, imageWidth * 0.5280373831775701, imageHeight * 0.5280373831775701, imageWidth * 0.5280373831775701, imageHeight * 0.5280373831775701);
+                    ctx.lineTo(imageWidth * 0.5280373831775701, imageHeight * 0.4719626168224299);
+                    ctx.lineTo(imageWidth * 0.5093457943925234, imageHeight * 0.1308411214953271);
+                    ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.1308411214953271);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.4953271028037383, imageHeight * 0.21962616822429906);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.21962616822429906);
+                    ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.13551401869158877);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.13551401869158877);
+                    ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.21962616822429906);
+                    ctx.closePath();
+
+                    ctx.fillStyle = pointerColor.medium.getRgbaColor();
+                    ctx.fill();
+                    break;
+
+                case 'type10':
+                    // POINTER_TYPE10
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.14953271028037382);
+                    ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.14953271028037382, imageWidth * 0.4439252336448598, imageHeight * 0.49065420560747663, imageWidth * 0.4439252336448598, imageHeight * 0.5);
+                    ctx.bezierCurveTo(imageWidth * 0.4439252336448598, imageHeight * 0.5327102803738317, imageWidth * 0.4672897196261682, imageHeight * 0.5560747663551402, imageWidth * 0.5, imageHeight * 0.5560747663551402);
+                    ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.5560747663551402, imageWidth * 0.5560747663551402, imageHeight * 0.5327102803738317, imageWidth * 0.5560747663551402, imageHeight * 0.5);
+                    ctx.bezierCurveTo(imageWidth * 0.5560747663551402, imageHeight * 0.49065420560747663, imageWidth * 0.5, imageHeight * 0.14953271028037382, imageWidth * 0.5, imageHeight * 0.14953271028037382);
+                    ctx.closePath();
+                    grad = ctx.createLinearGradient((0.4719626168224299 * imageWidth), (0.49065420560747663 * imageHeight), ((0.4719626168224299 + 0.056074766355140186) * imageWidth), (0.49065420560747663 * imageHeight));
+                    grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.4999, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.lineWidth = 1.0;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'miter';
+                    ctx.strokeStyle = ptrColor.medium.getRgbaColor();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+
+                case 'type1':
+                default:
+                    grad = ctx.createLinearGradient(0, imageHeight * 0.4719626168224299, 0, imageHeight * 0.1308411214953271);
+                    grad.addColorStop(0.0, ptrColor.veryDark.getRgbaColor());
+                    grad.addColorStop(0.3, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(0.59, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(1.0, ptrColor.veryDark.getRgbaColor());
+                    ctx.fillStyle = grad;
+
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                    ctx.shadowOffsetY = 2;
+                    ctx.shadowBlur = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+                    ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageHeight * 0.45794392523364486, imageWidth * 0.5093457943925234, imageHeight * 0.4158878504672897, imageWidth * 0.5093457943925234, imageHeight * 0.40186915887850466);
+                    ctx.bezierCurveTo(imageWidth * 0.5046728971962616, imageHeight * 0.38317757009345793, imageWidth * 0.5, imageHeight * 0.1308411214953271, imageWidth * 0.5, imageHeight * 0.1308411214953271);
+                    ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.1308411214953271, imageWidth * 0.49065420560747663, imageHeight * 0.38317757009345793, imageWidth * 0.49065420560747663, imageHeight * 0.397196261682243);
+                    ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.4158878504672897, imageWidth * 0.48598130841121495, imageHeight * 0.45794392523364486, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
+                    ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.48130841121495327, imageWidth * 0.4672897196261682, imageHeight * 0.49065420560747663, imageWidth * 0.4672897196261682, imageHeight * 0.5);
+                    ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.5186915887850467, imageWidth * 0.48130841121495327, imageHeight * 0.5327102803738317, imageWidth * 0.5, imageHeight * 0.5327102803738317);
+                    ctx.bezierCurveTo(imageWidth * 0.5186915887850467, imageHeight * 0.5327102803738317, imageWidth * 0.5327102803738317, imageHeight * 0.5186915887850467, imageWidth * 0.5327102803738317, imageHeight * 0.5);
+                    ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.49065420560747663, imageWidth * 0.5280373831775701, imageHeight * 0.48130841121495327, imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+            }
+            ctx.restore();
+        };
+*/
+        // **************   Initialization  ********************
+        // Draw all static painting code to background
+
+        var init = function(parameters) {
+            parameters = parameters || {};
+            var drawFrame = undefined === parameters.frame ? false : parameters.frame;
+            var drawBackground = undefined === parameters.background ? false : parameters.background;
+            var drawPointer = undefined === parameters.pointer ? false : parameters.pointer;
+            var drawForeground = undefined === parameters.foreground ? false : parameters.foreground;
+
+            initialized = true;
+
+            if (drawFrame) {
+                drawRadialFrameImage(backgroundContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
+            }
+            
+            if (drawBackground) {
+                // Create background in background buffer (backgroundBuffer)
+                drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
+
+                // Create custom layer in background buffer (backgroundBuffer)
+                drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
+
+                // Create section in background buffer (backgroundBuffer)
+                if (null !== section && 0 < section.length) {
+                    var sectionIndex = section.length;
+                    do {
+                        sectionIndex--;
+                        drawAreaSectionImage(backgroundContext, section[sectionIndex].start, section[sectionIndex].stop, section[sectionIndex].color, false);
+                    }
+                    while (0 < sectionIndex);
+                }
+
+                // Create area in background buffer (backgroundBuffer)
+                if (null !== area && 0 < area.length) {
+                    var areaIndex = area.length;
+                    do {
+                        areaIndex--;
+                        drawAreaSectionImage(backgroundContext, area[areaIndex].start, area[areaIndex].stop, area[areaIndex].color, true);
+                    }
+                    while (0 < areaIndex);
+                }
+            
+                if (roseVisible) { drawSymbolImage(backgroundContext); }
+
+                drawTickmarksImage(backgroundContext);
+
+                // Create title in background buffer (backgroundBuffer)
+                drawLcdTitles(backgroundContext);
+
+                // Create lcd background if selected in background buffer (backgroundBuffer)
+                if (lcdVisible) {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.15, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.55);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.305);
+                }
+            }
+
+            if (drawPointer) {
+                drawPointerImage(pointerContextAverage, imageWidth, pointerTypeAverage, pointerColorAverage);
+
+                drawPointerImage(pointerContextLatest, imageWidth, pointerTypeLatest, pointerColor);
+            }
+            
+            if (drawForeground) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
+            }
+        };
+
+        var resetBuffers = function(buffers) {
+            buffers = buffers || {};
+            var resetBackground = undefined === buffers.background ? false : buffers.background;
+            var resetPointer = undefined === buffers.pointer ? false : buffers.pointer;
+            var resetForeground = undefined === buffers.foreground ? false : buffers.foreground;
+
+            // Buffer for all static background painting code
+            if (resetBackground) {
+                backgroundBuffer.width = size;
+                backgroundBuffer.height = size;
+                backgroundContext = backgroundBuffer.getContext('2d');
+            }
+            // Buffers for pointer image painting code
+            if (resetPointer) {
+                pointerBufferLatest.width = size;
+                pointerBufferLatest.height = size;
+                pointerContextLatest = pointerBufferLatest.getContext('2d');
+                
+                pointerBufferAverage.width = size;
+                pointerBufferAverage.height = size;
+                pointerContextAverage = pointerBufferAverage.getContext('2d');
+            }
+            // Buffer for static foreground painting code
+            if (resetForeground) {
+                foregroundBuffer.width = size;
+                foregroundBuffer.height = size;
+                foregroundContext = foregroundBuffer.getContext('2d');
+            }
+        };
+
+        //************************************ Public methods **************************************
+        this.setValueLatest = function(newValue) {
+            var targetValue;
+            targetValue = 0 > newValue ? (360 + newValue) : newValue;
+            targetValue = 359.9 < newValue ? (newValue - 360) : newValue;
+
+            valueLatest = targetValue;
+
+            this.repaint();
+        };
+
+        this.getValueLatest = function() {
+
+            return valueLatest;
+        };
+
+        this.setValueAverage = function(newValue) {
+            var targetValue;
+            targetValue = 0 > newValue ? (360 + newValue) : newValue;
+            targetValue = 359.9 < newValue ? (newValue - 360) : newValue;
+
+            valueAverage = targetValue;
+
+            this.repaint();
+        };
+
+        this.getValueAverage = function() {
+
+            return valueAverage;
+        };
+
+        this.setValueAnimatedLatest = function(newValue) {
+            var targetValue;
+            targetValue = 0 > newValue ? (360 + newValue) : (359.9 < newValue ? (newValue - 360) : newValue);
+
+            var gauge = this;
+
+            if ('undefined' != typeof tweenLatest) {
+                if (tweenLatest.playing) {
+                    tweenLatest.stop();
+                }
+            }
+
+            var diff = getShortestAngle(valueLatest, targetValue);
+            
+//            tweenLatest = new Tween({}, '', Tween.elasticEaseOut, valueLatest, valueLatest + diff, 3);
+            tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 3);
+
+            tweenLatest.onMotionChanged = function(event) {
+                valueLatest = event.target._pos;
+                gauge.repaint();
+            };
+            tweenLatest.start();
+        };
+
+        this.setValueAnimatedAverage = function(newValue) {
+            var targetValue;
+            targetValue = 0 > newValue ? (360 + newValue) : (359.9 < newValue ? (newValue - 360) : newValue);
+
+            var gauge = this;
+
+            if ('undefined' != typeof tweenAverage) {
+                if (tweenAverage.playing) {
+                    tweenAverage.stop();
+                }
+            }
+
+            var diff = getShortestAngle(valueAverage, targetValue);
+
+//            tweenAverage = new Tween({}, '', Tween.elasticEaseOut, valueAverage, valueAverage + diff, 3);
+            tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 3);
+
+            tweenAverage.onMotionChanged = function(event) {
+                valueAverage = event.target._pos;
+                gauge.repaint();
+            };
+            tweenAverage.start();
+        };
+
+        this.setArea = function(areaVal){
+			area = areaVal;
+			resetBuffers({foreground: true});
+			init({background: true,
+				foreground: true
+                });
+			this.repaint();
+		};
+
+		this.setSection = function(areaSec){
+			section = areaSec;
+			resetBuffers({foreground: true});
+			init({background: true,
+				foreground: true
+                });
+			this.repaint();
+		};
+
+        this.setFrameDesign = function(newFrameDesign) {
+            resetBuffers();
+            frameDesign = newFrameDesign;
+            init({frame: true});
+            this.repaint();
+        };
+
+        this.setBackgroundColor = function(newBackgroundColor) {
+            resetBuffers();
+            backgroundColor = newBackgroundColor;
+            init({background: true});
+            this.repaint();
+        };
+
+        this.setForegroundType = function(newForegroundType) {
+            resetBuffers();
+            foregroundType = newForegroundType;
+            init({foreground: true});
+            this.repaint();
+        };
+
+        this.setPointerColor = function(newPointerColor) {
+            resetBuffers();
+            pointerColor = newPointerColor;
+            init();
+            this.repaint();
+        };
+
+        this.setPointerColorAverage = function(newPointerColor) {
+            resetBuffers();
+            pointerColorAverage = newPointerColor;
+            init({pointer: true});
+            this.repaint();
+        };
+
+        this.setPointerTypeLatest = function(newPointerType) {
+            resetBuffers();
+            pointerTypeLatest = newPointerType;
+            init({pointer: true});
+            this.repaint();
+        };
+
+        this.setPointerTypeAverage = function(newPointerType) {
+            resetBuffers();
+            pointerTypeAverage = newPointerType;
+            init({pointer: true});
+            this.repaint();
+        };
+
+		this.setPointSymbols = function(newPointSymbols) {
+			resetBuffers();
+			pointSymbols = newPointSymbols;
+            init({background: true});
+			this.repaint();
+		}
+        
+        this.repaint = function() {
+            if (!initialized) {
+                init({frame: true,
+                      background: true,
+                      led: true,
+                      pointer: true,
+                      foreground: true});
+           }
+
+            mainCtx.save();
+            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
+
+            // Draw lcd display
+            if (lcdVisible) {
+                drawLcdText(valueLatest, true);
+                drawLcdText(valueAverage, false);
+            }
+            
+            // Define rotation center
+            angleAverage = Math.PI / 2 + valueAverage * angleStep - Math.PI / 2;
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate(angleAverage);
+
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(pointerBufferAverage, 0, 0);
+            mainCtx.restore();
+            
+            mainCtx.save();            
+            angleLatest = Math.PI / 2 + valueLatest * angleStep - Math.PI / 2;
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate(angleLatest);
+
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(pointerBufferLatest, 0, 0);
+            mainCtx.restore();
+
+            mainCtx.drawImage(foregroundBuffer, 0, 0);
+
+            mainCtx.restore();
+        };
+
+        // Visualize the component
+        this.repaint();
+
+        return this;
+    };
 
     var horizon = function(canvas, parameters) {
         parameters = parameters || {};
-        var size = 'undefined' === typeof(parameters['size']) ? 200 : parameters['size'];
-        var frameDesign = 'undefined' === typeof(parameters['frameDesign']) ? steelseries.FrameDesign.METAL : parameters['frameDesign'];
-        var foregroundType = 'undefined' === typeof(parameters['foregroundType']) ? steelseries.ForegroundType.TYPE1 : parameters['foregroundType'];
-        var pointerColor = 'undefined' === typeof(parameters['pointerColor']) ? steelseries.ColorDef.WHITE : parameters['pointerColor'];
+        var size = undefined === parameters.size ? 200 : parameters.size;
+        var frameDesign = undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign;
+        var foregroundType = undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType;
+        var pointerColor = undefined === parameters.pointerColor ? steelseries.ColorDef.WHITE : parameters.pointerColor;
 
         var tweenRoll;
         var tweenPitch;
@@ -7403,8 +8426,8 @@ var steelseries = function() {
 
     var led = function(canvas, parameters) {
         parameters = parameters || {};
-        var size = 'undefined' === typeof(parameters['size']) ? 32 : parameters['size'];
-        var ledColor = 'undefined' === typeof(parameters['ledColor']) ? steelseries.ledColor.RED_LED : parameters['ledColor'];
+        var size = undefined === parameters.size ? 32 : parameters.size;
+        var ledColor = undefined === parameters.ledColor ? steelseries.ledColor.RED_LED : parameters.ledColor;
         var ledBlinking = false;
         var ledTimerId = 0;
 
@@ -7530,6 +8553,267 @@ var steelseries = function() {
     var linVertical;
 
     //************************************  I M A G E   -   F U N C T I O N S  *****************************************
+    var drawPointerImage = function(ctx, size, ptrType, ptrColor) {
+        ctx.save();
+        var grad;
+
+        switch (ptrType.type) {
+            case 'type2':
+                grad = ctx.createLinearGradient(0, size * 0.4719626168224299, 0, size * 0.1308411214953271);
+                grad.addColorStop(0.0, 'black');
+                grad.addColorStop(0.36, 'black');
+                grad.addColorStop(0.361, ptrColor.light.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.light.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5186915887850467, size * 0.4719626168224299);
+                ctx.lineTo(size * 0.5093457943925234, size * 0.46261682242990654);
+                ctx.lineTo(size * 0.5093457943925234, size * 0.3411214953271028);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.49065420560747663, size * 0.3411214953271028);
+                ctx.lineTo(size * 0.49065420560747663, size * 0.46261682242990654);
+                ctx.lineTo(size * 0.48130841121495327, size * 0.4719626168224299);
+                ctx.closePath();
+                ctx.fill();
+                break;
+
+            case 'type3':
+                ctx.beginPath();
+                ctx.rect(size * 0.4953271028037383, size * 0.1308411214953271, size * 0.009345794392523364, size * 0.37383177570093457);
+                ctx.closePath();
+                ctx.fillStyle = ptrColor.light.getRgbaColor();
+                ctx.fill();
+                break;
+
+            case 'type4':
+                grad = ctx.createLinearGradient((0.4672897196261682 * size), (0.48130841121495327 * size), ((0.4672897196261682 + 0.06074766355140187) * size), (0.48130841121495327 * size));
+                grad.addColorStop(0.0, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(0.51, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(0.52, ptrColor.light.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.light.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5, size * 0.1261682242990654);
+                ctx.lineTo(size * 0.514018691588785, size * 0.13551401869158877);
+                ctx.lineTo(size * 0.5327102803738317, size * 0.5);
+                ctx.lineTo(size * 0.5233644859813084, size * 0.602803738317757);
+                ctx.lineTo(size * 0.4766355140186916, size * 0.602803738317757);
+                ctx.lineTo(size * 0.4672897196261682, size * 0.5);
+                ctx.lineTo(size * 0.49065420560747663, size * 0.13551401869158877);
+                ctx.lineTo(size * 0.5, size * 0.1261682242990654);
+                ctx.closePath();
+                ctx.fill();
+                break;
+
+            case 'type5':
+                grad = ctx.createLinearGradient((0.4719626168224299 * size), (0.49065420560747663 * size), ((0.4719626168224299 + 0.056074766355140186) * size), (0.49065420560747663 * size));
+                grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.46, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.47, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5, size * 0.4953271028037383);
+                ctx.lineTo(size * 0.5280373831775701, size * 0.4953271028037383);
+                ctx.lineTo(size * 0.5, size * 0.14953271028037382);
+                ctx.lineTo(size * 0.4719626168224299, size * 0.4953271028037383);
+                ctx.lineTo(size * 0.5, size * 0.4953271028037383);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.lineWidth = 1.0;
+                ctx.lineCap = 'square';
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = ptrColor.dark.getRgbaColor();
+                ctx.stroke();
+                break;
+
+            case 'type6':
+                ctx.fillStyle = ptrColor.medium.getRgbaColor();
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.48130841121495327, size * 0.48598130841121495);
+                ctx.lineTo(size * 0.48130841121495327, size * 0.3925233644859813);
+                ctx.lineTo(size * 0.48598130841121495, size * 0.3177570093457944);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.514018691588785, size * 0.3177570093457944);
+                ctx.lineTo(size * 0.5186915887850467, size * 0.3878504672897196);
+                ctx.lineTo(size * 0.5186915887850467, size * 0.48598130841121495);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.48598130841121495);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.3878504672897196);
+                ctx.lineTo(size * 0.5, size * 0.3177570093457944);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.3925233644859813);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.48598130841121495);
+                ctx.lineTo(size * 0.48130841121495327, size * 0.48598130841121495);
+                ctx.closePath();
+                ctx.fill();
+                break;
+
+            case 'type7':
+                grad = ctx.createLinearGradient((0.48130841121495327 * size), (0.49065420560747663 * size), ((0.48130841121495327 + 0.037383177570093455) * size), (0.49065420560747663 * size));
+                grad.addColorStop(0.0, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.49065420560747663, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.48130841121495327, size * 0.5);
+                ctx.lineTo(size * 0.5186915887850467, size * 0.5);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.49065420560747663, size * 0.1308411214953271);
+                ctx.closePath();
+                ctx.fill();
+                break;
+
+            case 'type8':
+                grad = ctx.createLinearGradient((0.4719626168224299 * size), (0.49065420560747663 * size), ((0.4719626168224299 + 0.056074766355140186) * size), (0.49065420560747663 * size));
+                grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.46, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.47, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = ptrColor.dark.getRgbaColor();
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5, size * 0.5327102803738317);
+                ctx.lineTo(size * 0.5327102803738317, size * 0.5);
+                ctx.bezierCurveTo(size * 0.5327102803738317, size * 0.5, size * 0.5093457943925234, size * 0.45794392523364486, size * 0.5, size * 0.14953271028037382);
+                ctx.bezierCurveTo(size * 0.49065420560747663, size * 0.45794392523364486, size * 0.4672897196261682, size * 0.5, size * 0.4672897196261682, size * 0.5);
+                ctx.lineTo(size * 0.5, size * 0.5327102803738317);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                break;
+
+            case 'type9':
+                grad = ctx.createLinearGradient((0.4719626168224299 * size), (0.5280373831775701 * size), ((0.4719626168224299 + 0.056074766355140186) * size), (0.5280373831775701 * size));
+                grad.addColorStop(0.0, 'rgba(50, 50, 50, 1.0)');
+                grad.addColorStop(0.48, 'rgba(102, 102, 102, 1.0)');
+                grad.addColorStop(1.0, 'rgba(50, 50, 50, 1.0)');
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = '#2E2E2E';
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 1;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.4953271028037383, size * 0.2336448598130841);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.2336448598130841);
+                ctx.lineTo(size * 0.514018691588785, size * 0.4392523364485981);
+                ctx.lineTo(size * 0.48598130841121495, size * 0.4392523364485981);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.2336448598130841);
+                ctx.closePath();
+                ctx.moveTo(size * 0.49065420560747663, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.4719626168224299, size * 0.4719626168224299);
+                ctx.lineTo(size * 0.4719626168224299, size * 0.5280373831775701);
+                ctx.bezierCurveTo(size * 0.4719626168224299, size * 0.5280373831775701, size * 0.4766355140186916, size * 0.602803738317757, size * 0.4766355140186916, size * 0.602803738317757);
+                ctx.bezierCurveTo(size * 0.4766355140186916, size * 0.6074766355140186, size * 0.48130841121495327, size * 0.6074766355140186, size * 0.5, size * 0.6074766355140186);
+                ctx.bezierCurveTo(size * 0.5186915887850467, size * 0.6074766355140186, size * 0.5233644859813084, size * 0.6074766355140186, size * 0.5233644859813084, size * 0.602803738317757);
+                ctx.bezierCurveTo(size * 0.5233644859813084, size * 0.602803738317757, size * 0.5280373831775701, size * 0.5280373831775701, size * 0.5280373831775701, size * 0.5280373831775701);
+                ctx.lineTo(size * 0.5280373831775701, size * 0.4719626168224299);
+                ctx.lineTo(size * 0.5093457943925234, size * 0.1308411214953271);
+                ctx.lineTo(size * 0.49065420560747663, size * 0.1308411214953271);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.4953271028037383, size * 0.21962616822429906);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.21962616822429906);
+                ctx.lineTo(size * 0.5046728971962616, size * 0.13551401869158877);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.13551401869158877);
+                ctx.lineTo(size * 0.4953271028037383, size * 0.21962616822429906);
+                ctx.closePath();
+
+                ctx.fillStyle = ptrColor.medium.getRgbaColor();
+                ctx.fill();
+                break;
+
+            case 'type10':
+                // POINTER_TYPE10
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5, size * 0.14953271028037382);
+                ctx.bezierCurveTo(size * 0.5, size * 0.14953271028037382, size * 0.4439252336448598, size * 0.49065420560747663, size * 0.4439252336448598, size * 0.5);
+                ctx.bezierCurveTo(size * 0.4439252336448598, size * 0.5327102803738317, size * 0.4672897196261682, size * 0.5560747663551402, size * 0.5, size * 0.5560747663551402);
+                ctx.bezierCurveTo(size * 0.5327102803738317, size * 0.5560747663551402, size * 0.5560747663551402, size * 0.5327102803738317, size * 0.5560747663551402, size * 0.5);
+                ctx.bezierCurveTo(size * 0.5560747663551402, size * 0.49065420560747663, size * 0.5, size * 0.14953271028037382, size * 0.5, size * 0.14953271028037382);
+                ctx.closePath();
+                grad = ctx.createLinearGradient((0.4719626168224299 * size), (0.49065420560747663 * size), ((0.4719626168224299 + 0.056074766355140186) * size), (0.49065420560747663 * size));
+                grad.addColorStop(0.0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.4999, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.lineWidth = 1.0;
+                ctx.lineCap = 'square';
+                ctx.lineJoin = 'miter';
+                ctx.strokeStyle = ptrColor.medium.getRgbaColor();
+                ctx.fill();
+                ctx.stroke();
+                break;
+
+            case 'type1':
+            default:
+                grad = ctx.createLinearGradient(0, size * 0.4719626168224299, 0, size * 0.1308411214953271);
+                grad.addColorStop(0.0, ptrColor.veryDark.getRgbaColor());
+                grad.addColorStop(0.3, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(0.59, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1.0, ptrColor.veryDark.getRgbaColor());
+                ctx.fillStyle = grad;
+
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowOffsetY = 2;
+                ctx.shadowBlur = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(size * 0.5186915887850467, size * 0.4719626168224299);
+                ctx.bezierCurveTo(size * 0.514018691588785, size * 0.45794392523364486, size * 0.5093457943925234, size * 0.4158878504672897, size * 0.5093457943925234, size * 0.40186915887850466);
+                ctx.bezierCurveTo(size * 0.5046728971962616, size * 0.38317757009345793, size * 0.5, size * 0.1308411214953271, size * 0.5, size * 0.1308411214953271);
+                ctx.bezierCurveTo(size * 0.5, size * 0.1308411214953271, size * 0.49065420560747663, size * 0.38317757009345793, size * 0.49065420560747663, size * 0.397196261682243);
+                ctx.bezierCurveTo(size * 0.49065420560747663, size * 0.4158878504672897, size * 0.48598130841121495, size * 0.45794392523364486, size * 0.48130841121495327, size * 0.4719626168224299);
+                ctx.bezierCurveTo(size * 0.4719626168224299, size * 0.48130841121495327, size * 0.4672897196261682, size * 0.49065420560747663, size * 0.4672897196261682, size * 0.5);
+                ctx.bezierCurveTo(size * 0.4672897196261682, size * 0.5186915887850467, size * 0.48130841121495327, size * 0.5327102803738317, size * 0.5, size * 0.5327102803738317);
+                ctx.bezierCurveTo(size * 0.5186915887850467, size * 0.5327102803738317, size * 0.5327102803738317, size * 0.5186915887850467, size * 0.5327102803738317, size * 0.5);
+                ctx.bezierCurveTo(size * 0.5327102803738317, size * 0.49065420560747663, size * 0.5280373831775701, size * 0.48130841121495327, size * 0.5186915887850467, size * 0.4719626168224299);
+                ctx.closePath();
+                ctx.fill();
+                break;
+        }
+        ctx.restore();
+    };
+    
     var drawRadialFrameImage = function(ctx, frameDesign, centerX, centerY, imageWidth, imageHeight) {
         ctx.save();
 
@@ -8093,6 +9377,7 @@ var steelseries = function() {
 
         return this;
     };
+    
     var drawRadialCustomImage = function(ctx, img, centerX, centerY, imageWidth, imageHeight) {
         if (img != null && img.height > 0 && img.width > 0) {
             ctx.save();
@@ -8110,6 +9395,7 @@ var steelseries = function() {
             return this;
         }
     };
+    
     var drawLinearBackgroundImage = function(ctx, backgroundColor, imageWidth, imageHeight) {
         ctx.save();
 
@@ -9100,8 +10386,7 @@ var steelseries = function() {
         var conicalGradient = function(fractions, colors, rotationOffset) {
             rotationOffset = rotationOffset === undefined ? -Math.PI / 2 : rotationOffset;
 
-            this.fill = function(ctx, centerX, centerY, innerX, outerX)
-            {
+            this.fill = function(ctx, centerX, centerY, innerX, outerX) {
                 var startAngle;
                 var stopAngle;
                 var RAD_FACTOR = 180 / Math.PI;
@@ -9135,8 +10420,7 @@ var steelseries = function() {
                 ctx.restore();
             };
 
-            var getColorFromFraction = function(sourceColor, destinationColor, range, fraction)
-            {
+            var getColorFromFraction = function(sourceColor, destinationColor, range, fraction) {
                 var intToFloat = 1 / 255;
                 var sourceRed = sourceColor.getRed();
                 var sourceGreen = sourceColor.getGreen();
@@ -9362,7 +10646,21 @@ var steelseries = function() {
         var brightness = (lightness * 2) + saturation;
         return new Array(hue, saturation, brightness);
     }
-            
+    
+    function wrap(value, lower, upper) { 
+        if (upper <= lower) 
+            throw "Rotary bounds are of negative or zero size"; 
+
+        var distance = upper - lower; 
+        var times = Math.floor((value - lower) / distance); 
+
+        return value - (times * distance); 
+    } 
+ 
+    function getShortestAngle(angle1, angle2) { 
+        return wrap((angle2 - angle1), -180, 180); 
+    }
+    
     //****************************************   C O N S T A N T S   ***************************************************
     var backgroundColorDef;
     (function() {
@@ -9437,35 +10735,35 @@ var steelseries = function() {
     (function() {
         knobStyleDef = function(style) {
             this.style = style;
-        }
+        };
     }());
 
     var frameDesignDef;
     (function() {
         frameDesignDef = function(design) {
             this.design = design;
-        }
+        };
     }());
 
     var pointerTypeDef;
     (function() {
         pointerTypeDef = function(type) {
             this.type = type;
-        }
+        };
     }());
 
     var foregroundTypeDef;
     (function() {
         foregroundTypeDef = function(type) {
             this.type = type;
-        }
+        };
     }());
 
     var labelNumberFormatDef;
     (function() {
         labelNumberFormatDef = function(format) {
             this.format = format;
-        }
+        };
     }());
 
     //*************************   I m p l e m e n t a t i o n s   o f   d e f i n i t i o n s   ************************
@@ -9614,6 +10912,7 @@ var steelseries = function() {
         DisplayMulti: displayMulti,
         Level : level,
         Compass : compass,
+        WindDirection : windDirection,
         Horizon : horizon,
         Led : led,
 
