@@ -1,0 +1,100 @@
+Main Changes
+v0.8.0
+> Radial
+  * Added parameter frameVisible
+  * Added parameter fractionalScaleDecimals
+  * Added parameter customLayer - add watermarks to gauges
+  * Added pointer shadow
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+  * Stopped sections and areas overlapping
+  * Added method setMaxMeasuredValue()
+  * Added method setMinMeasuredValue()
+  * Added method setTitleString()
+  * Added method setUnitString()
+  * Added method setMinValue()
+  * Added method getMinValue()
+  * Added method setMaxValue()
+  * Added method getMaxValue()
+  * Added method setThreshold()
+  * Added method setArea()
+  * Added method setSection()
+
+> RadialBargraph
+  * Added parameter frameVisible
+  * Added parameter fractionalScaleDecimals
+  * Added parameter customLayer - add watermarks to gauges
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+  * Added method setMinValue()
+  * Added method getMinValue()
+  * Added method setMaxValue()
+  * Added method getMaxValue()
+  * Added method setTitleString()
+  * Added method setUnitString()
+
+> RadialVertical
+  * Added parameter frameVisible
+  * Added pointer shadow
+  * Stopped sections and areas overlapping
+
+> Linear
+  * Added parameter frameVisible
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+  * Moved 'units' when in vertical format
+  * Added method setMaxMeasuredValue()
+  * Added method setMinMeasuredValue()
+  * Added method setTitleString()
+  * Added method setUnitString()
+  * Added method setMinValue()
+  * Added method getMinValue()
+  * Added method setMaxValue()
+  * Added method getMaxValue()
+  * Added method setThreshold()
+
+> LinearBargraph
+  * Added parameter frameVisible
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+  * Moved 'units' when in vertical format
+  * Added method setMaxMeasuredValue()
+  * Added method setMinMeasuredValue()
+  * Added method setTitleString()
+  * Added method setUnitString()
+  * Added method setMinValue()
+  * Added method getMinValue()
+  * Added method setMaxValue()
+  * Added method getMaxValue()
+  * Added method setThreshold()
+
+> DisplaySingle
+  * Added parameter autoScroll - scrolls if text too wide for display, otherwise static
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+
+> DisplayMulti
+  * Added LCD text shadow (STANDARD & STANDARD_GREEN only)
+
+> Level
+  * Added parameter frameVisible
+  * Fixed corrupted degree and infinity symbols
+
+> Compass
+  * Added parameter frameVisible
+  * Added parameter pointSymbols - localise "N","NE","E" text
+  * Added parameter customLayer - add watermarks to gauges
+  * Added parameter degreeScale - replace NE,SE,SW,NW with numeric degree scale
+  * Added parameter roseVisible - hide the central rose, useful to display custom watermarks
+  * Added pointer shadow
+  * Pointer now moves the 'shortest angular distance' to a new animated value
+  * Added method setPointerType()
+  * Added method setPointSymbols()
+
+> WindDirection
+  * Brand new component!
+  * Dual pointer/LCD gauge for displaying current and average directions on 360 degree scale
+
+> Horizon
+  * Added parameter frameVisible
+  * Fixed, this component did not work correctly in version 0.7.3
+
+> General Changes
+  * Added pointer types 11, 12, and 13 to Radial (not VerticalRadial)
+  * Radial/RadialVertical setting background also forces pointer refresh (for types 2 & 13 which depend on background color)
+  * Removed duplicated public/private versions of repaint() functions.

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html manifest="demo.manifest"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Canvas Steel</title>
+</head>
+<body onload="init()">
+    <table>
+        <tbody><tr>
+            <td width="100%">
+                <select id="comboFrame" onchange="setFrameDesign(this)">
+                    <option selected="selected" value="">Frame design</option>
+                    <option value="BLACK_METAL">BlackMetal</option>
+                    <option value="METAL">Metal</option>
+                    <option value="SHINY_METAL">ShinyMetal</option>
+                    <option value="BRASS">Brass</option>
+                    <option value="STEEL">Steel</option>
+                    <option value="CHROME">Chrome</option>
+                    <option value="GOLD">Gold</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="TILTED_GRAY">TiltedGray</option>
+                    <option value="TILTED_BLACK">TiltedBlack</option>
+                </select>
+                <select id="comboBackground" onchange="setBackgroundColor(this)">
+                    <option selected="selected" value="">Background</option>
+                    <option value="DARK_GRAY">DarkGray</option>
+                    <option value="SATIN_GRAY">SatinGray</option>
+                    <option value="LIGHT_GRAY">LightGray</option>
+                    <option value="WHITE">White</option>
+                    <option value="BLACK">Black</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BROWN">Brown</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="MUD">Mud</option>
+                    <option value="PUNCHED_SHEET">PunchedSheet</option>
+                    <option value="CARBON">Carbon</option>
+                </select>
+                <select id="comboPointerColor" onchange="setPointerColor(this)">
+                    <option selected="selected" value="">Pointer color</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="CYAN">Cyan</option>
+                    <option value="MAGENTA">Magenta</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="RAITH">Raith</option>
+                    <option value="GREEN_LCD">Green LCD</option>
+                    <option value="JUG_GREEN">JUG Green</option>
+                </select>
+                <select id="comboPointerType" onchange="setPointerType(this)">
+                    <option selected="selected" value="">Pointer type</option>
+                    <option value="TYPE1">Type1</option>
+                    <option value="TYPE2">Type2</option>
+                    <option value="TYPE3">Type3</option>
+                    <option value="TYPE4">Type4</option>
+                    <option value="TYPE5">Type5</option>
+                    <option value="TYPE6">Type6</option>
+                    <option value="TYPE7">Type7</option>
+                    <option value="TYPE8">Type8</option>
+                    <option value="TYPE9">Type9</option>
+                    <option value="TYPE10">Type10</option>
+                    <option value="TYPE11">Type11</option>
+                    <option value="TYPE12">Type12</option>
+                    <option value="TYPE13">Type13</option>
+                </select>
+                <select id="comboLcdColor" onchange="setLcdColor(this)">
+                    <option selected="selected" value="">LCD color</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="RED">Red</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE2">Blue2</option>
+                    <option value="BLUE_BLACK">BlueBlack</option>
+                    <option value="BLUE_DARKBLUE">BlueDarkBlue</option>
+                    <option value="BLUE_GRAY">BlueGray</option>
+                    <option value="STANDARD">Standard</option>
+                    <option value="STANDARD_GREEN">StandardGreen</option>
+                    <option value="BLUE_BLUE">BlueBlue</option>
+                    <option value="RED_DARKRED">RedDarkRed</option>
+                    <option value="DARKBLUE">DarkBlue</option>
+                    <option value="LILA">Lila</option>
+                    <option value="BLACKRED">BlackRed</option>
+                    <option value="DARKGREEN">DarkGreen</option>
+                </select>
+                <select id="comboLedColor" onchange="setLedColor(this)">
+					<option selected="selected" value="">Led color</option>
+					<option value="RED_LED">Red</option>
+					<option value="GREEN_LED">Green</option>
+					<option value="BLUE_LED">Blue</option>
+					<option value="ORANGE_LED">Orange</option>
+					<option value="YELLOW_LED">Yellow</option>
+					<option value="CYAN_LED">Cyan</option>
+					<option value="MAGENTA_LED">Magenta</option>        
+				</select>
+                <select id="comboForeground" onchange="setForegroundType(this)">
+                    <option selected="selected" value="">Foreground</option>
+                    <option value="TYPE1">Type1</option>
+                    <option value="TYPE2">Type2</option>
+                    <option value="TYPE3">Type3</option>
+                    <option value="TYPE4">Type4</option>
+                    <option value="TYPE5">Type5</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+            <td width="100%">
+                <select id="comboPointerColorAvg" onchange="setPointerColorAvg(this)">
+                    <option selected="selected" value="">Wind Avg Pointer color</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="CYAN">Cyan</option>
+                    <option value="MAGENTA">Magenta</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="RAITH">Raith</option>
+                    <option value="GREEN_LCD">Green LCD</option>
+                    <option value="JUG_GREEN">JUG Green</option>
+                </select>
+                <select id="comboPointerAvg" onchange="setPointerAvg(this)">
+                    <option selected="selected" value="">Wind Avg Pointer type</option>
+                    <option value="TYPE1">Type1</option>
+                    <option value="TYPE2">Type2</option>
+                    <option value="TYPE3">Type3</option>
+                    <option value="TYPE4">Type4</option>
+                    <option value="TYPE5">Type5</option>
+                    <option value="TYPE6">Type6</option>
+                    <option value="TYPE7">Type7</option>
+                    <option value="TYPE8">Type8</option>
+                    <option value="TYPE9">Type9</option>
+                    <option value="TYPE10">Type10</option>
+                    <option value="TYPE11">Type11</option>
+                    <option value="TYPE12">Type12</option>
+                    <option value="TYPE13">Type13</option>
+                </select>
+			</td>
+        </tr>
+		<tr>
+            <td width="100%">
+                <canvas id="canvasRadial1" width="201" height="201">No canvas in your browser...sorry...</canvas>
+                <canvas id="canvasRadial2" width="201" height="201"></canvas>
+                <canvas id="canvasRadial3" width="201" height="201"></canvas>
+                <canvas id="canvasRadial4" width="201" height="201"></canvas>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <canvas id="canvasSingle1" width="120" height="50"></canvas>
+                <canvas id="canvasSingle2" width="200" height="50"></canvas>
+                <canvas id="canvasMulti1" width="100" height="80"></canvas>
+                <canvas id="canvasLed1" width="50" height="50"></canvas>
+            </td>
+        </tr>
+    </tbody></table>
+
+
+<script type="text/javascript">
+    var scroll = false;
+	var radial1;
+    var radial2;
+    var radial3;
+    var radial4;
+	var single1;
+	var single2;
+	var multi1;
+	var led1;
+	
+    function init() {
+        // Initialzing gauge
+        radial1 = new steelseries.Compass('canvasRadial1', {
+                            size: 201
+							});
+
+        radial2 = new steelseries.WindDirection('canvasRadial2', {
+                            size: 201,
+                            lcdVisible: true
+                            });
+
+		radial3 = new steelseries.Level('canvasRadial3', {
+                            size: 201,
+							decimalsVisible: false
+                            });
+
+		radial4 = new steelseries.Horizon('canvasRadial4', {
+                            size: 201
+							});
+
+		single1 = new steelseries.DisplaySingle('canvasSingle1', {
+                            width: 120,
+							height: 50,
+							});
+
+		single2 = new steelseries.DisplaySingle('canvasSingle2', {
+                            width: 200,
+							height: 50,
+							value: "<Auto-scrolling: true>",
+							autoScroll: true,
+							valuesNumeric: false
+							});
+
+		multi1 = new steelseries.DisplayMulti('canvasMulti1', {
+                            width: 150,
+							height: 80,
+							});
+
+		led1 = new steelseries.Led('canvasLed1', {
+                            width: 50,
+							height: 50,
+							});
+
+		led1.blink(true);
+
+		// Start the random update
+        setInterval(function(){ setRandomValue(radial1, 360); }, 3000);
+        setInterval(function(){ setDirRandomValue(radial2, 360); }, 3100);
+        setInterval(function(){ setRandomValue(radial3, 360); }, 3200);
+        setInterval(function(){ setHorRandomValue(radial4); }, 3400);
+        setInterval(function(){ setRandomValue2(single1, 100); }, 1500);
+        setInterval(function(){ setRandomValue3(single2, 100); }, 8000);
+        setInterval(function(){ setRandomValue2(multi1, 100); }, 2000);
+   }
+
+    function setRandomValue(gauge, range) {
+        gauge.setValueAnimated(Math.random() * range);
+    }
+
+    function setRandomValue2(gauge, range) {
+        gauge.setValue(Math.random() * range);
+    }
+
+    function setRandomValue3(gauge, range) {
+		if (scroll)
+			gauge.setValue("<Autoscrolling text>");
+		else
+			gauge.setValue("<Autoscroll>");
+		scroll = !scroll;
+    }
+
+	function setDirRandomValue(gauge, range) {
+        gauge.setValueAnimatedLatest(Math.random() * range);
+        gauge.setValueAnimatedAverage(Math.random() * range);
+    }
+
+	function setHorRandomValue(gauge) {
+		var pitch = Math.random() * 100 - 50;
+		var roll = Math.random() * 120 - 60;
+        gauge.setPitchAnimated(pitch);
+        gauge.setRollAnimated(roll);
+    }
+
+    function setFrameDesign(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BLACK_METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                radial2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                radial3.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                radial4.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                break;
+            case "METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.METAL);
+                radial2.setFrameDesign(steelseries.FrameDesign.METAL);
+                radial3.setFrameDesign(steelseries.FrameDesign.METAL);
+                radial4.setFrameDesign(steelseries.FrameDesign.METAL);
+                break;
+            case "SHINY_METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                radial2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                radial3.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                radial4.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                break;
+            case "BRASS":
+                radial1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                radial2.setFrameDesign(steelseries.FrameDesign.BRASS);
+                radial3.setFrameDesign(steelseries.FrameDesign.BRASS);
+                radial4.setFrameDesign(steelseries.FrameDesign.BRASS);
+                break;
+            case "STEEL":
+                radial1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                radial2.setFrameDesign(steelseries.FrameDesign.STEEL);
+                radial3.setFrameDesign(steelseries.FrameDesign.STEEL);
+                radial4.setFrameDesign(steelseries.FrameDesign.STEEL);
+                break;
+            case "CHROME":
+                radial1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                radial2.setFrameDesign(steelseries.FrameDesign.CHROME);
+                radial3.setFrameDesign(steelseries.FrameDesign.CHROME);
+                radial4.setFrameDesign(steelseries.FrameDesign.CHROME);
+                break;
+            case "GOLD":
+                radial1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                radial2.setFrameDesign(steelseries.FrameDesign.GOLD);
+                radial3.setFrameDesign(steelseries.FrameDesign.GOLD);
+                radial4.setFrameDesign(steelseries.FrameDesign.GOLD);
+                break;
+            case "ANTHRACITE":
+                radial1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                radial2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                radial3.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                radial4.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                break;
+            case "TILTED_GRAY":
+                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                radial2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                radial3.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                radial4.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                break;
+            case "TILTED_BLACK":
+                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                radial2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                radial3.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                radial4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                break;
+        }
+    }
+
+    function setBackgroundColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "DARK_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                break;
+            case "SATIN_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                break;
+            case "LIGHT_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                break;
+            case "WHITE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                break;
+            case "BLACK":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                break;
+            case "BEIGE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                break;
+            case "BROWN":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                break;
+            case "RED":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.RED);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.RED);
+                break;
+            case "GREEN":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                break;
+            case "BLUE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                break;
+            case "ANTHRACITE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                break;
+            case "MUD":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                break;
+            case "PUNCHED_SHEET":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                break;
+            case "CARBON":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                break;
+        }
+    }
+
+    function setForegroundType(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "TYPE1":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                radial2.setForegroundType(steelseries.ForegroundType.TYPE1);
+                radial3.setForegroundType(steelseries.ForegroundType.TYPE1);
+                radial4.setForegroundType(steelseries.ForegroundType.TYPE1);
+                break;
+            case "TYPE2":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                radial2.setForegroundType(steelseries.ForegroundType.TYPE2);
+                radial3.setForegroundType(steelseries.ForegroundType.TYPE2);
+                radial4.setForegroundType(steelseries.ForegroundType.TYPE2);
+                break;
+            case "TYPE3":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                radial2.setForegroundType(steelseries.ForegroundType.TYPE3);
+                radial3.setForegroundType(steelseries.ForegroundType.TYPE3);
+                radial4.setForegroundType(steelseries.ForegroundType.TYPE3);
+                break;
+            case "TYPE4":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                radial2.setForegroundType(steelseries.ForegroundType.TYPE4);
+                radial3.setForegroundType(steelseries.ForegroundType.TYPE4);
+                radial4.setForegroundType(steelseries.ForegroundType.TYPE4);
+                break;
+            case "TYPE5":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                radial2.setForegroundType(steelseries.ForegroundType.TYPE5);
+                radial3.setForegroundType(steelseries.ForegroundType.TYPE5);
+                radial4.setForegroundType(steelseries.ForegroundType.TYPE5);
+                break;
+        }
+    }
+
+    function setPointerColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED":
+                radial1.setPointerColor(steelseries.ColorDef.RED);
+                radial2.setPointerColor(steelseries.ColorDef.RED);
+                radial3.setPointerColor(steelseries.ColorDef.RED);
+                break;
+            case "GREEN":
+                radial1.setPointerColor(steelseries.ColorDef.GREEN);
+                radial2.setPointerColor(steelseries.ColorDef.GREEN);
+                radial3.setPointerColor(steelseries.ColorDef.GREEN);
+                break;
+            case "BLUE":
+                radial1.setPointerColor(steelseries.ColorDef.BLUE);
+                radial2.setPointerColor(steelseries.ColorDef.BLUE);
+                radial3.setPointerColor(steelseries.ColorDef.BLUE);
+                break;
+            case "ORANGE":
+                radial1.setPointerColor(steelseries.ColorDef.ORANGE);
+                radial2.setPointerColor(steelseries.ColorDef.ORANGE);
+                radial3.setPointerColor(steelseries.ColorDef.ORANGE);
+                break;
+            case "YELLOW":
+                radial1.setPointerColor(steelseries.ColorDef.YELLOW);
+                radial2.setPointerColor(steelseries.ColorDef.YELLOW);
+                radial3.setPointerColor(steelseries.ColorDef.YELLOW);
+                break;
+            case "CYAN":
+                radial1.setPointerColor(steelseries.ColorDef.CYAN);
+                radial2.setPointerColor(steelseries.ColorDef.CYAN);
+                radial3.setPointerColor(steelseries.ColorDef.CYAN);
+                break;
+            case "MAGENTA":
+                radial1.setPointerColor(steelseries.ColorDef.MAGENTA);
+                radial2.setPointerColor(steelseries.ColorDef.MAGENTA);
+                radial3.setPointerColor(steelseries.ColorDef.MAGENTA);
+                break;
+            case "WHITE":
+                radial1.setPointerColor(steelseries.ColorDef.WHITE);
+                radial2.setPointerColor(steelseries.ColorDef.WHITE);
+                radial3.setPointerColor(steelseries.ColorDef.WHITE);
+                break;
+            case "GRAY":
+                radial1.setPointerColor(steelseries.ColorDef.GRAY);
+                radial2.setPointerColor(steelseries.ColorDef.GRAY);
+                radial3.setPointerColor(steelseries.ColorDef.GRAY);
+                break;
+            case "BLACK":
+                radial1.setPointerColor(steelseries.ColorDef.BLACK);
+                radial2.setPointerColor(steelseries.ColorDef.BLACK);
+                radial3.setPointerColor(steelseries.ColorDef.BLACK);
+                break;
+            case "RAITH":
+                radial1.setPointerColor(steelseries.ColorDef.RAITH);
+                radial2.setPointerColor(steelseries.ColorDef.RAITH);
+                radial3.setPointerColor(steelseries.ColorDef.RAITH);
+                break;
+            case "GREEN_LCD":
+                radial1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                radial2.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                radial3.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                break;
+            case "JUG_GREEN":
+                radial1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                radial2.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                radial3.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                break;
+        }
+    }
+
+    function setPointerType(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "TYPE1":
+                radial1.setPointerType(steelseries.PointerType.TYPE1);
+                radial2.setPointerType(steelseries.PointerType.TYPE1);
+                break;
+            case "TYPE2":
+                radial1.setPointerType(steelseries.PointerType.TYPE2);
+                radial2.setPointerType(steelseries.PointerType.TYPE2);
+                break;
+            case "TYPE3":
+                radial1.setPointerType(steelseries.PointerType.TYPE3);
+                radial2.setPointerType(steelseries.PointerType.TYPE3);
+                break;
+            case "TYPE4":
+                radial1.setPointerType(steelseries.PointerType.TYPE4);
+                radial2.setPointerType(steelseries.PointerType.TYPE4);
+                break;
+            case "TYPE5":
+                radial1.setPointerType(steelseries.PointerType.TYPE5);
+                radial2.setPointerType(steelseries.PointerType.TYPE5);
+                break;
+            case "TYPE6":
+                radial1.setPointerType(steelseries.PointerType.TYPE6);
+                radial2.setPointerType(steelseries.PointerType.TYPE6);
+                break;
+            case "TYPE7":
+                radial1.setPointerType(steelseries.PointerType.TYPE7);
+                radial2.setPointerType(steelseries.PointerType.TYPE7);
+                break;
+            case "TYPE8":
+                radial1.setPointerType(steelseries.PointerType.TYPE8);
+                radial2.setPointerType(steelseries.PointerType.TYPE8);
+                break;
+            case "TYPE9":
+                radial1.setPointerType(steelseries.PointerType.TYPE9);
+                radial2.setPointerType(steelseries.PointerType.TYPE9);
+                break;
+            case "TYPE10":
+                radial1.setPointerType(steelseries.PointerType.TYPE10);
+                radial2.setPointerType(steelseries.PointerType.TYPE10);
+                break;
+            case "TYPE11":
+                radial1.setPointerType(steelseries.PointerType.TYPE11);
+                radial2.setPointerType(steelseries.PointerType.TYPE11);
+                break;
+            case "TYPE12":
+                radial1.setPointerType(steelseries.PointerType.TYPE12);
+                radial2.setPointerType(steelseries.PointerType.TYPE12);
+                break;
+            case "TYPE13":
+                radial1.setPointerType(steelseries.PointerType.TYPE13);
+                radial2.setPointerType(steelseries.PointerType.TYPE13);
+                break;
+        }
+    }
+
+    function setLcdColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BEIGE":
+                radial2.setLcdColor(steelseries.LcdColor.BEIGE);
+                single1.setLcdColor(steelseries.LcdColor.BEIGE);
+                single2.setLcdColor(steelseries.LcdColor.BEIGE);
+                multi1.setLcdColor(steelseries.LcdColor.BEIGE);
+                break;
+            case "BLUE":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE);
+                single1.setLcdColor(steelseries.LcdColor.BLUE);
+                single2.setLcdColor(steelseries.LcdColor.BLUE);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE);
+                break;
+            case "ORANGE":
+                radial2.setLcdColor(steelseries.LcdColor.ORANGE);
+                single1.setLcdColor(steelseries.LcdColor.ORANGE);
+                single2.setLcdColor(steelseries.LcdColor.ORANGE);
+                multi1.setLcdColor(steelseries.LcdColor.ORANGE);
+                break;
+            case "RED":
+                radial2.setLcdColor(steelseries.LcdColor.RED);
+                single1.setLcdColor(steelseries.LcdColor.RED);
+                single2.setLcdColor(steelseries.LcdColor.RED);
+                multi1.setLcdColor(steelseries.LcdColor.RED);
+                break;
+            case "YELLOW":
+                radial2.setLcdColor(steelseries.LcdColor.YELLOW);
+                single1.setLcdColor(steelseries.LcdColor.YELLOW);
+                single2.setLcdColor(steelseries.LcdColor.YELLOW);
+                multi1.setLcdColor(steelseries.LcdColor.YELLOW);
+                break;
+            case "WHITE":
+                radial2.setLcdColor(steelseries.LcdColor.WHITE);
+                single1.setLcdColor(steelseries.LcdColor.WHITE);
+                single2.setLcdColor(steelseries.LcdColor.WHITE);
+                multi1.setLcdColor(steelseries.LcdColor.WHITE);
+                break;
+            case "GRAY":
+                radial2.setLcdColor(steelseries.LcdColor.GRAY);
+                single1.setLcdColor(steelseries.LcdColor.GRAY);
+                single2.setLcdColor(steelseries.LcdColor.GRAY);
+                multi1.setLcdColor(steelseries.LcdColor.GRAY);
+                break;
+            case "BLACK":
+                radial2.setLcdColor(steelseries.LcdColor.BLACK);
+                single1.setLcdColor(steelseries.LcdColor.BLACK);
+                single2.setLcdColor(steelseries.LcdColor.BLACK);
+                multi1.setLcdColor(steelseries.LcdColor.BLACK);
+                break;
+            case "GREEN":
+                radial2.setLcdColor(steelseries.LcdColor.GREEN);
+                single1.setLcdColor(steelseries.LcdColor.GREEN);
+                single2.setLcdColor(steelseries.LcdColor.GREEN);
+                multi1.setLcdColor(steelseries.LcdColor.GREEN);
+                break;
+            case "BLUE2":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE2);
+                single1.setLcdColor(steelseries.LcdColor.BLUE2);
+                single2.setLcdColor(steelseries.LcdColor.BLUE2);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE2);
+                break;
+            case "BLUE_BLACK":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                single1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                single2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                break;
+            case "BLUE_DARKBLUE":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                single1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                single2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                break;
+            case "BLUE_GRAY":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                single1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                single2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                 break;
+            case "STANDARD":
+                radial2.setLcdColor(steelseries.LcdColor.STANDARD);
+                single1.setLcdColor(steelseries.LcdColor.STANDARD);
+                single2.setLcdColor(steelseries.LcdColor.STANDARD);
+                multi1.setLcdColor(steelseries.LcdColor.STANDARD);
+                break;
+            case "STANDARD_GREEN":
+                radial2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                single1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                single2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                multi1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                break;
+            case "BLUE_BLUE":
+                radial2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                single1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                single2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                break;
+            case "RED_DARKRED":
+                radial2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                single1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                single2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                multi1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                break;
+            case "DARKBLUE":
+                radial2.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                single1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                single2.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                multi1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                break;
+            case "LILA":
+                radial2.setLcdColor(steelseries.LcdColor.LILA);
+                single1.setLcdColor(steelseries.LcdColor.LILA);
+                single2.setLcdColor(steelseries.LcdColor.LILA);
+                multi1.setLcdColor(steelseries.LcdColor.LILA);
+                break;
+            case "BLACKRED":
+                radial2.setLcdColor(steelseries.LcdColor.BLACKRED);
+                single1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                single2.setLcdColor(steelseries.LcdColor.BLACKRED);
+                multi1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                break;
+            case "DARKGREEN": 
+                radial2.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                single1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                single2.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                multi1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                break;
+        }
+    }
+
+    function setLedColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED_LED":
+                led1.setLedColor(steelseries.LedColor.RED_LED);
+                break;
+            case "GREEN_LED":
+                led1.setLedColor(steelseries.LedColor.GREEN_LED);
+                break;
+            case "BLUE_LED":
+                led1.setLedColor(steelseries.LedColor.BLUE_LED);
+                break;
+            case "ORANGE_LED":
+                led1.setLedColor(steelseries.LedColor.ORANGE_LED);
+                break;
+            case "YELLOW_LED":
+                led1.setLedColor(steelseries.LedColor.YELLOW_LED);
+                break;
+            case "CYAN_LED":
+                led1.setLedColor(steelseries.LedColor.CYAN_LED);
+                break;
+            case "MAGENTA_LED":
+                led1.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                break;
+        }
+    }
+	
+	function setPointerAvg(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "TYPE1":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE1);
+                break;
+            case "TYPE2":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE2);
+                break;
+            case "TYPE3":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE3);
+                break;
+            case "TYPE4":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE4);
+                break;
+            case "TYPE5":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE5);
+                break;
+            case "TYPE6":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE6);
+                break;
+            case "TYPE7":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE7);
+                break;
+            case "TYPE8":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE8);
+                break;
+            case "TYPE9":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE9);
+                break;
+            case "TYPE10":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE10);
+                break;
+            case "TYPE11":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE11);
+                break;
+            case "TYPE12":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE12);
+                break;
+            case "TYPE13":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE13);
+                break;
+        }
+	}
+    
+	function setPointerColorAvg(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED":
+                radial10.setPointerColorAverage(steelseries.ColorDef.RED);
+                break;
+            case "GREEN":
+                radial10.setPointerColorAverage(steelseries.ColorDef.GREEN);
+                break;
+            case "BLUE":
+                radial10.setPointerColorAverage(steelseries.ColorDef.BLUE);
+                break;
+            case "ORANGE":
+                radial10.setPointerColorAverage(steelseries.ColorDef.ORANGE);
+                break;
+            case "YELLOW":
+                radial10.setPointerColorAverage(steelseries.ColorDef.YELLOW);
+                break;
+            case "CYAN":
+                radial10.setPointerColorAverage(steelseries.ColorDef.CYAN);
+                break;
+            case "MAGENTA":
+                radial10.setPointerColorAverage(steelseries.ColorDef.MAGENTA);
+                break;
+            case "WHITE":
+                radial10.setPointerColorAverage(steelseries.ColorDef.WHITE);
+                break;
+            case "GRAY":
+                radial10.setPointerColorAverage(steelseries.ColorDef.GRAY);
+                break;
+            case "BLACK":
+                radial10.setPointerColorAverage(steelseries.ColorDef.BLACK);
+                break;
+            case "RAITH":
+                radial10.setPointerColorAverage(steelseries.ColorDef.RAITH);
+                break;
+            case "GREEN_LCD":
+                radial10.setPointerColorAverage(steelseries.ColorDef.GREEN_LCD);
+                break;
+            case "JUG_GREEN":
+                radial10.setPointerColorAverage(steelseries.ColorDef.JUG_GREEN);
+                break;
+        }
+    }
+
+</script>
+<script type="text/javascript" src="tween-min.js"></script>
+<script type="text/javascript" src="steelseries-min.js"></script>
+</body></html>

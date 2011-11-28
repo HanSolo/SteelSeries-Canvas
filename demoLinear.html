@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html manifest="demo.manifest"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Canvas Steel</title>
+</head>
+<body onload="init()">
+    <table>
+        <tbody><tr>
+            <td width="100%">
+                <select id="comboFrame" onchange="setFrameDesign(this)">
+                    <option selected="selected" value="">Frame design</option>
+                    <option value="BLACK_METAL">BlackMetal</option>
+                    <option value="METAL">Metal</option>
+                    <option value="SHINY_METAL">ShinyMetal</option>
+                    <option value="BRASS">Brass</option>
+                    <option value="STEEL">Steel</option>
+                    <option value="CHROME">Chrome</option>
+                    <option value="GOLD">Gold</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="TILTED_GRAY">TiltedGray</option>
+                    <option value="TILTED_BLACK">TiltedBlack</option>
+                </select>
+                <select id="comboBackground" onchange="setBackgroundColor(this)">
+                    <option selected="selected" value="">Background</option>
+                    <option value="DARK_GRAY">DarkGray</option>
+                    <option value="SATIN_GRAY">SatinGray</option>
+                    <option value="LIGHT_GRAY">LightGray</option>
+                    <option value="WHITE">White</option>
+                    <option value="BLACK">Black</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BROWN">Brown</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="MUD">Mud</option>
+                    <option value="PUNCHED_SHEET">PunchedSheet</option>
+                    <option value="CARBON">Carbon</option>
+                </select>
+                <select id="comboValueColor" onchange="setValueColor(this)">
+                    <option selected="selected" value="">Value color</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="CYAN">Cyan</option>
+                    <option value="MAGENTA">Magenta</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="RAITH">Raith</option>
+                    <option value="GREEN_LCD">Green LCD</option>
+                    <option value="JUG_GREEN">JUG Green</option>
+                </select>
+                <select id="comboLcdColor" onchange="setLcdColor(this)">
+                    <option selected="selected" value="">LCD color</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="RED">Red</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE2">Blue2</option>
+                    <option value="BLUE_BLACK">BlueBlack</option>
+                    <option value="BLUE_DARKBLUE">BlueDarkBlue</option>
+                    <option value="BLUE_GRAY">BlueGray</option>
+                    <option value="STANDARD">Standard</option>
+                    <option value="STANDARD_GREEN">StandardGreen</option>
+                    <option value="BLUE_BLUE">BlueBlue</option>
+                    <option value="RED_DARKRED">RedDarkRed</option>
+                    <option value="DARKBLUE">DarkBlue</option>
+                    <option value="LILA">Lila</option>
+                    <option value="BLACKRED">BlackRed</option>
+                    <option value="DARKGREEN">DarkGreen</option>
+                </select>
+                <select id="comboLedColor" onchange="setLedColor(this)">
+					<option selected="selected" value="">Led color</option>
+					<option value="RED_LED">Red</option>
+					<option value="GREEN_LED">Green</option>
+					<option value="BLUE_LED">Blue</option>
+					<option value="ORANGE_LED">Orange</option>
+					<option value="YELLOW_LED">Yellow</option>
+					<option value="CYAN_LED">Cyan</option>
+					<option value="MAGENTA_LED">Magenta</option>        
+				</select>
+            </td>
+        </tr>
+		<tr>
+            <td width="100%">
+<!--
+                <select id="comboKnob" onchange="setKnobDesign(this)">
+                    <option selected="selected" value="">Knob design</option>
+                    <option value="STANDARD_KNOB">Standard</option>
+                    <option value="METAL_KNOB">Metal</option>
+                </select>
+                <select id="comboKnob" onchange="setKnobDesign(this)">
+                    <option selected="selected" value="">Knob style</option>
+                    <option value="BLACK">Black</option>
+                    <option value="BRASS">Brass</option>
+                    <option value="SILVER">Silver</option>
+                </select>
+-->
+			</td>
+        </tr>
+		<tr>
+            <td width="100%">
+                <canvas id="canvasLinear1" width="140" height="320">No canvas in your browser...sorry...</canvas>
+                <canvas id="canvasLinear2" width="140" height="320"></canvas>
+                <canvas id="canvasLinear3" width="320" height="140"></canvas>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <canvas id="canvasLinear4" width="140" height="320"></canvas>
+                <canvas id="canvasLinear5" width="140" height="320"></canvas>
+                <canvas id="canvasLinear6" width="320" height="140"></canvas>
+            </td>
+        </tr>
+    </tbody></table>
+
+
+<script type="text/javascript">
+    var linear1;
+    var linear2;
+    var linear3;
+    var linear4;
+    var linear5;
+    var linear6;
+
+    function init() {
+        // Define some sections
+        var sections = Array(steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'),
+                             steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'),
+                             steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)'));
+
+        // Define one area
+        var areas = Array(steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)'));
+
+
+        // Initializing gauge
+        linear1 = new steelseries.Linear('canvasLinear1', {
+                            titleString: 'Title',
+                            unitString: 'Unit',
+                            threshold: 50,
+                            lcdVisible: true
+                            });
+        linear2 = new steelseries.Linear('canvasLinear2', {
+                            titleString: 'Title',
+                            unitString: 'Unit',
+                            threshold: 50,
+                            lcdVisible: false
+                            });
+
+        linear3 = new steelseries.Linear('canvasLinear3', {
+							width: 320,
+							height: 140,
+                            titleString: 'Title',
+                            unitString: 'Unit',
+                            threshold: 50,
+                            lcdVisible: true
+                            });
+
+        linear4 = new steelseries.LinearBargraph('canvasLinear4', {
+                            titleString: "Title",
+                            unitString: "Unit",
+                            threshold: 50,
+                            lcdVisible: true
+                            });
+
+        linear5 = new steelseries.LinearBargraph('canvasLinear5', {
+                            titleString: "Title",
+                            unitString: "Unit",
+                            threshold: 50,
+                            lcdVisible: false
+                            });
+
+        linear6 = new steelseries.LinearBargraph('canvasLinear6', {
+							width: 320,
+							height: 140,
+                            titleString: "Title",
+                            unitString: "Unit",
+                            threshold: 50,
+                            lcdVisible: true
+                            });
+
+
+        // Start the random update
+        setInterval(function(){ setRandomValue(linear1, 100); }, 2200);
+        setInterval(function(){ setRandomValue(linear2, 100); }, 2300);
+        setInterval(function(){ setRandomValue(linear3, 100); }, 2400);
+        setInterval(function(){ setRandomValue(linear4, 100); }, 2500);
+        setInterval(function(){ setRandomValue(linear5, 100); }, 2600);
+        setInterval(function(){ setRandomValue(linear6, 100); }, 2700);
+    }
+
+    function setRandomValue(gauge, range) {
+        gauge.setValueAnimated(Math.random() * range);
+    }
+
+    function setFrameDesign(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BLACK_METAL":
+                linear1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                linear2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                linear3.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                linear4.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                linear5.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                linear6.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                break;
+            case "METAL":
+                linear1.setFrameDesign(steelseries.FrameDesign.METAL);
+                linear2.setFrameDesign(steelseries.FrameDesign.METAL);
+                linear3.setFrameDesign(steelseries.FrameDesign.METAL);
+                linear4.setFrameDesign(steelseries.FrameDesign.METAL);
+                linear5.setFrameDesign(steelseries.FrameDesign.METAL);
+                linear6.setFrameDesign(steelseries.FrameDesign.METAL);
+                break;
+            case "SHINY_METAL":
+                linear1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                linear2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                linear3.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                linear4.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                linear5.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                linear6.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                break;
+            case "BRASS":
+                linear1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                linear2.setFrameDesign(steelseries.FrameDesign.BRASS);
+                linear3.setFrameDesign(steelseries.FrameDesign.BRASS);
+                linear4.setFrameDesign(steelseries.FrameDesign.BRASS);
+                linear5.setFrameDesign(steelseries.FrameDesign.BRASS);
+                linear6.setFrameDesign(steelseries.FrameDesign.BRASS);
+                break;
+            case "STEEL":
+                linear1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                linear2.setFrameDesign(steelseries.FrameDesign.STEEL);
+                linear3.setFrameDesign(steelseries.FrameDesign.STEEL);
+                linear4.setFrameDesign(steelseries.FrameDesign.STEEL);
+                linear5.setFrameDesign(steelseries.FrameDesign.STEEL);
+                linear6.setFrameDesign(steelseries.FrameDesign.STEEL);
+                break;
+            case "CHROME":
+                linear1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                linear2.setFrameDesign(steelseries.FrameDesign.CHROME);
+                linear3.setFrameDesign(steelseries.FrameDesign.CHROME);
+                linear4.setFrameDesign(steelseries.FrameDesign.CHROME);
+                linear5.setFrameDesign(steelseries.FrameDesign.CHROME);
+                linear6.setFrameDesign(steelseries.FrameDesign.CHROME);
+                break;
+            case "GOLD":
+                linear1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                linear2.setFrameDesign(steelseries.FrameDesign.GOLD);
+                linear3.setFrameDesign(steelseries.FrameDesign.GOLD);
+                linear4.setFrameDesign(steelseries.FrameDesign.GOLD);
+                linear5.setFrameDesign(steelseries.FrameDesign.GOLD);
+                linear6.setFrameDesign(steelseries.FrameDesign.GOLD);
+                break;
+            case "ANTHRACITE":
+                linear1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                linear2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                linear3.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                linear4.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                linear5.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                linear6.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                break;
+            case "TILTED_GRAY":
+                linear1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                linear2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                linear3.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                linear4.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                linear5.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                linear6.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                break;
+            case "TILTED_BLACK":
+                linear1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                linear2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                linear3.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                linear4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                linear5.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                linear6.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                break;
+        }
+    }
+
+    function setBackgroundColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "DARK_GRAY":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                break;
+            case "SATIN_GRAY":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                break;
+            case "LIGHT_GRAY":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                break;
+            case "WHITE":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                break;
+            case "BLACK":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                break;
+            case "BEIGE":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                break;
+            case "BROWN":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                break;
+            case "RED":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.RED);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.RED);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.RED);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.RED);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.RED);
+                break;
+            case "GREEN":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                break;
+            case "BLUE":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                break;
+            case "ANTHRACITE":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                break;
+            case "MUD":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                break;
+            case "PUNCHED_SHEET":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                break;
+            case "CARBON":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                break;
+        }
+    }
+
+    function setValueColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED":
+                linear1.setValueColor(steelseries.ColorDef.RED);
+                linear2.setValueColor(steelseries.ColorDef.RED);
+                linear3.setValueColor(steelseries.ColorDef.RED);
+                linear4.setValueColor(steelseries.ColorDef.RED);
+                linear5.setValueColor(steelseries.ColorDef.RED);
+                linear6.setValueColor(steelseries.ColorDef.RED);
+                break;
+            case "GREEN":
+                linear1.setValueColor(steelseries.ColorDef.GREEN);
+                linear2.setValueColor(steelseries.ColorDef.GREEN);
+                linear3.setValueColor(steelseries.ColorDef.GREEN);
+                linear4.setValueColor(steelseries.ColorDef.GREEN);
+                linear5.setValueColor(steelseries.ColorDef.GREEN);
+                linear6.setValueColor(steelseries.ColorDef.GREEN);
+                break;
+            case "BLUE":
+                linear1.setValueColor(steelseries.ColorDef.BLUE);
+                linear2.setValueColor(steelseries.ColorDef.BLUE);
+                linear3.setValueColor(steelseries.ColorDef.BLUE);
+                linear4.setValueColor(steelseries.ColorDef.BLUE);
+                linear5.setValueColor(steelseries.ColorDef.BLUE);
+                linear6.setValueColor(steelseries.ColorDef.BLUE);
+                break;
+            case "ORANGE":
+                linear1.setValueColor(steelseries.ColorDef.ORANGE);
+                linear2.setValueColor(steelseries.ColorDef.ORANGE);
+                linear3.setValueColor(steelseries.ColorDef.ORANGE);
+                linear4.setValueColor(steelseries.ColorDef.ORANGE);
+                linear5.setValueColor(steelseries.ColorDef.ORANGE);
+                linear6.setValueColor(steelseries.ColorDef.ORANGE);
+                break;
+            case "YELLOW":
+                linear1.setValueColor(steelseries.ColorDef.YELLOW);
+                linear2.setValueColor(steelseries.ColorDef.YELLOW);
+                linear3.setValueColor(steelseries.ColorDef.YELLOW);
+                linear4.setValueColor(steelseries.ColorDef.YELLOW);
+                linear5.setValueColor(steelseries.ColorDef.YELLOW);
+                linear6.setValueColor(steelseries.ColorDef.YELLOW);
+                break;
+            case "CYAN":
+                linear1.setValueColor(steelseries.ColorDef.CYAN);
+                linear2.setValueColor(steelseries.ColorDef.CYAN);
+                linear3.setValueColor(steelseries.ColorDef.CYAN);
+                linear4.setValueColor(steelseries.ColorDef.CYAN);
+                linear5.setValueColor(steelseries.ColorDef.CYAN);
+                linear6.setValueColor(steelseries.ColorDef.CYAN);
+                break;
+            case "MAGENTA":
+                linear1.setValueColor(steelseries.ColorDef.MAGENTA);
+                linear2.setValueColor(steelseries.ColorDef.MAGENTA);
+                linear3.setValueColor(steelseries.ColorDef.MAGENTA);
+                linear4.setValueColor(steelseries.ColorDef.MAGENTA);
+                linear5.setValueColor(steelseries.ColorDef.MAGENTA);
+                linear6.setValueColor(steelseries.ColorDef.MAGENTA);
+                break;
+            case "WHITE":
+                linear1.setValueColor(steelseries.ColorDef.WHITE);
+                linear2.setValueColor(steelseries.ColorDef.WHITE);
+                linear3.setValueColor(steelseries.ColorDef.WHITE);
+                linear4.setValueColor(steelseries.ColorDef.WHITE);
+                linear5.setValueColor(steelseries.ColorDef.WHITE);
+                linear6.setValueColor(steelseries.ColorDef.WHITE);
+                break;
+            case "GRAY":
+                linear1.setValueColor(steelseries.ColorDef.GRAY);
+                linear2.setValueColor(steelseries.ColorDef.GRAY);
+                linear3.setValueColor(steelseries.ColorDef.GRAY);
+                linear4.setValueColor(steelseries.ColorDef.GRAY);
+                linear5.setValueColor(steelseries.ColorDef.GRAY);
+                linear6.setValueColor(steelseries.ColorDef.GRAY);
+                break;
+            case "BLACK":
+                linear1.setValueColor(steelseries.ColorDef.BLACK);
+                linear2.setValueColor(steelseries.ColorDef.BLACK);
+                linear3.setValueColor(steelseries.ColorDef.BLACK);
+                linear4.setValueColor(steelseries.ColorDef.BLACK);
+                linear5.setValueColor(steelseries.ColorDef.BLACK);
+                linear6.setValueColor(steelseries.ColorDef.BLACK);
+                break;
+            case "RAITH":
+                linear1.setValueColor(steelseries.ColorDef.RAITH);
+                linear2.setValueColor(steelseries.ColorDef.RAITH);
+                linear3.setValueColor(steelseries.ColorDef.RAITH);
+                linear4.setValueColor(steelseries.ColorDef.RAITH);
+                linear5.setValueColor(steelseries.ColorDef.RAITH);
+                linear6.setValueColor(steelseries.ColorDef.RAITH);
+                break;
+            case "GREEN_LCD":
+                linear1.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                linear2.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                linear3.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                linear4.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                linear5.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                linear6.setValueColor(steelseries.ColorDef.GREEN_LCD);
+                break;
+            case "JUG_GREEN":
+                linear1.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                linear2.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                linear3.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                linear4.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                linear5.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                linear6.setValueColor(steelseries.ColorDef.JUG_GREEN);
+                break;
+        }
+    }
+
+    function setLcdColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BEIGE":
+                linear1.setLcdColor(steelseries.LcdColor.BEIGE);
+                linear2.setLcdColor(steelseries.LcdColor.BEIGE);
+                linear3.setLcdColor(steelseries.LcdColor.BEIGE);
+                linear4.setLcdColor(steelseries.LcdColor.BEIGE);
+                linear5.setLcdColor(steelseries.LcdColor.BEIGE);
+                linear6.setLcdColor(steelseries.LcdColor.BEIGE);
+                break;
+            case "BLUE":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE);
+                break;
+            case "ORANGE":
+                linear1.setLcdColor(steelseries.LcdColor.ORANGE);
+                linear2.setLcdColor(steelseries.LcdColor.ORANGE);
+                linear3.setLcdColor(steelseries.LcdColor.ORANGE);
+                linear4.setLcdColor(steelseries.LcdColor.ORANGE);
+                linear5.setLcdColor(steelseries.LcdColor.ORANGE);
+                linear6.setLcdColor(steelseries.LcdColor.ORANGE);
+                break;
+            case "RED":
+                linear1.setLcdColor(steelseries.LcdColor.RED);
+                linear2.setLcdColor(steelseries.LcdColor.RED);
+                linear3.setLcdColor(steelseries.LcdColor.RED);
+                linear4.setLcdColor(steelseries.LcdColor.RED);
+                linear5.setLcdColor(steelseries.LcdColor.RED);
+                linear6.setLcdColor(steelseries.LcdColor.RED);
+                break;
+            case "YELLOW":
+                linear1.setLcdColor(steelseries.LcdColor.YELLOW);
+                linear2.setLcdColor(steelseries.LcdColor.YELLOW);
+                linear3.setLcdColor(steelseries.LcdColor.YELLOW);
+                linear4.setLcdColor(steelseries.LcdColor.YELLOW);
+                linear5.setLcdColor(steelseries.LcdColor.YELLOW);
+                linear6.setLcdColor(steelseries.LcdColor.YELLOW);
+                break;
+            case "WHITE":
+                linear1.setLcdColor(steelseries.LcdColor.WHITE);
+                linear2.setLcdColor(steelseries.LcdColor.WHITE);
+                linear3.setLcdColor(steelseries.LcdColor.WHITE);
+                linear4.setLcdColor(steelseries.LcdColor.WHITE);
+                linear5.setLcdColor(steelseries.LcdColor.WHITE);
+                linear6.setLcdColor(steelseries.LcdColor.WHITE);
+                break;
+            case "GRAY":
+                linear1.setLcdColor(steelseries.LcdColor.GRAY);
+                linear2.setLcdColor(steelseries.LcdColor.GRAY);
+                linear3.setLcdColor(steelseries.LcdColor.GRAY);
+                linear4.setLcdColor(steelseries.LcdColor.GRAY);
+                linear5.setLcdColor(steelseries.LcdColor.GRAY);
+                linear6.setLcdColor(steelseries.LcdColor.GRAY);
+                break;
+            case "BLACK":
+                linear1.setLcdColor(steelseries.LcdColor.BLACK);
+                linear2.setLcdColor(steelseries.LcdColor.BLACK);
+                linear3.setLcdColor(steelseries.LcdColor.BLACK);
+                linear4.setLcdColor(steelseries.LcdColor.BLACK);
+                linear5.setLcdColor(steelseries.LcdColor.BLACK);
+                linear6.setLcdColor(steelseries.LcdColor.BLACK);
+                break;
+            case "GREEN":
+                linear1.setLcdColor(steelseries.LcdColor.GREEN);
+                linear2.setLcdColor(steelseries.LcdColor.GREEN);
+                linear3.setLcdColor(steelseries.LcdColor.GREEN);
+                linear4.setLcdColor(steelseries.LcdColor.GREEN);
+                linear5.setLcdColor(steelseries.LcdColor.GREEN);
+                linear6.setLcdColor(steelseries.LcdColor.GREEN);
+                break;
+            case "BLUE2":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE2);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE2);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE2);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE2);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE2);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE2);
+                break;
+            case "BLUE_BLACK":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                break;
+            case "BLUE_DARKBLUE":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                break;
+            case "BLUE_GRAY":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                break;
+            case "STANDARD":
+                linear1.setLcdColor(steelseries.LcdColor.STANDARD);
+                linear2.setLcdColor(steelseries.LcdColor.STANDARD);
+                linear3.setLcdColor(steelseries.LcdColor.STANDARD);
+                linear4.setLcdColor(steelseries.LcdColor.STANDARD);
+                linear5.setLcdColor(steelseries.LcdColor.STANDARD);
+                linear6.setLcdColor(steelseries.LcdColor.STANDARD);
+                break;
+            case "STANDARD_GREEN":
+                linear1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                linear2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                linear3.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                linear4.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                linear5.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                linear6.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                break;
+            case "BLUE_BLUE":
+                linear1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                linear2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                linear3.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                linear4.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                linear5.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                linear6.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                break;
+            case "RED_DARKRED":
+                linear1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                linear2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                linear3.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                linear4.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                linear5.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                linear6.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                break;
+            case "DARKBLUE":
+                linear1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                linear2.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                linear3.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                linear4.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                linear5.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                linear6.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                break;
+            case "LILA":
+                linear1.setLcdColor(steelseries.LcdColor.LILA);
+                linear2.setLcdColor(steelseries.LcdColor.LILA);
+                linear3.setLcdColor(steelseries.LcdColor.LILA);
+                linear4.setLcdColor(steelseries.LcdColor.LILA);
+                linear5.setLcdColor(steelseries.LcdColor.LILA);
+                linear6.setLcdColor(steelseries.LcdColor.LILA);
+                break;
+            case "BLACKRED":
+                linear1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                linear2.setLcdColor(steelseries.LcdColor.BLACKRED);
+                linear3.setLcdColor(steelseries.LcdColor.BLACKRED);
+                linear4.setLcdColor(steelseries.LcdColor.BLACKRED);
+                linear5.setLcdColor(steelseries.LcdColor.BLACKRED);
+                linear6.setLcdColor(steelseries.LcdColor.BLACKRED);
+                break;
+            case "DARKGREEN": 
+                linear1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                linear2.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                linear3.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                linear4.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                linear5.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                linear6.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                break;
+        }
+    }
+
+    function setLedColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED_LED":
+                linear1.setLedColor(steelseries.LedColor.RED_LED);
+                linear2.setLedColor(steelseries.LedColor.RED_LED);
+                linear3.setLedColor(steelseries.LedColor.RED_LED);
+                linear4.setLedColor(steelseries.LedColor.RED_LED);
+                linear5.setLedColor(steelseries.LedColor.RED_LED);
+                linear6.setLedColor(steelseries.LedColor.RED_LED);
+                break;
+            case "GREEN_LED":
+                linear1.setLedColor(steelseries.LedColor.GREEN_LED);
+                linear2.setLedColor(steelseries.LedColor.GREEN_LED);
+                linear3.setLedColor(steelseries.LedColor.GREEN_LED);
+                linear4.setLedColor(steelseries.LedColor.GREEN_LED);
+                linear5.setLedColor(steelseries.LedColor.GREEN_LED);
+                linear6.setLedColor(steelseries.LedColor.GREEN_LED);
+                break;
+            case "BLUE_LED":
+                linear1.setLedColor(steelseries.LedColor.BLUE_LED);
+                linear2.setLedColor(steelseries.LedColor.BLUE_LED);
+                linear3.setLedColor(steelseries.LedColor.BLUE_LED);
+                linear4.setLedColor(steelseries.LedColor.BLUE_LED);
+                linear5.setLedColor(steelseries.LedColor.BLUE_LED);
+                linear6.setLedColor(steelseries.LedColor.BLUE_LED);
+                break;
+            case "ORANGE_LED":
+                linear1.setLedColor(steelseries.LedColor.ORANGE_LED);
+                linear2.setLedColor(steelseries.LedColor.ORANGE_LED);
+                linear3.setLedColor(steelseries.LedColor.ORANGE_LED);
+                linear4.setLedColor(steelseries.LedColor.ORANGE_LED);
+                linear5.setLedColor(steelseries.LedColor.ORANGE_LED);
+                linear6.setLedColor(steelseries.LedColor.ORANGE_LED);
+                break;
+            case "YELLOW_LED":
+                linear1.setLedColor(steelseries.LedColor.YELLOW_LED);
+                linear2.setLedColor(steelseries.LedColor.YELLOW_LED);
+                linear3.setLedColor(steelseries.LedColor.YELLOW_LED);
+                linear4.setLedColor(steelseries.LedColor.YELLOW_LED);
+                linear5.setLedColor(steelseries.LedColor.YELLOW_LED);
+                linear6.setLedColor(steelseries.LedColor.YELLOW_LED);
+                break;
+            case "CYAN_LED":
+                linear1.setLedColor(steelseries.LedColor.CYAN_LED);
+                linear2.setLedColor(steelseries.LedColor.CYAN_LED);
+                linear3.setLedColor(steelseries.LedColor.CYAN_LED);
+                linear4.setLedColor(steelseries.LedColor.CYAN_LED);
+                linear5.setLedColor(steelseries.LedColor.CYAN_LED);
+                linear6.setLedColor(steelseries.LedColor.CYAN_LED);
+                break;
+            case "MAGENTA_LED":
+                linear1.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                linear2.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                linear3.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                linear4.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                linear5.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                linear6.setLedColor(steelseries.LedColor.MAGENTA_LED);
+                break;
+        }
+    }
+</script>
+<script type="text/javascript" src="tween-min.js"></script>
+<script type="text/javascript" src="steelseries-min.js"></script>
+</body></html>
