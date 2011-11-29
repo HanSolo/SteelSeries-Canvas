@@ -1,4 +1,15 @@
 Main Changes
+-------------------------
+v0.8.1
+> General Changes
+  * Added shadow to the central knob
+
+> Clock
+  * Brand new component.
+  * Setting Pointer type to 1 or 2 sets pointer style, scale, and background colour to defaults
+    so if you wish to change pointer colour, or background colour, do so after setting the pointer type.
+
+-------------------------
 v0.8.0
 > Radial
   * Added parameter frameVisible

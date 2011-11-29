@@ -95,15 +95,15 @@
                     <option value="DARKGREEN">DarkGreen</option>
                 </select>
                 <select id="comboLedColor" onchange="setLedColor(this)">
-					<option selected="selected" value="">Led color</option>
-					<option value="RED_LED">Red</option>
-					<option value="GREEN_LED">Green</option>
-					<option value="BLUE_LED">Blue</option>
-					<option value="ORANGE_LED">Orange</option>
-					<option value="YELLOW_LED">Yellow</option>
-					<option value="CYAN_LED">Cyan</option>
-					<option value="MAGENTA_LED">Magenta</option>        
-				</select>
+                    <option selected="selected" value="">Led color</option>
+                    <option value="RED_LED">Red</option>
+                    <option value="GREEN_LED">Green</option>
+                    <option value="BLUE_LED">Blue</option>
+                    <option value="ORANGE_LED">Orange</option>
+                    <option value="YELLOW_LED">Yellow</option>
+                    <option value="CYAN_LED">Cyan</option>
+                    <option value="MAGENTA_LED">Magenta</option>        
+                </select>
                 <select id="comboForeground" onchange="setForegroundType(this)">
                     <option selected="selected" value="">Foreground</option>
                     <option value="TYPE1">Type1</option>
@@ -114,7 +114,7 @@
                 </select>
             </td>
         </tr>
-		<tr>
+        <tr>
             <td width="100%">
                 <select id="comboPointerColorAvg" onchange="setPointerColorAvg(this)">
                     <option selected="selected" value="">Wind Avg Pointer color</option>
@@ -148,9 +148,9 @@
                     <option value="TYPE12">Type12</option>
                     <option value="TYPE13">Type13</option>
                 </select>
-			</td>
+            </td>
         </tr>
-		<tr>
+        <tr>
             <td width="100%">
                 <canvas id="canvasRadial1" width="201" height="201">No canvas in your browser...sorry...</canvas>
                 <canvas id="canvasRadial2" width="201" height="201"></canvas>
@@ -164,6 +164,7 @@
                 <canvas id="canvasSingle2" width="200" height="50"></canvas>
                 <canvas id="canvasMulti1" width="100" height="80"></canvas>
                 <canvas id="canvasLed1" width="50" height="50"></canvas>
+                <canvas id="canvasClock1" width="201" height="201"></canvas>
             </td>
         </tr>
     </tbody></table>
@@ -171,61 +172,67 @@
 
 <script type="text/javascript">
     var scroll = false;
-	var radial1;
+    var radial1;
     var radial2;
     var radial3;
     var radial4;
-	var single1;
-	var single2;
-	var multi1;
-	var led1;
-	
+    var single1;
+    var single2;
+    var multi1;
+    var led1;
+    var clock1;
+    
     function init() {
         // Initialzing gauge
         radial1 = new steelseries.Compass('canvasRadial1', {
                             size: 201
-							});
+                            });
 
         radial2 = new steelseries.WindDirection('canvasRadial2', {
                             size: 201,
                             lcdVisible: true
                             });
 
-		radial3 = new steelseries.Level('canvasRadial3', {
+        radial3 = new steelseries.Level('canvasRadial3', {
                             size: 201,
-							decimalsVisible: false
+                            decimalsVisible: false
                             });
 
-		radial4 = new steelseries.Horizon('canvasRadial4', {
+        radial4 = new steelseries.Horizon('canvasRadial4', {
                             size: 201
-							});
+                            });
 
-		single1 = new steelseries.DisplaySingle('canvasSingle1', {
+        single1 = new steelseries.DisplaySingle('canvasSingle1', {
                             width: 120,
-							height: 50,
-							});
+                            height: 50,
+                            });
 
-		single2 = new steelseries.DisplaySingle('canvasSingle2', {
+        single2 = new steelseries.DisplaySingle('canvasSingle2', {
                             width: 200,
-							height: 50,
-							value: "<Auto-scrolling: true>",
-							autoScroll: true,
-							valuesNumeric: false
-							});
+                            height: 50,
+                            value: "<Auto-scrolling: true>",
+                            autoScroll: true,
+                            valuesNumeric: false
+                            });
 
-		multi1 = new steelseries.DisplayMulti('canvasMulti1', {
+        multi1 = new steelseries.DisplayMulti('canvasMulti1', {
                             width: 150,
-							height: 80,
-							});
+                            height: 80,
+                            });
 
-		led1 = new steelseries.Led('canvasLed1', {
+        led1 = new steelseries.Led('canvasLed1', {
                             width: 50,
-							height: 50,
-							});
+                            height: 50,
+                            });
 
-		led1.blink(true);
+        led1.blink(true);
 
-		// Start the random update
+        clock1 = new steelseries.Clock('canvasClock1', {
+                            width: 201,
+                            height: 201
+                            });
+
+        // Start the random update
         setInterval(function(){ setRandomValue(radial1, 360); }, 3000);
         setInterval(function(){ setDirRandomValue(radial2, 360); }, 3100);
         setInterval(function(){ setRandomValue(radial3, 360); }, 3200);
@@ -244,21 +251,21 @@
     }
 
     function setRandomValue3(gauge, range) {
-		if (scroll)
-			gauge.setValue("<Autoscrolling text>");
-		else
-			gauge.setValue("<Autoscroll>");
-		scroll = !scroll;
+        if (scroll)
+            gauge.setValue("<Autoscrolling text>");
+        else
+            gauge.setValue("<Autoscroll>");
+        scroll = !scroll;
     }
 
-	function setDirRandomValue(gauge, range) {
+    function setDirRandomValue(gauge, range) {
         gauge.setValueAnimatedLatest(Math.random() * range);
         gauge.setValueAnimatedAverage(Math.random() * range);
     }
 
-	function setHorRandomValue(gauge) {
-		var pitch = Math.random() * 100 - 50;
-		var roll = Math.random() * 120 - 60;
+    function setHorRandomValue(gauge) {
+        var pitch = Math.random() * 100 - 50;
+        var roll = Math.random() * 120 - 60;
         gauge.setPitchAnimated(pitch);
         gauge.setRollAnimated(roll);
     }
@@ -270,60 +277,70 @@
                 radial2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 radial3.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                clock1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 break;
             case "METAL":
                 radial1.setFrameDesign(steelseries.FrameDesign.METAL);
                 radial2.setFrameDesign(steelseries.FrameDesign.METAL);
                 radial3.setFrameDesign(steelseries.FrameDesign.METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.METAL);
+                clock1.setFrameDesign(steelseries.FrameDesign.METAL);
                 break;
             case "SHINY_METAL":
                 radial1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 radial2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 radial3.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                clock1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 break;
             case "BRASS":
                 radial1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 radial2.setFrameDesign(steelseries.FrameDesign.BRASS);
                 radial3.setFrameDesign(steelseries.FrameDesign.BRASS);
                 radial4.setFrameDesign(steelseries.FrameDesign.BRASS);
+                clock1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 break;
             case "STEEL":
                 radial1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 radial2.setFrameDesign(steelseries.FrameDesign.STEEL);
                 radial3.setFrameDesign(steelseries.FrameDesign.STEEL);
                 radial4.setFrameDesign(steelseries.FrameDesign.STEEL);
+                clock1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 break;
             case "CHROME":
                 radial1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 radial2.setFrameDesign(steelseries.FrameDesign.CHROME);
                 radial3.setFrameDesign(steelseries.FrameDesign.CHROME);
                 radial4.setFrameDesign(steelseries.FrameDesign.CHROME);
+                clock1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 break;
             case "GOLD":
                 radial1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 radial2.setFrameDesign(steelseries.FrameDesign.GOLD);
                 radial3.setFrameDesign(steelseries.FrameDesign.GOLD);
                 radial4.setFrameDesign(steelseries.FrameDesign.GOLD);
+                clock1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 break;
             case "ANTHRACITE":
                 radial1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 radial2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 radial3.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 radial4.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                clock1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 break;
             case "TILTED_GRAY":
                 radial1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 radial2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 radial3.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 radial4.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                clock1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 break;
             case "TILTED_BLACK":
                 radial1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 radial2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 radial3.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 radial4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                clock1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 break;
         }
     }
@@ -334,71 +351,85 @@
                 radial1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 break;
             case "SATIN_GRAY":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 break;
             case "LIGHT_GRAY":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 break;
             case "WHITE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 break;
             case "BLACK":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 break;
             case "BEIGE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 break;
             case "BROWN":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 break;
             case "RED":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.RED);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.RED);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 break;
             case "GREEN":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 break;
             case "BLUE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 break;
             case "ANTHRACITE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 break;
             case "MUD":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 break;
             case "PUNCHED_SHEET":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 break;
             case "CARBON":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 break;
         }
     }
@@ -410,30 +441,35 @@
                 radial2.setForegroundType(steelseries.ForegroundType.TYPE1);
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE1);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE1);
+                clock1.setForegroundType(steelseries.ForegroundType.TYPE1);
                 break;
             case "TYPE2":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 radial2.setForegroundType(steelseries.ForegroundType.TYPE2);
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE2);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE2);
+                clock1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 break;
             case "TYPE3":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 radial2.setForegroundType(steelseries.ForegroundType.TYPE3);
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE3);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE3);
+                clock1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 break;
             case "TYPE4":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 radial2.setForegroundType(steelseries.ForegroundType.TYPE4);
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE4);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE4);
+                clock1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 break;
             case "TYPE5":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 radial2.setForegroundType(steelseries.ForegroundType.TYPE5);
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE5);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE5);
+                clock1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 break;
         }
     }
@@ -444,66 +480,79 @@
                 radial1.setPointerColor(steelseries.ColorDef.RED);
                 radial2.setPointerColor(steelseries.ColorDef.RED);
                 radial3.setPointerColor(steelseries.ColorDef.RED);
+                clock1.setPointerColor(steelseries.ColorDef.RED);
                 break;
             case "GREEN":
                 radial1.setPointerColor(steelseries.ColorDef.GREEN);
                 radial2.setPointerColor(steelseries.ColorDef.GREEN);
                 radial3.setPointerColor(steelseries.ColorDef.GREEN);
+                clock1.setPointerColor(steelseries.ColorDef.GREEN);
                 break;
             case "BLUE":
                 radial1.setPointerColor(steelseries.ColorDef.BLUE);
                 radial2.setPointerColor(steelseries.ColorDef.BLUE);
                 radial3.setPointerColor(steelseries.ColorDef.BLUE);
+                clock1.setPointerColor(steelseries.ColorDef.BLUE);
                 break;
             case "ORANGE":
                 radial1.setPointerColor(steelseries.ColorDef.ORANGE);
                 radial2.setPointerColor(steelseries.ColorDef.ORANGE);
                 radial3.setPointerColor(steelseries.ColorDef.ORANGE);
+                clock1.setPointerColor(steelseries.ColorDef.ORANGE);
                 break;
             case "YELLOW":
                 radial1.setPointerColor(steelseries.ColorDef.YELLOW);
                 radial2.setPointerColor(steelseries.ColorDef.YELLOW);
                 radial3.setPointerColor(steelseries.ColorDef.YELLOW);
+                clock1.setPointerColor(steelseries.ColorDef.YELLOW);
                 break;
             case "CYAN":
                 radial1.setPointerColor(steelseries.ColorDef.CYAN);
                 radial2.setPointerColor(steelseries.ColorDef.CYAN);
                 radial3.setPointerColor(steelseries.ColorDef.CYAN);
+                clock1.setPointerColor(steelseries.ColorDef.CYAN);
                 break;
             case "MAGENTA":
                 radial1.setPointerColor(steelseries.ColorDef.MAGENTA);
                 radial2.setPointerColor(steelseries.ColorDef.MAGENTA);
                 radial3.setPointerColor(steelseries.ColorDef.MAGENTA);
+                clock1.setPointerColor(steelseries.ColorDef.MAGENTA);
                 break;
             case "WHITE":
                 radial1.setPointerColor(steelseries.ColorDef.WHITE);
                 radial2.setPointerColor(steelseries.ColorDef.WHITE);
                 radial3.setPointerColor(steelseries.ColorDef.WHITE);
+                clock1.setPointerColor(steelseries.ColorDef.WHITE);
                 break;
             case "GRAY":
                 radial1.setPointerColor(steelseries.ColorDef.GRAY);
                 radial2.setPointerColor(steelseries.ColorDef.GRAY);
                 radial3.setPointerColor(steelseries.ColorDef.GRAY);
+                clock1.setPointerColor(steelseries.ColorDef.GRAY);
                 break;
             case "BLACK":
                 radial1.setPointerColor(steelseries.ColorDef.BLACK);
                 radial2.setPointerColor(steelseries.ColorDef.BLACK);
                 radial3.setPointerColor(steelseries.ColorDef.BLACK);
+                clock1.setPointerColor(steelseries.ColorDef.BLACK);
                 break;
             case "RAITH":
                 radial1.setPointerColor(steelseries.ColorDef.RAITH);
                 radial2.setPointerColor(steelseries.ColorDef.RAITH);
                 radial3.setPointerColor(steelseries.ColorDef.RAITH);
+                clock1.setPointerColor(steelseries.ColorDef.RAITH);
                 break;
             case "GREEN_LCD":
                 radial1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
                 radial2.setPointerColor(steelseries.ColorDef.GREEN_LCD);
                 radial3.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                clock1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
                 break;
             case "JUG_GREEN":
                 radial1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
                 radial2.setPointerColor(steelseries.ColorDef.JUG_GREEN);
                 radial3.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                clock1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
                 break;
         }
     }
@@ -513,10 +562,12 @@
             case "TYPE1":
                 radial1.setPointerType(steelseries.PointerType.TYPE1);
                 radial2.setPointerType(steelseries.PointerType.TYPE1);
+                clock1.setPointerType(steelseries.PointerType.TYPE1);
                 break;
             case "TYPE2":
                 radial1.setPointerType(steelseries.PointerType.TYPE2);
                 radial2.setPointerType(steelseries.PointerType.TYPE2);
+                clock1.setPointerType(steelseries.PointerType.TYPE2);
                 break;
             case "TYPE3":
                 radial1.setPointerType(steelseries.PointerType.TYPE3);
@@ -721,8 +772,8 @@
                 break;
         }
     }
-	
-	function setPointerAvg(sel) {
+    
+    function setPointerAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "TYPE1":
                 radial2.setPointerTypeAverage(steelseries.PointerType.TYPE1);
@@ -764,9 +815,9 @@
                 radial2.setPointerTypeAverage(steelseries.PointerType.TYPE13);
                 break;
         }
-	}
+    }
     
-	function setPointerColorAvg(sel) {
+    function setPointerColorAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "RED":
                 radial10.setPointerColorAverage(steelseries.ColorDef.RED);
