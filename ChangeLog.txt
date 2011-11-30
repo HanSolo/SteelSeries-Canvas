@@ -1,5 +1,10 @@
 Main Changes
 -------------------------
+v0.8.2
+> General Changes
+  * Added Battery component
+  * More code tidying
+-------------------------
 v0.8.1
 > General Changes
   * Added shadow to the central knob

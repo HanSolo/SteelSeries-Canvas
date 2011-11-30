@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 29.11.2011
- * Revision      : 0.8.1
+ * Last modified : 30.11.2011
+ * Revision      : 0.8.2
  */
 
 var steelseries = function() {
@@ -62,7 +62,6 @@ var steelseries = function() {
         var ledBlinking = false;
 
         var ledTimerId = 0;
-        var doc = document;
         var tween;
 
         // GaugeType specific private variables
@@ -360,7 +359,7 @@ var steelseries = function() {
             var TEXT_TRANSLATE_X = imageWidth * 0.31;
             var TEXT_WIDTH = imageWidth * 0.09;
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
-                TEXT_WIDTH = imageWidth * 0.0375; 
+                TEXT_WIDTH = imageWidth * 0.0375;
             }
             var HALF_MAX_NO_OF_MINOR_TICKS = maxNoOfMinorTicks / 2;
             var MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2));
@@ -379,19 +378,18 @@ var steelseries = function() {
                     ctx.save();
                     ctx.translate(TEXT_TRANSLATE_X, 0);
                     ctx.rotate(textRotationAngle);
-                    switch(labelNumberFormat) {
+                    switch(labelNumberFormat.format) {
 
-                        case steelseries.LabelNumberFormat.FRACTIONAL:
+                        case 'fractional':
 //                            ctx.fillText((valueCounter.toFixed(2)), 0, 0, TEXT_WIDTH);
                             ctx.fillText((valueCounter.toFixed(fractionalScaleDecimals)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.SCIENTIFIC:
+                        case 'scientific':
                             ctx.fillText((valueCounter.toPrecision(2)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.STANDARD:
-
+                        case 'standard':
                         default:
                             ctx.fillText((valueCounter.toFixed(0)), 0, 0, TEXT_WIDTH);
                             break;
@@ -1004,7 +1002,6 @@ var steelseries = function() {
         var range = maxValue - minValue;
         var ledBlinking = false;
         var ledTimerId = 0;
-        var doc = document;
         var tween;
 
         // GaugeType specific private variables
@@ -1125,7 +1122,7 @@ var steelseries = function() {
         var niceMinValue = minValue;
         var niceMaxValue = maxValue;
         var niceRange = maxValue - minValue;
-        var range = niceMaxValue - niceMinValue;
+        range = niceMaxValue - niceMinValue;
         var minorTickSpacing = 0;
         var majorTickSpacing = 0;
         var maxNoOfMinorTicks = 10;
@@ -1447,19 +1444,17 @@ var steelseries = function() {
                     ctx.save();
                     ctx.translate(TEXT_TRANSLATE_X, 0);
                     ctx.rotate(textRotationAngle);
-                    switch(labelNumberFormat)
-                    {
-                        case steelseries.LabelNumberFormat.FRACTIONAL:
+                    switch(labelNumberFormat.format) {
+                        case 'fractional':
 //                            ctx.fillText((valueCounter.toFixed(2)), 0, 0, TEXT_WIDTH);
                             ctx.fillText((valueCounter.toFixed(fractionalScaleDecimals)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.SCIENTIFIC:
+                        case 'scientific':
                             ctx.fillText((valueCounter.toPrecision(2)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.STANDARD:
-
+                        case 'standard':
                         default:
                             ctx.fillText((valueCounter.toFixed(0)), 0, 0, TEXT_WIDTH);
                             break;
@@ -1536,7 +1531,7 @@ var steelseries = function() {
 
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
 
-            if (undefined != tween) {
+            if (undefined !== tween) {
                 if (tween.playing) {
                     tween.stop();
                 }
@@ -1744,7 +1739,6 @@ var steelseries = function() {
         var ledBlinking = false;
 
         var ledTimerId = 0;
-        var doc = document;
         var tween;
 
         var angle = rotationOffset + (value - minValue) * angleStep;
@@ -1868,8 +1862,8 @@ var steelseries = function() {
         var drawPostsImage = function(ctx) {
             ctx.save();
             if ('type5' === gaugeType.type) {
-                switch(orientation) {
-                    case steelseries.Orientation.WEST:
+                switch(orientation.type) {
+                    case 'west':
                         // Min post
                         ctx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.03738316893577576), steelseries.KnobType.STANDARD_KNOB, knobStyle), imageWidth * 0.44, imageHeight * 0.80);
 
@@ -2014,18 +2008,17 @@ var steelseries = function() {
                     ctx.save();
                     ctx.translate(TEXT_TRANSLATE_X, 0);
                     ctx.rotate(textRotationAngle);
-                    switch(labelNumberFormat) {
+                    switch(labelNumberFormat.format) {
 
-                        case steelseries.LabelNumberFormat.FRACTIONAL:
+                        case 'fractional':
                             ctx.fillText((valueCounter.toFixed(2)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.SCIENTIFIC:
+                        case 'scientific':
                             ctx.fillText((valueCounter.toPrecision(2)), 0, 0, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.STANDARD:
-
+                        case 'standard':
                         default:
                             ctx.fillText((valueCounter.toFixed(0)), 0, 0, TEXT_WIDTH);
                             break;
@@ -2913,7 +2906,6 @@ var steelseries = function() {
         var ledBlinking = false;
 
         var ledTimerId = 0;
-        var doc = document;
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -3173,35 +3165,34 @@ var steelseries = function() {
                     // Draw the standard tickmark labels
                     if (vertical) {
                     // Vertical orientation
-                    switch(labelNumberFormat) {
+                    switch(labelNumberFormat.format) {
 
-                        case steelseries.LabelNumberFormat.FRACTIONAL:
+                        case 'fractional':
                             ctx.fillText((valueCounter.toFixed(2)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.SCIENTIFIC:
+                        case 'scientific':
                             ctx.fillText((valueCounter.toPrecision(2)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.STANDARD:
-
+                        case 'standard':
                         default:
                             ctx.fillText((valueCounter.toFixed(0)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
                     }
                 } else {
                         // Horizontal orientation
-                        switch(labelNumberFormat) {
+                        switch(labelNumberFormat.format) {
 
-                            case steelseries.LabelNumberFormat.FRACTIONAL:
+                            case 'fractional':
                                 ctx.fillText((valueCounter.toFixed(2)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
 
-                            case steelseries.LabelNumberFormat.SCIENTIFIC:
+                            case 'scientific':
                                 ctx.fillText((valueCounter.toPrecision(2)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
 
-                            case steelseries.LabelNumberFormat.STANDARD:
+                            case 'standard':
                             default:
                                 ctx.fillText((valueCounter.toFixed(0)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
@@ -3307,17 +3298,17 @@ var steelseries = function() {
 
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat, vertical);
-
+                var valuePos;
                 // Draw threshold image to background context
                 if (thresholdVisible) {
                     backgroundContext.save();
                     if (vertical) {
                         // Vertical orientation
-                        var valuePos = imageHeight * 0.8567961165048543 - (imageHeight * 0.7281553398) * (threshold / (maxValue - minValue));
+                        valuePos = imageHeight * 0.8567961165048543 - (imageHeight * 0.7281553398) * (threshold / (maxValue - minValue));
                         backgroundContext.translate(imageWidth * 0.4357142857142857 - Math.ceil(imageWidth * 0.046728972) - 2, valuePos - Math.ceil(imageWidth * 0.046728972) / 2.0);
                     } else {
                         // Horizontal orientation
-                        var valuePos = ((imageWidth * 0.8567961165048543) - (imageWidth * 0.12864077669902912)) * threshold / (maxValue - minValue);
+                        valuePos = ((imageWidth * 0.8567961165048543) - (imageWidth * 0.12864077669902912)) * threshold / (maxValue - minValue);
                         backgroundContext.translate(imageWidth * 0.14285714285714285 - Math.ceil(imageHeight * 0.046728972) / 2.0 + valuePos, imageHeight * 0.5714285714 + 2);
                     }
                     backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
@@ -3856,7 +3847,6 @@ var steelseries = function() {
         var ledBlinking = false;
 
         var ledTimerId = 0;
-        var doc = document;
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -4137,34 +4127,34 @@ var steelseries = function() {
                     // Draw the standard tickmark labels
                     if (vertical) {
                     // Vertical orientation
-                    switch(labelNumberFormat) {
+                    switch(labelNumberFormat.format) {
 
-                        case steelseries.LabelNumberFormat.FRACTIONAL:
+                        case 'fractional':
                             ctx.fillText((valueCounter.toFixed(2)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.SCIENTIFIC:
+                        case 'scientific':
                             ctx.fillText((valueCounter.toPrecision(2)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
 
-                        case steelseries.LabelNumberFormat.STANDARD:
+                        case 'standard':
                         default:
                             ctx.fillText((valueCounter.toFixed(0)), imageWidth * 0.28, currentPos, TEXT_WIDTH);
                             break;
                     }
                 } else {
                         // Horizontal orientation
-                        switch(labelNumberFormat) {
+                        switch(labelNumberFormat.format) {
 
-                            case steelseries.LabelNumberFormat.FRACTIONAL:
+                            case 'fractional':
                                 ctx.fillText((valueCounter.toFixed(2)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
 
-                            case steelseries.LabelNumberFormat.SCIENTIFIC:
+                            case 'scientific':
                                 ctx.fillText((valueCounter.toPrecision(2)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
 
-                            case steelseries.LabelNumberFormat.STANDARD:
+                            case 'standard':
                             default:
                                 ctx.fillText((valueCounter.toFixed(0)), currentPos, (imageHeight * 0.73), TEXT_WIDTH);
                                 break;
@@ -4497,6 +4487,8 @@ var steelseries = function() {
             var ledH;
             var ledCenterX;
             var ledCenterY;
+            var activeLeds;
+            var inactiveLeds;
             if (vertical) {
                 // VERTICAL
                 ledX = imageWidth * 0.45;
@@ -4518,34 +4510,36 @@ var steelseries = function() {
 
             // Draw the value
             if (vertical) {
+                var translateY;
                 // Draw the inactive leds
-                var inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                for (var translateY = 0 ; translateY <= inactiveLeds ; translateY += ledH + 1) {
+                inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                for (translateY = 0 ; translateY <= inactiveLeds ; translateY += ledH + 1) {
                     ctx.translate(0, -translateY);
                     ctx.drawImage(inActiveLedBuffer, ledX, ledY);
                     ctx.translate(0, translateY);
                 }
                 // Draw the active leds in dependence on the current value
                 if (0 !== value) {
-                var activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                    for (var translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
+                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                    for (translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
                         ctx.translate(0, -translateY);
                         ctx.drawImage(activeLedBuffer, ledX, ledY);
                         ctx.translate(0, translateY);
                     }
                 }
             } else {
+                var translateX;
                 // Draw the inactive leds
-                var inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                for (var translateX = -(ledW / 2) ; translateX <= inactiveLeds ; translateX += ledW + 1) {
+                inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                for (translateX = -(ledW / 2) ; translateX <= inactiveLeds ; translateX += ledW + 1) {
                     ctx.translate(translateX, 0);
                     ctx.drawImage(inActiveLedBuffer, ledX, ledY);
                     ctx.translate(-translateX, 0);
                 }
                 // Draw the active leds in dependence on the current value
                 if (0 !== value) {
-                    var activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                    for (var translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
+                    activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                    for (translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
                         ctx.translate(translateX, 0);
                         ctx.drawImage(activeLedBuffer, ledX, ledY);
                         ctx.translate(-translateX, 0);
@@ -4863,6 +4857,7 @@ var steelseries = function() {
         var valuesNumeric = (undefined === parameters.valuesNumeric ? true : parameters.valuesNumeric);
         var value = (undefined === parameters.value ? 0 : parameters.value);
         var autoScroll = (undefined === parameters.autoScroll ? false : parameters.autoScroll);
+
 //        var oldValue;
         var scrolling = false;
         var scrollX = 0;
@@ -5198,7 +5193,6 @@ var steelseries = function() {
 
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -5831,7 +5825,6 @@ var steelseries = function() {
         var angle = this.value;
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -6382,7 +6375,6 @@ var steelseries = function() {
         var range = 360;
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -6660,7 +6652,15 @@ var steelseries = function() {
                             //leave room for ordinal labels
                             break;
                         default:
-                            if (!((i+90) % 20)) {
+                            if ((i+90) % 20) {
+                                ctx.lineWidth = ((i+90)%5) ? 1.5 : 1.0;
+                                ctx.beginPath();
+                                ctx.moveTo(OUTER_POINT, 0);
+                                var to = (i+90) % 10 ? MINOR_INNER_POINT : MAJOR_INNER_POINT;
+                                ctx.lineTo(to, 0);
+                                ctx.closePath();
+                                ctx.stroke();
+                            } else {
                                 ctx.lineWidth = 1.5;
                                 ctx.beginPath();
                                 ctx.moveTo(OUTER_POINT, 0);
@@ -6675,14 +6675,6 @@ var steelseries = function() {
                                 ctx.fillText(("0".substring(val>=100) + val), 0, 0, TEXT_WIDTH);
 //                                ctx.translate(-imageWidth * 0.37, 0);
                                 ctx.translate(-TEXT_TRANSLATE_X, 0);
-                            } else {
-                                ctx.lineWidth = ((i+90)%5) ? 1.5 : 1.0;
-                                ctx.beginPath();
-                                ctx.moveTo(OUTER_POINT, 0);
-                                var to = (i+90) % 10 ? MINOR_INNER_POINT : MAJOR_INNER_POINT;
-                                ctx.lineTo(to, 0);
-                                ctx.closePath();
-                                ctx.stroke();
                             }
                     }
                     ctx.restore();
@@ -6874,7 +6866,7 @@ var steelseries = function() {
 
             var gauge = this;
 
-            if (undefined != tweenAverage) {
+            if (undefined !== tweenAverage) {
                 if (tweenAverage.playing) {
                     tweenAverage.stop();
                 }
@@ -7061,7 +7053,6 @@ var steelseries = function() {
         var upsidedown = false;
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -7101,6 +7092,7 @@ var steelseries = function() {
 
             var imgWidth = size;
             var imgHeight = size * Math.PI;
+            var y;
 
             // HORIZON
             ctx.beginPath();
@@ -7111,7 +7103,7 @@ var steelseries = function() {
             HORIZON_GRADIENT.addColorStop(0.5, 'rgba(127, 213, 240, 1.0)');
             HORIZON_GRADIENT.addColorStop(0.5, 'rgba(60, 68, 57, 1.0)');
             HORIZON_GRADIENT.addColorStop(1.0, 'rgba(60, 68, 57, 1.0)');
-            ctx.fillStyle = HORIZON_GRADIENT
+            ctx.fillStyle = HORIZON_GRADIENT;
             ctx.fill();
 
             ctx.lineWidth = 1.0;
@@ -7124,7 +7116,7 @@ var steelseries = function() {
             var fontSize = imgWidth * 0.04;
             ctx.font = fontSize + 'px sans-serif';
             ctx.fillStyle = 'rgb(55, 89, 110)';
-            for (var y = imgHeight / 2.0 - stepSizeY; y > 0; y -= stepSizeY) {
+            for (y = imgHeight / 2.0 - stepSizeY; y > 0; y -= stepSizeY) {
                 if (step <= 90) {
                     if (stepTen) {
                         ctx.fillText(step, (imgWidth - (imgWidth * 0.2)) / 2 - 8, y, imgWidth * 0.375);
@@ -7155,7 +7147,7 @@ var steelseries = function() {
             ctx.stroke();
             ctx.fillStyle = '#FFFFFF';
             ctx.lineWidth = 1.0;
-            for (var y = imgHeight / 2.0 + stepSizeY; y <= imgHeight; y += stepSizeY) {
+            for (y = imgHeight / 2.0 + stepSizeY; y <= imgHeight; y += stepSizeY) {
                 if (step <= 90) {
                     if (stepTen) {
                         ctx.fillText(-step, (imgWidth - (imgWidth * 0.2)) / 2 - 8, y, imgWidth * 0.375);
@@ -7457,7 +7449,6 @@ var steelseries = function() {
         var ledTimerId = 0;
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -7596,7 +7587,6 @@ var steelseries = function() {
         var ANGLE_STEP = 6;
 
         // Get the canvas context and clear it
-        var doc = document;
         var mainCtx = doc.getElementById(canvas).getContext('2d');
         mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
@@ -7655,7 +7645,7 @@ var steelseries = function() {
         var foregroundContext = foregroundBuffer.getContext('2d');
 
         var drawTickmarksImage = function(ctx, ptrType) {
-
+            var tickAngle;
             var SMALL_TICK_HEIGHT;
             var BIG_TICK_HEIGHT;
             var OUTER_POINT, INNER_POINT;
@@ -7671,7 +7661,7 @@ var steelseries = function() {
                     ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
                     ctx.lineWidth = imageWidth * 0.0140186916;
 
-                    for (var tickAngle = 0; tickAngle < 360; tickAngle += 30) {
+                    for (tickAngle = 0; tickAngle < 360; tickAngle += 30) {
                         ctx.beginPath();
                         ctx.moveTo(OUTER_POINT, 0);
                         ctx.lineTo(INNER_POINT, 0);
@@ -7685,7 +7675,7 @@ var steelseries = function() {
                     INNER_POINT = OUTER_POINT - BIG_TICK_HEIGHT;
                     ctx.lineWidth = imageWidth * 0.0327102804;
 
-                    for (var tickAngle = 0; tickAngle < 360; tickAngle += 90) {
+                    for (tickAngle = 0; tickAngle < 360; tickAngle += 90) {
                         ctx.beginPath();
                         ctx.moveTo(OUTER_POINT, 0);
                         ctx.lineTo(INNER_POINT, 0);
@@ -7703,7 +7693,7 @@ var steelseries = function() {
                     ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
                     ctx.lineWidth = imageWidth * 0.0093457944;
 
-                    for (var tickAngle = 0; tickAngle < 360; tickAngle += 6) {
+                    for (tickAngle = 0; tickAngle < 360; tickAngle += 6) {
                         ctx.beginPath();
                         ctx.moveTo(OUTER_POINT, 0);
                         ctx.lineTo(INNER_POINT, 0);
@@ -7717,7 +7707,7 @@ var steelseries = function() {
                     INNER_POINT = OUTER_POINT - BIG_TICK_HEIGHT;
                     ctx.lineWidth = imageWidth * 0.0280373832;
 
-                    for (var tickAngle = 0; tickAngle < 360; tickAngle += 30) {
+                    for (tickAngle = 0; tickAngle < 360; tickAngle += 30) {
                         ctx.beginPath();
                         ctx.moveTo(OUTER_POINT, 0);
                         ctx.lineTo(INNER_POINT, 0);
@@ -8336,6 +8326,126 @@ var steelseries = function() {
         return this;
     };
 
+    var battery = function(canvas, parameters) {
+        parameters = parameters || {};
+        var size = (undefined === parameters.size ? 50 : parameters.size);
+        var value = (undefined === parameters.value ? 50 : parameters.value);
+
+        var imageWidth = size;
+        var imageHeight = Math.ceil(size * 0.45);
+
+        // Get the canvas context and clear it
+        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Set the size
+        mainCtx.canvas.width = imageWidth;
+        mainCtx.canvas.height = imageWidth;
+
+        var createBatteryImage = function(ctx, imageWidth, imageHeight, value) {
+            var grad;
+
+            // Background
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.025, imageHeight * 0.05555555555555555);
+            ctx.lineTo(imageWidth * 0.9, imageHeight * 0.05555555555555555);
+            ctx.lineTo(imageWidth * 0.9, imageHeight * 0.9444444444444444);
+            ctx.lineTo(imageWidth * 0.025, imageHeight * 0.9444444444444444);
+            ctx.lineTo(imageWidth * 0.025, imageHeight * 0.05555555555555555);
+            ctx.closePath();
+            //
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.925, imageHeight * 0.0);
+            ctx.lineTo(imageWidth * 0.0, imageHeight * 0.0);
+            ctx.lineTo(imageWidth * 0.0, imageHeight * 1.0);
+            ctx.lineTo(imageWidth * 0.925, imageHeight * 1.0);
+            ctx.lineTo(imageWidth * 0.925, imageHeight * 0.7222222222222222);
+            ctx.bezierCurveTo(imageWidth * 0.925, imageHeight * 0.7222222222222222, imageWidth * 0.975, imageHeight * 0.7222222222222222, imageWidth * 0.975, imageHeight * 0.7222222222222222);
+            ctx.bezierCurveTo(imageWidth * 1.0, imageHeight * 0.7222222222222222, imageWidth * 1.0, imageHeight * 0.6666666666666666, imageWidth * 1.0, imageHeight * 0.6666666666666666);
+            ctx.bezierCurveTo(imageWidth * 1.0, imageHeight * 0.6666666666666666, imageWidth * 1.0, imageHeight * 0.3333333333333333, imageWidth * 1.0, imageHeight * 0.3333333333333333);
+            ctx.bezierCurveTo(imageWidth * 1.0, imageHeight * 0.3333333333333333, imageWidth * 1.0, imageHeight * 0.2777777777777778, imageWidth * 0.975, imageHeight * 0.2777777777777778);
+            ctx.bezierCurveTo(imageWidth * 0.975, imageHeight * 0.2777777777777778, imageWidth * 0.925, imageHeight * 0.2777777777777778, imageWidth * 0.925, imageHeight * 0.2777777777777778);
+            ctx.lineTo(imageWidth * 0.925, imageHeight * 0.0);
+            ctx.closePath();
+            //
+            grad = ctx.createLinearGradient(0, 0, 0, imageHeight);
+            grad.addColorStop(0.0, 'rgb(255, 255, 255)');
+            grad.addColorStop(1.0, 'rgb(126, 126, 126)');
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Main
+            ctx.beginPath();
+            var end = Math.max(imageWidth * 0.875 * (value / 100.0), Math.ceil(imageWidth * 0.01));
+            ctx.rect(imageWidth * 0.025, imageWidth * 0.025, end, imageHeight * 0.88888888888888);
+            ctx.closePath();
+            var BORDER_FRACTIONS = [0, 0.4, 1];
+            var BORDER_COLORS = [
+                                new rgbaColor(177, 5, 2, 1),   // 0xB11902
+                                new rgbaColor(119, 107, 23, 1), // 0xDBA715
+                                new rgbaColor(81, 242, 35, 1)  // 0x79A24B
+                                ];
+            var border = new gradientWrapper(0, 0, 100, 0, BORDER_FRACTIONS, BORDER_COLORS);
+            ctx.fillStyle = border.getColorAt(value / 100).getRgbColor();
+            ctx.fill();
+            ctx.beginPath();
+            end = Math.max(end - imageWidth * 0.05, 0)
+            ctx.rect(imageWidth * 0.05, imageWidth * 0.05, end, imageHeight * 0.77777777777777);
+            ctx.closePath();
+            var LIQUID_COLORS_DARK = [
+                                new rgbaColor(198, 9, 5, 1),   // 0xC62705
+                                new rgbaColor(108, 109, 12, 1), // 0xE4BD20
+                                new rgbaColor(23, 216, 12, 1) // 0xA3D866
+                                ];
+
+            var LIQUID_COLORS_LIGHT = [
+                                new rgbaColor(250, 61, 48, 1),   // 0xF67930
+                                new rgbaColor(234, 234, 17, 1),  // 0xF6F49D
+                                new rgbaColor(33, 254, 26, 1)     // 0xDFE956
+                                ];
+            var LIQUID_GRADIENT_FRACTIONS = [0, 0.4, 1];
+            var liquidDark = new gradientWrapper(0, 0, 100, 0, LIQUID_GRADIENT_FRACTIONS, LIQUID_COLORS_DARK);
+            var liquidLight = new gradientWrapper(0, 0, 100, 0, LIQUID_GRADIENT_FRACTIONS, LIQUID_COLORS_LIGHT);
+            grad = ctx.createLinearGradient(imageWidth * 0.05, 0, imageWidth * 0.875, 0);
+            grad.addColorStop(0, liquidDark.getColorAt(value / 100).getRgbColor());
+            grad.addColorStop(0.5, liquidLight.getColorAt(value / 100).getRgbColor());
+            grad.addColorStop(1, liquidDark.getColorAt(value / 100).getRgbColor());
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Foreground
+            ctx.beginPath();
+            ctx.rect(imageWidth * 0.025, imageWidth * 0.025, imageWidth * 0.875, imageHeight * 0.44444444444444);
+            ctx.closePath();
+            grad = ctx.createLinearGradient(imageWidth * 0.025, imageWidth * 0.025, imageWidth * 0.875, imageHeight * 0.44444444444444);
+            grad.addColorStop(0.0, 'rgba(255, 255, 255, 0)');
+            grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.8)');
+            ctx.fillStyle = grad;
+            ctx.fill();
+        };
+
+        // **************   Public methods  ********************
+        this.setValue = function(newValue) {
+            value = (newValue < 0 ? 0 : (newValue > 100 ? 100 : newValue));
+            this.repaint();
+        };
+
+        this.getValue = function() {
+            return value;
+        };
+
+        this.repaint = function() {
+            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+            createBatteryImage(mainCtx, imageWidth, imageHeight, value);
+        };
+
+        // Visualize the component
+        this.repaint();
+
+        return this;
+    };
+
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
     var radBBuffer = createBuffer(1,1);
@@ -8358,13 +8468,14 @@ var steelseries = function() {
 
     var drawRoseImage = function(ctx, centerX, centerY, imageWidth, imageHeight, backgroundColor) {
         var alternate = 0;
+        var i;
         ctx.save();
         ctx.lineWidth = 1.0;
         ctx.fillStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.translate(centerX, centerY);
         // broken ring
-        for (var i = 0; 360 > i; i += 15) {
+        for (i = 0; 360 > i; i += 15) {
             alternate++;
 
             ctx.beginPath();
@@ -8532,7 +8643,7 @@ var steelseries = function() {
 */
         // Replacement code, not quite the same but much smaller!
 
-        for (var i = 0; 360 >= i; i += 90) {
+        for (i = 0; 360 >= i; i += 90) {
             // Small pointers
             ctx.beginPath();
             ctx.moveTo(imageWidth * 0.5607476635514018, imageHeight * 0.5841121495327103);
@@ -9010,6 +9121,44 @@ var steelseries = function() {
                 radFCtx.fillStyle = grad;
                 radFCtx.fill();
                 break;
+ /*
+            case "glossyMetal":
+                grad = radFCtx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageWidth, 0.5 * imageWidth);
+                grad.addColorStop(0, 'rgba(207, 207, 207, 1)');
+                grad.addColorStop(0.96, 'rgba(205, 204, 205, 1)');
+                grad.addColorStop(1, 'rgba(244, 244, 244, 1)');
+                radFCtx.fillStyle = grad;
+ //               radFCtx.fill();
+//                var tmp = createBuffer(imageWidth, imageHeight);
+ //               tmpCtx = tmp.getContext('2d');
+                radFCtx.beginPath();
+                radFCtx.arc(0.0140186916 * imageWidth, 0.0140186916 * imageHeight, 0.9719626168 * imageWidth / 2, 0, Math.PI * 2);
+                radFCtx.closePath();
+                grad = radFCtx.createLinearGradient(0, 0, 0.9719626168 * imageHeight, 0.9719626168 * imageHeight);
+        //        grad = radFCtx.createLinearGradient(0, imageHeight - 0.9719626168 * imageHeight, 0.9719626168 * imageHeight, 0.9719626168 * imageHeight);
+                grad.addColorStop(0, 'rgba(249, 249, 249, 1)');
+                grad.addColorStop(0.23, 'rgba(200, 195, 191, 1)');
+                grad.addColorStop(0.36, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.59, 'rgba(29, 29, 29, 1)');
+                grad.addColorStop(0.76, 'rgba(200, 194, 192, 1)');
+                grad.addColorStop(1, 'rgba(209, 209, 209, 1)');
+                radFCtx.fillStyle = grad;
+                radFCtx.fill();
+                //radFCtx.drawImage(tmp, 0, 0);
+
+                //G2.fill(FRAME_MAIN_GLOSSY2);
+
+                //final Area FRAME_MAIN_GLOSSY3 = new Area(new Ellipse2D.Double(0.06542056074766354 * IMAGE_WIDTH, 0.06542056074766354 * IMAGE_HEIGHT, 0.8691588785046729 * IMAGE_WIDTH, 0.8691588785046729 * IMAGE_HEIGHT));
+                //FRAME_MAIN_GLOSSY3.subtract(SUBTRACT);
+                //G2.setColor(new Color(0xf6f6f6));
+                //G2.fill(FRAME_MAIN_GLOSSY3);
+
+                //final Area FRAME_MAIN_GLOSSY4 = new Area(new Ellipse2D.Double(FRAME_MAIN_GLOSSY3.getBounds2D().getMinX() + 2, FRAME_MAIN_GLOSSY3.getBounds2D().getMinY() + 2, FRAME_MAIN_GLOSSY3.getBounds2D().getWidth() - 4, FRAME_MAIN_GLOSSY3.getBounds2D().getHeight() - 4));
+                //FRAME_MAIN_GLOSSY4.subtract(SUBTRACT);
+                //G2.setColor(new Color(0x333333));
+                //G2.fill(FRAME_MAIN_GLOSSY4);
+                break;
+*/
         }
 
         if ("blackMetal" === frameDesign.design) {
@@ -9037,7 +9186,8 @@ var steelseries = function() {
             radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.9906542301177979 / 2.0, 0, Math.PI * 2, true));
             outerX = imageWidth * 0.4953271028;
             innerX = imageWidth * 0.4205607477;
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(radFCtx, centerX, centerY, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(radFCtx, centerX, centerY, innerX, outerX);
             radFCtx.restore();
         }
 
@@ -9070,7 +9220,8 @@ var steelseries = function() {
             radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.9906542301177979 / 2.0, 0, Math.PI * 2, true));
             outerX = imageWidth * 0.4953271028;
             innerX = imageWidth * 0.4205607477;
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(radFCtx, centerX, centerY, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(radFCtx, centerX, centerY, innerX, outerX);
             radFCtx.restore();
         }
 
@@ -9119,7 +9270,8 @@ var steelseries = function() {
             radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.9906542301177979 / 2.0, 0, Math.PI * 2, true));
             outerX = imageWidth * 0.4953271028;
             innerX = imageWidth * 0.4205607477;
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(radFCtx, centerX, centerY, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(radFCtx, centerX, centerY, innerX, outerX);
             radFCtx.restore();
         }
 
@@ -9277,7 +9429,8 @@ var steelseries = function() {
             }
             // Set the clip
             linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, 5));
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
         }
 
         if ("shinyMetal" === frameDesign.design) {
@@ -9314,7 +9467,8 @@ var steelseries = function() {
             }
             // Set the clip
             linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, 5));
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
         }
 
         if ("chrome" === frameDesign.design) {
@@ -9366,7 +9520,8 @@ var steelseries = function() {
             }
             // Set the clip
             linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, 5));
-            conicalGradient(fractions, colors, -Math.PI / 2).fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
+            grad = new conicalGradient(fractions, colors, -Math.PI / 2);
+            grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
         }
 
         roundedRectangle(linFCtx, 13, 13, imageWidth - 26, imageHeight - 26, 4);
@@ -9573,8 +9728,8 @@ var steelseries = function() {
         // highlight
         var gradHighlight;
 
-        switch (foregroundType) {
-            case steelseries.ForegroundType.TYPE2:
+        switch (foregroundType.type) {
+            case 'type2':
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.13551401869158877, imageHeight * 0.6962616822429907);
                 radFgCtx.bezierCurveTo(imageWidth * 0.21495327102803738, imageHeight * 0.5887850467289719, imageWidth * 0.3177570093457944, imageHeight * 0.5, imageWidth * 0.46261682242990654, imageHeight * 0.4252336448598131);
@@ -9587,7 +9742,7 @@ var steelseries = function() {
                 gradHighlight.addColorStop(1.0, 'rgba(255, 255, 255, 0.015)');
                 break;
 
-            case steelseries.ForegroundType.TYPE3:
+            case 'type3':
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.08411214953271028, imageHeight * 0.5093457943925234);
                 radFgCtx.bezierCurveTo(imageWidth * 0.2102803738317757, imageHeight * 0.5560747663551402, imageWidth * 0.46261682242990654, imageHeight * 0.5607476635514018, imageWidth * 0.5, imageHeight * 0.5607476635514018);
@@ -9600,7 +9755,7 @@ var steelseries = function() {
                 gradHighlight.addColorStop(1.0, 'rgba(255, 255, 255, 0.015)');
                 break;
 
-            case steelseries.ForegroundType.TYPE4:
+            case 'type4':
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.677570093457944, imageHeight * 0.24299065420560748);
                 radFgCtx.bezierCurveTo(imageWidth * 0.7710280373831776, imageHeight * 0.308411214953271, imageWidth * 0.822429906542056, imageHeight * 0.411214953271028, imageWidth * 0.8130841121495327, imageHeight * 0.5280373831775701);
@@ -9636,7 +9791,7 @@ var steelseries = function() {
                 radFgCtx.fill();
                 break;
 
-            case steelseries.ForegroundType.TYPE5:
+            case 'type5':
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.08411214953271028, imageHeight * 0.5);
                 radFgCtx.bezierCurveTo(imageWidth * 0.08411214953271028, imageHeight * 0.27102803738317754, imageWidth * 0.27102803738317754, imageHeight * 0.08411214953271028, imageWidth * 0.5, imageHeight * 0.08411214953271028);
@@ -9651,8 +9806,7 @@ var steelseries = function() {
                 gradHighlight.addColorStop(1.0, 'rgba(255, 255, 255, 0.015)');
                 break;
 
-            case steelseries.ForegroundType.TYPE1:
-
+            case 'type1':
             default:
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.08411214953271028, imageHeight * 0.5093457943925234);
@@ -9773,9 +9927,9 @@ var steelseries = function() {
                 knobCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
         }
 
-        switch(knob) {
+        switch(knob.type) {
 
-            case steelseries.KnobType.METAL_KNOB:
+            case 'metalKnob':
                 // METALKNOB_FRAME
                 knobCtx.save();
                 knobCtx.beginPath();
@@ -9805,24 +9959,23 @@ var steelseries = function() {
                 knobCtx.closePath();
                 if (!shadow) {
                     var metalKnobMainGradient = knobCtx.createLinearGradient((0.5 * size), (0.05555555555555555 * size), ((0.5 + 5.442874662877125E-17) * size), ((0.05555555555555555 + 0.8888888888888888) * size));
-                    switch(style) {
+                    switch(style.style) {
 
-                        case steelseries.KnobStyle.BLACK:
+                        case 'black':
                             metalKnobMainGradient.addColorStop(0.0, 'rgba(43, 42, 47, 1.0)');
                             metalKnobMainGradient.addColorStop(1.0, 'rgba(26, 27, 32, 1.0)');
                             knobCtx.fillStyle = metalKnobMainGradient;
                             knobCtx.fill();
                             break;
 
-                        case steelseries.KnobStyle.BRASS:
+                        case 'brass':
                             metalKnobMainGradient.addColorStop(0.0, 'rgba(150, 110, 54, 1.0)');
                             metalKnobMainGradient.addColorStop(1.0, 'rgba(124, 95, 61, 1.0)');
                             knobCtx.fillStyle = metalKnobMainGradient;
                             knobCtx.fill();
                             break;
 
-                        case steelseries.KnobStyle.SILVER:
-
+                        case 'silver':
                         default:
                             metalKnobMainGradient.addColorStop(0.0, 'rgba(204, 204, 204, 1.0)');
                             metalKnobMainGradient.addColorStop(1.0, 'rgba(87, 92, 98, 1.0)');
@@ -9903,7 +10056,7 @@ var steelseries = function() {
                 knobCtx.fill();
                 break;
 
-            case steelseries.KnobType.STANDARD_KNOB:
+            case 'standardKnob':
                 if (!shadow) {
                     var stdKnobFrameGradient = knobCtx.createLinearGradient(0, 0, 0, size);
                     stdKnobFrameGradient.addColorStop(0.0, 'rgb(180, 180, 180)');
@@ -9920,24 +10073,23 @@ var steelseries = function() {
                 knobCtx.save();
                 if (!shadow) {
                     var stdKnobMainGradient = knobCtx.createLinearGradient(0, size - size * 0.77, 0, size - size * 0.77 + size * 0.77);
-                    switch(style) {
+                    switch(style.style) {
 
-                        case steelseries.KnobStyle.BLACK:
+                        case 'black':
                             stdKnobMainGradient.addColorStop(0.0, 'rgba(191, 191, 191, 1.0)');
                             stdKnobMainGradient.addColorStop(0.5, 'rgba(45, 44, 49, 1.0)');
                             stdKnobMainGradient.addColorStop(1.0, 'rgba(125, 126, 128, 1.0)');
                             knobCtx.fillStyle = stdKnobMainGradient;
                             break;
 
-                        case steelseries.KnobStyle.BRASS:
+                        case 'brass':
                             stdKnobMainGradient.addColorStop(0.0, 'rgba(223, 208, 174, 1.0)');
                             stdKnobMainGradient.addColorStop(0.5, 'rgba(123, 95, 63, 1.0)');
                             stdKnobMainGradient.addColorStop(1.0, 'rgba(207, 190, 157, 1.0)');
                             knobCtx.fillStyle = stdKnobMainGradient;
                             break;
 
-                        case steelseries.KnobStyle.SILVER:
-
+                        case 'silver':
                         default:
                             stdKnobMainGradient.addColorStop(0.0, 'rgba(215, 215, 215, 1.0)');
                             stdKnobMainGradient.addColorStop(0.5, 'rgba(116, 116, 116, 1.0)');
@@ -10175,12 +10327,14 @@ var steelseries = function() {
     };
 
     var drawTitleImage = function(ctx, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, radial, altPos) {
+        var unitWidth = ctx.measureText(unitString).width;
+        var baseSize = imageWidth;
+
         ctx.save();
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
         ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
-        var baseSize = imageWidth;
         if (!radial && !vertical) {
             baseSize = imageHeight;
         }
@@ -10189,7 +10343,6 @@ var steelseries = function() {
             ctx.font = 0.04672897196261682 * imageWidth + 'px sans-serif';
             var titleWidth = ctx.measureText(titleString).width;
             ctx.fillText(titleString, (imageWidth - titleWidth) / 2.0, imageHeight * 0.3, imageWidth * 0.3);
-            var unitWidth = ctx.measureText(unitString).width;
             ctx.fillText(unitString, (imageWidth - unitWidth) / 2.0, imageHeight * 0.38, imageWidth * 0.2);
         } else {
             if (vertical) {
@@ -10203,7 +10356,6 @@ var steelseries = function() {
                 ctx.restore();
 
                 ctx.font = 0.07142857142857142 * imageWidth + 'px sans-serif';
-                var unitWidth = ctx.measureText(unitString).width;
                 if (altPos) {
                     ctx.fillText(unitString, 0.63 * imageWidth, imageHeight * 0.85, imageWidth * 0.2);
                 } else {
@@ -10490,67 +10642,77 @@ var steelseries = function() {
         };
     };
 
-    function conicalGradient(fractions, colors, rotationOffset) {
-        var conicalGradient = function(fractions, colors, rotationOffset) {
-            rotationOffset = rotationOffset === undefined ? -Math.PI / 2 : rotationOffset;
+    var conicalGradient = function(fractions, colors, rotationOffset) {
 
-            this.fill = function(ctx, centerX, centerY, innerX, outerX) {
-                var startAngle;
-                var stopAngle;
-                var RAD_FACTOR = 180 / Math.PI;
-                var TWO_PI = 2 * Math.PI;
-                var angleStep = (TWO_PI) / 720;
-                var range;
-                var startColor;
-                var stopColor;
+        rotationOffset = (rotationOffset === undefined ? -Math.PI / 2 : rotationOffset);
 
-                ctx.save();
-                ctx.lineWidth = 2;
-                ctx.translate(centerX, centerY);
-                ctx.rotate(rotationOffset);
+        this.fill = function(ctx, centerX, centerY, innerX, outerX) {
+            var startAngle;
+            var stopAngle;
+            var RAD_FACTOR = 180 / Math.PI;
+            var TWO_PI = 2 * Math.PI;
+            var angleStep = (TWO_PI) / 720;
+            var range;
+            var startColor;
+            var stopColor;
 
-                for (var i = 0, size = fractions.length - 1; i < size; i++) {
-                    startAngle = TWO_PI * fractions[i];
-                    stopAngle = TWO_PI * fractions[i + 1];
-                    range = (stopAngle - startAngle) * RAD_FACTOR;
-                    startColor = colors[i];
-                    stopColor = colors[i + 1];
-                    for (var angle = startAngle; angle < stopAngle; angle += angleStep) {
-                        ctx.rotate(angleStep);
-                        ctx.strokeStyle = getColorFromFraction(startColor, stopColor, range, (angle - startAngle) * RAD_FACTOR).getRgbaColor();
-                        ctx.beginPath();
-                        ctx.moveTo(innerX, 0);
-                        ctx.lineTo(outerX, 0);
-                        ctx.closePath();
-                        ctx.stroke();
-                    }
+            ctx.save();
+            ctx.lineWidth = 2;
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotationOffset);
+
+            for (var i = 0, size = fractions.length - 1; i < size; i++) {
+                startAngle = TWO_PI * fractions[i];
+                stopAngle = TWO_PI * fractions[i + 1];
+                range = (stopAngle - startAngle) * RAD_FACTOR;
+                startColor = colors[i];
+                stopColor = colors[i + 1];
+                for (var angle = startAngle; angle < stopAngle; angle += angleStep) {
+                    ctx.rotate(angleStep);
+                    ctx.strokeStyle = getColorFromFraction(startColor, stopColor, range, (angle - startAngle) * RAD_FACTOR).getRgbaColor();
+                    ctx.beginPath();
+                    ctx.moveTo(innerX, 0);
+                    ctx.lineTo(outerX, 0);
+                    ctx.closePath();
+                    ctx.stroke();
                 }
-                ctx.restore();
-            };
+            }
+            ctx.restore();
+        };
+    };
 
-            var getColorFromFraction = function(sourceColor, destinationColor, range, fraction) {
-                var intToFloat = 1 / 255;
-                var sourceRed = sourceColor.getRed();
-                var sourceGreen = sourceColor.getGreen();
-                var sourceBlue = sourceColor.getBlue();
-                var sourceAlpha = sourceColor.getAlpha();
+    var gradientWrapper = function(startX, startY, endX, endY, fractions, colors) {
 
-                var deltaRed = destinationColor.getRed() - sourceColor.getRed();
-                var deltaGreen = destinationColor.getGreen() - sourceColor.getGreen();
-                var deltaBlue = destinationColor.getBlue() - sourceColor.getBlue();
-                var deltaAlpha = destinationColor.getAlpha() * intToFloat - sourceColor.getAlpha() * intToFloat;
+        this.getColorAt = function(fraction) {
+            fraction = (fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction));
+            var lowerLimit = 0;
+            var lowerIndex = 0;
+            var upperLimit = 1;
+            var upperIndex = 1;
+            var index = 0;
+            var i;
 
-                var fractionRed = deltaRed / range;
-                var fractionGreen = deltaGreen / range;
-                var fractionBlue = deltaBlue / range;
-                var fractionAlpha = deltaAlpha / range;
-
-                return new rgbaColor((sourceRed + fractionRed * fraction).toFixed(0), (sourceGreen + fractionGreen * fraction).toFixed(0), (sourceBlue + fractionBlue * fraction).toFixed(0), sourceAlpha + fractionAlpha * fraction);
-            };
+            for (i = 0; i < fractions.length; i++) {
+                if (fraction[i] < fraction) {
+                    lowerLimit = fraction[i];
+                    lowerIndex = i;
+                }
+                if (fraction[i] == fraction) {
+                    return colors[i];
+                }
+                if (fraction[i] > fraction) {
+                    upperLimit = fraction[i];
+                    upperIndex = i;
+                }
+            }
+            var interpolationFraction = (fraction - lowerLimit) / (upperLimit - lowerLimit);
+            return getColorFromFraction(colors[lowerIndex], colors[upperIndex], 1, interpolationFraction);
         };
 
-        return new conicalGradient(fractions, colors, rotationOffset);
-    }
+        this.paintContext = function(ctx, value) {
+
+        };
+    };
 
     function setAlpha(hex, alpha) {
         var hexColor = ("#" === hex.charAt(0)) ? hex.substring(1, 7) : hex;
@@ -10584,13 +10746,11 @@ var steelseries = function() {
     }
 
     function section(start, stop, color) {
-        var section = function(start, stop, color) {
-            this.start = start;
-            this.stop = stop;
-            this.color = color;
+        return {
+            start : start,
+            stop : stop,
+            color : color
         };
-
-        return new section(start, stop, color);
     }
 
     Math.log10 = function(value) {
@@ -10713,16 +10873,13 @@ var steelseries = function() {
     }
 
     function hsl2Rgb(hue, saturation, lightness){
-    var red;
-    var green;
-    var blue;
+        var red;
+        var green;
+        var blue;
 
-    if (saturation === 0) {
-        red = green = blue = lightness; // achromatic
-    } else {
         function hue2rgb(p, q, t) {
-            if(t < 0) t += 1;
-            if(t > 1) t -= 1;
+            if(t < 0) {t += 1;}
+            if(t > 1) {t -= 1;}
             if(t < 1/6) {
                 return p + (q - p) * 6 * t;
             }
@@ -10730,11 +10887,14 @@ var steelseries = function() {
                 return q;
             }
             if(t < 2/3) {
-
-            } return p + (q - p) * (2/3 - t) * 6;
+                return p + (q - p) * (2/3 - t) * 6;
+            }
             return p;
         }
 
+    if (saturation === 0) {
+        red = green = blue = lightness; // achromatic
+    } else {
         var q = (lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation);
         var p = 2 * lightness - q;
         red = hue2rgb(p, q, hue + 1/3);
@@ -10747,7 +10907,7 @@ var steelseries = function() {
 
     function hsb2Hsl(hue, saturation, brightness) {
         var lightness = (brightness - saturation) / 2;
-        return new Array(hue, saturation, lightness)
+        return new Array(hue, saturation, lightness);
     }
 
     function hsl2Hsb(hue, saturation, lightness) {
@@ -10756,8 +10916,9 @@ var steelseries = function() {
     }
 
     function wrap(value, lower, upper) {
-        if (upper <= lower)
+        if (upper <= lower) {
             throw "Rotary bounds are of negative or zero size";
+        }
 
         var distance = upper - lower;
         var times = Math.floor((value - lower) / distance);
@@ -10979,6 +11140,7 @@ var steelseries = function() {
         ANTHRACITE: new frameDesignDef('anthracite'),
         TILTED_GRAY: new frameDesignDef('tiltedGray'),
         TILTED_BLACK: new frameDesignDef('tiltedBlack')
+//        GLOSSY_METAL: new frameDesignDef('glossyMetal')
     };
 
     var pointerType = {
@@ -11027,6 +11189,7 @@ var steelseries = function() {
         Horizon : horizon,
         Led : led,
         Clock : clock,
+        Battery : battery,
 
         // Images
         drawFrame : drawRadialFrameImage,
