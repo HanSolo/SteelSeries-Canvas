@@ -1,9 +1,24 @@
 Main Changes
 -------------------------
+v0.8.3
+> RadialBargraph
+  * Added section parameter handling, any defined sections will colour the bargraph
+  * setSection() method now functional
+
+> LinearBargraph
+  * Added section parameter handling, any defined sections will colour the bargraph
+  * setSection() method now functional
+  
+> General Changes
+  * Added some value checking to the commonly called setValue() type methods to avoid
+    unecessary component redraws
+
+-------------------------
 v0.8.2
 > General Changes
   * Added Battery component
   * More code tidying
+
 -------------------------
 v0.8.1
 > General Changes

@@ -134,12 +134,12 @@
 
     function init() {
         // Define some sections
-        var sections = Array(steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'),
-                             steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'),
-                             steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)'));
+        var sections = [steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'),
+                        steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'),
+                        steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)')];
 
         // Define one area
-        var areas = Array(steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)'));
+        var areas = [steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)')];
 
 
         // Initializing gauge
@@ -175,6 +175,7 @@
         linear5 = new steelseries.LinearBargraph('canvasLinear5', {
                             titleString: "Title",
                             unitString: "Unit",
+							section: sections,
                             threshold: 50,
                             lcdVisible: false
                             });
@@ -182,6 +183,7 @@
         linear6 = new steelseries.LinearBargraph('canvasLinear6', {
 							width: 320,
 							height: 140,
+							section: sections,
                             titleString: "Title",
                             unitString: "Unit",
                             threshold: 50,

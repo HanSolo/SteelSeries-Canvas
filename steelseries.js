@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 30.11.2011
- * Revision      : 0.8.2
+ * Last modified : 04.12.2011
+ * Revision      : 0.8.3
  */
 
 var steelseries = function() {
@@ -659,61 +659,8 @@ var steelseries = function() {
         //************************************ Public methods **************************************
         this.setValue = function(newValue) {
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
-
-            value = targetValue;
-
-            if (value > maxMeasuredValue) {
-                maxMeasuredValue = value;
-            }
-            if (value < minMeasuredValue) {
-                minMeasuredValue = value;
-            }
-
-            if (value >= threshold && !ledBlinking) {
-                ledBlinking = true;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.play();
-                }
-            } else if (value < threshold) {
-                ledBlinking = false;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.pause();
-                }
-            }
-
-            this.repaint();
-        };
-
-        this.getValue = function() {
-            return value;
-        };
-
-        this.setValueAnimated = function(newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            if (undefined !== tween) {
-                if (tween.playing) {
-                    tween.stop();
-                }
-            }
-
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
-
-                if (value >= threshold && !ledBlinking) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                } else if (value < threshold) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                }
+            if (value !== targetValue) {
+                 value = targetValue;
 
                 if (value > maxMeasuredValue) {
                     maxMeasuredValue = value;
@@ -722,10 +669,63 @@ var steelseries = function() {
                     minMeasuredValue = value;
                 }
 
-                gauge.repaint();
-            };
+                if (value >= threshold && !ledBlinking) {
+                    ledBlinking = true;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.play();
+                    }
+                } else if (value < threshold) {
+                    ledBlinking = false;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.pause();
+                    }
+                }
+                this.repaint();
+           }
+        };
 
-            tween.start();
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (value !== targetValue) {
+                if (undefined !== tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                    }
+
+                    if (value > maxMeasuredValue) {
+                        maxMeasuredValue = value;
+                    }
+                    if (value < minMeasuredValue) {
+                        minMeasuredValue = value;
+                    }
+
+                    gauge.repaint();
+                };
+                tween.start();
+            }
         };
 
         this.resetMinMeasuredValue = function() {
@@ -748,29 +748,31 @@ var steelseries = function() {
             this.repaint();
         };
 
-        this.setMaxMeasuredValue = function(value) {
-            maxMeasuredValue = value;
+        this.setMaxMeasuredValue = function(newValue) {
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            maxMeasuredValue = targetValue;
             this.repaint();
         };
 
-        this.setMinMeasuredValue = function(value) {
-            minMeasuredValue = value;
+        this.setMinMeasuredValue = function(newValue) {
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            minMeasuredValue = targetValue;
             this.repaint();
         };
 
 		this.setTitleString = function(title){
-			titleString = title;
-			init({background: true});
+            titleString = title;
+            init({background: true});
 		};
 
 		this.setUnitString = function(unit){
-			unitString = unit;
-			init({background: true});
+            unitString = unit;
+            init({background: true});
 		};
 
 		this.setMinValue = function(value){
-			minValue = value;
-			init({background: true});
+            minValue = value;
+            init({background: true});
 		};
 	
 		this.getMinValue = function(){
@@ -778,36 +780,37 @@ var steelseries = function() {
 		};
 
 		this.setMaxValue = function(value){
-			maxValue = value;
-			init({background: true});
+            maxValue = value;
+            init({background: true});
 		};
 
 		this.getMaxValue = function(){
 			return maxValue;
 		};		
 	
-		this.setThreshold = function(threshVal) {
-			threshold = threshVal;
-			init({background: true});
-			this.repaint();
+		this.setThreshold = function(newValue) {
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            threshold = targetValue;
+            init({background: true});
+            this.repaint();
 		};
 
 		this.setArea = function(areaVal){
-			area = areaVal;
-			resetBuffers({foreground: true});
-			init({background: true,
-				foreground: true
+            area = areaVal;
+            resetBuffers({foreground: true});
+            init({background: true,
+                foreground: true
                 });
-			this.repaint();
+            this.repaint();
 		};
 
 		this.setSection = function(areaSec){
-			section = areaSec;
-			resetBuffers({foreground: true});
-			init({background: true,
-				foreground: true
-                });
-			this.repaint();
+                section = areaSec;
+                resetBuffers({foreground: true});
+                init({background: true,
+                    foreground: true
+                    });
+                this.repaint();
 		};
 
         this.setThresholdVisible = function(visible) {
@@ -817,6 +820,7 @@ var steelseries = function() {
 
         this.setLcdDecimals = function(decimals) {
             lcdDecimals = decimals;
+            this.repaint();
         };
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -868,7 +872,6 @@ var steelseries = function() {
         };
 
         this.setLcdColor = function(newLcdColor) {
-//            resetBuffers({background: true});
             lcdColor = newLcdColor;
             init({background: true});
             this.repaint();
@@ -994,7 +997,6 @@ var steelseries = function() {
         if (playAlarm && alarmSound !== false) {
             var audioElement = doc.createElement('audio');
             audioElement.setAttribute('src', alarmSound);
-            //audioElement.setAttribute('src', 'js/alarm.mp3');
             audioElement.setAttribute('preload', 'auto');
         }
 
@@ -1012,6 +1014,9 @@ var steelseries = function() {
         var angleRange;
         var degAngleRange;
         var angleStep;
+
+        var sectionAngles =[];
+        var isSectionsVisible = false;
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -1244,9 +1249,22 @@ var steelseries = function() {
                 }
             }
 
+            // Convert Sections into angles
+            isSectionsVisible = false;
+            if (null !== section && 0 < section.length) {
+                isSectionsVisible = true;
+                var sectionIndex = section.length;
+                do {
+                    sectionIndex--;
+                    sectionAngles.push({start: (((section[sectionIndex].start + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange),
+                                         stop: (((section[sectionIndex].stop + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange),
+                                        color: customColorDef(section[sectionIndex].color)});
+                } while (0 < sectionIndex);
+            }
+
             // Create an image of an active led in active led buffer (activeLedBuffer)
             if (drawValue) {
-                drawActiveLed(activeLedContext);
+                drawActiveLed(activeLedContext, valueColor);
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
@@ -1370,7 +1388,7 @@ var steelseries = function() {
             ctx.restore();
         };
 
-        var drawActiveLed = function(ctx) {
+        var drawActiveLed = function(ctx, color) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -1378,8 +1396,8 @@ var steelseries = function() {
             var ledCenterX = (ctx.canvas.width / 2);
             var ledCenterY = (ctx.canvas.height / 2);
             var ledGradient = mainCtx.createRadialGradient(ledCenterX, ledCenterY, 0, ledCenterX, ledCenterY, ctx.canvas.width / 2);
-            ledGradient.addColorStop(0.0, valueColor.light.getRgbaColor());
-            ledGradient.addColorStop(1.0, valueColor.dark.getRgbaColor());
+            ledGradient.addColorStop(0.0, color.light.getRgbaColor());
+            ledGradient.addColorStop(1.0, color.dark.getRgbaColor());
             ctx.fillStyle = ledGradient;
             ctx.fill();
             ctx.restore();
@@ -1501,26 +1519,26 @@ var steelseries = function() {
 
         //********************************* Public methods *********************************
         this.setValue = function(newValue) {
-
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (value !== targetValue) {
+                value = targetValue;
 
-            value = targetValue;
+                if (value >= threshold && !ledBlinking) {
+                    ledBlinking = true;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.play();
+                    }
+                } else if (value < threshold) {
+                    ledBlinking = false;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.pause();
+                    }
+                }
 
-            if (value >= threshold && !ledBlinking) {
-                ledBlinking = true;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.play();
-                }
-            } else if (value < threshold) {
-                ledBlinking = false;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.pause();
-                }
+                this.repaint();
             }
-
-            this.repaint();
         };
 
         this.getValue = function() {
@@ -1528,34 +1546,34 @@ var steelseries = function() {
         };
 
         this.setValueAnimated = function(newValue) {
-
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            if (undefined !== tween) {
-                if (tween.playing) {
-                    tween.stop();
+            if (value !== targetValue) {
+                if (undefined !== tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
                 }
+
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                    }
+
+                    gauge.repaint();
+                };
+                tween.start();
             }
-
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
-
-                if (value >= threshold && !ledBlinking) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                } else if (value < threshold) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                }
-
-                gauge.repaint();
-            };
-            tween.start();
         };
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -1596,17 +1614,26 @@ var steelseries = function() {
         };
 
         this.setLcdColor = function(newLcdColor) {
-            resetBuffers({background: true});
             lcdColor = newLcdColor;
             init({background: true});
             this.repaint();
         };
 
+		this.setSection = function(areaSec){
+                section = areaSec;
+                resetBuffers({foreground: true});
+                init({background: true,
+                    foreground: true
+                    });
+                this.repaint();
+		};
+
 		this.setMinValue = function(value){
-			minValue = value;
-			init({background: true,
-				foreground: true,
-				pointer: true});
+            minValue = value;
+            init({background: true,
+                foreground: true,
+                pointer: true});
+            this.repaint();
 		};
 	
 		this.getMinValue = function(){
@@ -1614,10 +1641,11 @@ var steelseries = function() {
 		};
 		
 		this.setMaxValue = function(value){
-			maxValue = value;
-			init({background: true,
-				foreground: true,
-				pointer: true});
+            maxValue = value;
+            init({background: true,
+                foreground: true,
+                pointer: true});
+            this.repaint();
 		};
 
 		this.getMaxValue = function(){
@@ -1625,14 +1653,17 @@ var steelseries = function() {
         };
 
 		this.setTitleString = function(title){
-			titleString = title;
-			init({background: true});
+            titleString = title;
+            init({background: true});
+            this.repaint();
 		};
 
 		this.setUnitString = function(unit){
-			unitString = title;
-			init({background: true});
+            unitString = unit;
+            init({background: true});
+            this.repaint();
 		};
+
         this.repaint = function() {
 
             if (!initialized) {
@@ -1654,8 +1685,24 @@ var steelseries = function() {
 
             // Draw active leds
             var activeLedAngle = ((value + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange;
-
+            var activeLedColor;
+            var lastActiveLedColor = valueColor;
             for (var angle = 0; angle <= activeLedAngle; angle += 5.0) {
+                //check for LED color
+                activeLedColor = valueColor;
+                if (isSectionsVisible) {
+                    for (var i =0; i < sectionAngles.length; i++) {
+                        if (angle >= sectionAngles[i].start && angle < sectionAngles[i].stop) {
+                            activeLedColor = sectionAngles[i].color;
+                            break;
+                        }
+                    }
+                }
+                // Has LED color changed? If so redraw the buffer
+                if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
+                    drawActiveLed(activeLedContext, activeLedColor);
+                    lastActiveLedColor = activeLedColor;
+                }
                 mainCtx.save();
                 mainCtx.translate(centerX, centerY);
                 mainCtx.rotate((angle * RAD_FACTOR) + bargraphOffset);
@@ -1724,7 +1771,6 @@ var steelseries = function() {
         if (playAlarm && alarmSound !== false) {
             var audioElement = doc.createElement('audio');
             audioElement.setAttribute('src', alarmSound);
-            //audioElement.setAttribute('src', 'js/alarm.mp3');
             audioElement.setAttribute('preload', 'auto');
         }
         var gaugeType = steelseries.GaugeType.TYPE5;
@@ -1755,7 +1801,7 @@ var steelseries = function() {
         var imageWidth = size;
         var imageHeight = size;
 
-        var centerX = imageWidth / 2.0;
+        var centerX = imageWidth / 2;
         var centerY = imageHeight * 0.7336448598;
 
         // Misc
@@ -2622,60 +2668,8 @@ var steelseries = function() {
         //************************************ Public methods **************************************
         this.setValue = function(newValue) {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            value = targetValue;
-
-            if (value > maxMeasuredValue) {
-                maxMeasuredValue = value;
-            }
-            if (value < minMeasuredValue) {
-                minMeasuredValue = value;
-            }
-
-            if (value >= threshold && !ledBlinking) {
-                ledBlinking = true;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.play();
-                }
-            } else if (value < threshold) {
-                ledBlinking = false;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.pause();
-                }
-            }
-
-            this.repaint();
-        };
-
-        this.getValue = function() {
-            return value;
-        };
-
-        this.setValueAnimated = function(newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            if (undefined !==  tween) {
-                if (tween.playing) {
-                    tween.stop();
-                }
-            }
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
-
-                if (value >= threshold && !ledBlinking) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                } else if (value < threshold) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                }
+            if (value !== targetValue) {
+                value = targetValue;
 
                 if (value > maxMeasuredValue) {
                     maxMeasuredValue = value;
@@ -2684,10 +2678,64 @@ var steelseries = function() {
                     minMeasuredValue = value;
                 }
 
-                gauge.repaint();
-            };
+                if (value >= threshold && !ledBlinking) {
+                    ledBlinking = true;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.play();
+                    }
+                } else if (value < threshold) {
+                    ledBlinking = false;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.pause();
+                    }
+                }
 
-            tween.start();
+                this.repaint();
+            }
+        };
+
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (value !== targetValue) {
+                if (undefined !==  tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                    }
+
+                    if (value > maxMeasuredValue) {
+                        maxMeasuredValue = value;
+                    }
+                    if (value < minMeasuredValue) {
+                        minMeasuredValue = value;
+                    }
+
+                    gauge.repaint();
+                };
+
+                tween.start();
+            }
         };
 
         this.resetMinMeasuredValue = function() {
@@ -3018,9 +3066,15 @@ var steelseries = function() {
 
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.007;
-                mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.009;
+                if (vertical) {
+                    mainCtx.shadowOffsetX = imageWidth * 0.007;
+                    mainCtx.shadowOffsetY = imageWidth * 0.007;
+                    mainCtx.shadowBlur = imageWidth * 0.009;
+                } else {
+                    mainCtx.shadowOffsetX = imageHeight * 0.007;
+                    mainCtx.shadowOffsetY = imageHeight * 0.007;
+                    mainCtx.shadowBlur = imageHeight * 0.009;
+                }
             }
 
             var lcdTextX;
@@ -3545,61 +3599,8 @@ var steelseries = function() {
         //************************************ Public methods **************************************
         this.setValue = function(newValue) {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            value = targetValue;
-
-            if (value > maxMeasuredValue) {
-                maxMeasuredValue = value;
-            }
-            if (value < minMeasuredValue) {
-                minMeasuredValue = value;
-            }
-
-            if (value >= threshold && !ledBlinking) {
-                ledBlinking = true;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.play();
-                }
-            } else if (value < threshold) {
-                ledBlinking = false;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.pause();
-                }
-            }
-
-            this.repaint();
-        };
-
-        this.getValue = function() {
-            return value;
-        };
-
-        this.setValueAnimated = function(newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            if (undefined !== tween) {
-                if (tween.playing) {
-                    tween.stop();
-                }
-            }
-
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
-
-                if (value >= threshold && !ledBlinking) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                } else if (value < threshold) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                }
+            if (value !== targetValue) {
+                value = targetValue;
 
                 if (value > maxMeasuredValue) {
                     maxMeasuredValue = value;
@@ -3608,16 +3609,71 @@ var steelseries = function() {
                     minMeasuredValue = value;
                 }
 
-                gauge.repaint();
-            };
+                if (value >= threshold && !ledBlinking) {
+                    ledBlinking = true;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.play();
+                    }
+                } else if (value < threshold) {
+                    ledBlinking = false;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.pause();
+                    }
+                }
 
-            tween.start();
+                this.repaint();
+            }
+        };
+
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (value !== targetValue) {
+                if (undefined !== tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                    }
+
+                    if (value > maxMeasuredValue) {
+                        maxMeasuredValue = value;
+                    }
+                    if (value < minMeasuredValue) {
+                        minMeasuredValue = value;
+                    }
+
+                    gauge.repaint();
+                };
+
+                tween.start();
+            }
         };
 
         this.resetMinMeasuredValue = function() {
             minMeasuredValue = value;
             this.repaint();
-        };
+         };
 
         this.resetMaxMeasuredValue = function() {
             maxMeasuredValue = value;
@@ -3641,7 +3697,7 @@ var steelseries = function() {
 
         this.setLcdDecimals = function(decimals) {
             lcdDecimals = decimals;
-
+            this.repaint();
         };
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -3679,23 +3735,27 @@ var steelseries = function() {
         };
 
         this.setMaxMeasuredValue = function(value) {
-            maxMeasuredValue = value;
+            var targetValue = (value < minValue ? minValue : (value > maxValue ? maxValue : value));
+            maxMeasuredValue = targetValue;
             this.repaint();
         };
 
         this.setMinMeasuredValue = function(value) {
-            minMeasuredValue = value;
+            var targetValue = (value < minValue ? minValue : (value > maxValue ? maxValue : value));
+            minMeasuredValue = targetValue;
             this.repaint();
         };
 
         this.setTitleString = function(title){
-            titleString = title;
-            init({background: true});
+                 titleString = title;
+                init({background: true});
+                this.repaint();
         };
 
         this.setUnitString = function(unit){
-            unitString = title;
+            unitString = unit;
             init({background: true});
+            this.repaint();
         };
 
         this.setMinValue = function(value){
@@ -3703,6 +3763,7 @@ var steelseries = function() {
             init({background: true,
                 foreground: true,
                 pointer: true});
+            this.repaint();
         };
 
         this.getMinValue = function(){
@@ -3714,6 +3775,7 @@ var steelseries = function() {
             init({background: true,
                 foreground: true,
                 pointer: true});
+            this.repaint();
         };
 
         this.getMaxValue = function(){
@@ -3721,7 +3783,8 @@ var steelseries = function() {
         };
 
         this.setThreshold = function(threshVal) {
-            threshold = threshVal;
+            var targetValue = (threshVal < minValue ? minValue : (threshVal > maxValue ? maxValue : threshVal));
+            threshold = targetValue;
             init({background: true});
             this.repaint();
         };
@@ -3807,6 +3870,7 @@ var steelseries = function() {
         var height = (undefined === parameters.height ? 320 : parameters.height);
         var minValue = (undefined === parameters.minValue ? 0 : parameters.minValue);
         var maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue);
+        var section = (undefined === parameters.section ? null : parameters.section);
         var niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale);
         var threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold);
         var titleString = (undefined === parameters.titleString ? "" : parameters.titleString);
@@ -3832,7 +3896,6 @@ var steelseries = function() {
         if (playAlarm && alarmSound !== false) {
             var audioElement = doc.createElement('audio');
             audioElement.setAttribute('src', alarmSound);
-            //audioElement.setAttribute('src', 'js/alarm.mp3');
             audioElement.setAttribute('preload', 'auto');
         }
 
@@ -3845,7 +3908,8 @@ var steelseries = function() {
 
         var tween;
         var ledBlinking = false;
-
+        var isSectionsVisible = false;
+        var sectionPixels = [];
         var ledTimerId = 0;
 
         // Get the canvas context and clear it
@@ -3979,9 +4043,15 @@ var steelseries = function() {
 
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
                 mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.007;
-                mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.009;
+                if (vertical) {
+                    mainCtx.shadowOffsetX = imageWidth * 0.007;
+                    mainCtx.shadowOffsetY = imageWidth * 0.007;
+                    mainCtx.shadowBlur = imageWidth * 0.009;
+                } else {
+                    mainCtx.shadowOffsetX = imageHeight * 0.007;
+                    mainCtx.shadowOffsetY = imageHeight * 0.007;
+                    mainCtx.shadowBlur = imageHeight * 0.009;
+                }
             }
 
             var lcdTextX;
@@ -4300,7 +4370,36 @@ var steelseries = function() {
             // Draw leds of bargraph
             if (drawBargraphLed) {
                 drawInActiveLed(inActiveLedContext);
-                drawActiveLed(activeLedContext);
+                drawActiveLed(activeLedContext, valueColor);
+            }
+
+            // Convert Sections into angles
+            isSectionsVisible = false;
+            if (null !== section && 0 < section.length) {
+                isSectionsVisible = true;
+                var sectionIndex = section.length;
+                var top, bottom, fullSize, ledWidth2;
+
+                if (vertical) {
+                    // Vertical orientation
+                    top =  imageHeight * 0.12864077669902912; // position of max value
+                    bottom = imageHeight * 0.8567961165048543; // position of min value
+                    fullSize = bottom - top;
+                    ledWidth2 = 0;
+                } else {
+                    // Horizontal orientation
+                    top = imageWidth * 0.8567961165048543; // position of max value
+                    bottom = imageWidth * 0.12864077669902912;
+                    fullSize = top - bottom;
+                    ledWidth2 = imageWidth * 0.0121359223 / 2;
+                }
+
+                do {
+                    sectionIndex--;
+                    sectionPixels.push({start: (((section[sectionIndex].start + Math.abs(minValue)) / (maxValue - minValue)) * fullSize - ledWidth2),
+                                         stop: (((section[sectionIndex].stop + Math.abs(minValue)) / (maxValue - minValue)) * fullSize - ledWidth2),
+                                        color: customColorDef(section[sectionIndex].color)});
+                } while (0 < sectionIndex);
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
@@ -4462,6 +4561,7 @@ var steelseries = function() {
                 valueBorderStopX = valueBackgroundStopX;
                 valueBorderStopY = 0;
             }
+
             var valueBorderGradient = ctx.createLinearGradient(valueBorderStartX, valueBorderStartY, valueBorderStopX, valueBorderStopY);
             labelColor.setAlpha(0.2980392157);
             valueBorderGradient.addColorStop(0.0, labelColor.getRgbaColor());
@@ -4508,9 +4608,11 @@ var steelseries = function() {
                 ledCenterY = (ledY + ledH) / 2;
             }
 
+            var translateX, translateY;
+            var activeLedColor;
+            var lastActiveLedColor = valueColor;
             // Draw the value
             if (vertical) {
-                var translateY;
                 // Draw the inactive leds
                 inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
                 for (translateY = 0 ; translateY <= inactiveLeds ; translateY += ledH + 1) {
@@ -4520,15 +4622,30 @@ var steelseries = function() {
                 }
                 // Draw the active leds in dependence on the current value
                 if (0 !== value) {
-                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                    activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
                     for (translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
+                        //check for LED color
+                        activeLedColor = valueColor;
+                        if (isSectionsVisible) {
+                            for (var i =0; i < sectionPixels.length; i++) {
+                                if (translateY >= sectionPixels[i].start && translateY < sectionPixels[i].stop) {
+                                    activeLedColor = sectionPixels[i].color;
+                                    break;
+                                }
+                            }
+                        }
+                        // Has LED color changed? If so redraw the buffer
+                        if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
+                            drawActiveLed(activeLedContext, activeLedColor);
+                            lastActiveLedColor = activeLedColor;
+                        }
+                        // Draw LED
                         ctx.translate(0, -translateY);
                         ctx.drawImage(activeLedBuffer, ledX, ledY);
                         ctx.translate(0, translateY);
                     }
                 }
             } else {
-                var translateX;
                 // Draw the inactive leds
                 inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
                 for (translateX = -(ledW / 2) ; translateX <= inactiveLeds ; translateX += ledW + 1) {
@@ -4540,6 +4657,21 @@ var steelseries = function() {
                 if (0 !== value) {
                     activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
                     for (translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
+                        //check for LED color
+                        activeLedColor = valueColor;
+                        if (isSectionsVisible) {
+                            for (var i =0; i < sectionPixels.length; i++) {
+                                if (translateX >= sectionPixels[i].start && translateX < sectionPixels[i].stop) {
+                                    activeLedColor = sectionPixels[i].color;
+                                    break;
+                                }
+                            }
+                        }
+                        // Has LED color changed? If so redraw the buffer
+                        if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
+                            drawActiveLed(activeLedContext, activeLedColor);
+                            lastActiveLedColor = activeLedColor;
+                        }
                         ctx.translate(translateX, 0);
                         ctx.drawImage(activeLedBuffer, ledX, ledY);
                         ctx.translate(-translateX, 0);
@@ -4563,7 +4695,7 @@ var steelseries = function() {
             ctx.restore();
         };
 
-        var drawActiveLed = function(ctx) {
+        var drawActiveLed = function(ctx, color) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -4577,8 +4709,8 @@ var steelseries = function() {
                 outerRadius = ctx.canvas.height / 2;
             }
             var ledGradient = mainCtx.createRadialGradient(ledCenterX, ledCenterY, 0, ledCenterX, ledCenterY, outerRadius);
-            ledGradient.addColorStop(0.0, valueColor.light.getRgbaColor());
-            ledGradient.addColorStop(1.0, valueColor.dark.getRgbaColor());
+            ledGradient.addColorStop(0.0, color.light.getRgbaColor());
+            ledGradient.addColorStop(1.0, color.dark.getRgbaColor());
             ctx.fillStyle = ledGradient;
             ctx.fill();
             ctx.restore();
@@ -4587,61 +4719,8 @@ var steelseries = function() {
         //************************************ Public methods **************************************
         this.setValue = function(newValue) {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            value = targetValue;
-
-            if (value > maxMeasuredValue) {
-                maxMeasuredValue = value;
-            }
-            if (value < minMeasuredValue) {
-                minMeasuredValue = value;
-            }
-
-            if (value >= threshold && !ledBlinking) {
-                ledBlinking = true;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.play();
-                }
-            } else if (value < threshold) {
-                ledBlinking = false;
-                blink(ledBlinking);
-                if (playAlarm) {
-                    audioElement.pause();
-                }
-            }
-
-            this.repaint();
-        };
-
-        this.getValue = function() {
-            return value;
-        };
-
-        this.setValueAnimated = function(newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
-
-            if (undefined !== tween) {
-                if (tween.playing) {
-                    tween.stop();
-                }
-            }
-
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
-
-                if (value >= threshold && !ledBlinking) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                } else if (value < threshold) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                }
+            if (value !== targetValue) {
+                value = targetValue;
 
                 if (value > maxMeasuredValue) {
                     maxMeasuredValue = value;
@@ -4650,20 +4729,75 @@ var steelseries = function() {
                     minMeasuredValue = value;
                 }
 
-                gauge.repaint();
-            };
+                if (value >= threshold && !ledBlinking) {
+                    ledBlinking = true;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.play();
+                    }
+                } else if (value < threshold) {
+                    ledBlinking = false;
+                    blink(ledBlinking);
+                    if (playAlarm) {
+                        audioElement.pause();
+                    }
+                }
 
-            tween.start();
+                this.repaint();
+            }
+        };
+
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (value !== targetValue) {
+                if (undefined !== tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                    }
+
+                    if (value > maxMeasuredValue) {
+                        maxMeasuredValue = value;
+                    }
+                    if (value < minMeasuredValue) {
+                        minMeasuredValue = value;
+                    }
+
+                    gauge.repaint();
+                };
+
+                tween.start();
+            }
         };
 
         this.resetMinMeasuredValue = function() {
-            minMeasuredValue = value;
-            this.repaint();
+                minMeasuredValue = value;
+                this.repaint();
         };
 
         this.resetMaxMeasuredValue = function() {
-            maxMeasuredValue = value;
-            this.repaint();
+                maxMeasuredValue = value;
+                this.repaint();
         };
 
         this.setMinMeasuredValueVisible = function(visible) {
@@ -4683,8 +4817,8 @@ var steelseries = function() {
 
         this.setLcdDecimals = function(decimals) {
             lcdDecimals = decimals;
-
-        };
+            this.repaint();
+         };
 
         this.setFrameDesign = function(newFrameDesign) {
             resetBuffers({frame: true});
@@ -4705,7 +4839,7 @@ var steelseries = function() {
             valueColor = newValueColor;
             init({bargraphled: true});
             this.repaint();
-        };
+         };
 
         this.setLedColor = function(newLedColor) {
             resetBuffers({led: true});
@@ -4715,30 +4849,37 @@ var steelseries = function() {
         };
 
         this.setLcdColor = function(newLcdColor) {
-            resetBuffers({background: true});
             lcdColor = newLcdColor;
             init({background: true});
             this.repaint();
         };
 
-        this.setMaxMeasuredValue = function(value) {
-            maxMeasuredValue = value;
-            this.repaint();
+        this.setMaxMeasuredValue = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (maxMeasuredValue !== targetValue) {
+                maxMeasuredValue = targetValue;
+                this.repaint();
+            }
         };
 
-        this.setMinMeasuredValue = function(value) {
-            minMeasuredValue = value;
-            this.repaint();
+        this.setMinMeasuredValue = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (minMeasuredValue !== targetValue) {
+                minMeasuredValue = targetValue;
+                this.repaint();
+            }
         };
 
         this.setTitleString = function(title){
             titleString = title;
             init({background: true});
+            this.repaint();
         };
 
         this.setUnitString = function(unit){
-            unitString = title;
+            unitString = unit;
             init({background: true});
+            this.repaint();
         };
 
         this.setMinValue = function(value){
@@ -4746,6 +4887,7 @@ var steelseries = function() {
             init({background: true,
                 foreground: true,
                 pointer: true});
+            this.repaint();
         };
 
         this.getMinValue = function(){
@@ -4753,20 +4895,26 @@ var steelseries = function() {
         };
 
         this.setMaxValue = function(value){
-            maxValue = value;
-            init({background: true,
-                foreground: true,
-                pointer: true});
+            if (maxValue !== value) {
+                maxValue = value;
+                init({background: true,
+                    foreground: true,
+                    pointer: true});
+                this.repaint();
+            }
         };
 
         this.getMaxValue = function(){
             return maxValue;
         };
 
-        this.setThreshold = function(threshVal) {
-            threshold = threshVal;
-            init({background: true});
-            this.repaint();
+        this.setThreshold = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            if (threshold !== targetValue) {
+                threshold = targetValue;
+                init({background: true});
+                this.repaint();
+            }
         };
 
         this.repaint = function() {
@@ -4977,14 +5125,16 @@ var steelseries = function() {
 
         // **************   Public methods  ********************
         this.setValue = function(newValue) {
-            value = newValue;
-            this.repaint();
+            if (value !== newValue) {
+                value = newValue;
+                this.repaint();
+            }
         };
 
         this.setLcdColor = function(newLcdColor) {
-            lcdColor = newLcdColor;
-            init();
-            this.repaint();
+                lcdColor = newLcdColor;
+                init();
+                this.repaint();
         };
 
         this.setScrolling = function(scroll) {
@@ -5139,10 +5289,12 @@ var steelseries = function() {
 
         // **************   Public methods  ********************
         this.setValue = function(newValue) {
-            oldValue = value;
-            value = newValue;
-            this.repaint();
-        };
+            if (value !== newValue || oldValue !== newValue) {
+                oldValue = value;
+                value = newValue;
+                this.repaint();
+            }
+         };
 
         this.setLcdColor = function(newLcdColor) {
             lcdColor = newLcdColor;
@@ -5598,81 +5750,14 @@ var steelseries = function() {
             targetValue = 0 > newValue ? (360 + newValue) : newValue;
             targetValue = 359.9 < newValue ? (newValue - 360) : newValue;
 
-            value = targetValue;
-            stepValue = 2 * ((Math.abs(value) * 10) % 10);
-            if (10 < stepValue) {
-                stepValue -= 20;
-            }
-
-            if (0===value) {
-                visibleValue = 90;
-            }
-
-            if (0 < value && 90 >= value) {
-                visibleValue = (90 - value);
-            }
-
-            if (90 < value && 180 >= value) {
-                visibleValue = (value - 90);
-            }
-
-            if (180 < value && 270 >= value) {
-                visibleValue = (270 - value);
-            }
-
-            if (270 < value && 360 >= value) {
-                visibleValue = (value - 270);
-            }
-
-            if (0 > value && value >= -90) {
-                visibleValue = (90 - Math.abs(value));
-            }
-
-            if (value < -90 && value >= -180) {
-                visibleValue = Math.abs(value) - 90;
-            }
-
-            if (value < -180 && value >= -270) {
-                visibleValue = 270 - Math.abs(value);
-            }
-
-            if (value < -270 && value >= -360) {
-                visibleValue = Math.abs(value) - 270;
-            }
-
-            this.repaint();
-        };
-
-        this.getValue = function() {
-
-            return value;
-        };
-
-        this.setValueAnimated = function(newValue) {
-            if (360 - newValue + value < newValue - value) {
-                newValue = 360 - newValue;
-            }
-
-            if (undefined !== tween) {
-                if (tween.playing) {
-                    tween.stop();
-                }
-            }
-
-            //tween = new Tween(new Object(),'',Tween.elasticEaseOut,this.value,targetValue, 1);
-            tween = new Tween({}, '', Tween.regularEaseInOut, value, newValue, 1);
-            //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
-
-            var gauge = this;
-
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos;
+            if (value !== targetValue) {
+                value = targetValue;
                 stepValue = 2 * ((Math.abs(value) * 10) % 10);
                 if (10 < stepValue) {
                     stepValue -= 20;
                 }
 
-                if (0 === value) {
+                if (0===value) {
                     visibleValue = 90;
                 }
 
@@ -5708,10 +5793,78 @@ var steelseries = function() {
                     visibleValue = Math.abs(value) - 270;
                 }
 
-                gauge.repaint();
-            };
-            tween.start();
+                this.repaint();
+            }
+        };
 
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            if (360 - newValue + value < newValue - value) {
+                newValue = 360 - newValue;
+            }
+            if (value !== newValue) {
+                if (undefined !== tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+
+                //tween = new Tween(new Object(),'',Tween.elasticEaseOut,this.value,targetValue, 1);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, newValue, 1);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+                    stepValue = 2 * ((Math.abs(value) * 10) % 10);
+                    if (10 < stepValue) {
+                        stepValue -= 20;
+                    }
+
+                    if (0 === value) {
+                        visibleValue = 90;
+                    }
+
+                    if (0 < value && 90 >= value) {
+                        visibleValue = (90 - value);
+                    }
+
+                    if (90 < value && 180 >= value) {
+                        visibleValue = (value - 90);
+                    }
+
+                    if (180 < value && 270 >= value) {
+                        visibleValue = (270 - value);
+                    }
+
+                    if (270 < value && 360 >= value) {
+                        visibleValue = (value - 270);
+                    }
+
+                    if (0 > value && value >= -90) {
+                        visibleValue = (90 - Math.abs(value));
+                    }
+
+                    if (value < -90 && value >= -180) {
+                        visibleValue = Math.abs(value) - 90;
+                    }
+
+                    if (value < -180 && value >= -270) {
+                        visibleValue = 270 - Math.abs(value);
+                    }
+
+                    if (value < -270 && value >= -360) {
+                        visibleValue = Math.abs(value) - 270;
+                    }
+
+                    gauge.repaint();
+                };
+                tween.start();
+            }
         };
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -6222,8 +6375,11 @@ var steelseries = function() {
 
         //************************************ Public methods **************************************
         this.setValue = function(newValue) {
-            value = newValue % 360;
-            this.repaint();
+            newValue = newValue % 360;
+            if (value !== newValue) {
+                value = newValue;
+                this.repaint();
+            }
         };
 
         this.getValue = function() {
@@ -6232,24 +6388,24 @@ var steelseries = function() {
         };
 
         this.setValueAnimated = function(newValue) {
-            var targetValue;
-            targetValue = newValue % 360;
-
+            var targetValue = newValue % 360;
             var gauge = this;
-
-            if (undefined !==  tween) {
-                if (tween.playing) {
-                    tween.stop();
+            var diff;
+            if (value !== targetValue) {
+                if (undefined !==  tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
                 }
-            }
 
-            var diff = getShortestAngle(value, targetValue);
-            tween = new Tween({}, '', Tween.elasticEaseOut, value, value + diff, 2);
-            tween.onMotionChanged = function(event) {
-                value = event.target._pos % 360;
-                gauge.repaint();
-            };
-            tween.start();
+                diff = getShortestAngle(value, targetValue);
+                tween = new Tween({}, '', Tween.elasticEaseOut, value, value + diff, 2);
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos % 360;
+                    gauge.repaint();
+                };
+                tween.start();
+            }
         };
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -6267,10 +6423,10 @@ var steelseries = function() {
         };
 
         this.setForegroundType = function(newForegroundType) {
-            resetBuffers();
-            foregroundType = newForegroundType;
-            init();
-            this.repaint();
+                resetBuffers();
+                foregroundType = newForegroundType;
+                init();
+                this.repaint();
         };
 
         this.setPointerColor = function(newPointerColor) {
@@ -6288,10 +6444,10 @@ var steelseries = function() {
         };
 
 		this.setPointSymbols = function(newPointSymbols) {
-			resetBuffers();
-			pointSymbols = newPointSymbols;
-			init();
-			this.repaint();
+            resetBuffers();
+            pointSymbols = newPointSymbols;
+            init();
+            this.repaint();
 		};
 
         this.repaint = function() {
@@ -6822,8 +6978,11 @@ var steelseries = function() {
 
         //************************************ Public methods **************************************
         this.setValueLatest = function(newValue) {
-            valueLatest = newValue % 360;
-            this.repaint();
+            newValue = newValue % 360;
+            if (valueLatest !== newValue) {
+                valueLatest = newValue;
+                this.repaint();
+            }
         };
 
         this.getValueLatest = function() {
@@ -6831,8 +6990,11 @@ var steelseries = function() {
         };
 
         this.setValueAverage = function(newValue) {
-            valueAverage = newValue % 360;
-            this.repaint();
+            newValue = newValue % 360;
+            if (valueAverage !== newValue) {
+                valueAverage = newValue;
+                this.repaint();
+            }
         };
 
         this.getValueAverage = function() {
@@ -6840,63 +7002,63 @@ var steelseries = function() {
         };
 
         this.setValueAnimatedLatest = function(newValue) {
-            var targetValue;
-            targetValue = newValue % 360;
+            var targetValue = newValue % 360;
+            if (valueLatest !== targetValue) {
+                var gauge = this;
 
-            var gauge = this;
-
-            if (undefined !== tweenLatest) {
-                if (tweenLatest.playing) {
-                    tweenLatest.stop();
+                if (undefined !== tweenLatest) {
+                    if (tweenLatest.playing) {
+                        tweenLatest.stop();
+                    }
                 }
-            }
 
-            var diff = getShortestAngle(valueLatest, targetValue);
-            tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 2.5);
-            tweenLatest.onMotionChanged = function(event) {
-                valueLatest = event.target._pos % 360;
-                gauge.repaint();
-            };
-            tweenLatest.start();
+                var diff = getShortestAngle(valueLatest, targetValue);
+                tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 2.5);
+                tweenLatest.onMotionChanged = function(event) {
+                    valueLatest = event.target._pos % 360;
+                    gauge.repaint();
+                };
+                tweenLatest.start();
+            }
         };
 
         this.setValueAnimatedAverage = function(newValue) {
-            var targetValue;
-            targetValue = newValue % 360;
+            var targetValue = newValue % 360;
+            if (valueAverage !== newValue) {
+                var gauge = this;
 
-            var gauge = this;
-
-            if (undefined !== tweenAverage) {
-                if (tweenAverage.playing) {
-                    tweenAverage.stop();
+                if (undefined !== tweenAverage) {
+                    if (tweenAverage.playing) {
+                        tweenAverage.stop();
+                    }
                 }
-            }
 
-            var diff = getShortestAngle(valueAverage, targetValue);
-            tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 2.5);
-            tweenAverage.onMotionChanged = function(event) {
-                valueAverage = event.target._pos % 360;
-                gauge.repaint();
-            };
-            tweenAverage.start();
+                var diff = getShortestAngle(valueAverage, targetValue);
+                tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 2.5);
+                tweenAverage.onMotionChanged = function(event) {
+                    valueAverage = event.target._pos % 360;
+                    gauge.repaint();
+                };
+                tweenAverage.start();
+            }
         };
 
         this.setArea = function(areaVal){
-			area = areaVal;
-			resetBuffers({foreground: true});
-			init({background: true,
-				foreground: true
+            area = areaVal;
+            resetBuffers({foreground: true});
+            init({background: true,
+                foreground: true
                 });
-			this.repaint();
+            this.repaint();
 		};
 
 		this.setSection = function(areaSec){
-			section = areaSec;
-			resetBuffers({foreground: true});
-			init({background: true,
-				foreground: true
+            section = areaSec;
+            resetBuffers({foreground: true});
+            init({background: true,
+                foreground: true
                 });
-			this.repaint();
+            this.repaint();
 		};
 
         this.setFrameDesign = function(newFrameDesign) {
@@ -6950,14 +7112,13 @@ var steelseries = function() {
         };
 
 		this.setPointSymbols = function(newPointSymbols) {
-			resetBuffers({background: true});
-			pointSymbols = newPointSymbols;
+            resetBuffers({background: true});
+            pointSymbols = newPointSymbols;
             init({background: true});
-			this.repaint();
+            this.repaint();
 		};
 
         this.setLcdColor = function(newLcdColor) {
-//            resetBuffers({background: true});
             lcdColor = newLcdColor;
             init({background: true});
             this.repaint();
@@ -7305,8 +7466,11 @@ var steelseries = function() {
 
         //************************************ Public methods **************************************
         this.setRoll = function(newRoll) {
-            roll = newRoll % 360;
-            this.repaint();
+            newRoll = newRoll % 360;
+            if (roll !== newRoll) {
+                roll = newRoll;
+                this.repaint();
+            }
         };
 
         this.getRoll = function() {
@@ -7314,45 +7478,50 @@ var steelseries = function() {
         };
 
         this.setRollAnimated = function(newRoll) {
-            var targetValue = newRoll;
-            var gauge = this;
+            newRoll = newRoll % 360;
+            if (roll !== newRoll) {
+                var gauge = this;
 
-            if (undefined !== tweenRoll) {
-                if (tweenRoll.playing) {
-                    tweenRoll.stop();
+                if (undefined !== tweenRoll) {
+                    if (tweenRoll.playing) {
+                        tweenRoll.stop();
+                    }
                 }
+
+                tweenRoll = new Tween({},'',Tween.regularEaseInOut, roll, newRoll, 1);
+
+                tweenRoll.onMotionChanged = function(event) {
+                    roll = event.target._pos;
+                    gauge.repaint();
+                };
+                tweenRoll.start();
             }
-
-            tweenRoll = new Tween({},'',Tween.regularEaseInOut, roll,targetValue,1);
-
-            tweenRoll.onMotionChanged = function(event) {
-                roll = event.target._pos;
-                gauge.repaint();
-            };
-            tweenRoll.start();
         };
 
         this.setPitch = function(newPitch) {
-//            pitch = -(newPitch + pitchOffset) % 180;
             // constrain to range -180..180
             // normal range -90..90 and -180..-90/90..180 indicate inverted
-            pitch = ((newPitch + 180 - pitchOffset) % 360) - 180;
-            if (pitch > 90) {
-                pitch = 90 - (pitch - 90);
-                if (!upsidedown) {
-                    this.setRoll(roll - 180);
+            newPitch = ((newPitch + 180 - pitchOffset) % 360) - 180;
+            //pitch = -(newPitch + pitchOffset) % 180;
+            if (pitch !== newPitch) {
+                pitch = newPitch;
+                if (pitch > 90) {
+                    pitch = 90 - (pitch - 90);
+                    if (!upsidedown) {
+                        this.setRoll(roll - 180);
+                    }
+                    upsidedown = true;
+                } else if (pitch < -90) {
+                    pitch = -90 + (-90 - pitch);
+                    if (!upsidedown) {
+                        this.setRoll(roll + 180);
+                    }
+                    upsidedown = true;
+                } else {
+                    upsidedown = false;
                 }
-                upsidedown = true;
-            } else if (pitch < -90) {
-                pitch = -90 + (-90 - pitch);
-                if (!upsidedown) {
-                    this.setRoll(roll + 180);
-                }
-                upsidedown = true;
-            } else {
-                upsidedown = false;
+                this.repaint();
             }
-            this.repaint();
         };
 
         this.getPitch = function() {
@@ -7361,20 +7530,21 @@ var steelseries = function() {
 
         this.setPitchAnimated = function(newPitch) {
             // perform all range checking in setPitch()
-            if (undefined !== tweenPitch) {
-                if (tweenPitch.playing) {
-                    tweenPitch.stop();
+            if (pitch !== newPitch) {
+                if (undefined !== tweenPitch) {
+                    if (tweenPitch.playing) {
+                        tweenPitch.stop();
+                    }
                 }
+                var gauge = this;
+                tweenPitch = new Tween({}, '', Tween.regularEaseInOut, pitch, newPitch, 1);
+                tweenPitch.onMotionChanged = function(event) {
+                    //pitch = event.target._pos;
+                    //gauge.repaint();
+                    gauge.setPitch(event.target._pos);
+                };
+                tweenPitch.start();
             }
-            var gauge = this;
-            tweenPitch = new Tween({}, '', Tween.regularEaseInOut, pitch, newPitch, 1);
-            tweenPitch.onMotionChanged = function(event) {
-                //pitch = event.target._pos;
-                //gauge.repaint();
-                gauge.setPitch(event.target._pos);
-            };
-
-            tweenPitch.start();
         };
 
         this.setPitchOffset = function(newPitchOffset) {
@@ -8124,9 +8294,12 @@ var steelseries = function() {
         };
 
         this.setHour = function(newValue) {
-            hour = newValue % 12;
-            calculateAngles(hour, minute, second);
-            this.repaint();
+            newValue = newValue % 12;
+            if (hour !== newValue) {
+                hour = newValue;
+                calculateAngles(hour, minute, second);
+                this.repaint();
+            }
         };
 
         this.getMinute = function() {
@@ -8134,9 +8307,12 @@ var steelseries = function() {
         };
 
         this.setMinute = function(newValue) {
-            minute = newValue % 60;
-            calculateAngles(hour, minute, second);
-            this.repaint();
+            newValue = newValue % 60;
+            if (minute !== newValue) {
+                minute = newValue;
+                calculateAngles(hour, minute, second);
+                this.repaint();
+            }
         };
 
         this.getSecond = function() {
@@ -8145,8 +8321,11 @@ var steelseries = function() {
 
         this.setSecond = function(newValue) {
             second = newValue % 60;
-            calculateAngles(hour, minute, second);
-            this.repaint();
+            if (second !== newValue) {
+                second = newValue;
+                calculateAngles(hour, minute, second);
+                this.repaint();
+            }
         };
 
         this.getTimeZoneOffsetHour = function() {
@@ -8155,6 +8334,7 @@ var steelseries = function() {
 
         this.setTimeZoneOffsetHour = function(newValue) {
             timeZoneOffsetHour = newValue;
+            this.repaint();
         };
 
         this.getTimeZoneOffsetMinute = function() {
@@ -8163,6 +8343,7 @@ var steelseries = function() {
 
         this.setTimeZoneOffsetMinute = function(newValue) {
             timeZoneOffsetMinute = newValue;
+            this.repaint();
         };
 
         this.getSecondPointerVisible = function() {
@@ -8182,13 +8363,14 @@ var steelseries = function() {
             secondMovesContinuous = newValue;
             tickInterval = (secondMovesContinuous ? 100 : 1000);
             tickInterval = (secondPointerVisible ? tickInterval : 100);
-        };
+         };
 
         this.setFrameDesign = function(newFrameDesign) {
             resetBuffers({frame: true});
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+
         };
 
         this.setBackgroundColor = function(newBackgroundColor) {
@@ -8427,8 +8609,12 @@ var steelseries = function() {
 
         // **************   Public methods  ********************
         this.setValue = function(newValue) {
-            value = (newValue < 0 ? 0 : (newValue > 100 ? 100 : newValue));
-            this.repaint();
+            newValue = (newValue < 0 ? 0 : (newValue > 100 ? 100 : newValue));
+            if (value !== newValue) {
+                value = newValue;
+                this.repaint();
+            }
+
         };
 
         this.getValue = function() {
@@ -10837,7 +11023,25 @@ var steelseries = function() {
         }
         */
 
-        return new Array(colorData[0], colorData[1], colorData[2]);
+        return [colorData[0], colorData[1], colorData[2], colorData[3]];
+    }
+
+    function customColorDef(color) {
+        var VERY_DARK;
+        var DARK;
+        var LIGHT;
+        var LIGHTER;
+        var VERY_LIGHT;
+
+        var values = getColorValues(color);
+        var rgbaCol = new rgbaColor(values[0], values[1], values[2], values[3]);
+        VERY_DARK = darker(rgbaCol, 0.32);
+        DARK = darker(rgbaCol, 0.62);
+        LIGHT = lighter(rgbaCol, 0.84);
+        LIGHTER = lighter(rgbaCol, 0.94);
+        VERY_LIGHT = lighter(rgbaCol, 1);
+
+        return new colorDef(VERY_DARK, DARK, rgbaCol, LIGHT, LIGHTER, VERY_LIGHT);
     }
 
     function rgb2Hsl(red, green, blue) {
@@ -10902,17 +11106,47 @@ var steelseries = function() {
         blue = hue2rgb(p, q, hue - 1/3);
     }
 
-    return [red * 255, green * 255, blue * 255];
+    return [Math.floor(red * 255), Math.floor(green * 255), Math.floor(blue * 255)];
 }
 
     function hsb2Hsl(hue, saturation, brightness) {
         var lightness = (brightness - saturation) / 2;
-        return new Array(hue, saturation, lightness);
+        lightness = (lightness > 1 ? 1 : (lightness < 0 ? 0 : lightness));
+        return [hue, saturation, lightness];
     }
 
     function hsl2Hsb(hue, saturation, lightness) {
         var brightness = (lightness * 2) + saturation;
-        return new Array(hue, saturation, brightness);
+        return [hue, saturation, brightness];
+    }
+
+    function hsb2Rgb(hue, saturation, brightness) {
+        var tmp = hsb2Hsl(hue, saturation, brightness);
+        return hsl2Rgb(tmp[0], tmp[1], tmp[2]);
+    }
+
+    function darker(color, fraction) {
+        var red = Math.floor(color.getRed() * (1 - fraction));
+        var green = Math.floor(color.getGreen() * (1 - fraction));
+        var blue = Math.floor(color.getBlue() * (1 - fraction));
+
+        red = (red < 0 ? 0 : (red > 255 ? 255 : red));
+        green = (green < 0 ? 0 : (red > 255 ? 255 : green));
+        blue = (blue < 0 ? 0 : (blue > 255 ? 255 : blue));
+
+        return new rgbaColor(red, green, blue, color.getAlpha());
+    }
+
+    function lighter(color, fraction) {
+        var red = Math.round(color.getRed() * (1 + fraction));
+        var green = Math.round(color.getGreen() * (1 + fraction));
+        var blue = Math.round(color.getBlue() * (1 + fraction));
+
+        red = (red < 0 ? 0 : (red > 255 ? 255 : red));
+        green = (green < 0 ? 0 : (red > 255 ? 255 : green));
+        blue = (blue < 0 ? 0 : (blue > 255 ? 255 : blue));
+
+        return new rgbaColor(red, green, blue, color.getAlpha());
     }
 
     function wrap(value, lower, upper) {
