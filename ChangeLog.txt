@@ -1,5 +1,15 @@
 Main Changes
 -------------------------
+v0.8.4
+> Radial/LinearBargraph
+  * Fixed a bug with section recalculation when the gauge range was changed via setMin/Max()
+
+> General Changes
+  * Added StopWatch component
+    - supports start(), stop(), reset(), and lap() methods
+  * Fixed a bug in drawRadialForeground() that prevented the foreground changing on some gauges
+
+-------------------------
 v0.8.3
 > RadialBargraph
   * Added section parameter handling, any defined sections will colour the bargraph

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html manifest="demo.manifest"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Canvas Steel</title>
+</head>
+<body onload="init()" style="background-color:#84a5ed">
+    <table>
+        <tbody><tr>
+            <td width="100%">
+                <select id="comboFrame" onchange="setFrameDesign(this)">
+                    <option selected="selected" value="">Frame design</option>
+                    <option value="BLACK_METAL">BlackMetal</option>
+                    <option value="METAL">Metal</option>
+                    <option value="SHINY_METAL">ShinyMetal</option>
+                    <option value="BRASS">Brass</option>
+                    <option value="STEEL">Steel</option>
+                    <option value="CHROME">Chrome</option>
+                    <option value="GOLD">Gold</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="TILTED_GRAY">TiltedGray</option>
+                    <option value="TILTED_BLACK">TiltedBlack</option>
+                </select>
+                <select id="comboBackground" onchange="setBackgroundColor(this)">
+                    <option selected="selected" value="">Background</option>
+                    <option value="DARK_GRAY">DarkGray</option>
+                    <option value="SATIN_GRAY">SatinGray</option>
+                    <option value="LIGHT_GRAY">LightGray</option>
+                    <option value="WHITE">White</option>
+                    <option value="BLACK">Black</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BROWN">Brown</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ANTHRACITE">Anthracite</option>
+                    <option value="MUD">Mud</option>
+                    <option value="PUNCHED_SHEET">PunchedSheet</option>
+                    <option value="CARBON">Carbon</option>
+                </select>
+                <select id="comboPointerColor" onchange="setPointerColor(this)">
+                    <option selected="selected" value="">Pointer color</option>
+                    <option value="RED">Red</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="CYAN">Cyan</option>
+                    <option value="MAGENTA">Magenta</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="RAITH">Raith</option>
+                    <option value="GREEN_LCD">Green LCD</option>
+                    <option value="JUG_GREEN">JUG Green</option>
+                </select>
+                <select id="comboForeground" onchange="setForegroundType(this)">
+                    <option selected="selected" value="">Foreground</option>
+                    <option value="TYPE1">Type1</option>
+                    <option value="TYPE2">Type2</option>
+                    <option value="TYPE3">Type3</option>
+                    <option value="TYPE4">Type4</option>
+                    <option value="TYPE5">Type5</option>
+                </select>
+				<INPUT type="button" value="Stop" name="button1" onClick="radial1.stop();">
+				<INPUT type="button" value="Start" name="button2" onClick="radial1.start();">
+				<INPUT type="button" value="Reset" name="button3" onClick="radial1.reset();">
+				<INPUT type="button" value="Lap" name="button4" onClick="radial1.lap();">
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <canvas id="canvasRadial1" width="201" height="201">No canvas in your browser...sorry...</canvas>
+            </td>
+        </tr>
+
+    </tbody></table>
+
+
+<script type="text/javascript">
+
+    var radial1;
+
+    function init() {
+        // Initialzing gauge
+        radial1 = new steelseries.StopWatch('canvasRadial1', {
+                            size: 301,
+                            });
+
+		radial1.start();
+   }
+
+
+    function setFrameDesign(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BLACK_METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                break;
+            case "METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.METAL);
+                break;
+            case "SHINY_METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                break;
+            case "BRASS":
+                radial1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                break;
+            case "STEEL":
+                radial1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                break;
+            case "CHROME":
+                radial1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                break;
+            case "GOLD":
+                radial1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                break;
+            case "ANTHRACITE":
+                radial1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                break;
+            case "TILTED_GRAY":
+                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                break;
+            case "TILTED_BLACK":
+                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                break;
+        }
+    }
+
+    function setBackgroundColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "DARK_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                break;
+            case "SATIN_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                break;
+            case "LIGHT_GRAY":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                break;
+            case "WHITE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                break;
+            case "BLACK":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                break;
+            case "BEIGE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                break;
+            case "BROWN":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                break;
+            case "RED":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                break;
+            case "GREEN":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                break;
+            case "BLUE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                break;
+            case "ANTHRACITE":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                break;
+            case "MUD":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                break;
+            case "PUNCHED_SHEET":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                break;
+            case "CARBON":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                break;
+        }
+    }
+
+    function setForegroundType(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "TYPE1":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                break;
+            case "TYPE2":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                break;
+            case "TYPE3":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                break;
+            case "TYPE4":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                break;
+            case "TYPE5":
+                radial1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                break;
+        }
+    }
+
+    function setPointerColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "RED":
+                radial1.setPointerColor(steelseries.ColorDef.RED);
+                break;
+            case "GREEN":
+                radial1.setPointerColor(steelseries.ColorDef.GREEN);
+                break;
+            case "BLUE":
+                radial1.setPointerColor(steelseries.ColorDef.BLUE);
+                break;
+            case "ORANGE":
+                radial1.setPointerColor(steelseries.ColorDef.ORANGE);
+                break;
+            case "YELLOW":
+                radial1.setPointerColor(steelseries.ColorDef.YELLOW);
+                break;
+            case "CYAN":
+                radial1.setPointerColor(steelseries.ColorDef.CYAN);
+                break;
+            case "MAGENTA":
+                radial1.setPointerColor(steelseries.ColorDef.MAGENTA);
+                break;
+            case "WHITE":
+                radial1.setPointerColor(steelseries.ColorDef.WHITE);
+                break;
+            case "GRAY":
+                radial1.setPointerColor(steelseries.ColorDef.GRAY);
+                break;
+            case "BLACK":
+                radial1.setPointerColor(steelseries.ColorDef.BLACK);
+                break;
+            case "RAITH":
+                radial1.setPointerColor(steelseries.ColorDef.RAITH);
+                break;
+            case "GREEN_LCD":
+                radial1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                break;
+            case "JUG_GREEN":
+                radial1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                break;
+        }
+    }
+
+</script>
+<script type="text/javascript" src="tween-min.js"></script>
+<script type="text/javascript" src="steelseries-min.js"></script>
+</body></html>

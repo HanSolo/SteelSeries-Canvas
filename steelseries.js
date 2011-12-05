@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 04.12.2011
- * Revision      : 0.8.3
+ * Last modified : 05.12.2011
+ * Revision      : 0.8.4
  */
 
 var steelseries = function() {
@@ -1254,6 +1254,7 @@ var steelseries = function() {
             if (null !== section && 0 < section.length) {
                 isSectionsVisible = true;
                 var sectionIndex = section.length;
+                sectionAngles = [];
                 do {
                     sectionIndex--;
                     sectionAngles.push({start: (((section[sectionIndex].start + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange),
@@ -1436,7 +1437,8 @@ var steelseries = function() {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            var fontSize = imageWidth * 0.04;
+//            var fontSize = imageWidth * 0.04;
+            var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
@@ -1447,6 +1449,7 @@ var steelseries = function() {
 
             var valueCounter = minValue;
             var majorTickCounter = maxNoOfMinorTicks - 1;
+
             var TEXT_TRANSLATE_X = imageWidth * 0.28;
             var TEXT_WIDTH = imageWidth * 0.09;
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
@@ -2019,7 +2022,8 @@ var steelseries = function() {
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            var fontSize = imageWidth * 0.04;
+//            var fontSize = imageWidth * 0.04;
+            var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
@@ -3147,10 +3151,9 @@ var steelseries = function() {
             backgroundColor.labelColor.setAlpha(1.0);
             ctx.save();
             ctx.textBaseline = 'middle';
-            var fontSize;
+//            var fontSize;
 //            var TEXT_WIDTH = imageWidth * 0.0375;
             var TEXT_WIDTH = imageWidth * 0.1;
-            ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
 
@@ -3175,7 +3178,8 @@ var steelseries = function() {
                 mediumTickStop = (0.36 * imageWidth);
                 majorTickStart = (0.32 * imageWidth);
                 majorTickStop = (0.36 * imageWidth);
-                fontSize = imageWidth * 0.62;
+ //               fontSize = Math.floor(imageWidth * 0.075);
+ //               ctx.font = fontSize + 'px sans-serif';
                 ctx.textAlign = 'right';
                 scaleBoundsX = 0;
                 scaleBoundsY = imageHeight * 0.12864077669902912;
@@ -3189,7 +3193,8 @@ var steelseries = function() {
                 mediumTickStop = (0.63 * imageHeight);
                 majorTickStart = (0.67 * imageHeight);
                 majorTickStop = (0.63 * imageHeight);
-                fontSize = imageHeight * 0.62;
+ //               fontSize = Math.floor(imageHeight * 0.075);
+ //               ctx.font = fontSize + 'px sans-serif';
                 ctx.textAlign = 'center';
                 scaleBoundsX = imageWidth * 0.14285714285714285;
                 scaleBoundsY = 0;
@@ -4125,10 +4130,10 @@ var steelseries = function() {
             backgroundColor.labelColor.setAlpha(1.0);
             ctx.save();
             ctx.textBaseline = 'middle';
-            var fontSize;
+//            var fontSize;
 //            var TEXT_WIDTH = imageWidth * 0.0375;
             var TEXT_WIDTH = imageWidth * 0.1;
-            ctx.font = fontSize + 'px sans-serif';
+//            ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
 
@@ -4153,7 +4158,7 @@ var steelseries = function() {
                 mediumTickStop = (0.36 * imageWidth);
                 majorTickStart = (0.32 * imageWidth);
                 majorTickStop = (0.36 * imageWidth);
-                fontSize = imageWidth * 0.62;
+//                fontSize = imageWidth * 0.62;
                 ctx.textAlign = 'right';
                 scaleBoundsX = 0;
                 scaleBoundsY = imageHeight * 0.12864077669902912;
@@ -4167,7 +4172,7 @@ var steelseries = function() {
                 mediumTickStop = (0.63 * imageHeight);
                 majorTickStart = (0.67 * imageHeight);
                 majorTickStop = (0.63 * imageHeight);
-                fontSize = imageHeight * 0.62;
+//                fontSize = imageHeight * 0.62;
                 ctx.textAlign = 'center';
                 scaleBoundsX = imageWidth * 0.14285714285714285;
                 scaleBoundsY = 0;
@@ -4393,7 +4398,7 @@ var steelseries = function() {
                     fullSize = top - bottom;
                     ledWidth2 = imageWidth * 0.0121359223 / 2;
                 }
-
+                sectionPixels = [];
                 do {
                     sectionIndex--;
                     sectionPixels.push({start: (((section[sectionIndex].start + Math.abs(minValue)) / (maxValue - minValue)) * fullSize - ledWidth2),
@@ -7809,7 +7814,6 @@ var steelseries = function() {
         var pointerRotBuffer = createBuffer(size, size);
         var pointerRotContext = pointerRotBuffer.getContext('2d');
 
-
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
         var foregroundContext = foregroundBuffer.getContext('2d');
@@ -8283,8 +8287,10 @@ var steelseries = function() {
             if (isAutomatic && !newValue) {
                 // stop the clock!
                 clearTimer(tickTimer);
+                isAutomatic = newValue
             } else if (!isAutomatic && newValue){
                 // start the clock
+                isAutomatic = newValue;
                 tickTock();
             }
         };
@@ -8632,6 +8638,558 @@ var steelseries = function() {
         return this;
     };
 
+    var stopwatch = function(canvas, parameters) {
+        parameters = parameters || {};
+        var size = (undefined === parameters.size ? 200 : parameters.size);
+        var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
+        var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
+        var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.BLACK : parameters.pointerColor);
+        var backgroundColor = (undefined === parameters.backgroundColor ? (pointerType===steelseries.PointerType.TYPE1 ? steelseries.BackgroundColor.ANTHRACITE : steelseries.BackgroundColor.LIGHT_GRAY) : parameters.backgroundColor);
+        var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
+
+        var minutePointerAngle = 0;
+        var secondPointerAngle = 0;
+        var tickTimer;
+        var ANGLE_STEP = 6;
+        var TWO_PI = Math.PI * 2;
+        var RAD_FACTOR = Math.PI / 180;
+        var self = this;
+
+        var start = 0;
+        var stop = 0;
+        var currentMilliSeconds = 0;
+        var minutes = 0;
+        var seconds = 0;
+        var milliSeconds = 0;
+        var running = false;
+
+        // Get the canvas context and clear it
+        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Set the size
+        mainCtx.canvas.width = size;
+        mainCtx.canvas.height = size;
+
+        var imageWidth = size;
+        var imageHeight = size;
+
+        var centerX = imageWidth / 2.0;
+        var centerY = imageHeight / 2.0;
+
+        var smallPointerSize = 0.285 * imageWidth;
+        var smallPointerX_Offset = centerX - smallPointerSize / 2;
+        var smallPointerY_Offset = 0.17 * imageWidth;
+
+        var initialized = false;
+
+        // Buffer for the frame
+        var frameBuffer = createBuffer(size, size);
+        var frameContext = frameBuffer.getContext('2d');
+
+        // Buffer for static background painting code
+        var backgroundBuffer = createBuffer(size, size);
+        var backgroundContext = backgroundBuffer.getContext('2d');
+
+        // Buffer for small pointer image painting code
+        var smallPointerBuffer = createBuffer(size, size);
+        var smallPointerContext = smallPointerBuffer.getContext('2d');
+
+        // Buffer for small pointer shadow
+        var smallPointerShadowBuffer = createBuffer(size, size);
+        var smallPointerShadowContext = smallPointerShadowBuffer.getContext('2d');
+
+        // Buffer for large pointer image painting code
+        var largePointerBuffer = createBuffer(size, size);
+        var largePointerContext = largePointerBuffer.getContext('2d');
+
+        // Buffer for hour pointer shadow
+        var largePointerShadowBuffer = createBuffer(size, size);
+        var largePointerShadowContext = largePointerShadowBuffer.getContext('2d');
+
+        // Buffer for pointer shadow painting code
+        var pointerRotBuffer = createBuffer(size, size);
+        var pointerRotContext = pointerRotBuffer.getContext('2d');
+
+        // Buffer for static foreground painting code
+        var foregroundBuffer = createBuffer(size, size);
+        var foregroundContext = foregroundBuffer.getContext('2d');
+
+        var drawTickmarksImage = function(ctx, width, range, text_scale, text_dist_factor, x_offset, y_offset) {
+            var tickAngle;
+
+            ctx.width = ctx.height = width;
+
+            var STD_FONT_SIZE = text_scale * width;
+            var STD_FONT = STD_FONT_SIZE + "px sans-serif";
+            var TEXT_WIDTH = width * 0.15;
+            var THIN_STROKE = 0.5;
+            var MEDIUM_STROKE = 1;
+            var THICK_STROKE = 1.5;
+            var TEXT_DISTANCE = text_dist_factor * width;
+            var MIN_LENGTH = Math.round(0.025 * width)
+            var MED_LENGTH = Math.round(0.035 * width);
+            var MAX_LENGTH = Math.round(0.045 * width);
+            var TEXT_COLOR = backgroundColor.labelColor.getRgbaColor();
+            var TICK_COLOR = backgroundColor.labelColor.getRgbaColor();
+            var CENTER = width / 2;
+
+            // Create the ticks itself
+            var RADIUS = width * 0.4;
+            var counter = 0;
+            var numberCounter = 0;
+            var tickCounter = 0;
+            var sinValue = 0;
+            var cosValue = 0;
+
+            var alpha; // angle for the tickmarks
+            var ALPHA_START = -Math.PI;
+            var valueCounter; // value for the tickmarks
+
+            var ANGLE_STEPSIZE = (2 * Math.PI) / (range);
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = STD_FONT;
+
+            for (alpha = ALPHA_START, valueCounter = 0; valueCounter <= range + 1; alpha -= ANGLE_STEPSIZE * 0.1, valueCounter += 0.1) {
+                ctx.lineWidth = THIN_STROKE;
+                sinValue = Math.sin(alpha);
+                cosValue = Math.cos(alpha);
+
+                // tickmark every 2 units
+                if (counter % 2 === 0) {
+                    //ctx.lineWidth = THIN_STROKE;
+                    innerPoint = [CENTER + (RADIUS - MIN_LENGTH) * sinValue + x_offset, CENTER + (RADIUS - MIN_LENGTH) * cosValue + y_offset];
+                    outerPoint = [CENTER + RADIUS * sinValue + x_offset, CENTER + RADIUS * cosValue + y_offset];
+                    // Draw ticks
+                    ctx.strokeStyle = TICK_COLOR;
+                    ctx.beginPath();
+                    ctx.moveTo(innerPoint[0], innerPoint[1]);
+                    ctx.lineTo(outerPoint[0], outerPoint[1]);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                // Different tickmark every 10 units
+                if (counter === 10 || counter === 0) {
+                    ctx.fillStyle = TEXT_COLOR;
+                    ctx.lineWidth = MEDIUM_STROKE;
+                    outerPoint = [CENTER + RADIUS * sinValue + x_offset, CENTER + RADIUS * cosValue + y_offset];
+                    textPoint  = [CENTER + (RADIUS - TEXT_DISTANCE) * sinValue + x_offset, CENTER + (RADIUS - TEXT_DISTANCE) * cosValue + y_offset];
+
+                    // Draw text
+                    if (numberCounter === 5) {
+                        if (valueCounter !== range) {
+                            if (Math.round(valueCounter) !== 60) {
+//                                ctx.fillText(Math.round(valueCounter), textPoint[0], textPoint[1], TEXT_WIDTH);
+                                ctx.fillText(Math.round(valueCounter), textPoint[0], textPoint[1], TEXT_WIDTH);
+                            }
+                        }
+                        ctx.lineWidth = THICK_STROKE;
+                        innerPoint = [CENTER + (RADIUS - MAX_LENGTH) * sinValue + x_offset, CENTER + (RADIUS - MAX_LENGTH) * cosValue + y_offset];
+                        numberCounter = 0;
+                    } else {
+                        ctx.lineWidth = MEDIUM_STROKE;
+                        innerPoint = [CENTER + (RADIUS - MED_LENGTH) * sinValue + x_offset, CENTER + (RADIUS - MED_LENGTH) * cosValue + y_offset];
+                    }
+
+                    // Draw ticks
+                    ctx.strokeStyle = TICK_COLOR;
+                    ctx.beginPath();
+                    ctx.moveTo(innerPoint[0], innerPoint[1]);
+                    ctx.lineTo(outerPoint[0], outerPoint[1]);
+                    ctx.closePath();
+                    ctx.stroke();
+
+                    counter = 0;
+                    tickCounter++;
+                    numberCounter++;
+                }
+                counter++;
+            }
+            ctx.restore();
+        };
+
+        var drawLargePointer = function(ctx, shadow) {
+            var grad;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.5093457943925234, imageWidth * 0.45794392523364486);
+            ctx.lineTo(imageWidth * 0.5, imageWidth * 0.102803738317757);
+            ctx.lineTo(imageWidth * 0.49065420560747663, imageWidth * 0.45794392523364486);
+            ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageWidth * 0.45794392523364486, imageWidth * 0.49065420560747663, imageWidth * 0.45794392523364486, imageWidth * 0.49065420560747663, imageWidth * 0.45794392523364486);
+            ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageWidth * 0.46261682242990654, imageWidth * 0.45794392523364486, imageWidth * 0.48130841121495327, imageWidth * 0.45794392523364486, imageWidth * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.45794392523364486, imageWidth * 0.5186915887850467, imageWidth * 0.4719626168224299, imageWidth * 0.5373831775700935, imageWidth * 0.49065420560747663, imageWidth * 0.5420560747663551);
+            ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageWidth * 0.5420560747663551, imageWidth * 0.49065420560747663, imageWidth * 0.5420560747663551, imageWidth * 0.49065420560747663, imageWidth * 0.5420560747663551);
+            ctx.lineTo(imageWidth * 0.49065420560747663, imageWidth * 0.6214953271028038);
+            ctx.lineTo(imageWidth * 0.5093457943925234, imageWidth * 0.6214953271028038);
+            ctx.lineTo(imageWidth * 0.5093457943925234, imageWidth * 0.5420560747663551);
+            ctx.bezierCurveTo(imageWidth * 0.5093457943925234, imageWidth * 0.5420560747663551, imageWidth * 0.5093457943925234, imageWidth * 0.5420560747663551, imageWidth * 0.5093457943925234, imageWidth * 0.5420560747663551);
+            ctx.bezierCurveTo(imageWidth * 0.5280373831775701, imageWidth * 0.5373831775700935, imageWidth * 0.5420560747663551, imageWidth * 0.5186915887850467, imageWidth * 0.5420560747663551, imageWidth * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.5420560747663551, imageWidth * 0.48130841121495327, imageWidth * 0.5280373831775701, imageWidth * 0.46261682242990654, imageWidth * 0.5093457943925234, imageWidth * 0.45794392523364486);
+            ctx.bezierCurveTo(imageWidth * 0.5093457943925234, imageWidth * 0.45794392523364486, imageWidth * 0.5093457943925234, imageWidth * 0.45794392523364486, imageWidth * 0.5093457943925234, imageWidth * 0.45794392523364486);
+            ctx.closePath();
+            if (shadow) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.fill();
+            } else {
+                grad = ctx.createLinearGradient(0, 0, 0, imageWidth);
+                grad.addColorStop(0, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.3888888889, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
+                grad.addColorStop(0.6111111111, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
+                ctx.fill();
+                ctx.stroke();
+            }
+            if (!shadow) {
+                // Draw the rings
+                ctx.beginPath();
+                var radius = imageWidth * 0.06542053818702698 / 2;
+                ctx.arc(centerX, centerY, radius, 0, TWO_PI);
+                grad = ctx.createLinearGradient(centerX - radius, centerX + radius, 0, centerX + radius);
+                grad.addColorStop(0, 'rgba(230, 179, 92, 1)');
+                grad.addColorStop(0.01, 'rgba(230, 179, 92, 1)');
+                grad.addColorStop(0.99, 'rgba(196, 130, 0, 1)');
+                grad.addColorStop(1, 'rgba(196, 130, 0, 1)');
+                ctx.fillStyle = grad;
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.04672896862030029 / 2;
+                ctx.arc(centerX, centerY, radius, 0, TWO_PI);
+                grad = ctx.createRadialGradient(centerX, centerX, 0, centerX, centerX, radius);
+                grad.addColorStop(0, 'rgba(197, 197, 197, 1)');
+                grad.addColorStop(0.19, 'rgba(197, 197, 197, 1)');
+                grad.addColorStop(0.22, 'rgba(0, 0, 0, 1)');
+                grad.addColorStop(0.8, 'rgba(0, 0, 0, 1)');
+                grad.addColorStop(0.99, 'rgba(112, 112, 112, 1)');
+                grad.addColorStop(1, 'rgba(112, 112, 112, 1)');
+                ctx.fillStyle = grad;
+                ctx.closePath();
+                ctx.fill();
+             }
+            ctx.restore();
+        };
+
+        var drawSmallPointer = function(ctx, shadow) {
+            var grad;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.4766355140186916, imageWidth * 0.3130841121495327);
+            ctx.bezierCurveTo(imageWidth * 0.4766355140186916, imageWidth * 0.32242990654205606, imageWidth * 0.48598130841121495, imageWidth * 0.3317757009345794, imageWidth * 0.4953271028037383, imageWidth * 0.3364485981308411);
+            ctx.bezierCurveTo(imageWidth * 0.4953271028037383, imageWidth * 0.3364485981308411, imageWidth * 0.4953271028037383, imageWidth * 0.35046728971962615, imageWidth * 0.4953271028037383, imageWidth * 0.35046728971962615);
+            ctx.lineTo(imageWidth * 0.5046728971962616, imageWidth * 0.35046728971962615);
+            ctx.bezierCurveTo(imageWidth * 0.5046728971962616, imageWidth * 0.35046728971962615, imageWidth * 0.5046728971962616, imageWidth * 0.3364485981308411, imageWidth * 0.5046728971962616, imageWidth * 0.3364485981308411);
+            ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageWidth * 0.3317757009345794, imageWidth * 0.5233644859813084, imageWidth * 0.32242990654205606, imageWidth * 0.5233644859813084, imageWidth * 0.3130841121495327);
+            ctx.bezierCurveTo(imageWidth * 0.5233644859813084, imageWidth * 0.3037383177570093, imageWidth * 0.514018691588785, imageWidth * 0.29439252336448596, imageWidth * 0.5046728971962616, imageWidth * 0.2897196261682243);
+            ctx.bezierCurveTo(imageWidth * 0.5046728971962616, imageWidth * 0.2897196261682243, imageWidth * 0.5, imageWidth * 0.20093457943925233, imageWidth * 0.5, imageWidth * 0.20093457943925233);
+            ctx.bezierCurveTo(imageWidth * 0.5, imageWidth * 0.20093457943925233, imageWidth * 0.4953271028037383, imageWidth * 0.2897196261682243, imageWidth * 0.4953271028037383, imageWidth * 0.2897196261682243);
+            ctx.bezierCurveTo(imageWidth * 0.48598130841121495, imageWidth * 0.29439252336448596, imageWidth * 0.4766355140186916, imageWidth * 0.3037383177570093, imageWidth * 0.4766355140186916, imageWidth * 0.3130841121495327);
+            ctx.closePath();
+            if (shadow) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.fill();
+            } else {
+                grad = ctx.createLinearGradient(0, 0, imageWidth, 0);
+                grad.addColorStop(0, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.3888888889, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
+                grad.addColorStop(0.6111111111, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
+                ctx.fill();
+                ctx.stroke();
+            }
+            if (!shadow) {
+                // Draw the rings
+                ctx.beginPath();
+                var radius = imageWidth * 0.037383198738098145 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#C48200';
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.02803739905357361 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#999999';
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.018691569566726685 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#000000';
+                ctx.closePath();
+                ctx.fill();
+            }
+            ctx.restore();
+        };
+
+        var calculateAngles = function() {
+            currentMilliSeconds = new Date().getTime() - start;
+            secondPointerAngle = (currentMilliSeconds * ANGLE_STEP / 1000);
+            minutePointerAngle = (secondPointerAngle % 10800) / 30;
+
+            minutes = (currentMilliSeconds / 60000) % 30;
+            seconds = (currentMilliSeconds / 1000) % 60;
+            milliSeconds = (currentMilliSeconds) % 1000;
+        };
+
+        var init = function(parameters) {
+            parameters = parameters || {};
+            var drawFrame = (undefined === parameters.frame ? false : parameters.frame);
+            var drawBackground = (undefined === parameters.background ? false : parameters.background);
+            var drawPointers = (undefined === parameters.pointers ? false : parameters.pointers);
+            var drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
+
+            initialized = true;
+
+            if (drawFrame && frameVisible) {
+                drawRadialFrameImage(frameContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
+            }
+
+            if (drawBackground) {
+                // Create background in background buffer (backgroundBuffer)
+                drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
+
+                // Create custom layer in background buffer (backgroundBuffer)
+                drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
+
+                drawTickmarksImage(backgroundContext, imageWidth, 60, 0.075, 0.1, 0, 0);
+                drawTickmarksImage(backgroundContext, smallPointerSize, 30, 0.095, 0.13, smallPointerX_Offset, smallPointerY_Offset);
+            }
+            if (drawPointers) {
+                drawLargePointer(largePointerContext, false);
+                drawLargePointer(largePointerShadowContext, true);
+                drawSmallPointer(smallPointerContext, false);
+                drawSmallPointer(smallPointerShadowContext, true);
+            }
+
+            if (drawForeground) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
+            }
+        };
+
+        var resetBuffers = function(buffers) {
+            buffers = buffers || {};
+            var resetFrame = (undefined === buffers.frame ? false : buffers.frame);
+            var resetBackground = (undefined === buffers.background ? false : buffers.background);
+            var resetPointers = (undefined === buffers.pointers ? false : buffers.pointers);
+            var resetForeground = (undefined === buffers.foreground ? false : buffers.foreground);
+
+            if (resetFrame) {
+                frameBuffer.width = size;
+                frameBuffer.height = size;
+                frameContext = frameBuffer.getContext('2d');
+            }
+
+            if (resetBackground) {
+                backgroundBuffer.width = size;
+                backgroundBuffer.height = size;
+                backgroundContext = backgroundBuffer.getContext('2d');
+            }
+
+            if (resetPointers) {
+                smallPointerBuffer.width = size;
+                smallPointerBuffer.height = size;
+                smallPointerContext= smallPointerBuffer.getContext('2d');
+
+                smallPointerShadowBuffer.width = size;
+                smallPointerShadowBuffer.height = size;
+                smallPointerShadowContext = smallPointerShadowBuffer.getContext('2d');
+
+                largePointerBuffer.width = size;
+                largePointerBuffer.height = size;
+                largePointerContext = largePointerBuffer.getContext('2d');
+
+                largePointerShadowBuffer.width = size;
+                largePointerShadowBuffer.height = size;
+                largePointerShadowContext = largePointerShadowBuffer.getContext('2d');
+
+                pointerRotBuffer.width = size;
+                pointerRotBuffer.height = size;
+                pointerRotContext = pointerRotBuffer.getContext('2d');
+           }
+
+            if (resetForeground) {
+                foregroundBuffer.width = size;
+                foregroundBuffer.height = size;
+                foregroundContext = foregroundBuffer.getContext('2d');
+            }
+        };
+
+        var tickTock = function() {
+            calculateAngles();
+            if (running) {
+                tickTimer = setTimeout(tickTock, 200);
+            }
+            self.repaint();
+        };
+
+        //************************************ Public methods **************************************
+        // Returns true if the stopwatch is running
+        this.isRunning = function() {
+            return running;
+        };
+
+        // Starts the stopwatch
+        this.start = function() {
+            if (!running) {
+                running = true;
+                start = new Date().getTime() - currentMilliSeconds;
+                tickTock();
+            }
+        };
+
+        // Stops the stopwatch
+        this.stop = function() {
+            if (running) {
+                running = false;
+                clearTimeout(tickTimer);
+            }
+        };
+
+        // Resets the stopwatch
+        this.reset = function() {
+            if (running) {
+                running = false;
+                clearTimeout(tickTimer);
+            }
+            start = new Date().getTime();
+            calculateAngles();
+            this.repaint();
+        };
+
+        // Laptimer, stop/restart stopwatch
+        this.lap = function() {
+            if (running) {
+                 running = false;
+                clearTimeout(tickTimer);
+            } else {
+                running = true;
+                tickTock();
+            }
+        };
+
+        this.getMeasuredTime = function() {
+            return (minutes + ":" + seconds + ":" + milliSeconds);;
+        };
+
+        this.setFrameDesign = function(newFrameDesign) {
+            resetBuffers({frame: true});
+            frameDesign = newFrameDesign;
+            init({frame: true});
+            this.repaint();
+
+        };
+
+        this.setBackgroundColor = function(newBackgroundColor) {
+            resetBuffers({ background: true });
+            backgroundColor = newBackgroundColor;
+            init({ background: true });
+            this.repaint();
+        };
+
+        this.setForegroundType = function(newForegroundType) {
+            resetBuffers({foreground: true});
+            foregroundType = newForegroundType;
+            init({foreground: true});
+            this.repaint();
+        };
+
+        this.setPointerColor = function(newPointerColor) {
+            resetBuffers({pointers: true});
+            pointerColor = newPointerColor;
+            init({pointers: true});
+            this.repaint();
+        };
+
+        this.repaint = function() {
+            if (!initialized) {
+                init({frame: true,
+                      background: true,
+                      pointers: true,
+                      foreground: true});
+            }
+
+            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+            // Draw frame
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
+
+            // Draw buffered image to visible canvas
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
+
+            // have to draw to a rotated temporary image area so we can translate in
+            // absolute x, y values when drawing to main context
+            var shadowOffset = imageWidth * 0.006;
+
+            // Draw minute pointer shadow
+            var rotationAngle = (minutePointerAngle + (2 * Math.sin(minutePointerAngle * RAD_FACTOR))) * RAD_FACTOR;
+            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
+            pointerRotContext.save();
+            pointerRotContext.translate(centerX, smallPointerY_Offset + smallPointerSize / 2);
+            pointerRotContext.rotate(rotationAngle);
+            pointerRotContext.translate(-centerX, -(smallPointerY_Offset + smallPointerSize / 2));
+            pointerRotContext.drawImage(smallPointerShadowBuffer, 0, 0);
+            pointerRotContext.restore();
+            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset/2, shadowOffset/2, imageWidth + shadowOffset/2, imageHeight + shadowOffset/2);
+
+            // Draw the minute pointer
+            mainCtx.save();
+            mainCtx.translate(centerX, smallPointerY_Offset + smallPointerSize / 2);
+            mainCtx.rotate(rotationAngle);
+            mainCtx.translate(-centerX, -(smallPointerY_Offset + smallPointerSize / 2));
+            mainCtx.drawImage(smallPointerBuffer, 0 , 0);
+            mainCtx.restore();
+
+            // Draw second pointer shadow
+            rotationAngle = (secondPointerAngle + (2 * Math.sin(secondPointerAngle * RAD_FACTOR))) * RAD_FACTOR;
+            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
+            pointerRotContext.save();
+            pointerRotContext.translate(centerX, centerY);
+            pointerRotContext.rotate(rotationAngle);
+            pointerRotContext.translate(-centerX, -centerY);
+            pointerRotContext.drawImage(largePointerShadowBuffer, 0, 0);
+            pointerRotContext.restore();
+            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
+
+            // Draw the second pointer
+            mainCtx.save();
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate(rotationAngle);
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(largePointerBuffer, 0 , 0);
+            mainCtx.restore();
+
+            // Draw the foreground
+            mainCtx.drawImage(foregroundBuffer, 0, 0);
+        };
+
+        // Visualize the component
+        start = new Date().getTime();
+        tickTock();
+
+        return this;
+    };
+
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
     var radBBuffer = createBuffer(1,1);
@@ -8643,6 +9201,7 @@ var steelseries = function() {
     var linFDesign;
     var radFgBuffer = createBuffer(1,1);
     var radFgStyle;
+    var radFgType;
     var radWithKnob;
     var radKnob;
     var radGaugeType;
@@ -9878,7 +10437,7 @@ var steelseries = function() {
     var drawRadialForegroundImage = function(ctx, foregroundType, imageWidth, imageHeight, withCenterKnob, knob, style, gaugeType, orientation) {
         ctx.save();
 
-        if (imageWidth === radFgBuffer.width && imageHeight === radFgBuffer.height && withCenterKnob === radWithKnob && knob === radKnob && style === radFgStyle && radGaugeType === gaugeType && radOrientation === orientation) {
+        if (foregroundType.type === radFgType && imageWidth === radFgBuffer.width && imageHeight === radFgBuffer.height && withCenterKnob === radWithKnob && knob === radKnob && style === radFgStyle && radGaugeType === gaugeType && radOrientation === orientation) {
             ctx.drawImage(radFgBuffer, 0, 0);
             ctx.restore();
             return this;
@@ -9892,6 +10451,7 @@ var steelseries = function() {
         radFgBuffer.height = imageHeight;
         radGaugeType = gaugeType;
         radOrientation = orientation;
+        radFgType = foregroundType.type;
         var radFgCtx = radFgBuffer.getContext('2d');
 
         var shadowOffset = imageWidth * 0.008;
@@ -9914,7 +10474,7 @@ var steelseries = function() {
         // highlight
         var gradHighlight;
 
-        switch (foregroundType.type) {
+        switch (radFgType) {
             case 'type2':
                 radFgCtx.beginPath();
                 radFgCtx.moveTo(imageWidth * 0.13551401869158877, imageHeight * 0.6962616822429907);
@@ -11424,6 +11984,7 @@ var steelseries = function() {
         Led : led,
         Clock : clock,
         Battery : battery,
+        StopWatch : stopwatch,
 
         // Images
         drawFrame : drawRadialFrameImage,
