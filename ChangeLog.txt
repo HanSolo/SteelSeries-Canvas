@@ -1,5 +1,11 @@
 Main Changes
 -------------------------
+v0.8.5
+> StopWatch
+  * Cosmetic improvement to seconds pointer
+  * Bug fix to the certain lap()/reset() combinations
+
+-------------------------
 v0.8.4
 > Radial/LinearBargraph
   * Fixed a bug with section recalculation when the gauge range was changed via setMin/Max()

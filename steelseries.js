@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 05.12.2011
- * Revision      : 0.8.4
+ * Last modified : 06.12.2011
+ * Revision      : 0.8.5
  */
 
 var steelseries = function() {
@@ -8644,7 +8644,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.BLACK : parameters.pointerColor);
-        var backgroundColor = (undefined === parameters.backgroundColor ? (pointerType===steelseries.PointerType.TYPE1 ? steelseries.BackgroundColor.ANTHRACITE : steelseries.BackgroundColor.LIGHT_GRAY) : parameters.backgroundColor);
+        var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.LIGHT_GRAY : parameters.backgroundColor);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
 
@@ -8657,12 +8657,12 @@ var steelseries = function() {
         var self = this;
 
         var start = 0;
-        var stop = 0;
         var currentMilliSeconds = 0;
         var minutes = 0;
         var seconds = 0;
         var milliSeconds = 0;
         var running = false;
+        var lap = false;
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -8841,7 +8841,7 @@ var steelseries = function() {
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
                 ctx.fill();
             } else {
-                grad = ctx.createLinearGradient(0, 0, 0, imageWidth);
+                grad = ctx.createLinearGradient(0, 0, 0, imageWidth * 0.6214953271028038);
                 grad.addColorStop(0, pointerColor.medium.getRgbaColor());
                 grad.addColorStop(0.3888888889, pointerColor.medium.getRgbaColor());
                 grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
@@ -9034,11 +9034,14 @@ var steelseries = function() {
         };
 
         var tickTock = function() {
-            calculateAngles();
+            if (!lap) {
+                calculateAngles();
+                self.repaint();
+            }
             if (running) {
                 tickTimer = setTimeout(tickTock, 200);
             }
-            self.repaint();
+
         };
 
         //************************************ Public methods **************************************
@@ -9061,6 +9064,12 @@ var steelseries = function() {
             if (running) {
                 running = false;
                 clearTimeout(tickTimer);
+                //calculateAngles();
+            }
+            if (lap) {
+                lap = false;
+                calculateAngles();
+                this.repaint();
             }
         };
 
@@ -9068,6 +9077,7 @@ var steelseries = function() {
         this.reset = function() {
             if (running) {
                 running = false;
+                lap = false;
                 clearTimeout(tickTimer);
             }
             start = new Date().getTime();
@@ -9077,12 +9087,10 @@ var steelseries = function() {
 
         // Laptimer, stop/restart stopwatch
         this.lap = function() {
-            if (running) {
-                 running = false;
-                clearTimeout(tickTimer);
-            } else {
-                running = true;
-                tickTock();
+            if (running && !lap) {
+                lap = true;
+            } else if (lap) {
+                lap = false;
             }
         };
 
