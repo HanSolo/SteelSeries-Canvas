@@ -1,5 +1,18 @@
 Main Changes
 -------------------------
+v0.8.6
+> General Changes
+  * Bug fix to GradientWrapper()
+  * Bug fix to radial drawTitles() function
+
+> Radial/LinearBargraph
+  * Added gradient colouring to the value bar LEDs
+  * Added the following initialisation parameters:
+    - useSectionColors: bool, valueGradient: steelseries.gradientWrapper(), useValueGradient: bool
+  * Added the following methods:
+    - setSectionColorsActive(bool), setValueGradient(steelseries.gradientWrapper), setValueGradientActive(bool)
+
+-------------------------
 v0.8.5
 > StopWatch
   * Cosmetic improvement to seconds pointer
