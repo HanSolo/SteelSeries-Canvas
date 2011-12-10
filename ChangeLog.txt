@@ -1,5 +1,10 @@
 Main Changes
 -------------------------
+v0.8.7
+> General Changes
+  * Added new Altimeter component
+
+-------------------------
 v0.8.6
 > General Changes
   * Bug fix to GradientWrapper()

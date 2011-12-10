@@ -160,11 +160,16 @@
         </tr>
         <tr>
             <td width="100%">
+                <canvas id="canvasClock1" width="201" height="201"></canvas>
+                <canvas id="canvasAltimeter1" width="201" height="201"></canvas>
                 <canvas id="canvasSingle1" width="120" height="50"></canvas>
                 <canvas id="canvasSingle2" width="200" height="50"></canvas>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
                 <canvas id="canvasMulti1" width="100" height="80"></canvas>
                 <canvas id="canvasLed1" width="50" height="50"></canvas>
-                <canvas id="canvasClock1" width="201" height="201"></canvas>
                 <canvas id="canvasBattery1" width="80" height="36"></canvas>
             </td>
         </tr>
@@ -183,6 +188,7 @@
     var led1;
     var clock1;
     var battery1;
+	var altimete1;
     
     function init() {
         // Initialzing gauge
@@ -237,6 +243,8 @@
                             size: 80,
                             value: 0
                             });
+        altimeter1 = new steelseries.Altimeter('canvasAltimeter1', {
+                            size: 201 });
 
         // Start the random update
         setInterval(function(){ setRandomValue(radial1, 360); }, 3000);
@@ -247,6 +255,7 @@
         setInterval(function(){ setRandomValue3(single2, 100); }, 8000);
         setInterval(function(){ setRandomValue2(multi1, 100); }, 2000);
         setInterval(function(){ battery(); }, 200);
+        setInterval(function(){ setRandomValue(altimeter1, 10000);}, 5000);
    }
 
     var batVal = 0;
@@ -293,6 +302,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 break;
             case "METAL":
                 radial1.setFrameDesign(steelseries.FrameDesign.METAL);
@@ -300,6 +310,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.METAL);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.METAL);
                 break;
             case "SHINY_METAL":
                 radial1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
@@ -307,6 +318,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 radial4.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 break;
             case "BRASS":
                 radial1.setFrameDesign(steelseries.FrameDesign.BRASS);
@@ -314,6 +326,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.BRASS);
                 radial4.setFrameDesign(steelseries.FrameDesign.BRASS);
                 clock1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 break;
             case "STEEL":
                 radial1.setFrameDesign(steelseries.FrameDesign.STEEL);
@@ -321,6 +334,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.STEEL);
                 radial4.setFrameDesign(steelseries.FrameDesign.STEEL);
                 clock1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 break;
             case "CHROME":
                 radial1.setFrameDesign(steelseries.FrameDesign.CHROME);
@@ -328,6 +342,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.CHROME);
                 radial4.setFrameDesign(steelseries.FrameDesign.CHROME);
                 clock1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 break;
             case "GOLD":
                 radial1.setFrameDesign(steelseries.FrameDesign.GOLD);
@@ -335,6 +350,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.GOLD);
                 radial4.setFrameDesign(steelseries.FrameDesign.GOLD);
                 clock1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 break;
             case "ANTHRACITE":
                 radial1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
@@ -342,6 +358,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 radial4.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 clock1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 break;
             case "TILTED_GRAY":
                 radial1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
@@ -349,6 +366,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 radial4.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 clock1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 break;
             case "TILTED_BLACK":
                 radial1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
@@ -356,6 +374,7 @@
                 radial3.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 radial4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 clock1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                altimeter1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 break;
         }
     }
@@ -367,84 +386,98 @@
                 radial2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 break;
             case "SATIN_GRAY":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 break;
             case "LIGHT_GRAY":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 break;
             case "WHITE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 break;
             case "BLACK":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 break;
             case "BEIGE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 break;
             case "BROWN":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 break;
             case "RED":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.RED);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.RED);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 break;
             case "GREEN":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 break;
             case "BLUE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 break;
             case "ANTHRACITE":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 break;
             case "MUD":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 break;
             case "PUNCHED_SHEET":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 break;
             case "CARBON":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 radial2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 radial3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 break;
         }
     }
@@ -457,6 +490,7 @@
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE1);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE1);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                altimeter1.setForegroundType(steelseries.ForegroundType.TYPE1);
                 break;
             case "TYPE2":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE2);
@@ -464,6 +498,7 @@
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE2);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE2);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                altimeter1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 break;
             case "TYPE3":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE3);
@@ -471,6 +506,7 @@
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE3);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE3);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                altimeter1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 break;
             case "TYPE4":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE4);
@@ -478,6 +514,7 @@
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE4);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE4);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                altimeter1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 break;
             case "TYPE5":
                 radial1.setForegroundType(steelseries.ForegroundType.TYPE5);
@@ -485,6 +522,7 @@
                 radial3.setForegroundType(steelseries.ForegroundType.TYPE5);
                 radial4.setForegroundType(steelseries.ForegroundType.TYPE5);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                altimeter1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 break;
         }
     }
@@ -638,95 +676,111 @@
                 single1.setLcdColor(steelseries.LcdColor.BEIGE);
                 single2.setLcdColor(steelseries.LcdColor.BEIGE);
                 multi1.setLcdColor(steelseries.LcdColor.BEIGE);
+                altimeter1.setLcdColor(steelseries.LcdColor.BEIGE);
                 break;
             case "BLUE":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLUE);
                 break;
             case "ORANGE":
                 radial2.setLcdColor(steelseries.LcdColor.ORANGE);
                 single1.setLcdColor(steelseries.LcdColor.ORANGE);
                 single2.setLcdColor(steelseries.LcdColor.ORANGE);
                 multi1.setLcdColor(steelseries.LcdColor.ORANGE);
+                altimeter1.setLcdColor(steelseries.LcdColor.ORANGE);
                 break;
             case "RED":
                 radial2.setLcdColor(steelseries.LcdColor.RED);
                 single1.setLcdColor(steelseries.LcdColor.RED);
                 single2.setLcdColor(steelseries.LcdColor.RED);
                 multi1.setLcdColor(steelseries.LcdColor.RED);
+                altimeter1.setLcdColor(steelseries.LcdColor.RED);
                 break;
             case "YELLOW":
                 radial2.setLcdColor(steelseries.LcdColor.YELLOW);
                 single1.setLcdColor(steelseries.LcdColor.YELLOW);
                 single2.setLcdColor(steelseries.LcdColor.YELLOW);
                 multi1.setLcdColor(steelseries.LcdColor.YELLOW);
+                altimeter1.setLcdColor(steelseries.LcdColor.YELLOW);
                 break;
             case "WHITE":
                 radial2.setLcdColor(steelseries.LcdColor.WHITE);
                 single1.setLcdColor(steelseries.LcdColor.WHITE);
                 single2.setLcdColor(steelseries.LcdColor.WHITE);
                 multi1.setLcdColor(steelseries.LcdColor.WHITE);
+                altimeter1.setLcdColor(steelseries.LcdColor.WHITE);
                 break;
             case "GRAY":
                 radial2.setLcdColor(steelseries.LcdColor.GRAY);
                 single1.setLcdColor(steelseries.LcdColor.GRAY);
                 single2.setLcdColor(steelseries.LcdColor.GRAY);
                 multi1.setLcdColor(steelseries.LcdColor.GRAY);
+                altimeter1.setLcdColor(steelseries.LcdColor.GRAY);
                 break;
             case "BLACK":
                 radial2.setLcdColor(steelseries.LcdColor.BLACK);
                 single1.setLcdColor(steelseries.LcdColor.BLACK);
                 single2.setLcdColor(steelseries.LcdColor.BLACK);
                 multi1.setLcdColor(steelseries.LcdColor.BLACK);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLACK);
                 break;
             case "GREEN":
                 radial2.setLcdColor(steelseries.LcdColor.GREEN);
                 single1.setLcdColor(steelseries.LcdColor.GREEN);
                 single2.setLcdColor(steelseries.LcdColor.GREEN);
                 multi1.setLcdColor(steelseries.LcdColor.GREEN);
+                altimeter1.setLcdColor(steelseries.LcdColor.GREEN);
                 break;
             case "BLUE2":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE2);
                 single1.setLcdColor(steelseries.LcdColor.BLUE2);
                 single2.setLcdColor(steelseries.LcdColor.BLUE2);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE2);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLUE2);
                 break;
             case "BLUE_BLACK":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 break;
             case "BLUE_DARKBLUE":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 break;
             case "BLUE_GRAY":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                  break;
             case "STANDARD":
                 radial2.setLcdColor(steelseries.LcdColor.STANDARD);
                 single1.setLcdColor(steelseries.LcdColor.STANDARD);
                 single2.setLcdColor(steelseries.LcdColor.STANDARD);
                 multi1.setLcdColor(steelseries.LcdColor.STANDARD);
+                altimeter1.setLcdColor(steelseries.LcdColor.STANDARD);
                 break;
             case "STANDARD_GREEN":
                 radial2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 single1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 single2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 multi1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                altimeter1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 break;
             case "BLUE_BLUE":
                 radial2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                multi1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 break;
             case "RED_DARKRED":
@@ -734,30 +788,35 @@
                 single1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 single2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 multi1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                altimeter1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 break;
             case "DARKBLUE":
                 radial2.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 single1.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 single2.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 multi1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                altimeter1.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 break;
             case "LILA":
                 radial2.setLcdColor(steelseries.LcdColor.LILA);
                 single1.setLcdColor(steelseries.LcdColor.LILA);
                 single2.setLcdColor(steelseries.LcdColor.LILA);
                 multi1.setLcdColor(steelseries.LcdColor.LILA);
+                altimeter1.setLcdColor(steelseries.LcdColor.LILA);
                 break;
             case "BLACKRED":
                 radial2.setLcdColor(steelseries.LcdColor.BLACKRED);
                 single1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 single2.setLcdColor(steelseries.LcdColor.BLACKRED);
                 multi1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                altimeter1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 break;
             case "DARKGREEN": 
                 radial2.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single2.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 multi1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                altimeter1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 break;
         }
     }

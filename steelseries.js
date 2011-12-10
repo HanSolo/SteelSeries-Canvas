@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 09.12.2011
- * Revision      : 0.8.6
+ * Last modified : 10.12.2011
+ * Revision      : 0.8.7
  */
 
 var steelseries = function() {
@@ -6592,7 +6592,7 @@ var steelseries = function() {
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
         var pointerTypeLatest = (undefined === parameters.pointerTypeLatest ? steelseries.PointerType.TYPE1 : parameters.pointerTypeLatest);
-        var pointerTypeAverage = (undefined === parameters.pointerTypeAverage ? steelseries.PointerType.TYPE7 : parameters.pointerTypeAverage);
+        var pointerTypeAverage = (undefined === parameters.pointerTypeAverage ? steelseries.PointerType.TYPE8 : parameters.pointerTypeAverage);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
         var pointerColorAverage = (undefined === parameters.pointerColorAverage ? steelseries.ColorDef.BLUE : parameters.pointerColorAverage);
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType);
@@ -9280,6 +9280,584 @@ var steelseries = function() {
         // Visualize the component
         start = new Date().getTime();
         tickTock();
+
+        return this;
+    };
+
+    var altimeter = function(canvas, parameters) {
+        parameters = parameters || {};
+        var size = (undefined === parameters.size ? 200 : parameters.size);
+        var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
+        var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
+        var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var knobType = (undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType);
+        var knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.BLACK : parameters.knobStyle);
+        var lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.BLACK : parameters.lcdColor);
+        var lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
+        var digitalFont = (undefined === parameters.digitalFont ? false : parameters.digitalFont);
+        var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
+
+        var minValue = 0;
+        var maxValue = 10;
+        var value = minValue;
+        var value100 = 0;
+        var value1000 = 0;
+        var value10000 = 0;
+        var angleStep100ft;
+        var angleStep1000ft;
+        var angleStep10000ft;
+        var tickLabelPeriod = 1; // Draw value at every 10th tickmark
+        var tween;
+        
+        // Get the canvas context and clear it
+        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Set the size
+        mainCtx.canvas.width = size;
+        mainCtx.canvas.height = size;
+
+        var imageWidth = size;
+        var imageHeight = size;
+
+        var centerX = imageWidth / 2;
+        var centerY = imageHeight / 2;
+
+        var stdFont = Math.floor(imageWidth * 0.09) + 'px sans-serif';
+//        var lcdFont = Math.floor(imageWidth / 12) + 'px LCDMono2Ultra';
+
+        // Constants
+        var HALF_PI = Math.PI / 2;
+        var RAD_FACTOR = Math.PI / 180;
+        var TICKMARK_OFFSET = Math.PI;
+
+        var initialized = false;
+        
+        // **************   Buffer creation  ********************
+        // Buffer for the frame
+        var frameBuffer = createBuffer(size, size);
+        var frameContext = frameBuffer.getContext('2d');
+
+        // Buffer for the background
+        var backgroundBuffer = createBuffer(size, size);
+        var backgroundContext = backgroundBuffer.getContext('2d');
+
+        var lcdBuffer;
+
+        // Buffer for 10000ft pointer image painting code
+        var pointer10000Buffer = createBuffer(size, size);
+        var pointer10000Context = pointer10000Buffer.getContext('2d');
+
+        // Buffer for 10000ft pointer shadow
+        var pointer10000ShadowBuffer = createBuffer(size, size);
+        var pointer10000ShadowContext = pointer10000ShadowBuffer.getContext('2d');
+
+        // Buffer for 1000ft pointer image painting code
+        var pointer1000Buffer = createBuffer(size, size);
+        var pointer1000Context = pointer1000Buffer.getContext('2d');
+
+        // Buffer for 1000ft pointer shadow
+        var pointer1000ShadowBuffer = createBuffer(size, size);
+        var pointer1000ShadowContext = pointer1000ShadowBuffer.getContext('2d');
+
+        // Buffer for 100ft pointer image painting code
+        var pointer100Buffer = createBuffer(size, size);
+        var pointer100Context = pointer100Buffer.getContext('2d');
+
+        // Buffer for 100ft pointer shadow
+        var pointer100ShadowBuffer = createBuffer(size, size);
+        var pointer100ShadowContext = pointer100ShadowBuffer.getContext('2d');
+
+        // Buffer for pointer shadow rotation
+        var pointerRotBuffer = createBuffer(size, size);
+        var pointerRotContext = pointerRotBuffer.getContext('2d');
+
+        // Buffer for static foreground painting code
+        var foregroundBuffer = createBuffer(size, size);
+        var foregroundContext = foregroundBuffer.getContext('2d');
+
+        // **************   Image creation  ********************
+        var drawLcdText = function(value) {
+            mainCtx.save();
+            mainCtx.textAlign = 'right';
+            mainCtx.textBaseline = 'middle';
+            mainCtx.strokeStyle = lcdColor.textColor;
+            mainCtx.fillStyle = lcdColor.textColor;
+
+            if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
+                mainCtx.shadowColor = 'gray';
+                mainCtx.shadowOffsetX = imageWidth * 0.007;
+                mainCtx.shadowOffsetY = imageWidth * 0.007;
+                mainCtx.shadowBlur = imageWidth * 0.009;
+            }
+            if (digitalFont) {
+                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px LCDMono2Ultra';
+            } else {
+                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px sans-serif';
+            }
+            mainCtx.fillText(Math.round(value), (imageWidth + (imageWidth * 0.4)) / 2 - 4, imageWidth * 0.607, imageWidth * 0.4);
+            mainCtx.restore();
+        };
+
+        var drawTickmarksImage = function(ctx, freeAreaAngle, offset, minVal, maxVal, angleStep, tickLabelPeriod, scaleDividerPower, drawTicks, drawTickLabels) {          
+            var MEDIUM_STROKE = Math.max(imageWidth * 0.012, 2);
+            var THIN_STROKE = Math.max(imageWidth * 0.007, 1.5);
+            var TEXT_DISTANCE = imageWidth * 0.13;
+            var MED_LENGTH = imageWidth * 0.05;
+            var MAX_LENGTH = imageWidth * 0.07;
+            var RADIUS = imageWidth * 0.4;
+            var counter = 0;
+            var tickCounter = 0;
+            var sinValue = 0;
+            var cosValue = 0;
+            var alpha;          // angle for tickmarks
+            var valueCounter;   // value for tickmarks
+            
+            var ALPHA_START = -offset - (freeAreaAngle /2);
+            
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = stdFont;
+            ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
+            ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
+            
+            for (alpha = ALPHA_START, valueCounter = 0; valueCounter <= 10; alpha -= angleStep * 0.1, valueCounter += 0.1) {
+                sinValue = Math.sin(alpha);
+                cosValue = Math.cos(alpha);
+
+                // tickmark every 2 units
+                if (counter % 2 === 0) {
+                    ctx.lineWidth = THIN_STROKE;
+                    // Draw ticks
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + (RADIUS - MED_LENGTH) * sinValue, centerY + (RADIUS - MED_LENGTH) * cosValue);
+                    ctx.lineTo(centerX + RADIUS * sinValue, centerY + RADIUS * cosValue);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                
+                // Different tickmark every 10 units
+                if (counter === 10 || counter === 0) {
+                    ctx.lineWidth = MEDIUM_STROKE;
+                    
+                    // if gauge is full circle, avoid painting maxValue over minValue
+                    if (freeAreaAngle === 0) {
+                        if (Math.round(valueCounter) != maxValue) {
+                            ctx.fillText(Math.round(valueCounter).toString(), centerX + (RADIUS - TEXT_DISTANCE) * sinValue, centerY + (RADIUS - TEXT_DISTANCE) * cosValue);
+                        }
+                    }
+                    counter = 0;
+                    tickCounter++;
+
+                    // Draw ticks
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + (RADIUS - MAX_LENGTH) * sinValue, centerY + (RADIUS - MAX_LENGTH) * cosValue);
+                    ctx.lineTo(centerX + RADIUS * sinValue, centerY + RADIUS * cosValue);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                counter++;
+            }
+            ctx.restore();
+        };
+
+        var draw100ftPointer = function(ctx, shadow) {
+            var grad;
+            if (shadow) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            } else {
+                grad = ctx.createLinearGradient(0, imageHeight * 0.16822429906542055, 0, imageHeight * 0.6261682242990654);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.31, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.3101, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.32, 'rgba(32, 32, 32, 1)');
+                grad.addColorStop(1, 'rgba(32, 32, 32, 1)');
+                ctx.fillStyle = grad;
+            }
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageHeight * 0.4719626168224299, imageWidth * 0.5093457943925234, imageHeight * 0.4672897196261682, imageWidth * 0.5093457943925234, imageHeight * 0.4672897196261682);
+            ctx.lineTo(imageWidth * 0.5093457943925234, imageHeight * 0.20093457943925233);
+            ctx.lineTo(imageWidth * 0.5, imageHeight * 0.16822429906542055);
+            ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.20093457943925233);
+            ctx.lineTo(imageWidth * 0.49065420560747663, imageHeight * 0.4672897196261682);
+            ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.4672897196261682, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.48130841121495327, imageWidth * 0.4672897196261682, imageHeight * 0.49065420560747663, imageWidth * 0.4672897196261682, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.514018691588785, imageWidth * 0.4766355140186916, imageHeight * 0.5280373831775701, imageWidth * 0.49065420560747663, imageHeight * 0.5327102803738317);
+            ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.5327102803738317, imageWidth * 0.49065420560747663, imageHeight * 0.5794392523364486, imageWidth * 0.49065420560747663, imageHeight * 0.5887850467289719);
+            ctx.bezierCurveTo(imageWidth * 0.48598130841121495, imageHeight * 0.5934579439252337, imageWidth * 0.48130841121495327, imageHeight * 0.5981308411214953, imageWidth * 0.48130841121495327, imageHeight * 0.6074766355140186);
+            ctx.bezierCurveTo(imageWidth * 0.48130841121495327, imageHeight * 0.616822429906542, imageWidth * 0.49065420560747663, imageHeight * 0.6261682242990654, imageWidth * 0.5, imageHeight * 0.6261682242990654);
+            ctx.bezierCurveTo(imageWidth * 0.5093457943925234, imageHeight * 0.6261682242990654, imageWidth * 0.5186915887850467, imageHeight * 0.616822429906542, imageWidth * 0.5186915887850467, imageHeight * 0.6074766355140186);
+            ctx.bezierCurveTo(imageWidth * 0.5186915887850467, imageHeight * 0.5981308411214953, imageWidth * 0.514018691588785, imageHeight * 0.5934579439252337, imageWidth * 0.5046728971962616, imageHeight * 0.5887850467289719);
+            ctx.bezierCurveTo(imageWidth * 0.5046728971962616, imageHeight * 0.5794392523364486, imageWidth * 0.5046728971962616, imageHeight * 0.5327102803738317, imageWidth * 0.5093457943925234, imageHeight * 0.5327102803738317);
+            ctx.bezierCurveTo(imageWidth * 0.5233644859813084, imageHeight * 0.5280373831775701, imageWidth * 0.5327102803738317, imageHeight * 0.514018691588785, imageWidth * 0.5327102803738317, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.49065420560747663, imageWidth * 0.5280373831775701, imageHeight * 0.48130841121495327, imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+       };
+        
+        var draw1000ftPointer = function(ctx, shadow) {
+            var grad;
+            if (shadow) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            } else {
+                grad = ctx.createLinearGradient(0, imageHeight * 0.40186915887850466, 0, imageHeight * 0.616822429906542);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.51, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.52, 'rgba(255, 255, 255, 1)');
+                grad.addColorStop(0.5201, 'rgba(32, 32, 32, 1)');
+                grad.addColorStop(0.53, 'rgba(32, 32, 32, 1)');
+                grad.addColorStop(1, 'rgba(32, 32, 32, 1)');
+                ctx.fillStyle = grad;
+            }
+            ctx.beginPath();
+            ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageHeight * 0.46261682242990654, imageWidth * 0.5280373831775701, imageHeight * 0.40186915887850466, imageWidth * 0.5280373831775701, imageHeight * 0.40186915887850466);
+            ctx.lineTo(imageWidth * 0.5, imageHeight * 0.3317757009345794);
+            ctx.lineTo(imageWidth * 0.4719626168224299, imageHeight * 0.40186915887850466);
+            ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.40186915887850466, imageWidth * 0.48598130841121495, imageHeight * 0.46261682242990654, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.48130841121495327, imageWidth * 0.4672897196261682, imageHeight * 0.49065420560747663, imageWidth * 0.4672897196261682, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.514018691588785, imageWidth * 0.4766355140186916, imageHeight * 0.5280373831775701, imageWidth * 0.49065420560747663, imageHeight * 0.5327102803738317);
+            ctx.bezierCurveTo(imageWidth * 0.49065420560747663, imageHeight * 0.5327102803738317, imageWidth * 0.46261682242990654, imageHeight * 0.5747663551401869, imageWidth * 0.46261682242990654, imageHeight * 0.5934579439252337);
+            ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.616822429906542, imageWidth * 0.5, imageHeight * 0.6121495327102804, imageWidth * 0.5, imageHeight * 0.6121495327102804);
+            ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.6121495327102804, imageWidth * 0.5327102803738317, imageHeight * 0.616822429906542, imageWidth * 0.5373831775700935, imageHeight * 0.5934579439252337);
+            ctx.bezierCurveTo(imageWidth * 0.5373831775700935, imageHeight * 0.5747663551401869, imageWidth * 0.5093457943925234, imageHeight * 0.5327102803738317, imageWidth * 0.5093457943925234, imageHeight * 0.5327102803738317);
+            ctx.bezierCurveTo(imageWidth * 0.5233644859813084, imageHeight * 0.5280373831775701, imageWidth * 0.5327102803738317, imageHeight * 0.514018691588785, imageWidth * 0.5327102803738317, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.49065420560747663, imageWidth * 0.5280373831775701, imageHeight * 0.48130841121495327, imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        };
+
+        var draw10000ftPointer = function(ctx, shadow) {
+            if (shadow) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            } else {
+                ctx.fillStyle = '#ffffff';
+            }
+            ctx.beginPath()
+            ctx.moveTo(imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.514018691588785, imageHeight * 0.4719626168224299, imageWidth * 0.514018691588785, imageHeight * 0.4672897196261682, imageWidth * 0.514018691588785, imageHeight * 0.4672897196261682);
+            ctx.lineTo(imageWidth * 0.514018691588785, imageHeight * 0.3177570093457944);
+            ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.3037383177570093);
+            ctx.lineTo(imageWidth * 0.5046728971962616, imageHeight * 0.1822429906542056);
+            ctx.lineTo(imageWidth * 0.5327102803738317, imageHeight * 0.11682242990654206);
+            ctx.lineTo(imageWidth * 0.46261682242990654, imageHeight * 0.11682242990654206);
+            ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.1822429906542056);
+            ctx.lineTo(imageWidth * 0.4953271028037383, imageHeight * 0.29906542056074764);
+            ctx.lineTo(imageWidth * 0.48598130841121495, imageHeight * 0.3177570093457944);
+            ctx.lineTo(imageWidth * 0.48598130841121495, imageHeight * 0.4672897196261682);
+            ctx.bezierCurveTo(imageWidth * 0.48598130841121495, imageHeight * 0.4672897196261682, imageWidth * 0.48598130841121495, imageHeight * 0.4719626168224299, imageWidth * 0.48130841121495327, imageHeight * 0.4719626168224299);
+            ctx.bezierCurveTo(imageWidth * 0.4719626168224299, imageHeight * 0.48130841121495327, imageWidth * 0.4672897196261682, imageHeight * 0.49065420560747663, imageWidth * 0.4672897196261682, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.4672897196261682, imageHeight * 0.5186915887850467, imageWidth * 0.48130841121495327, imageHeight * 0.5327102803738317, imageWidth * 0.5, imageHeight * 0.5327102803738317);
+            ctx.bezierCurveTo(imageWidth * 0.5186915887850467, imageHeight * 0.5327102803738317, imageWidth * 0.5327102803738317, imageHeight * 0.5186915887850467, imageWidth * 0.5327102803738317, imageHeight * 0.5);
+            ctx.bezierCurveTo(imageWidth * 0.5327102803738317, imageHeight * 0.49065420560747663, imageWidth * 0.5280373831775701, imageHeight * 0.48130841121495327, imageWidth * 0.5186915887850467, imageHeight * 0.4719626168224299);
+            ctx.closePath();
+            ctx.fill();
+        };
+  
+        function calcAngleStep() {
+            angleStep100ft = (2 * Math.PI) / (maxValue - minValue);
+            angleStep1000ft = angleStep100ft / 10;
+            angleStep10000ft = angleStep1000ft / 10;
+        }
+        
+        function calcValues() {
+            value100 = (value % 1000) / 100;
+            value1000 = (value % 10000) / 100;
+            value10000 = (value % 100000) / 100;
+        }
+        
+        // **************   Initialization  ********************
+        // Draw all static painting code to background
+        var init = function(parameters) {
+            parameters = parameters || {};
+            var drawFrame = (undefined === parameters.frame ? false : parameters.frame);
+            var drawBackground = (undefined === parameters.background ? false : parameters.background);
+            var drawPointers = (undefined === parameters.pointers ? false : parameters.pointers);
+            var drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
+
+            initialized = true;
+
+            calcAngleStep();
+
+            // Create frame in frame buffer (backgroundBuffer)
+            if (drawFrame && frameVisible) {
+                drawRadialFrameImage(frameContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
+            }
+
+            if (drawBackground) {
+                // Create background in background buffer (backgroundBuffer)
+                drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
+
+                // Create custom layer in background buffer (backgroundBuffer)
+                drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
+
+                // Create tickmarks in background buffer (backgroundBuffer)
+                drawTickmarksImage(backgroundContext, 0, TICKMARK_OFFSET, 0, 10, angleStep100ft, tickLabelPeriod, 0, true, true, null);
+
+                // Create lcd background if selected in background buffer (backgroundBuffer)
+                if (lcdVisible) {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.09, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.56);
+                }
+            }
+            
+            if (drawPointers) {
+                // Create 100ft pointer in buffer
+                draw100ftPointer(pointer100Context, false);
+                // Create 100ft pointer shadow in buffer
+                draw100ftPointer(pointer100ShadowContext, true);
+                // Create 1000ft pointer in buffer
+                draw1000ftPointer(pointer1000Context, false);
+                // Create 1000ft pointer shadow in buffer
+                draw1000ftPointer(pointer1000ShadowContext, true);
+                // Create 10000ft pointer in buffer
+                draw10000ftPointer(pointer10000Context, false);
+                // Create 10000ft pointer shadow in buffer
+                draw10000ftPointer(pointer10000ShadowContext, true);
+            }
+            
+            if (drawForeground) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
+            }
+        };
+
+        var resetBuffers = function(buffers) {
+            buffers = buffers || {};
+            var resetFrame = (undefined === buffers.frame ? false : buffers.frame);
+            var resetBackground = (undefined === buffers.background ? false : buffers.background);
+            var resetPointers = (undefined === buffers.pointers ? false : buffers.pointers);
+            var resetForeground = (undefined === buffers.foreground ? false : buffers.foreground);
+
+            if (resetFrame) {
+                frameBuffer.width = size;
+                frameBuffer.height = size;
+                frameContext = frameBuffer.getContext('2d');
+            }
+
+            if (resetBackground) {
+                backgroundBuffer.width = size;
+                backgroundBuffer.height = size;
+                backgroundContext = backgroundBuffer.getContext('2d');
+            }
+
+            if (resetPointers) {
+                pointer100ftBuffer.width = size;
+                pointer100ftBuffer.height = size;
+                pointer100ftContext = pointer100ftBuffer.getContext('2d');
+
+                pointer100ftShadowBuffer.width = size;
+                pointer100ftShadowBuffer.height = size;
+                pointer100ftShadowContext = pointer100ftShadowBuffer.getContext('2d');
+
+                pointer1000ftBuffer.width = size;
+                pointer1000ftBuffer.height = size;
+                pointer1000ftContext = pointer1000ftBuffer.getContext('2d');
+
+                pointer1000ftShadowBuffer.width = size;
+                pointer1000ftShadowBuffer.height = size;
+                pointer1000ftShadowContext = pointer1000ftShadowBuffer.getContext('2d');
+
+                pointer10000ftBuffer.width = size;
+                pointer10000ftBuffer.height = size;
+                pointer10000ftContext = pointer10000ftBuffer.getContext('2d');
+
+                pointer10000ftShadowBuffer.width = size;
+                pointer10000ftShadowBuffer.height = size;
+                pointer10000ftShadowContext = pointer10000ftShadowBuffer.getContext('2d');
+
+                pointerRotBuffer.width = size;
+                pointerRotBuffer.height = size;
+                pointerRotContext = pointerRotBuffer.getContext('2d');
+            }
+
+            if (resetForeground) {
+                foregroundBuffer.width = size;
+                foregroundBuffer.height = size;
+                foregroundContext = foregroundBuffer.getContext('2d');
+            }
+        };
+
+        //************************************ Public methods **************************************
+        this.setValue = function(newValue) {
+            value = newValue;
+            this.repaint();
+        };
+
+        this.getValue = function() {
+            return value;
+        };
+
+        this.setValueAnimated = function(newValue) {
+            var targetValue = (newValue < minValue ? minValue : newValue);
+            if (value !== targetValue) {
+                if (undefined !==  tween) {
+                    if (tween.playing) {
+                        tween.stop();
+                    }
+                }
+                // Allow 5 secs per 10,000ft
+                var time = Math.max(Math.abs(value - targetValue) / 10000 * 5, 1);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
+
+                var gauge = this;
+
+                tween.onMotionChanged = function(event) {
+                    value = event.target._pos;
+
+                    gauge.repaint();
+                };
+
+                tween.start();
+            }        
+        };
+
+        this.setFrameDesign = function(newFrameDesign) {
+            resetBuffers({frame: true});
+            frameDesign = newFrameDesign;
+            init({frame: true});
+            this.repaint();
+        };
+
+        this.setBackgroundColor = function(newBackgroundColor) {
+            resetBuffers({
+                background: true,
+                pointer: true       // type2 & 13 depend on background
+                });
+            backgroundColor = newBackgroundColor;
+            init({
+                background: true,   // type2 & 13 depend on background
+                pointer: true
+                });
+            this.repaint();
+        };
+
+        this.setForegroundType = function(newForegroundType) {
+            resetBuffers({foreground: true});
+            foregroundType = newForegroundType;
+            init({foreground: true});
+            this.repaint();
+        };
+
+        this.setLcdColor = function(newLcdColor) {
+            lcdColor = newLcdColor;
+            init({background: true});
+            this.repaint();
+        };
+
+        this.repaint = function() {
+            if (!initialized) {
+                init({frame: true,
+                      background: true,
+                      led: true,
+                      pointers: true,
+                      foreground: true});
+            }
+
+            //mainCtx.save();
+            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+            // Draw frame
+            mainCtx.drawImage(frameBuffer, 0, 0);
+
+            // Draw buffered image to visible canvas
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
+
+            // Draw lcd display
+            if (lcdVisible) {
+                drawLcdText(value);
+            }
+            
+            // re-calculate the spearate pointer values
+            calcValues();
+            
+            // have to draw to a rotated temporary image area so we can translate in
+            // absolute x, y values when drawing to main context
+            var shadowOffset = imageWidth * 0.006 * 0.5;
+            
+            //Draw 10000ft pointer shadow
+            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
+            pointerRotContext.save();
+            pointerRotContext.translate(centerX, centerY);
+            pointerRotContext.rotate((value10000 - minValue) * angleStep10000ft);
+            pointerRotContext.translate(-centerX, -centerY);
+            pointerRotContext.drawImage(pointer10000ShadowBuffer, 0, 0);
+            pointerRotContext.restore();
+            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
+            
+            //Draw 10000ft pointer
+            mainCtx.save();
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate((value10000 - minValue) * angleStep10000ft);
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(pointer10000Buffer, 0, 0);
+            mainCtx.restore();
+ 
+            //Draw 1000ft pointer shadow
+            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
+            pointerRotContext.save();
+            pointerRotContext.translate(centerX, centerY);
+            pointerRotContext.rotate((value1000 - minValue) * angleStep1000ft);
+            pointerRotContext.translate(-centerX, -centerY);
+            pointerRotContext.drawImage(pointer1000ShadowBuffer, 0, 0);
+            pointerRotContext.restore();
+            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
+ 
+            shadowOffset = imageWidth * 0.006 * 0.75;
+            
+            //Draw 1000ft pointer
+            mainCtx.save();
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate((value1000 - minValue) * angleStep1000ft);
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(pointer1000Buffer, 0, 0);
+            mainCtx.restore();
+
+            shadowOffset = imageWidth * 0.006;
+            
+            //Draw 100ft pointer shadow
+            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
+            pointerRotContext.save();
+            pointerRotContext.translate(centerX, centerY);
+            pointerRotContext.rotate((value100 - minValue) * angleStep100ft);
+            pointerRotContext.translate(-centerX, -centerY);
+            pointerRotContext.drawImage(pointer100ShadowBuffer, 0, 0);
+            pointerRotContext.restore();
+            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
+            
+            //Draw 100ft pointer
+            mainCtx.save();
+            mainCtx.translate(centerX, centerY);
+            mainCtx.rotate((value100 - minValue) * angleStep100ft);
+            mainCtx.translate(-centerX, -centerY);
+            mainCtx.drawImage(pointer100Buffer, 0, 0);
+            mainCtx.restore();
+        
+            //Draw the foregound
+            mainCtx.drawImage(foregroundBuffer, 0, 0);
+        
+        
+        };
+  
+        // Visualize the component
+        this.repaint();
 
         return this;
     };
@@ -12085,6 +12663,7 @@ var steelseries = function() {
         Clock : clock,
         Battery : battery,
         StopWatch : stopwatch,
+        Altimeter : altimeter,
 
         // Images
         drawFrame : drawRadialFrameImage,
