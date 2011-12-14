@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 14.12.2011
- * Revision      : 0.8.9
+ * Revision      : 0.9.0
  */
 
 var steelseries = function() {
@@ -5130,7 +5130,6 @@ var steelseries = function() {
         var autoScroll = (undefined === parameters.autoScroll ? false : parameters.autoScroll);
         var section = (undefined === parameters.section ? null : parameters.section);
 
-//        var oldValue;
         var scrolling = false;
         var scrollX = 0;
         var scrollTimer;
@@ -5158,14 +5157,16 @@ var steelseries = function() {
         // **************   Buffer creation  ********************
         // Buffer for the lcd
         var lcdBuffer;
+	    var sectionBuffer = [];
+        var sectionForegroundColor = [];
 
         // **************   Image creation  ********************
-        var drawLcdText = function(value) {
+        var drawLcdText = function(value, color) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
             mainCtx.textBaseline = 'middle';
-            mainCtx.strokeStyle = lcdColor.textColor;
-            mainCtx.fillStyle = lcdColor.textColor;
+            mainCtx.strokeStyle = color;
+            mainCtx.fillStyle = color;
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
                 mainCtx.shadowColor = 'gray';
                 mainCtx.shadowOffsetX = imageHeight * 0.05;
@@ -5226,6 +5227,79 @@ var steelseries = function() {
             mainCtx.restore();
         };
 
+		var createLcdSectionImage = function(width, height, color, lcdColor) {
+			var lcdSectionBuffer = createBuffer(width, height);
+	        var lcdCtx = lcdSectionBuffer.getContext('2d');
+
+	        lcdCtx.save();
+	        var xB = 0;
+	        var yB = 0;
+	        var wB = width;
+	        var hB = height;
+	        var rB = Math.min(width, height) * 0.095;
+
+	        var lcdBackground = lcdCtx.createLinearGradient(0, yB, 0, yB + hB);					
+			lcdBackground.addColorStop(0, 'rgb(76, 76, 76)');
+	        lcdBackground.addColorStop(0.08, 'rgb(102, 102, 102)');
+	        lcdBackground.addColorStop(0.92, 'rgb(102, 102, 102)');
+	        lcdBackground.addColorStop(1, 'rgb(230, 230, 230)');
+	        lcdCtx.fillStyle = lcdBackground;
+
+	        roundedRectangle(lcdCtx, xB, yB, wB, hB, rB);
+
+	        lcdCtx.fill();
+	        lcdCtx.restore();
+
+	        lcdCtx.save();	        
+		
+			var rgb = getColorValues(color);
+			var hsb = rgbToHsb(rgb[0], rgb[1], rgb[2]);
+
+			var rgbStart = getColorValues(lcdColor.gradientStartColor);
+			var hsbStart = rgbToHsb(rgbStart[0], rgbStart[1], rgbStart[2]);
+			var rgbFraction1 = getColorValues(lcdColor.gradientFraction1Color);
+			var hsbFraction1 = rgbToHsb(rgbFraction1[0], rgbFraction1[1], rgbFraction1[2]);
+			var rgbFraction2 = getColorValues(lcdColor.gradientFraction2Color);
+			var hsbFraction2 = rgbToHsb(rgbFraction2[0], rgbFraction2[1], rgbFraction2[2]);
+			var rgbFraction3 = getColorValues(lcdColor.gradientFraction3Color);
+			var hsbFraction3 = rgbToHsb(rgbFraction3[0], rgbFraction3[1], rgbFraction3[2]);
+			var rgbStop = getColorValues(lcdColor.gradientStopColor);
+			var hsbStop = rgbToHsb(rgbStop[0], rgbStop[1], rgbStop[2]);						
+
+			var startColor = hsbToRgb(hsb[0], hsb[1], hsbStart[2] - 0.31);
+	        var fraction1Color = hsbToRgb(hsb[0], hsb[1], hsbFraction1[2] - 0.31);
+			var fraction2Color = hsbToRgb(hsb[0], hsb[1], hsbFraction2[2] - 0.31);
+			var fraction3Color = hsbToRgb(hsb[0], hsb[1], hsbFraction3[2] - 0.31);
+			var stopColor = hsbToRgb(hsb[0], hsb[1], hsbStop[2] - 0.31);
+
+			var xF = 1;
+	        var yF = 1;
+	        var wF = width - 2;
+	        var hF = height - 2;
+	        var rF = rB - 1;
+		    var lcdForeground = lcdCtx.createLinearGradient(0, yF, 0, yF + hF);
+	        lcdForeground.addColorStop(0, 'rgb(' + startColor[0] + ', ' + startColor[1] + ', ' + startColor[2] + ')');
+			lcdForeground.addColorStop(0.03, 'rgb(' + fraction1Color[0] + ',' + fraction1Color[1] + ',' + fraction1Color[2] + ')');
+			lcdForeground.addColorStop(0.49, 'rgb(' + fraction2Color[0] + ',' + fraction2Color[1] + ',' + fraction2Color[2] + ')');
+			lcdForeground.addColorStop(0.5, 'rgb(' + fraction3Color[0] + ',' + fraction3Color[1] + ',' + fraction3Color[2] + ')');
+			lcdForeground.addColorStop(1, 'rgb(' + stopColor[0] + ',' + stopColor[1] + ',' + stopColor[2] + ')');
+	        lcdCtx.fillStyle = lcdForeground;
+
+	        roundedRectangle(lcdCtx, xF, yF, wF, hF, rF);
+
+	        lcdCtx.fill();
+	        lcdCtx.restore();
+
+	        return lcdSectionBuffer;
+	    };
+
+        var createSectionForegroundColor = function(sectionColor) {
+            var rgbSection = getColorValues(sectionColor);
+			var hsbSection = rgbToHsb(rgbSection[0], rgbSection[1], rgbSection[2]);
+            var sectionForegroundRgb = hsbToRgb(hsbSection[0], 0.57, 0.83);
+            return 'rgb(' + sectionForegroundRgb[0] + ', ' + sectionForegroundRgb[1] + ', ' + sectionForegroundRgb[2] + ')';
+        }
+
         var animate = function() {
             if (scrolling) {
                 if (scrollX > imageWidth) {
@@ -5245,6 +5319,14 @@ var steelseries = function() {
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
             lcdBuffer = createLcdBackgroundImage(width, height, lcdColor);
+			
+			if (null !== section && 0 < section.length) {
+                for (var sectionIndex = 0 ; sectionIndex < section.length ; sectionIndex++) {
+                    sectionBuffer[sectionIndex] = createLcdSectionImage(width, height, section[sectionIndex].color, lcdColor);
+                    sectionForegroundColor[sectionIndex] = createSectionForegroundColor(section[sectionIndex].color);
+                }
+            }
+
         };
 
         // **************   Public methods  ********************
@@ -5302,15 +5384,27 @@ var steelseries = function() {
             if (!initialized) {
                 init();
             }
-
-            //mainCtx.save();
+			            
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
-
-            // Draw lcd background
-            mainCtx.drawImage(lcdBuffer, 0, 0);
-
+		    
+			var lcdBackgroundBuffer = lcdBuffer;
+            var lcdTextColor = lcdColor.textColor;
+			// Draw sections
+			if (null !== section && 0 < section.length) {
+                for (var sectionIndex = 0 ; sectionIndex < section.length ; sectionIndex++) {
+                    if (value >= section[sectionIndex].start && value <= section[sectionIndex].stop) {
+						lcdBackgroundBuffer = sectionBuffer[sectionIndex];
+                        lcdTextColor = sectionForegroundColor[sectionIndex];
+						break;
+					}                
+				}
+            }
+			
+			// Draw lcd background
+            mainCtx.drawImage(lcdBackgroundBuffer, 0, 0);
+			
             // Draw lcd text
-            drawLcdText(value);
+            drawLcdText(value, lcdTextColor);
         };
 
         // Visualize the component
@@ -13461,17 +13555,6 @@ var steelseries = function() {
             ctx.fill();
         });
         colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
-
-        /*
-        for (var i = 0; i < data.length; i += 4) {
-            var red = data[i];       // red
-            var green = data[i + 1]; // green
-            var blue = data[i + 2];  // blue
-            //var alpha = data[i + 3]; // alpha
-            console.log(red + ", " + green + ", " + blue);
-        }
-        */
-
         return [colorData[0], colorData[1], colorData[2], colorData[3]];
     }
 
@@ -13558,21 +13641,93 @@ var steelseries = function() {
     return [Math.floor(red * 255), Math.floor(green * 255), Math.floor(blue * 255)];
 }
 
-    function hsb2Hsl(hue, saturation, brightness) {
+    function hsbToHsl(hue, saturation, brightness) {
         var lightness = (brightness - saturation) / 2;
         lightness = (lightness > 1 ? 1 : (lightness < 0 ? 0 : lightness));
         return [hue, saturation, lightness];
     }
 
-    function hsl2Hsb(hue, saturation, lightness) {
+    function hslToHsb(hue, saturation, lightness) {
         var brightness = (lightness * 2) + saturation;
         return [hue, saturation, brightness];
     }
 
-    function hsb2Rgb(hue, saturation, brightness) {
-        var tmp = hsb2Hsl(hue, saturation, brightness);
-        return hsl2Rgb(tmp[0], tmp[1], tmp[2]);
-    }
+	function hsbToRgb(hue, saturation, brightness){
+	    var r, g, b;
+
+	    var i = Math.floor(hue * 6);
+	    var f = hue * 6 - i;
+	    var p = brightness * (1 - saturation);
+	    var q = brightness * (1 - f * saturation);
+	    var t = brightness * (1 - (1 - f) * saturation);
+
+	    switch(i % 6){
+	        case 0: 
+				r = brightness;
+				g = t
+				b = p; 
+				break;
+	        case 1: 
+				r = q
+				g = brightness;
+				b = p;
+				break;
+	        case 2: 
+				r = p;
+				g = brightness;
+				b = t; 
+				break;
+	        case 3: 
+				r = p;
+				g = q;
+				b = brightness; 
+				break;
+	        case 4: 
+				r = t;
+				g = p;
+				b = brightness; 
+				break;
+	        case 5: 
+				r = brightness;
+				g = p;
+				b = q; 
+				break;
+	    }
+
+	    return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
+	}
+
+	function rgbToHsb(r, g, b){
+	    r = r/255;
+	    g = g/255; 
+	    b = b/255;
+	    var max = Math.max(r, g, b);
+	    var min = Math.min(r, g, b);
+	    var hue;
+	    var saturation;
+	    var brightness = max;
+
+	    var delta = max - min;
+	    saturation = max == 0 ? 0 : delta / max;
+
+	    if(max == min) {
+	        hue = 0; // achromatic
+	    } else {
+	        switch(max){
+	            case r: 
+	                hue = (g - b) / delta + (g < b ? 6 : 0); 
+	                break;
+	            case g: 
+	                hue = (b - r) / delta + 2; 
+					break;
+	            case b: 
+					hue = (r - g) / delta + 4; 
+					break;
+	        }
+	        hue /= 6;
+	    }
+	    return [hue, saturation, brightness];
+	}
 
     function darker(color, fraction) {
         var red = Math.floor(color.getRed() * (1 - fraction));
@@ -13612,6 +13767,19 @@ var steelseries = function() {
     function getShortestAngle(angle1, angle2) {
         return wrap((angle2 - angle1), -180, 180);
     }
+
+	function getColorValues(color) {
+        var colorData;
+        var lookupBuffer = drawToBuffer(1, 1, function(ctx) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.rect(0, 0, 1, 1);
+            ctx.fill();
+        });
+        colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
+
+        return new Array(colorData[0], colorData[1], colorData[2]);
+    };
 
     //****************************************   C O N S T A N T S   ***************************************************
     var backgroundColorDef;

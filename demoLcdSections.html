@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html manifest="demo.manifest"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Canvas Steel</title>
+</head>
+<body onload="init()" style="background-color:#84a5ed">
+    <table>
+        <tbody><tr>
+            <td width="100%">                
+                <select id="comboLcdColor" onchange="setLcdColor(this)">
+                    <option selected="selected" value="">LCD color</option>
+                    <option value="BEIGE">Beige</option>
+                    <option value="BLUE">Blue</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="RED">Red</option>
+                    <option value="YELLOW">Yellow</option>
+                    <option value="WHITE">White</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="BLACK">Black</option>
+                    <option value="GREEN">Green</option>
+                    <option value="BLUE2">Blue2</option>
+                    <option value="BLUE_BLACK">BlueBlack</option>
+                    <option value="BLUE_DARKBLUE">BlueDarkBlue</option>
+                    <option value="BLUE_GRAY">BlueGray</option>
+                    <option value="STANDARD">Standard</option>
+                    <option value="STANDARD_GREEN">StandardGreen</option>
+                    <option value="BLUE_BLUE">BlueBlue</option>
+                    <option value="RED_DARKRED">RedDarkRed</option>
+                    <option value="DARKBLUE">DarkBlue</option>
+                    <option value="LILA">Lila</option>
+                    <option value="BLACKRED">BlackRed</option>
+                    <option value="DARKGREEN">DarkGreen</option>
+                    <option value="SECTIONS">Sections</option>
+                </select>                
+            </td>
+        </tr>                
+        <tr>
+            <td width="100%">
+                <canvas id="canvasSingle1" width="120" height="50"></canvas>
+            </td>
+        </tr>
+    </tbody></table>
+
+
+<script type="text/javascript">
+    var scroll = false;
+    var single1;
+    
+    function init() {
+        // Initialzing gauge
+
+		var sections = [steelseries.Section(0, 70, 'rgba(255, 0, 0, 1.0)'),
+                        steelseries.Section(70, 95, 'rgba(255, 255, 0, 1.0)'),
+                        steelseries.Section(95, 100, 'rgba(0, 255, 0, 1.0)') ];
+
+        single1 = new steelseries.DisplaySingle('canvasSingle1', {
+                            width: 120,
+                            height: 50,
+							section: sections
+                            });
+		single1.setLcdColor(steelseries.LcdColor.SECTIONS);
+        // Start the random update
+        setInterval(function(){ setRandomValue(single1, 100); }, 1500);
+   }
+
+    function setRandomValue(gauge, range) {
+        gauge.setValue(Math.random() * range);
+    }
+
+    function setLcdColor(sel) {
+        switch(sel.options[sel.selectedIndex].value) {
+            case "BEIGE":
+                single1.setLcdColor(steelseries.LcdColor.BEIGE);
+                break;
+            case "BLUE":
+                single1.setLcdColor(steelseries.LcdColor.BLUE);
+                break;
+            case "ORANGE":
+                single1.setLcdColor(steelseries.LcdColor.ORANGE);
+                break;
+            case "RED":
+                single1.setLcdColor(steelseries.LcdColor.RED);
+                break;
+            case "YELLOW":
+                single1.setLcdColor(steelseries.LcdColor.YELLOW);
+                break;
+            case "WHITE":
+                single1.setLcdColor(steelseries.LcdColor.WHITE);
+                break;
+            case "GRAY":
+                single1.setLcdColor(steelseries.LcdColor.GRAY);
+                break;
+            case "BLACK":
+                single1.setLcdColor(steelseries.LcdColor.BLACK);
+                break;
+            case "GREEN":
+                single1.setLcdColor(steelseries.LcdColor.GREEN);
+                break;
+            case "BLUE2":
+                single1.setLcdColor(steelseries.LcdColor.BLUE2);
+                break;
+            case "BLUE_BLACK":
+                single1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                break;
+            case "BLUE_DARKBLUE":
+                single1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                break;
+            case "BLUE_GRAY":
+                single1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                 break;
+            case "STANDARD":
+                single1.setLcdColor(steelseries.LcdColor.STANDARD);
+                break;
+            case "STANDARD_GREEN":
+                single1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                break;
+            case "BLUE_BLUE":
+                single1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                break;
+            case "RED_DARKRED":
+                single1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                break;
+            case "DARKBLUE":
+                single1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                break;
+            case "LILA":
+                single1.setLcdColor(steelseries.LcdColor.LILA);
+                break;
+            case "BLACKRED":
+                single1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                break;
+            case "DARKGREEN": 
+                single1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                break;
+	        case "SECTIONS": 
+	            single1.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            break;
+        }
+    }
+
+</script>
+<script type="text/javascript" src="tween-min.js"></script>
+<script type="text/javascript" src="steelseries.js"></script>
+</body></html>

@@ -94,6 +94,7 @@
                     <option value="LILA">Lila</option>
                     <option value="BLACKRED">BlackRed</option>
                     <option value="DARKGREEN">DarkGreen</option>
+                    <option value="SECTIONS">Sections</option>
                 </select>
                 <select id="comboLedColor" onchange="setLedColor(this)">
                     <option selected="selected" value="">Led color</option>
@@ -827,6 +828,13 @@
                 multi1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 altimeter1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 break;
+	        case "SECTIONS": 
+	            radial2.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            single1.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            single2.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            multi1.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            altimeter1.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            break;
         }
     }
 
