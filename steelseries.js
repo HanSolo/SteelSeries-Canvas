@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 12.12.2011
- * Revision      : 0.8.8
+ * Last modified : 14.12.2011
+ * Revision      : 0.8.9
  */
 
 var steelseries = function() {

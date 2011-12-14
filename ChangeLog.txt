@@ -1,5 +1,10 @@
 Main Changes
 
+v0.8.9
+> General Changes
+  * Added TrafficLight component and LightBulb component to the lib.
+  * Also added two html demo pages for the two new components to the repo
+
 v0.8.8
 > General Changes
   * Added tickLabelOrientation to Radial and RadialBargraph initialisation parameters. Accepts
