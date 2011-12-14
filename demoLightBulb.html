@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>LightBulb</title>
+    <script type='text/javascript' src='steelseries.js'></script>
+    <script type='text/javascript' src='tween.js'></script>
+
+    <script type='application/javascript'>
+		var lightBulb;
+
+        function init()
+        {
+            // Initialzing
+            lightBulb = new steelseries.LightBulb('canvas', {
+												  width: 200, 
+												  height: 200
+												});
+
+        }
+
+		function setLight() {
+		    lightBulb.setOn(document.getElementById('light').checked);
+	    }
+	
+		function setAlpha(value) {
+			lightBulb.setAlpha(value / 100);
+		}
+		
+		function setColor(color) {
+			lightBulb.setGlowColor(color);
+		}
+    </script>
+  </head>
+  <body onload='init()' BGCOLOR="333333" TEXT="cccccc">
+    <table>
+	<tr><td>
+    <canvas id='canvas' width='400' height='400'>
+      No canvas in your browser...sorry...
+    </canvas>
+	</td>
+	<td>	
+	<input id="light" type="checkbox" onClick="setLight()"/>Light on</br>
+	<input id="red" type="radio" name="color" onclick="setColor('rgb(204, 51, 0)');"/>red<br/>
+	<input id="green" type="radio" name="color" onclick="setColor('rgb(0, 255, 0)');"/>green<br/>
+	<input id="blue" type="radio" name="color" onclick="setColor('rgb(0, 0, 255)');"/>blue<br/>
+	<input id="yellow" type="radio" name="color" checked onclick="setColor('rgb(255, 255, 0)');"/>yellow<br/>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<input type="range" min="0" max="100" value="100" step="1" onchange="setAlpha(this.value)"/>
+  	</td>
+	</tr>
+    </table>
+</body>
+</html>

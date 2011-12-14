@@ -10523,6 +10523,354 @@ var steelseries = function() {
         return this;
     };
 
+    var lightbulb = function(canvas, parameters) {
+        parameters = parameters || {};
+        var width = (undefined === parameters.width ? 100 : parameters.width);
+        var height = (undefined === parameters.height ? 100 : parameters.height);
+        var glowColor = (undefined === parameters.glowColor ? 'rgb(255, 255, 0)' : parameters.glowColor);
+       
+        // Get the canvas context and clear it
+        var mainCtx = document.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Get the size
+        mainCtx.canvas.width = width;
+        mainCtx.canvas.height = height;
+        var size = width < height ? width : height;
+        var imageWidth = size;
+        var imageHeight = size;
+
+        var initialized = false;
+
+        var lightOn = false;
+        var alpha = 1.0;
+
+        function drawToBuffer(width, height, drawFunction) {
+            var buffer = doc.createElement('canvas');
+            buffer.width = width;
+            buffer.height = height;
+            drawFunction(buffer.getContext('2d'));
+            return buffer;
+        }
+
+        var getColorValues = function(color) {
+            var colorData;
+            var lookupBuffer = drawToBuffer(1, 1, function(ctx) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.rect(0, 0, 1, 1);
+                ctx.fill();
+            });
+            colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
+
+            return new Array(colorData[0], colorData[1], colorData[2]);
+        };
+
+        var offBuffer = doc.createElement('canvas');
+        offBuffer.width = imageWidth;
+        offBuffer.height = imageHeight;
+        var offCtx = offBuffer.getContext('2d');
+
+        var onBuffer = doc.createElement('canvas');
+        onBuffer.width = imageWidth;
+        onBuffer.height = imageHeight;
+        var onCtx = onBuffer.getContext('2d');
+
+        var bulbBuffer = doc.createElement('canvas');
+        bulbBuffer.width = imageWidth;
+        bulbBuffer.height = imageHeight;
+        var bulbCtx = bulbBuffer.getContext('2d');
+
+
+        var drawOff = function(ctx) {
+            ctx.save();
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.bezierCurveTo(0.2894736842105263 * imageWidth, 0.5614035087719298 * imageHeight, 0.38596491228070173 * imageWidth, 0.6052631578947368 * imageHeight, 0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.5877192982456141 * imageWidth, 0.6052631578947368 * imageHeight, 0.6929824561403509 * imageWidth, 0.5614035087719298 * imageHeight, 0.6929824561403509 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.bezierCurveTo(0.6929824561403509 * imageWidth, 0.32456140350877194 * imageHeight, 0.6052631578947368 * imageWidth, 0.22807017543859648 * imageHeight, 0.5 * imageWidth, 0.22807017543859648 * imageHeight);
+            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.22807017543859648 * imageHeight, 0.2894736842105263 * imageWidth, 0.32456140350877194 * imageHeight, 0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.closePath();
+            var glassOffFill = ctx.createLinearGradient((0.5 * imageWidth), (0.2894736842105263 * imageHeight), ((0.5) * imageWidth), ((0.7017543859649122) * imageHeight));
+            glassOffFill.addColorStop(0.0, 'rgb(238, 238, 238)');
+            glassOffFill.addColorStop(0.99, 'rgb(153, 153, 153)');
+            glassOffFill.addColorStop(1.0, 'rgb(153, 153, 153)');
+            ctx.fillStyle = glassOffFill;
+            ctx.fill();
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 0.008771929824561403 * imageWidth;
+            ctx.strokeStyle = 'rgb(204, 204, 204)';
+            ctx.stroke();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawOn = function(ctx) {
+            ctx.save();
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.bezierCurveTo(0.2894736842105263 * imageWidth, 0.5614035087719298 * imageHeight, 0.38596491228070173 * imageWidth, 0.6052631578947368 * imageHeight, 0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.5877192982456141 * imageWidth, 0.6052631578947368 * imageHeight, 0.6929824561403509 * imageWidth, 0.5614035087719298 * imageHeight, 0.6929824561403509 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.bezierCurveTo(0.6929824561403509 * imageWidth, 0.32456140350877194 * imageHeight, 0.6052631578947368 * imageWidth, 0.22807017543859648 * imageHeight, 0.5 * imageWidth, 0.22807017543859648 * imageHeight);
+            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.22807017543859648 * imageHeight, 0.2894736842105263 * imageWidth, 0.32456140350877194 * imageHeight, 0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.closePath();
+
+            var glassOnFill = ctx.createLinearGradient((0.5 * imageWidth), (0.2894736842105263 * imageHeight), ((0.5) * imageWidth), ((0.7017543859649122) * imageHeight));
+            var data = getColorValues(glowColor);
+            var red = data[0];
+            var green = data[1];
+            var blue = data[2];
+            var hsl = rgb2Hsl(red, green, blue);
+
+            if (red === green && green == blue) {
+                glassOnFill.addColorStop(0, 'hsl(0, 60%, 0%)');
+                glassOnFill.addColorStop(1, 'hsl(0, 40%, 0%)');
+            } else {
+                glassOnFill.addColorStop(0, 'hsl(' + hsl[0] * 255 + ', ' + hsl[1] * 100 + '%, 70%)');
+                glassOnFill.addColorStop(1, 'hsl(' + hsl[0] * 255 + ', ' + hsl[1] * 100 + '%, 80%)');
+            }
+            ctx.fillStyle = glassOnFill;
+
+            // sets shadow properties
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = glowColor;
+
+            ctx.fill();
+
+            ctx.lineCap = 'butt';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 0.008771929824561403 * imageWidth;
+            ctx.strokeStyle = 'rgba(' + red + ', ' + green + ', ' + blue + ', 0.4)';
+            ctx.stroke();
+
+            ctx.restore();
+
+            ctx.restore();
+        };
+
+        var drawBulb = function(ctx) {
+            ctx.save();
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.3508771929824561 * imageWidth, 0.3333333333333333 * imageHeight);
+            ctx.bezierCurveTo(0.3508771929824561 * imageWidth, 0.2807017543859649 * imageHeight, 0.41228070175438597 * imageWidth, 0.23684210526315788 * imageHeight, 0.5 * imageWidth, 0.23684210526315788 * imageHeight);
+            ctx.bezierCurveTo(0.5789473684210527 * imageWidth, 0.23684210526315788 * imageHeight, 0.6403508771929824 * imageWidth, 0.2807017543859649 * imageHeight, 0.6403508771929824 * imageWidth, 0.3333333333333333 * imageHeight);
+            ctx.bezierCurveTo(0.6403508771929824 * imageWidth, 0.38596491228070173 * imageHeight, 0.5789473684210527 * imageWidth, 0.4298245614035088 * imageHeight, 0.5 * imageWidth, 0.4298245614035088 * imageHeight);
+            ctx.bezierCurveTo(0.41228070175438597 * imageWidth, 0.4298245614035088 * imageHeight, 0.3508771929824561 * imageWidth, 0.38596491228070173 * imageHeight, 0.3508771929824561 * imageWidth, 0.3333333333333333 * imageHeight);
+            ctx.closePath();
+            var highlight = ctx.createLinearGradient((0.5 * imageWidth), (0.24561403508771928 * imageHeight), ((0.5) * imageWidth), ((0.4298245614035088) * imageHeight));
+            highlight.addColorStop(0.0, 'rgb(255, 255, 255)');
+            highlight.addColorStop(0.99, 'rgba(255, 255, 255, 0)');
+            highlight.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = highlight;
+            ctx.fill();
+            ctx.restore();
+
+            //winding
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight, 0.4298245614035088 * imageWidth, 0.7280701754385965 * imageHeight, 0.49122807017543857 * imageWidth, 0.7280701754385965 * imageHeight);
+            ctx.bezierCurveTo(0.5614035087719298 * imageWidth, 0.7280701754385965 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7631578947368421 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.7807017543859649 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7982456140350878 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8157894736842105 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8333333333333334 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8508771929824561 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.868421052631579 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8859649122807017 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight);
+            ctx.bezierCurveTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight, 0.5701754385964912 * imageWidth, 0.956140350877193 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5175438596491229 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.4824561403508772 * imageWidth, imageHeight, 0.47368421052631576 * imageWidth, imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8947368421052632 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8859649122807017 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.868421052631579 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8508771929824561 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8333333333333334 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8157894736842105 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7982456140350878 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7894736842105263 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7719298245614035 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7631578947368421 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.closePath();
+            var winding = ctx.createLinearGradient((0.47368421052631576 * imageWidth), (0.7280701754385965 * imageHeight), ((0.4847023065774619) * imageWidth), ((0.9383079722290332) * imageHeight));
+            winding.addColorStop(0.0, 'rgb(51, 51, 51)');
+            winding.addColorStop(0.04, 'rgb(217, 216, 214)');
+            winding.addColorStop(0.19, 'rgb(228, 229, 224)');
+            winding.addColorStop(0.24, 'rgb(151, 153, 150)');
+            winding.addColorStop(0.31, 'rgb(251, 255, 255)');
+            winding.addColorStop(0.4, 'rgb(129, 133, 132)');
+            winding.addColorStop(0.48, 'rgb(245, 247, 244)');
+            winding.addColorStop(0.56, 'rgb(149, 151, 148)');
+            winding.addColorStop(0.64, 'rgb(242, 242, 240)');
+            winding.addColorStop(0.7, 'rgb(130, 135, 131)');
+            winding.addColorStop(0.78, 'rgb(252, 252, 252)');
+            winding.addColorStop(1.0, 'rgb(102, 102, 102)');
+            ctx.fillStyle = winding;
+            ctx.fill();
+            ctx.restore();
+
+            // winding
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.bezierCurveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight, 0.4298245614035088 * imageWidth, 0.7280701754385965 * imageHeight, 0.49122807017543857 * imageWidth, 0.7280701754385965 * imageHeight);
+            ctx.bezierCurveTo(0.5614035087719298 * imageWidth, 0.7280701754385965 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7631578947368421 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.7807017543859649 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7982456140350878 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8157894736842105 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8333333333333334 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8508771929824561 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.868421052631579 * imageHeight);
+            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8859649122807017 * imageHeight);
+            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight);
+            ctx.bezierCurveTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight, 0.5701754385964912 * imageWidth, 0.956140350877193 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5175438596491229 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.4824561403508772 * imageWidth, imageHeight, 0.47368421052631576 * imageWidth, imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8947368421052632 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8859649122807017 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.868421052631579 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8508771929824561 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8333333333333334 * imageHeight);
+            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8157894736842105 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7982456140350878 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7894736842105263 * imageHeight);
+            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7719298245614035 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7631578947368421 * imageHeight);
+            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.closePath();
+            var winding1 = ctx.createLinearGradient((0.37719298245614036 * imageWidth), (0.7894736842105263 * imageHeight), ((0.6052631578947368) * imageWidth), ((0.7894736842105263) * imageHeight));
+            winding1.addColorStop(0.0, 'rgba(0, 0, 0, 0.4)');
+            winding1.addColorStop(0.15, 'rgba(0, 0, 0, 0.3254901961)');
+            winding1.addColorStop(0.85, 'rgba(0, 0, 0, 0.3294117647)');
+            winding1.addColorStop(1.0, 'rgba(0, 0, 0, 0.4)');
+            ctx.fillStyle = winding1;
+            ctx.fill();
+            ctx.restore();
+
+            // contact plate
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight);
+            ctx.bezierCurveTo(0.43859649122807015 * imageWidth, 0.956140350877193 * imageHeight, 0.4473684210526316 * imageWidth, 0.9736842105263158 * imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.47368421052631576 * imageWidth, imageHeight, 0.4824561403508772 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.5175438596491229 * imageWidth, imageHeight, 0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
+            ctx.bezierCurveTo(0.543859649122807 * imageWidth, 0.9824561403508771 * imageHeight, 0.5614035087719298 * imageWidth, 0.956140350877193 * imageHeight, 0.5789473684210527 * imageWidth, 0.9473684210526315 * imageHeight);
+            ctx.bezierCurveTo(0.5526315789473685 * imageWidth, 0.9385964912280702 * imageHeight, 0.5263157894736842 * imageWidth, 0.9385964912280702 * imageHeight, 0.5 * imageWidth, 0.9385964912280702 * imageHeight);
+            ctx.bezierCurveTo(0.47368421052631576 * imageWidth, 0.9385964912280702 * imageHeight, 0.4473684210526316 * imageWidth, 0.9385964912280702 * imageHeight, 0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight);
+            ctx.closePath();
+            var contactPlate = ctx.createLinearGradient((0.5 * imageWidth), (0.9385964912280702 * imageHeight), ((0.5) * imageWidth), ((1.0) * imageHeight));
+            contactPlate.addColorStop(0.0, 'rgb(5, 10, 6)');
+            contactPlate.addColorStop(0.61, 'rgb(7, 6, 2)');
+            contactPlate.addColorStop(0.71, 'rgb(153, 146, 136)');
+            contactPlate.addColorStop(0.83, 'rgb(1, 1, 1)');
+            contactPlate.addColorStop(1.0, 'rgb(0, 0, 0)');
+            ctx.fillStyle = contactPlate;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var clearCanvas = function(ctx) {
+            // Store the current transformation matrix
+            ctx.save();
+
+            // Use the identity matrix while clearing the canvas
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            // Restore the transform
+            ctx.restore();
+        };
+
+        var init = function() {
+            initialized = true;
+            drawOff(offCtx);
+            drawOn(onCtx);
+            drawBulb(bulbCtx);
+        };
+
+
+        // **************   P U B L I C   M E T H O D S   ********************************
+        this.setOn = function(on) {
+            lightOn = on;
+            this.repaint();
+        };
+
+        this.isOn = function() {
+            return lightOn;
+        };
+
+        this.setAlpha = function(a) {
+            alpha = a;
+            this.repaint();
+        };
+
+        this.getAlpha = function() {
+            return alpha;
+        };
+
+        this.setGlowColor = function(color) {
+            glowColor = color;
+            init();
+            this.repaint();
+        }
+
+        this.getGlowColor = function() {
+            return glowColor;
+        }
+
+
+        // Component visualization
+        this.repaint = function() {
+            if (!initialized) {
+                init();
+            }
+
+            clearCanvas(mainCtx);
+
+            mainCtx.save();
+
+            mainCtx.drawImage(offBuffer, 0, 0);
+
+            mainCtx.globalAlpha = alpha;
+            if (lightOn) {
+                mainCtx.drawImage(onBuffer, 0, 0);
+            }
+            mainCtx.globalAlpha = 1.0;
+
+            mainCtx.drawImage(bulbBuffer, 0, 0);
+
+
+            mainCtx.restore();
+        };
+
+        this.repaint();
+
+        return this;
+    };
+
 
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
@@ -13543,6 +13891,7 @@ var steelseries = function() {
         StopWatch : stopwatch,
         Altimeter : altimeter,
         TrafficLight: trafficlight,
+        LightBulb: lightbulb,
 
         // Images
         drawFrame : drawRadialFrameImage,
