@@ -70,6 +70,7 @@
                     <option value="TYPE11">Type11</option>
                     <option value="TYPE12">Type12</option>
                     <option value="TYPE13">Type13</option>
+                    <option value="TYPE14">Type14</option>
                 </select>
                 <select id="comboLcdColor" onchange="setLcdColor(this)">
                     <option selected="selected" value="">LCD color</option>
@@ -104,7 +105,7 @@
                     <option value="ORANGE_LED">Orange</option>
                     <option value="YELLOW_LED">Yellow</option>
                     <option value="CYAN_LED">Cyan</option>
-                    <option value="MAGENTA_LED">Magenta</option>        
+                    <option value="MAGENTA_LED">Magenta</option>
                 </select>
                 <select id="comboForeground" onchange="setForegroundType(this)">
                     <option selected="selected" value="">Foreground</option>
@@ -178,7 +179,7 @@
     </tbody></table>
 
 
-<script type="text/javascript">
+<script>
     var scroll = false;
     var radial1;
     var radial2;
@@ -191,7 +192,7 @@
     var clock1;
     var battery1;
 	var altimete1;
-    
+
     function init() {
         // Initialzing gauge
         radial1 = new steelseries.Compass('canvasRadial1', {
@@ -676,6 +677,10 @@
                 radial1.setPointerType(steelseries.PointerType.TYPE13);
                 radial2.setPointerType(steelseries.PointerType.TYPE13);
                 break;
+            case "TYPE14":
+                radial1.setPointerType(steelseries.PointerType.TYPE14);
+                radial2.setPointerType(steelseries.PointerType.TYPE14);
+                break;
         }
     }
 
@@ -821,7 +826,7 @@
                 multi1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 break;
-            case "DARKGREEN": 
+            case "DARKGREEN":
                 radial2.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single2.setLcdColor(steelseries.LcdColor.DARKGREEN);
@@ -863,7 +868,7 @@
                 break;
         }
     }
-    
+
     function setPointerAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "TYPE1":
@@ -905,9 +910,12 @@
             case "TYPE13":
                 radial2.setPointerTypeAverage(steelseries.PointerType.TYPE13);
                 break;
+            case "TYPE14":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE14);
+                break;
         }
     }
-    
+
     function setPointerColorAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "RED":
@@ -953,6 +961,6 @@
     }
 
 </script>
-<script type="text/javascript" src="tween-min.js"></script>
-<script type="text/javascript" src="steelseries-min.js"></script>
+<script src="tween-min.js"></script>
+<script src="steelseries-min.js"></script>
 </body></html>
