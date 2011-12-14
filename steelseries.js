@@ -9905,6 +9905,625 @@ var steelseries = function() {
         return this;
     };
 
+    var trafficlight = function(canvas, parameters) {
+        parameters = parameters || {};
+        var width = (undefined === parameters.width ? 98 : parameters.width);
+        var height = (undefined === parameters.height ? 278 : parameters.height);
+
+        // Get the canvas context and clear it
+        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        mainCtx.save();
+        mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+        // Get the size
+        mainCtx.canvas.width = width;
+        mainCtx.canvas.height = height;
+
+        var prefHeight = width < (height * 0.3525179856) ? (width * 2.8367346939) : height;
+        var imageWidth = prefHeight * 0.3525179856;
+        var imageHeight = prefHeight;
+
+        var redOn = false;
+        var yellowOn = false;
+        var greenOn = false;
+
+        var initialized = false;
+
+        var housingBuffer = doc.createElement('canvas');
+        housingBuffer.width = imageWidth;
+        housingBuffer.height = imageHeight;
+        var housingCtx = housingBuffer.getContext('2d');
+
+        var lightGreenBuffer = doc.createElement('canvas');
+        lightGreenBuffer.width = imageWidth;
+        lightGreenBuffer.height = imageHeight;
+        var lightGreenCtx = lightGreenBuffer.getContext('2d');
+
+        var greenOnBuffer = doc.createElement('canvas');
+        greenOnBuffer.width = imageWidth;
+        greenOnBuffer.height = imageHeight;
+        var greenOnCtx = greenOnBuffer.getContext('2d');
+
+        var greenOffBuffer = doc.createElement('canvas');
+        greenOffBuffer.width = imageWidth;
+        greenOffBuffer.height = imageHeight;
+        var greenOffCtx = greenOffBuffer.getContext('2d');
+
+        var lightYellowBuffer = doc.createElement('canvas');
+        lightYellowBuffer.width = imageWidth;
+        lightYellowBuffer.height = imageHeight;
+        var lightYellowCtx = lightYellowBuffer.getContext('2d');
+
+        var yellowOnBuffer = doc.createElement('canvas');
+        yellowOnBuffer.width = imageWidth;
+        yellowOnBuffer.height = imageHeight;
+        var yellowOnCtx = yellowOnBuffer.getContext('2d');
+
+        var yellowOffBuffer = doc.createElement('canvas');
+        yellowOffBuffer.width = imageWidth;
+        yellowOffBuffer.height = imageHeight;
+        var yellowOffCtx = yellowOffBuffer.getContext('2d');
+
+        var lightRedBuffer = doc.createElement('canvas');
+        lightRedBuffer.width = imageWidth;
+        lightRedBuffer.height = imageHeight;
+        var lightRedCtx = lightRedBuffer.getContext('2d');
+
+        var redOnBuffer = doc.createElement('canvas');
+        redOnBuffer.width = imageWidth;
+        redOnBuffer.height = imageHeight;
+        var redOnCtx = redOnBuffer.getContext('2d');
+
+        var redOffBuffer = doc.createElement('canvas');
+        redOffBuffer.width = imageWidth;
+        redOffBuffer.height = imageHeight;
+        var redOffCtx = redOffBuffer.getContext('2d');
+
+
+        var drawHousing = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.10714285714285714 * imageWidth, 0.0);
+            ctx.lineTo(imageWidth - 0.10714285714285714 * imageWidth, 0.0);
+            ctx.quadraticCurveTo(imageWidth, 0.0, imageWidth, 0.10714285714285714 * imageWidth);
+            ctx.lineTo(imageWidth, imageHeight - 0.10714285714285714 * imageWidth);
+            ctx.quadraticCurveTo(imageWidth, imageHeight, imageWidth - 0.10714285714285714 * imageWidth, imageHeight);
+            ctx.lineTo(0.10714285714285714 * imageWidth, imageHeight);
+            ctx.quadraticCurveTo(0.0, imageHeight, 0.0, imageHeight - 0.10714285714285714 * imageWidth);
+            ctx.lineTo(0.0, 0.10714285714285714 * imageWidth);
+            ctx.quadraticCurveTo(0.0, 0.0, 0.10714285714285714 * imageWidth, imageHeight);
+            ctx.closePath();
+            var housingFill = ctx.createLinearGradient((0.04081632653061224 * imageWidth), (0.007194244604316547 * imageHeight), ((0.9521011364730593) * imageWidth), ((0.9958824935586308) * imageHeight));
+            housingFill.addColorStop(0.0, 'rgb(152, 152, 154)');
+            housingFill.addColorStop(0.01, 'rgb(152, 152, 154)');
+            housingFill.addColorStop(0.09, 'rgb(51, 51, 51)');
+            housingFill.addColorStop(0.24, 'rgb(152, 152, 154)');
+            housingFill.addColorStop(0.55, 'rgb(31, 31, 31)');
+            housingFill.addColorStop(0.78, 'rgb(54, 54, 54)');
+            housingFill.addColorStop(0.98, 'rgb(0, 0, 0)');
+            housingFill.addColorStop(1.0, 'rgb(0, 0, 0)');
+            ctx.fillStyle = housingFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
+            ctx.lineTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth - 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
+            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight, 0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.08418367346938775 * imageWidth);
+            ctx.lineTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight - 0.08418367346938775 * imageWidth);
+            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight, 0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth - 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight);
+            ctx.lineTo(0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight);
+            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight, 0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight - 0.08418367346938775 * imageWidth);
+            ctx.lineTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.08418367346938775 * imageWidth);
+            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight, 0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
+            ctx.closePath();
+            var housingFrontFill = ctx.createLinearGradient((-0.1326530612244898 * imageWidth), (-0.0539568345323741 * imageHeight), ((2.0614080436330213) * imageWidth), ((0.6672932297063833) * imageHeight));
+            housingFrontFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            housingFrontFill.addColorStop(0.01, 'rgb(0, 0, 0)');
+            housingFrontFill.addColorStop(0.16, 'rgb(55, 55, 53)');
+            housingFrontFill.addColorStop(0.31, 'rgb(0, 0, 0)');
+            housingFrontFill.addColorStop(0.44, 'rgb(48, 48, 48)');
+            housingFrontFill.addColorStop(0.65, 'rgb(0, 0, 0)');
+            housingFrontFill.addColorStop(0.87, 'rgb(54, 54, 54)');
+            housingFrontFill.addColorStop(0.98, 'rgb(0, 0, 0)');
+            housingFrontFill.addColorStop(1.0, 'rgb(0, 0, 0)');
+            ctx.fillStyle = housingFrontFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.restore();
+        };
+
+        var drawLightGreen = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8057553956834532 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6654676258992805 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9460431654676259) * imageHeight));
+            lightGreenFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
+            lightGreenFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
+            lightGreenFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
+            lightGreenFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
+            lightGreenFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
+            lightGreenFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightGreenFrameFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0833333333333333, 1);
+            ctx.beginPath();
+            ctx.arc(0.46153846153846156 * imageWidth, 0.8165467625899281 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6870503597122302 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9460431654676259) * imageHeight));
+            lightGreenInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightGreenInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
+            lightGreenInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
+            lightGreenInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightGreenInnerFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.3622448979591837 * imageWidth);
+            lightGreenEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightGreenEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
+            lightGreenEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
+            lightGreenEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightGreenEffectFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6870503597122302 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9172661870503597) * imageHeight));
+            lightGreenInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightGreenInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.fillStyle = lightGreenInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawGreenOn = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
+            greenOnFill.addColorStop(0.0, 'rgb(85, 185, 123)');
+            greenOnFill.addColorStop(1.0, 'rgb(0, 31, 0)');
+            ctx.fillStyle = greenOnFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.0, 0.8129496402877698 * imageHeight);
+            ctx.bezierCurveTo(0.0, 0.9100719424460432 * imageHeight, 0.22448979591836735 * imageWidth, 0.9892086330935251 * imageHeight, 0.5 * imageWidth, 0.9892086330935251 * imageHeight);
+            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.9892086330935251 * imageHeight, imageWidth, 0.9100719424460432 * imageHeight, imageWidth, 0.8093525179856115 * imageHeight);
+            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.7517985611510791 * imageHeight, 0.7040816326530612 * imageWidth, 0.6870503597122302 * imageHeight, 0.5 * imageWidth, 0.6870503597122302 * imageHeight);
+            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.6870503597122302 * imageHeight, 0.08163265306122448 * imageWidth, 0.7517985611510791 * imageHeight, 0.0, 0.8129496402877698 * imageHeight);
+            ctx.closePath();
+            var greenOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.5153061224489796 * imageWidth);
+            greenOnGlowFill.addColorStop(0.0, 'rgb(65, 187, 126)');
+            greenOnGlowFill.addColorStop(1.0, 'rgba(4, 37, 8, 0)');
+            ctx.fillStyle = greenOnGlowFill;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawGreenOff = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
+            greenOffFill.addColorStop(0.0, 'rgba(0, 255, 0, 0.2470588235)');
+            greenOffFill.addColorStop(1.0, 'rgba(0, 255, 0, 0.0470588235)');
+            ctx.fillStyle = greenOffFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
+            greenOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            greenOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
+            greenOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
+            greenOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
+            greenOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
+            greenOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            ctx.fillStyle = greenOffInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.fillStyle = ctx.createPattern(hatchBuffer, 'repeat');
+            ctx.fill();
+
+            ctx.restore();
+        };
+
+        var drawLightYellow = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.49640287769784175 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.35611510791366907 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6366906474820144) * imageHeight));
+            lightYellowFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
+            lightYellowFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
+            lightYellowFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
+            lightYellowFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
+            lightYellowFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
+            lightYellowFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightYellowFrameFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0833333333333333, 1);
+            ctx.beginPath();
+            ctx.arc(0.46153846153846156 * imageWidth, 0.5071942446043165 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.3776978417266187 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6366906474820144) * imageHeight));
+            lightYellowInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightYellowInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
+            lightYellowInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
+            lightYellowInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightYellowInnerFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.3622448979591837 * imageWidth);
+            lightYellowEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightYellowEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
+            lightYellowEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
+            lightYellowEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightYellowEffectFill;
+            ctx.fill();
+            ctx.restore();
+
+            //lIGHT_YELLOW_4_E_INNER_SHADOW_3_4
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.3776978417266187 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6079136690647482) * imageHeight));
+            lightYellowInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightYellowInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.fillStyle = lightYellowInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawYellowOn = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
+            yellowOnFill.addColorStop(0.0, 'rgb(254, 212, 52)');
+            yellowOnFill.addColorStop(1.0, 'rgb(130, 51, 12)');
+            ctx.fillStyle = yellowOnFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.0, 0.5035971223021583 * imageHeight);
+            ctx.bezierCurveTo(0.0, 0.6007194244604317 * imageHeight, 0.22448979591836735 * imageWidth, 0.6798561151079137 * imageHeight, 0.5 * imageWidth, 0.6798561151079137 * imageHeight);
+            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.6798561151079137 * imageHeight, imageWidth, 0.6007194244604317 * imageHeight, imageWidth, 0.5 * imageHeight);
+            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.44244604316546765 * imageHeight, 0.7040816326530612 * imageWidth, 0.3776978417266187 * imageHeight, 0.5 * imageWidth, 0.3776978417266187 * imageHeight);
+            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.3776978417266187 * imageHeight, 0.08163265306122448 * imageWidth, 0.44244604316546765 * imageHeight, 0.0, 0.5035971223021583 * imageHeight);
+            ctx.closePath();
+            var yellowOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.5153061224489796 * imageWidth);
+            yellowOnGlowFill.addColorStop(0.0, 'rgb(254, 212, 52)');
+            yellowOnGlowFill.addColorStop(1.0, 'rgba(130, 51, 12, 0)');
+            ctx.fillStyle = yellowOnGlowFill;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawYellowOff = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
+            yellowOffFill.addColorStop(0.0, 'rgba(255, 255, 0, 0.2470588235)');
+            yellowOffFill.addColorStop(1.0, 'rgba(255, 255, 0, 0.0470588235)');
+            ctx.fillStyle = yellowOffFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
+            yellowOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            yellowOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
+            yellowOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
+            yellowOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
+            yellowOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
+            yellowOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            ctx.fillStyle = yellowOffInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.fillStyle = ctx.createPattern(hatchBuffer, 'repeat');
+            ctx.fill();
+
+            ctx.restore();
+        };
+
+        var drawLightRed = function(ctx) {
+            ctx.save();
+
+
+            //lIGHT_RED_7_E_FRAME_0_1
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.18705035971223022 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.046762589928057555 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.3273381294964029) * imageHeight));
+            lightRedFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
+            lightRedFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
+            lightRedFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
+            lightRedFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
+            lightRedFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
+            lightRedFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightRedFrameFill;
+            ctx.fill();
+            ctx.restore();
+
+            //lIGHT_RED_7_E_INNER_CLIP_1_2
+            ctx.save();
+            ctx.scale(1.0833333333333333, 1);
+            ctx.beginPath();
+            ctx.arc(0.46153846153846156 * imageWidth, 0.19784172661870503 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.0683453237410072 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.3273381294964029) * imageHeight));
+            lightRedInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightRedInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
+            lightRedInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
+            lightRedInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightRedInnerFill;
+            ctx.fill();
+            ctx.restore();
+
+            //lIGHT_RED_7_E_LIGHT_EFFECT_2_3
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.3622448979591837 * imageWidth);
+            lightRedEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightRedEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
+            lightRedEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
+            lightRedEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.fillStyle = lightRedEffectFill;
+            ctx.fill();
+            ctx.restore();
+
+            //lIGHT_RED_7_E_INNER_SHADOW_3_4
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.0683453237410072 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.29856115107913667) * imageHeight));
+            lightRedInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
+            lightRedInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.fillStyle = lightRedInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+            ctx.restore();
+        };
+
+        var drawRedOn = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var redOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
+            redOnFill.addColorStop(0.0, 'rgb(255, 0, 0)');
+            redOnFill.addColorStop(1.0, 'rgb(65, 0, 4)');
+            ctx.fillStyle = redOnFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(0.0, 0.19424460431654678 * imageHeight);
+            ctx.bezierCurveTo(0.0, 0.29136690647482016 * imageHeight, 0.22448979591836735 * imageWidth, 0.37050359712230213 * imageHeight, 0.5 * imageWidth, 0.37050359712230213 * imageHeight);
+            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.37050359712230213 * imageHeight, imageWidth, 0.29136690647482016 * imageHeight, imageWidth, 0.1906474820143885 * imageHeight);
+            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.13309352517985612 * imageHeight, 0.7040816326530612 * imageWidth, 0.0683453237410072 * imageHeight, 0.5 * imageWidth, 0.0683453237410072 * imageHeight);
+            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.0683453237410072 * imageHeight, 0.08163265306122448 * imageWidth, 0.13309352517985612 * imageHeight, 0.0, 0.19424460431654678 * imageHeight);
+            ctx.closePath();
+            var redOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.5153061224489796 * imageWidth);
+            redOnGlowFill.addColorStop(0.0, 'rgb(255, 0, 0)');
+            redOnGlowFill.addColorStop(1.0, 'rgba(118, 5, 1, 0)');
+            ctx.fillStyle = redOnGlowFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.restore();
+        };
+
+        var drawRedOff = function(ctx) {
+            ctx.save();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var redOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
+            redOffFill.addColorStop(0.0, 'rgba(255, 0, 0, 0.2470588235)');
+            redOffFill.addColorStop(1.0, 'rgba(255, 0, 0, 0.0470588235)');
+            ctx.fillStyle = redOffFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.scale(1.0, 1);
+            ctx.beginPath();
+            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
+            var redOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
+            redOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            redOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
+            redOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
+            redOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
+            redOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
+            redOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            ctx.fillStyle = redOffInnerShadowFill;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.fillStyle = ctx.createPattern(hatchBuffer, 'repeat');
+            ctx.fill();
+
+            ctx.restore();
+        };
+
+        var hatchBuffer = drawToBuffer(2, 2, function(ctx) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.lineTo(0, 0, 1, 0);
+            ctx.lineTo(0, 1, 0, 1);
+            ctx.stroke();
+            ctx.restore();
+        });
+
+        function drawToBuffer(width, height, drawFunction) {
+            var buffer = doc.createElement('canvas');
+            buffer.width = width;
+            buffer.height = height;
+            drawFunction(buffer.getContext('2d'));
+            return buffer;
+        }
+
+        var init = function() {
+            initialized = true;
+
+            drawHousing(housingCtx);
+            drawLightGreen(lightGreenCtx);
+            drawGreenOn(greenOnCtx);
+            drawGreenOff(greenOffCtx);
+            drawLightYellow(lightYellowCtx);
+            drawYellowOn(yellowOnCtx);
+            drawYellowOff(yellowOffCtx);
+            drawLightRed(lightRedCtx);
+            drawRedOn(redOnCtx);
+            drawRedOff(redOffCtx);
+        };
+
+
+        // **************   P U B L I C   M E T H O D S   ********************************
+        this.setRedOn = function(on) {
+            redOn = on;
+            this.repaint();
+        };
+
+        this.isRedOn = function() {
+            return redOn;
+        };
+
+        this.setYellowOn = function(on) {
+            yellowOn = on;
+            this.repaint();
+        };
+
+        this.isYellowOn = function() {
+            return yellowOn;
+        };
+
+        this.setGreenOn = function(on) {
+            greenOn = on;
+            this.repaint();
+        };
+
+        this.isGreenOn = function() {
+            return greenOn;
+        };
+
+        this.repaint = function() {
+            if (!initialized) {
+                init();
+            }
+
+            mainCtx.save();
+            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+
+            // housing
+            mainCtx.drawImage(housingBuffer, 0, 0);
+
+            // Green light
+            mainCtx.drawImage(lightGreenBuffer, 0, 0);
+
+            if (greenOn) {
+                mainCtx.drawImage(greenOnBuffer, 0, 0);
+            }
+
+            mainCtx.drawImage(greenOffBuffer, 0, 0);
+
+            // Yellow light
+            mainCtx.drawImage(lightYellowBuffer, 0, 0);
+
+            if (yellowOn) {
+                mainCtx.drawImage(yellowOnBuffer, 0, 0);
+            }
+
+            mainCtx.drawImage(yellowOffBuffer, 0, 0);
+
+            // Red light
+            mainCtx.drawImage(lightRedBuffer, 0, 0);
+
+            if (redOn) {
+                mainCtx.drawImage(redOnBuffer, 0, 0);
+            }
+
+            mainCtx.drawImage(redOffBuffer, 0, 0);
+
+            mainCtx.restore();
+        };
+
+
+        // Visualize the component
+        this.repaint();
+
+        return this;
+    };
+
+
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
     var radBBuffer = createBuffer(1,1);
@@ -12923,6 +13542,7 @@ var steelseries = function() {
         Battery : battery,
         StopWatch : stopwatch,
         Altimeter : altimeter,
+        TrafficLight: trafficlight,
 
         // Images
         drawFrame : drawRadialFrameImage,

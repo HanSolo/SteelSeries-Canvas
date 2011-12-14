@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>TrafficLight</title>
+    <script type='text/javascript' src='steelseries.js'></script>
+    <script type='text/javascript' src='tween.js'></script>
+
+      <script type='application/javascript'>
+        var trafficLight;
+
+        function init()
+        {
+            // Initialzing
+            trafficLight = steelseries.TrafficLight('canvas', {
+                            width: 200,
+                            height: 200
+                            });
+        }
+    
+	    function setLights() {
+		    trafficLight.setRedOn(document.getElementById('red').checked);
+			trafficLight.setYellowOn(document.getElementById('yellow').checked);
+			trafficLight.setGreenOn(document.getElementById('green').checked);
+	    }	
+  </script>
+  </head>
+  <body onload='init()' BGCOLOR="333333" TEXT="cccccc">
+    <canvas id='canvas' width='400' height='400'>
+      No canvas in your browser...sorry...
+    </canvas>
+	<br/>
+	<input id="red" type="checkbox" onClick="setLights()"/>Red<br />
+	<input id="yellow" type="checkbox" onClick="setLights()"/>Yellow<br />
+	<input id="green" type="checkbox" onClick="setLights()"/>Green<br />
+  </body>
+</html>
