@@ -20,6 +20,7 @@
                     <option value="ANTHRACITE">Anthracite</option>
                     <option value="TILTED_GRAY">TiltedGray</option>
                     <option value="TILTED_BLACK">TiltedBlack</option>
+                    <option value="GLOSSY_METAL">GlossyMetal</option>
                 </select>
                 <select id="comboBackground" onchange="setBackgroundColor(this)">
                     <option selected="selected" value="">Background</option>
@@ -79,18 +80,18 @@
                     <option value="DARKGREEN">DarkGreen</option>
                 </select>
                 <select id="comboLedColor" onchange="setLedColor(this)">
-					<option selected="selected" value="">Led color</option>
-					<option value="RED_LED">Red</option>
-					<option value="GREEN_LED">Green</option>
-					<option value="BLUE_LED">Blue</option>
-					<option value="ORANGE_LED">Orange</option>
-					<option value="YELLOW_LED">Yellow</option>
-					<option value="CYAN_LED">Cyan</option>
-					<option value="MAGENTA_LED">Magenta</option>        
-				</select>
+                    <option selected="selected" value="">Led color</option>
+                    <option value="RED_LED">Red</option>
+                    <option value="GREEN_LED">Green</option>
+                    <option value="BLUE_LED">Blue</option>
+                    <option value="ORANGE_LED">Orange</option>
+                    <option value="YELLOW_LED">Yellow</option>
+                    <option value="CYAN_LED">Cyan</option>
+                    <option value="MAGENTA_LED">Magenta</option>        
+                </select>
             </td>
         </tr>
-		<tr>
+        <tr>
             <td width="100%">
 <!--
                 <select id="comboKnob" onchange="setKnobDesign(this)">
@@ -105,9 +106,9 @@
                     <option value="SILVER">Silver</option>
                 </select>
 -->
-			</td>
+            </td>
         </tr>
-		<tr>
+        <tr>
             <td width="100%">
                 <canvas id="canvasLinear1" width="140" height="320">No canvas in your browser...sorry...</canvas>
                 <canvas id="canvasLinear2" width="140" height="320"></canvas>
@@ -141,6 +142,15 @@
         // Define one area
         var areas = [steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)')];
 
+        // Define value gradient for bargraph
+        var valGrad = new steelseries.gradientWrapper(  0,
+                                                        100,
+                                                        [ 0, 0.33, 0.66, 0.85, 1],
+                                                        [ new steelseries.rgbaColor(0, 0, 200, 1),
+                                                          new steelseries.rgbaColor(0, 200, 0, 1),
+                                                          new steelseries.rgbaColor(200, 200, 0, 1),
+                                                          new steelseries.rgbaColor(200, 0, 0, 1),
+                                                          new steelseries.rgbaColor(200, 0, 0, 1) ]);
 
         // Initializing gauge
         linear1 = new steelseries.Linear('canvasLinear1', {
@@ -157,8 +167,8 @@
                             });
 
         linear3 = new steelseries.Linear('canvasLinear3', {
-							width: 320,
-							height: 140,
+                            width: 320,
+                            height: 140,
                             titleString: 'Title',
                             unitString: 'Unit',
                             threshold: 50,
@@ -173,18 +183,20 @@
                             });
 
         linear5 = new steelseries.LinearBargraph('canvasLinear5', {
-                            titleString: "Title",
+                            titleString: "Section Colors",
                             unitString: "Unit",
-							section: sections,
+                            section: sections,
+                            useSectionColors: true,
                             threshold: 50,
                             lcdVisible: false
                             });
 
         linear6 = new steelseries.LinearBargraph('canvasLinear6', {
-							width: 320,
-							height: 140,
-							section: sections,
-                            titleString: "Title",
+                            width: 320,
+                            height: 140,
+                            valueGradient: valGrad,
+                            useValueGradient: true,
+                            titleString: "Gradient Colors",
                             unitString: "Unit",
                             threshold: 50,
                             lcdVisible: true
@@ -285,6 +297,14 @@
                 linear4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 linear5.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 linear6.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                break;
+            case "GLOSSY_METAL":
+                linear1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                linear2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                linear3.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                linear4.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                linear5.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                linear6.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
                 break;
         }
     }

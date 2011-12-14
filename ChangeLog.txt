@@ -1,4 +1,34 @@
 Main Changes
+
+v0.8.8
+> General Changes
+  * Added tickLabelOrientation to Radial and RadialBargraph initialisation parameters. Accepts
+    steelseries.TickLabelOrientation.NORMAL|TANGENT|HORIZONTAL.
+  * Changed default tickLabelOrientation for TYPE1 Radial gauges to TANGENT
+  * Added GLOSSY_METAL frame type
+
+> Clock
+  * Changed/Fixed TZ handling, if TZ offsets = zero clock shows local time, if a TZ offset is defined
+    then the clock will display UTC + offset(s)
+
+-------------------------
+v0.8.7
+> General Changes
+  * Added new Altimeter component
+
+-------------------------
+v0.8.6
+> General Changes
+  * Bug fix to GradientWrapper()
+  * Bug fix to radial drawTitles() function
+
+> Radial/LinearBargraph
+  * Added gradient colouring to the value bar LEDs
+  * Added the following initialisation parameters:
+    - useSectionColors: bool, valueGradient: steelseries.gradientWrapper(), useValueGradient: bool
+  * Added the following methods:
+    - setSectionColorsActive(bool), setValueGradient(steelseries.gradientWrapper), setValueGradientActive(bool)
+
 -------------------------
 v0.8.5
 > StopWatch

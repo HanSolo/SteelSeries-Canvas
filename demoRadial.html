@@ -20,6 +20,7 @@
                     <option value="ANTHRACITE">Anthracite</option>
                     <option value="TILTED_GRAY">TiltedGray</option>
                     <option value="TILTED_BLACK">TiltedBlack</option>
+                    <option value="GLOSSY_METAL">GlossyMetal</option>
                 </select>
                 <select id="comboBackground" onchange="setBackgroundColor(this)">
                     <option selected="selected" value="">Background</option>
@@ -95,15 +96,15 @@
                     <option value="DARKGREEN">DarkGreen</option>
                 </select>
                 <select id="comboLedColor" onchange="setLedColor(this)">
-					<option selected="selected" value="">Led color</option>
-					<option value="RED_LED">Red</option>
-					<option value="GREEN_LED">Green</option>
-					<option value="BLUE_LED">Blue</option>
-					<option value="ORANGE_LED">Orange</option>
-					<option value="YELLOW_LED">Yellow</option>
-					<option value="CYAN_LED">Cyan</option>
-					<option value="MAGENTA_LED">Magenta</option>        
-				</select>
+                    <option selected="selected" value="">Led color</option>
+                    <option value="RED_LED">Red</option>
+                    <option value="GREEN_LED">Green</option>
+                    <option value="BLUE_LED">Blue</option>
+                    <option value="ORANGE_LED">Orange</option>
+                    <option value="YELLOW_LED">Yellow</option>
+                    <option value="CYAN_LED">Cyan</option>
+                    <option value="MAGENTA_LED">Magenta</option>        
+                </select>
                 <select id="comboForeground" onchange="setForegroundType(this)">
                     <option selected="selected" value="">Foreground</option>
                     <option value="TYPE1">Type1</option>
@@ -114,7 +115,7 @@
                 </select>
             </td>
         </tr>
-		<tr>
+        <tr>
             <td width="100%">
                 <canvas id="canvasRadial1" width="201" height="201">No canvas in your browser...sorry...</canvas>
                 <canvas id="canvasRadial2" width="201" height="201"></canvas>
@@ -134,8 +135,8 @@
             <td width="100%">
                 <canvas id="canvasVertical1" width="201" height="201"></canvas>
                 <canvas id="canvasVertical2" width="201" height="201"></canvas>
-			</td>
-		</tr>
+            </td>
+        </tr>
     </tbody></table>
 
 
@@ -155,18 +156,27 @@
     function init() {
         // Define some sections
         var sections = [steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'),
-                             steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'),
-                             steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)')];
+                        steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'),
+                        steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)') ];
 
         // Define one area
         var areas = [steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)')];
 
+        // Define value gradient for bargraph
+        var valGrad = new steelseries.gradientWrapper(  0,
+                                                        100,
+                                                        [ 0, 0.33, 0.66, 0.85, 1],
+                                                        [ new steelseries.rgbaColor(0, 0, 200, 1),
+                                                          new steelseries.rgbaColor(0, 200, 0, 1),
+                                                          new steelseries.rgbaColor(200, 200, 0, 1),
+                                                          new steelseries.rgbaColor(200, 0, 0, 1),
+                                                          new steelseries.rgbaColor(200, 0, 0, 1) ]);
 
-        // Initialzing gauge
+        // Initialzing gauges
         radial1 = new steelseries.Radial('canvasRadial1', {
                             gaugeType: steelseries.GaugeType.TYPE1,
                             size: 201,
-							section: sections,
+                            section: sections,
                             area: areas,
                             titleString: 'Title',
                             unitString: 'Unit',
@@ -217,7 +227,6 @@
         radial6 = new steelseries.RadialBargraph('canvasRadial6', {
                             gaugeType: steelseries.GaugeType.TYPE2,
                             size: 201,
-                            section: sections,
                             titleString: 'Title',
                             unitString: 'Unit',
                             lcdVisible: true
@@ -227,16 +236,19 @@
                             gaugeType: steelseries.GaugeType.TYPE3,
                             size: 201,
                             section: sections,
+                            useSectionColors: true,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Section',
                             lcdVisible: true
                             });
 
         radial8 = new steelseries.RadialBargraph('canvasRadial8', {
                             gaugeType: steelseries.GaugeType.TYPE4,
                             size: 201,
+                            valueGradient: valGrad,
+                            useValueGradient: true,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Gradient',
                             lcdVisible: true
                             });
 
@@ -244,14 +256,14 @@
                             titleString: 'Title',
                             unitString: 'Unit',
                             size: 201
-							});
+                            });
 
         vertical2 = new steelseries.RadialVertical('canvasVertical2', {
                             titleString: 'Title',
                             unitString: 'Unit',
                             size: 201,
-							orientation: steelseries.Orientation.WEST
-							});
+                            orientation: steelseries.Orientation.WEST
+                            });
 
         // Start the random update
         setInterval(function(){ setRandomValue(radial1, 100); }, 2200);
@@ -270,14 +282,14 @@
         gauge.setValueAnimated(Math.random() * range);
     }
 
-	function setDirRandomValue(gauge, range) {
+    function setDirRandomValue(gauge, range) {
         gauge.setValueAnimatedLatest(Math.random() * range);
         gauge.setValueAnimatedAverage(Math.random() * range);
     }
 
-	function setHorRandomValue(gauge) {
-		var pitch = Math.random() * 100 - 50;
-		var roll = Math.random() * 120 - 60;
+    function setHorRandomValue(gauge) {
+        var pitch = Math.random() * 100 - 50;
+        var roll = Math.random() * 120 - 60;
         gauge.setPitchAnimated(pitch);
         gauge.setRollAnimated(roll);
     }
@@ -403,6 +415,18 @@
                 radial8.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 vertical1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 vertical2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                break;
+            case "GLOSSY_METAL":
+                radial1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial3.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial4.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial5.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial6.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial7.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                radial8.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                vertical1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                vertical2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
                 break;
         }
     }
