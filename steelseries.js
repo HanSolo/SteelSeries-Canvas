@@ -5010,6 +5010,7 @@ var steelseries = function() {
         var valuesNumeric = (undefined === parameters.valuesNumeric ? true : parameters.valuesNumeric);
         var value = (undefined === parameters.value ? 0 : parameters.value);
         var autoScroll = (undefined === parameters.autoScroll ? false : parameters.autoScroll);
+        var section = (undefined === parameters.section ? null : parameters.section);
 
 //        var oldValue;
         var scrolling = false;
@@ -5141,6 +5142,13 @@ var steelseries = function() {
                 init();
                 this.repaint();
         };
+
+        this.setSection = function(newSection){
+                section = newSection;
+                resetBuffers({foreground: true});
+                init({background: true, foreground: true});
+                this.repaint();
+		};
 
         this.setScrolling = function(scroll) {
             if (scroll) {
@@ -11876,7 +11884,8 @@ var steelseries = function() {
         DARKBLUE: new lcdColorDef('rgb(14, 24, 31)', 'rgb(46, 105, 144)', 'rgb(19, 64, 96)', 'rgb(6, 20, 29)', 'rgb(8, 9, 10)', '#3DB3FF'),
         LILA: new lcdColorDef('rgb(175, 164, 255)', 'rgb(188, 168, 253)', 'rgb(176, 159, 255)', 'rgb(174, 147, 252)', 'rgb(168, 136, 233)', '#076148'),
         BLACKRED: new lcdColorDef('rgb(8, 12, 11)', 'rgb(10, 11, 13)', 'rgb(11, 10, 15)', 'rgb(7, 13, 9)', 'rgb(9, 13, 14)', '#B50026'),
-        DARKGREEN: new lcdColorDef('rgb(25, 85, 0)', 'rgb(47, 154, 0)', 'rgb(30, 101, 0)', 'rgb(30, 101, 0)', 'rgb(25, 85, 0)', '#233123')
+        DARKGREEN: new lcdColorDef('rgb(25, 85, 0)', 'rgb(47, 154, 0)', 'rgb(30, 101, 0)', 'rgb(30, 101, 0)', 'rgb(25, 85, 0)', '#233123'),
+        SECTIONS: new lcdColorDef('#b2b2b2', '#ffffff', '#c4c4c4', '#c4c4c4', '#b2b2b2', '#000000')
     };
 
     var color = {
