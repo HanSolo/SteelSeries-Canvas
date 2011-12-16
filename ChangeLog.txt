@@ -1,5 +1,9 @@
 Main Changes
 
+v0.9.2
+> General Changes
+  * Added STAINLESS background colour to Radial gauges (not linear yet)
+
 v0.9.1
 > General Changes
   * Fixed minor drawing error of pointer type 4

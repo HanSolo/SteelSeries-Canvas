@@ -38,6 +38,7 @@
                     <option value="MUD">Mud</option>
                     <option value="PUNCHED_SHEET">PunchedSheet</option>
                     <option value="CARBON">Carbon</option>
+                    <option value="STAINLESS">Stainless</option>
                 </select>
                 <select id="comboPointerColor" onchange="setPointerColor(this)">
                     <option selected="selected" value="">Pointer color</option>
@@ -489,6 +490,13 @@
                 radial3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                break;
+            case "STAINLESS":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 break;
         }
     }

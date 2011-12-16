@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 16.12.2011
- * Revision      : 0.9.1
+ * Revision      : 0.9.2
  */
 
 var steelseries = function() {
@@ -8353,7 +8353,7 @@ var steelseries = function() {
                     grad.addColorStop(0, '#f3f4f7');
                     grad.addColorStop(0.11, '#f3f5f7');
                     grad.addColorStop(0.12, '#f1f3f5');
-                    grad.addColorStop(0.2, '#c0c5ccb');
+                    grad.addColorStop(0.2, '#c0c5cb');
                     grad.addColorStop(0.2, '#bec3c9');
                     grad.addColorStop(1, '#bec3c9');
                     ctx.fillStyle = grad;
@@ -12151,6 +12151,7 @@ var steelseries = function() {
 
         // If the backgroundColor is a texture fill it with the texture instead of the gradient
         if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET) {
+
             if (backgroundColor === steelseries.BackgroundColor.CARBON) {
                 radBCtx.fillStyle = radBCtx.createPattern(carbonBuffer, 'repeat');
                 radBCtx.fill();
@@ -12160,6 +12161,7 @@ var steelseries = function() {
                 radBCtx.fillStyle = radBCtx.createPattern(punchedSheetBuffer, 'repeat');
                 radBCtx.fill();
             }
+
             // Add another inner shadow to make the look more realistic
             var backgroundOffsetX = imageWidth * 0.831775 / 2;
             var fadeGradient = radBCtx.createLinearGradient(backgroundOffsetX, 0, imageWidth - backgroundOffsetX, 0);
@@ -12171,7 +12173,50 @@ var steelseries = function() {
             radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true);
             radBCtx.closePath();
             radBCtx.fill();
-        } else {
+        } else if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+			// Define the fraction of the conical gradient paint
+			var fractions= [
+							0,
+							0.03,
+							0.10,
+							0.14,
+							0.24,
+							0.33,
+							0.38,
+							0.5,
+							0.62,
+							0.67,
+							0.76,
+							0.81,
+							0.85,
+							0.97,
+							1 ];
+
+			// Define the colors of the conical gradient paint
+			var colors = [
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#B2B2B4'),
+						new rgbaColor('#ACACAE'),
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#6E6E70'),
+						new rgbaColor('#6E6E70'),
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#6E6E70'),
+						new rgbaColor('#6E6E70'),
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#ACACAE'),
+						new rgbaColor('#B2B2B4'),
+						new rgbaColor('#FDFDFD'),
+						new rgbaColor('#FDFDFD')];
+			radBCtx.save();
+			//radBCtx.clip(radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true));
+			outerX = imageWidth * 0.831775 / 2;
+			innerX = 0;
+			grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
+			grad.fill(radBCtx, centerX, centerY, innerX, outerX);
+			radBCtx.restore();
+		} else {
             var grad = radBCtx.createLinearGradient(0, imageWidth * 0.084112, 0, imageHeight * 0.831775);
             grad.addColorStop(0, backgroundColor.gradientStart.getRgbaColor());
             grad.addColorStop(0.4, backgroundColor.gradientFraction.getRgbaColor());
@@ -12179,6 +12224,7 @@ var steelseries = function() {
             radBCtx.fillStyle = grad;
             radBCtx.fill();
         }
+		
 
         // Inner shadow
         var gradInnerShadow = radBCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, imageWidth * 0.831775 / 2);
@@ -12249,7 +12295,7 @@ var steelseries = function() {
                 linBCtx.fillStyle = linBCtx.createPattern(punchedSheetBuffer, 'repeat');
                 linBCtx.fill();
             }
-            // Add an additional inner shadow to make the look mor realistic
+            // Add an additional inner shadow to make the look more realistic
             var fadeGradient = linBCtx.createLinearGradient(14, 14, imageWidth - 28, imageHeight -28);
             fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
             fadeGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
@@ -12257,7 +12303,9 @@ var steelseries = function() {
             linBCtx.fillStyle = fadeGradient;
             roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
             linBCtx.fill();
-        } else {
+        } else if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+			//createBrushMetalTexture(new Color(0x6E6E70), GAUGE_BACKGROUND.getBounds().width, GAUGE_BACKGROUND.getBounds().height, 5, 0.03f, true, 0.5f), GAUGE_BACKGROUND.getBounds())
+		} else {
             var grad = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
             grad.addColorStop(0, backgroundColor.gradientStart.getRgbaColor());
             grad.addColorStop(0.4, backgroundColor.gradientFraction.getRgbaColor());
@@ -13170,7 +13218,13 @@ var steelseries = function() {
         var blue;
         var alpha;
 
-		if (a === null) {
+		if (arguments.length === 1) {
+			// hexadecimal input #112233
+			b = parseInt(r.substr(5,2), 16);
+			g = parseInt(r.substr(3,2), 16);
+			r = parseInt(r.substr(1,2), 16);
+			a = 1
+		} else if (arguments.length === 3) {
 			a = 1;
 		}
 
@@ -13246,14 +13300,14 @@ var steelseries = function() {
             var RAD_FACTOR = 180 / Math.PI;
             var TWO_PI = 2 * Math.PI;
             // Make the step value equate to a single pixel at the outer radius
-            var angleStep = (outerX * 2 - centerX) * TWO_PI / 450;   // pixels/degree at the circumference (minus a bit, found empircally!)
+            var angleStep = (outerX * 2 - centerX) * TWO_PI / 300;   
             angleStep = TWO_PI / (360 * angleStep);
             var range;
             var startColor;
             var stopColor;
 
             ctx.save();
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.5;
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
 
@@ -13937,7 +13991,8 @@ var steelseries = function() {
         ANTHRACITE: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(250, 250, 250, 1), new rgbaColor(180, 180, 180, 1)),
         MUD: new backgroundColorDef(new rgbaColor(80, 86, 82, 1), new rgbaColor(70, 76, 72, 1), new rgbaColor(57, 62, 58, 1), new rgbaColor(255, 255, 240, 1), new rgbaColor(225, 225, 210, 1)),
         PUNCHED_SHEET: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1)),
-        CARBON: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1))
+        CARBON: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1)),
+		STAINLESS: new backgroundColorDef(new rgbaColor(130, 130, 130, 1), new rgbaColor(181, 181, 181, 1), new rgbaColor(253, 253, 253, 1), new rgbaColor(0, 0, 0, 1), new rgbaColor(80, 80, 80, 1))
     };
 
     var lcdColor = {
