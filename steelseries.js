@@ -1,7 +1,7 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 14.12.2011
+ * Last modified : 16.12.2011
  * Revision      : 0.9.1
  */
 
@@ -5250,10 +5250,10 @@ var steelseries = function() {
 	        var rB = Math.min(width, height) * 0.095;
 
 	        var lcdBackground = lcdCtx.createLinearGradient(0, yB, 0, yB + hB);					
-			lcdBackground.addColorStop(0, 'rgb(76, 76, 76)');
-	        lcdBackground.addColorStop(0.08, 'rgb(102, 102, 102)');
-	        lcdBackground.addColorStop(0.92, 'rgb(102, 102, 102)');
-	        lcdBackground.addColorStop(1, 'rgb(230, 230, 230)');
+			lcdBackground.addColorStop(0, '#4c4c4c');
+	        lcdBackground.addColorStop(0.08, '#666666');
+	        lcdBackground.addColorStop(0.92, '#666666');
+	        lcdBackground.addColorStop(1, '#e6e6e6');
 	        lcdCtx.fillStyle = lcdBackground;
 
 	        roundedRectangle(lcdCtx, xB, yB, wB, hB, rB);
@@ -6468,12 +6468,12 @@ var steelseries = function() {
                     ctx.closePath();
                     if (!shadow) {
                         var SOUTHPOINTER2_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                        SOUTHPOINTER2_GRADIENT.addColorStop(0, 'rgb(227, 229, 232)');
-                        SOUTHPOINTER2_GRADIENT.addColorStop(0.48, 'rgb(227, 229, 232)');
-                        SOUTHPOINTER2_GRADIENT.addColorStop(0.480099, 'rgb(171, 177, 184)');
-                        SOUTHPOINTER2_GRADIENT.addColorStop(1, 'rgb(171, 177, 184)');
+                        SOUTHPOINTER2_GRADIENT.addColorStop(0, '#e3e5e8');
+                        SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#e3e5e8');
+                        SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#abb1b8');
+                        SOUTHPOINTER2_GRADIENT.addColorStop(1, '#abb1b8');
                         ctx.fillStyle = SOUTHPOINTER2_GRADIENT;
-                        var strokeColor_SOUTHPOINTER2 = '#ABB1B8';
+                        var strokeColor_SOUTHPOINTER2 = '#abb1b8';
                         ctx.strokeStyle = strokeColor_SOUTHPOINTER2;
                     }
                     ctx.lineWidth = 1;
@@ -6543,12 +6543,12 @@ var steelseries = function() {
                     ctx.closePath();
                     if (!shadow) {
                         var SOUTHPOINTER1_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                        SOUTHPOINTER1_GRADIENT.addColorStop(0, 'rgb(227, 229, 232)');
-                        SOUTHPOINTER1_GRADIENT.addColorStop(0.48, 'rgb(227, 229, 232)');
-                        SOUTHPOINTER1_GRADIENT.addColorStop(0.480099, 'rgb(171, 177, 184)');
-                        SOUTHPOINTER1_GRADIENT.addColorStop(1, 'rgb(171, 177, 184)');
+                        SOUTHPOINTER1_GRADIENT.addColorStop(0, '#e3e5e8');
+                        SOUTHPOINTER1_GRADIENT.addColorStop(0.48, '#e3e5e8');
+                        SOUTHPOINTER1_GRADIENT.addColorStop(0.480099, '#abb1b8');
+                        SOUTHPOINTER1_GRADIENT.addColorStop(1, '#abb1b8');
                         ctx.fillStyle = SOUTHPOINTER1_GRADIENT;
-                        var strokeColor_SOUTHPOINTER = '#ABB1B8';
+                        var strokeColor_SOUTHPOINTER = '#abb1b8';
                         ctx.strokeStyle = strokeColor_SOUTHPOINTER;
                     }
                     ctx.lineWidth = 1;
@@ -7497,10 +7497,10 @@ var steelseries = function() {
             ctx.rect(0, 0, imgWidth, imgHeight);
             ctx.closePath();
             var HORIZON_GRADIENT = ctx.createLinearGradient(0, 0, 0, imgHeight);
-            HORIZON_GRADIENT.addColorStop(0, 'rgb(127, 213, 240)');
-            HORIZON_GRADIENT.addColorStop(0.5, 'rgb(127, 213, 240)');
-            HORIZON_GRADIENT.addColorStop(0.5, 'rgb(60, 68, 57)');
-            HORIZON_GRADIENT.addColorStop(1, 'rgb(60, 68, 57)');
+            HORIZON_GRADIENT.addColorStop(0, '#7fd5f0');
+            HORIZON_GRADIENT.addColorStop(0.5, '#7fd5f0');
+            HORIZON_GRADIENT.addColorStop(0.5, '#3c4439');
+            HORIZON_GRADIENT.addColorStop(1, '#3c4439');
             ctx.fillStyle = HORIZON_GRADIENT;
             ctx.fill();
 
@@ -8304,8 +8304,8 @@ var steelseries = function() {
             ctx.shadowColor = '';
             ctx.shadowBlur = 0;
             grad = ctx.createLinearGradient(centerX - imageWidth * 0.045/2, centerY - imageWidth * 0.045/2, centerX + imageWidth * 0.045/2, centerY + imageWidth * 0.045/2);
-            grad.addColorStop(0, 'rgb(238, 240, 242)');
-            grad.addColorStop(1, 'rgb(101, 105, 109)');
+            grad.addColorStop(0, '#eef0f2');
+            grad.addColorStop(1, '#65696d');
             ctx.fillStyle = grad;
             ctx.fill();
         };
@@ -8350,12 +8350,12 @@ var steelseries = function() {
                     ctx.shadowColor = '';
                     ctx.shadowBlur = 0;
                     grad = ctx.createLinearGradient(centerX - imageWidth * 0.027 /2, centerY - imageWidth * 0.027 /2, centerX + imageWidth * 0.027 /2, centerY + imageWidth * 0.027 /2);
-                    grad.addColorStop(0, 'rgb(234, 235, 238)');
-                    grad.addColorStop(0.11, 'rgb(234, 236, 238)');
-                    grad.addColorStop(0.12, 'rgb(232, 234, 236)');
-                    grad.addColorStop(0.2, 'rgb(192, 197, 203)');
-                    grad.addColorStop(0.2001, 'rgb(190, 195, 201)');
-                    grad.addColorStop(1, 'rgb(190, 195, 201)');
+                    grad.addColorStop(0, '#f3f4f7');
+                    grad.addColorStop(0.11, '#f3f5f7');
+                    grad.addColorStop(0.12, '#f1f3f5');
+                    grad.addColorStop(0.2, '#c0c5ccb');
+                    grad.addColorStop(0.2, '#bec3c9');
+                    grad.addColorStop(1, '#bec3c9');
                     ctx.fillStyle = grad;
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, imageWidth * 0.027, 0 , TWO_PI);
@@ -9093,10 +9093,10 @@ var steelseries = function() {
                 var radius = imageWidth * 0.065420 / 2;
                 ctx.arc(centerX, centerY, radius, 0, TWO_PI);
                 grad = ctx.createLinearGradient(centerX - radius, centerX + radius, 0, centerX + radius);
-                grad.addColorStop(0, 'rgb(230, 179, 92)');
-                grad.addColorStop(0.01, 'rgb(230, 179, 92)');
-                grad.addColorStop(0.99, 'rgb(196, 130, 0)');
-                grad.addColorStop(1, 'rgb(196, 130, 0)');
+                grad.addColorStop(0, '#e6b35c');
+                grad.addColorStop(0.01, '#e6b35c');
+                grad.addColorStop(0.99, '#c48200');
+                grad.addColorStop(1, '#c48200');
                 ctx.fillStyle = grad;
                 ctx.closePath();
                 ctx.fill();
@@ -9625,8 +9625,8 @@ var steelseries = function() {
                 grad.addColorStop(0, '#ffffff');
                 grad.addColorStop(0.31, '#ffffff');
                 grad.addColorStop(0.3101, '#ffffff');
-                grad.addColorStop(0.32, 'rgb(32, 32, 32)');
-                grad.addColorStop(1, 'rgb(32, 32, 32)');
+                grad.addColorStop(0.32, '#202020');
+                grad.addColorStop(1, '#202020');
                 ctx.fillStyle = grad;
             }
 
@@ -9666,9 +9666,9 @@ var steelseries = function() {
                 grad.addColorStop(0, '#ffffff');
                 grad.addColorStop(0.51, '#ffffff');
                 grad.addColorStop(0.52, '#ffffff');
-                grad.addColorStop(0.5201, 'rgb(32, 32, 32)');
-                grad.addColorStop(0.53, 'rgb(32, 32, 32)');
-                grad.addColorStop(1, 'rgb(32, 32, 32)');
+                grad.addColorStop(0.5201, '#202020');
+                grad.addColorStop(0.53, '#202020');
+                grad.addColorStop(1, '#202020');
                 ctx.fillStyle = grad;
             }
             ctx.beginPath();
@@ -10025,8 +10025,8 @@ var steelseries = function() {
         mainCtx.canvas.width = width;
         mainCtx.canvas.height = height;
 
-        var prefHeight = width < (height * 0.3525179856) ? (width * 2.8367346939) : height;
-        var imageWidth = prefHeight * 0.3525179856;
+        var prefHeight = width < (height * 0.352517) ? (width * 2.836734) : height;
+        var imageWidth = prefHeight * 0.352517;
         var imageHeight = prefHeight;
 
         var redOn = false;
@@ -10091,51 +10091,51 @@ var steelseries = function() {
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.10714285714285714 * imageWidth, 0.0);
-            ctx.lineTo(imageWidth - 0.10714285714285714 * imageWidth, 0.0);
-            ctx.quadraticCurveTo(imageWidth, 0.0, imageWidth, 0.10714285714285714 * imageWidth);
-            ctx.lineTo(imageWidth, imageHeight - 0.10714285714285714 * imageWidth);
-            ctx.quadraticCurveTo(imageWidth, imageHeight, imageWidth - 0.10714285714285714 * imageWidth, imageHeight);
-            ctx.lineTo(0.10714285714285714 * imageWidth, imageHeight);
-            ctx.quadraticCurveTo(0.0, imageHeight, 0.0, imageHeight - 0.10714285714285714 * imageWidth);
-            ctx.lineTo(0.0, 0.10714285714285714 * imageWidth);
-            ctx.quadraticCurveTo(0.0, 0.0, 0.10714285714285714 * imageWidth, imageHeight);
+            ctx.moveTo(0.107142 * imageWidth, 0);
+            ctx.lineTo(imageWidth - 0.107142 * imageWidth, 0);
+            ctx.quadraticCurveTo(imageWidth, 0, imageWidth, 0.107142 * imageWidth);
+            ctx.lineTo(imageWidth, imageHeight - 0.107142 * imageWidth);
+            ctx.quadraticCurveTo(imageWidth, imageHeight, imageWidth - 0.107142 * imageWidth, imageHeight);
+            ctx.lineTo(0.107142 * imageWidth, imageHeight);
+            ctx.quadraticCurveTo(0, imageHeight, 0, imageHeight - 0.107142 * imageWidth);
+            ctx.lineTo(0, 0.107142 * imageWidth);
+            ctx.quadraticCurveTo(0, 0, 0.107142 * imageWidth, imageHeight);
             ctx.closePath();
-            var housingFill = ctx.createLinearGradient((0.04081632653061224 * imageWidth), (0.007194244604316547 * imageHeight), ((0.9521011364730593) * imageWidth), ((0.9958824935586308) * imageHeight));
-            housingFill.addColorStop(0.0, 'rgb(152, 152, 154)');
+            var housingFill = ctx.createLinearGradient(0.040816 * imageWidth, 0.007194 * imageHeight, 0.952101 * imageWidth, 0.995882 * imageHeight);
+            housingFill.addColorStop(0, 'rgb(152, 152, 154)');
             housingFill.addColorStop(0.01, 'rgb(152, 152, 154)');
-            housingFill.addColorStop(0.09, 'rgb(51, 51, 51)');
+            housingFill.addColorStop(0.09, '#333333');
             housingFill.addColorStop(0.24, 'rgb(152, 152, 154)');
             housingFill.addColorStop(0.55, 'rgb(31, 31, 31)');
-            housingFill.addColorStop(0.78, 'rgb(54, 54, 54)');
-            housingFill.addColorStop(0.98, 'rgb(0, 0, 0)');
-            housingFill.addColorStop(1.0, 'rgb(0, 0, 0)');
+            housingFill.addColorStop(0.78, '#363636');
+            housingFill.addColorStop(0.98, '#000000');
+            housingFill.addColorStop(1, '#000000');
             ctx.fillStyle = housingFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
-            ctx.lineTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth - 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
-            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight, 0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.08418367346938775 * imageWidth);
-            ctx.lineTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight - 0.08418367346938775 * imageWidth);
-            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight, 0.030612244897959183 * imageWidth + 0.9387755102040817 * imageWidth - 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight);
-            ctx.lineTo(0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight);
-            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight, 0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.9784172661870504 * imageHeight - 0.08418367346938775 * imageWidth);
-            ctx.lineTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight + 0.08418367346938775 * imageWidth);
-            ctx.quadraticCurveTo(0.030612244897959183 * imageWidth, 0.01079136690647482 * imageHeight, 0.030612244897959183 * imageWidth + 0.08418367346938775 * imageWidth, 0.01079136690647482 * imageHeight);
+            ctx.moveTo(0.030612 * imageWidth + 0.084183 * imageWidth, 0.010791 * imageHeight);
+            ctx.lineTo(0.030612 * imageWidth + 0.938775 * imageWidth - 0.084183 * imageWidth, 0.010791 * imageHeight);
+            ctx.quadraticCurveTo(0.030612 * imageWidth + 0.938775 * imageWidth, 0.010791 * imageHeight, 0.030612 * imageWidth + 0.938775 * imageWidth, 0.010791 * imageHeight + 0.084183 * imageWidth);
+            ctx.lineTo(0.030612 * imageWidth + 0.938775 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight - 0.084183 * imageWidth);
+            ctx.quadraticCurveTo(0.030612 * imageWidth + 0.938775 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight, 0.030612 * imageWidth + 0.938775 * imageWidth - 0.084183 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight);
+            ctx.lineTo(0.030612 * imageWidth + 0.084183 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight);
+            ctx.quadraticCurveTo(0.030612 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight, 0.030612 * imageWidth, 0.010791 * imageHeight + 0.978417 * imageHeight - 0.084183 * imageWidth);
+            ctx.lineTo(0.030612 * imageWidth, 0.010791 * imageHeight + 0.084183 * imageWidth);
+            ctx.quadraticCurveTo(0.030612 * imageWidth, 0.010791 * imageHeight, 0.030612 * imageWidth + 0.084183 * imageWidth, 0.010791 * imageHeight);
             ctx.closePath();
-            var housingFrontFill = ctx.createLinearGradient((-0.1326530612244898 * imageWidth), (-0.0539568345323741 * imageHeight), ((2.0614080436330213) * imageWidth), ((0.6672932297063833) * imageHeight));
-            housingFrontFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            housingFrontFill.addColorStop(0.01, 'rgb(0, 0, 0)');
-            housingFrontFill.addColorStop(0.16, 'rgb(55, 55, 53)');
-            housingFrontFill.addColorStop(0.31, 'rgb(0, 0, 0)');
-            housingFrontFill.addColorStop(0.44, 'rgb(48, 48, 48)');
-            housingFrontFill.addColorStop(0.65, 'rgb(0, 0, 0)');
-            housingFrontFill.addColorStop(0.87, 'rgb(54, 54, 54)');
-            housingFrontFill.addColorStop(0.98, 'rgb(0, 0, 0)');
-            housingFrontFill.addColorStop(1.0, 'rgb(0, 0, 0)');
+            var housingFrontFill = ctx.createLinearGradient(-0.132653 * imageWidth, -0.053956 * imageHeight, 2.061408 * imageWidth, 0.667293 * imageHeight);
+            housingFrontFill.addColorStop(0, '#000000');
+            housingFrontFill.addColorStop(0.01, '#000000');
+            housingFrontFill.addColorStop(0.16, '#373735');
+            housingFrontFill.addColorStop(0.31, '#000000');
+            housingFrontFill.addColorStop(0.44, '#303030');
+            housingFrontFill.addColorStop(0.65, '#000000');
+            housingFrontFill.addColorStop(0.87, '#363636');
+            housingFrontFill.addColorStop(0.98, '#000000');
+            housingFrontFill.addColorStop(1, '#000000');
             ctx.fillStyle = housingFrontFill;
             ctx.fill();
             ctx.restore();
@@ -10147,53 +10147,53 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8057553956834532 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
-            var lightGreenFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6654676258992805 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9460431654676259) * imageHeight));
-            lightGreenFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
+            ctx.arc(0.5 * imageWidth, 0.805755 * imageHeight, 0.397959 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenFrameFill = ctx.createLinearGradient(0, 0.665467 * imageHeight, 0, 0.946043 * imageHeight);
+            lightGreenFrameFill.addColorStop(0, '#ffffff');
             lightGreenFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
             lightGreenFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
-            lightGreenFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
-            lightGreenFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
-            lightGreenFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            lightGreenFrameFill.addColorStop(0.17, '#666666');
+            lightGreenFrameFill.addColorStop(0.27, '#333333');
+            lightGreenFrameFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightGreenFrameFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0833333333333333, 1);
+            ctx.scale(1.083333, 1);
             ctx.beginPath();
-            ctx.arc(0.46153846153846156 * imageWidth, 0.8165467625899281 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
-            var lightGreenInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6870503597122302 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9460431654676259) * imageHeight));
-            lightGreenInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightGreenInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
-            lightGreenInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
-            lightGreenInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.461538 * imageWidth, 0.816546 * imageHeight, 0.367346 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenInnerFill = ctx.createLinearGradient(0, 0.687050 * imageHeight, 0, 0.946043 * imageHeight);
+            lightGreenInnerFill.addColorStop(0, '#000000');
+            lightGreenInnerFill.addColorStop(0.35, '#040404');
+            lightGreenInnerFill.addColorStop(0.66, '#000000');
+            lightGreenInnerFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightGreenInnerFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightGreenEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.3622448979591837 * imageWidth);
-            lightGreenEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightGreenEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
+            ctx.arc(0.5 * imageWidth, 0.809352 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenEffectFill = ctx.createRadialGradient(0.5 * imageWidth, 0.809352 * imageHeight, 0, 0.5 * imageWidth, 0.809352 * imageHeight, 0.362244 * imageWidth);
+            lightGreenEffectFill.addColorStop(0, '#000000');
+            lightGreenEffectFill.addColorStop(0.88, '#000000');
             lightGreenEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
-            lightGreenEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            lightGreenEffectFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightGreenEffectFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightGreenInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.6870503597122302 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.9172661870503597) * imageHeight));
-            lightGreenInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightGreenInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.809352 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightGreenInnerShadowFill = ctx.createLinearGradient(0, 0.687050 * imageHeight, 0, 0.917266 * imageHeight);
+            lightGreenInnerShadowFill.addColorStop(0, '#000000');
+            lightGreenInnerShadowFill.addColorStop(1, 'rgba(1, 1, 1, 0)');
             ctx.fillStyle = lightGreenInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10204,27 +10204,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var greenOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
-            greenOnFill.addColorStop(0.0, 'rgb(85, 185, 123)');
-            greenOnFill.addColorStop(1.0, 'rgb(0, 31, 0)');
+            ctx.arc(0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOnFill = ctx.createRadialGradient(0.5 * imageWidth, 0.809352 * imageHeight, 0, 0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth);
+            greenOnFill.addColorStop(0, 'rgb(85, 185, 123)');
+            greenOnFill.addColorStop(1, 'rgb(0, 31, 0)');
             ctx.fillStyle = greenOnFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.0, 0.8129496402877698 * imageHeight);
-            ctx.bezierCurveTo(0.0, 0.9100719424460432 * imageHeight, 0.22448979591836735 * imageWidth, 0.9892086330935251 * imageHeight, 0.5 * imageWidth, 0.9892086330935251 * imageHeight);
-            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.9892086330935251 * imageHeight, imageWidth, 0.9100719424460432 * imageHeight, imageWidth, 0.8093525179856115 * imageHeight);
-            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.7517985611510791 * imageHeight, 0.7040816326530612 * imageWidth, 0.6870503597122302 * imageHeight, 0.5 * imageWidth, 0.6870503597122302 * imageHeight);
-            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.6870503597122302 * imageHeight, 0.08163265306122448 * imageWidth, 0.7517985611510791 * imageHeight, 0.0, 0.8129496402877698 * imageHeight);
+            ctx.moveTo(0, 0.812949 * imageHeight);
+            ctx.bezierCurveTo(0, 0.910071 * imageHeight, 0.224489 * imageWidth, 0.989208 * imageHeight, 0.5 * imageWidth, 0.989208 * imageHeight);
+            ctx.bezierCurveTo(0.775510 * imageWidth, 0.989208 * imageHeight, imageWidth, 0.910071 * imageHeight, imageWidth, 0.809352 * imageHeight);
+            ctx.bezierCurveTo(0.908163 * imageWidth, 0.751798 * imageHeight, 0.704081 * imageWidth, 0.687050 * imageHeight, 0.5 * imageWidth, 0.687050 * imageHeight);
+            ctx.bezierCurveTo(0.285714 * imageWidth, 0.687050 * imageHeight, 0.081632 * imageWidth, 0.751798 * imageHeight, 0, 0.812949 * imageHeight);
             ctx.closePath();
-            var greenOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.5153061224489796 * imageWidth);
-            greenOnGlowFill.addColorStop(0.0, 'rgb(65, 187, 126)');
-            greenOnGlowFill.addColorStop(1.0, 'rgba(4, 37, 8, 0)');
+            var greenOnGlowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.809352 * imageHeight, 0, 0.5 * imageWidth, 0.809352 * imageHeight, 0.515306 * imageWidth);
+            greenOnGlowFill.addColorStop(0, 'rgb(65, 187, 126)');
+            greenOnGlowFill.addColorStop(1, 'rgba(4, 37, 8, 0)');
             ctx.fillStyle = greenOnGlowFill;
             ctx.fill();
             ctx.restore();
@@ -10235,27 +10235,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var greenOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
-            greenOffFill.addColorStop(0.0, 'rgba(0, 255, 0, 0.2470588235)');
-            greenOffFill.addColorStop(1.0, 'rgba(0, 255, 0, 0.0470588235)');
+            ctx.arc(0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOffFill = ctx.createRadialGradient(0.5 * imageWidth, 0.809352 * imageHeight, 0, 0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth);
+            greenOffFill.addColorStop(0, 'rgba(0, 255, 0, 0.25)');
+            greenOffFill.addColorStop(1, 'rgba(0, 255, 0, 0.05)');
             ctx.fillStyle = greenOffFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.8093525179856115 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var greenOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.8093525179856115) * imageHeight), 0, ((0.5) * imageWidth), ((0.8093525179856115) * imageHeight), 0.32653061224489793 * imageWidth);
-            greenOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var greenOffInnerShadowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.809352 * imageHeight, 0, 0.5 * imageWidth, 0.809352 * imageHeight, 0.326530 * imageWidth);
+            greenOffInnerShadowFill.addColorStop(0, 'rgba(1, 1, 1, 0)');
             greenOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
             greenOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
-            greenOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
-            greenOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
-            greenOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            greenOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.12)');
+            greenOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.12)');
+            greenOffInnerShadowFill.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
             ctx.fillStyle = greenOffInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10270,54 +10270,54 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.49640287769784175 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
-            var lightYellowFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.35611510791366907 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6366906474820144) * imageHeight));
-            lightYellowFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
+            ctx.arc(0.5 * imageWidth, 0.496402 * imageHeight, 0.397959 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowFrameFill = ctx.createLinearGradient(0, 0.356115 * imageHeight, 0, 0.636690 * imageHeight);
+            lightYellowFrameFill.addColorStop(0, '#ffffff');
             lightYellowFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
             lightYellowFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
-            lightYellowFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
-            lightYellowFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
-            lightYellowFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            lightYellowFrameFill.addColorStop(0.17, '#666666');
+            lightYellowFrameFill.addColorStop(0.27, '#333333');
+            lightYellowFrameFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightYellowFrameFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0833333333333333, 1);
+            ctx.scale(1.083333, 1);
             ctx.beginPath();
-            ctx.arc(0.46153846153846156 * imageWidth, 0.5071942446043165 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
-            var lightYellowInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.3776978417266187 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6366906474820144) * imageHeight));
-            lightYellowInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightYellowInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
-            lightYellowInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
-            lightYellowInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.461538 * imageWidth, 0.507194 * imageHeight, 0.367346 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowInnerFill = ctx.createLinearGradient(0, 0.377697 * imageHeight, 0, 0.636690 * imageHeight);
+            lightYellowInnerFill.addColorStop(0, '#000000');
+            lightYellowInnerFill.addColorStop(0.35, '#040404');
+            lightYellowInnerFill.addColorStop(0.66, '#000000');
+            lightYellowInnerFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightYellowInnerFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightYellowEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.3622448979591837 * imageWidth);
-            lightYellowEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightYellowEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
-            lightYellowEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
-            lightYellowEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowEffectFill = ctx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageHeight, 0.362244 * imageWidth);
+            lightYellowEffectFill.addColorStop(0, '#000000');
+            lightYellowEffectFill.addColorStop(0.88, '#000000');
+            lightYellowEffectFill.addColorStop(0.95, '#5e5e5e');
+            lightYellowEffectFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightYellowEffectFill;
             ctx.fill();
             ctx.restore();
 
             //lIGHT_YELLOW_4_E_INNER_SHADOW_3_4
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightYellowInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.3776978417266187 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.6079136690647482) * imageHeight));
-            lightYellowInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightYellowInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightYellowInnerShadowFill = ctx.createLinearGradient(0, 0.377697 * imageHeight, 0, 0.607913 * imageHeight);
+            lightYellowInnerShadowFill.addColorStop(0, '#000000');
+            lightYellowInnerShadowFill.addColorStop(1, 'rgba(1, 1, 1, 0)');
             ctx.fillStyle = lightYellowInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10328,27 +10328,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var yellowOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
-            yellowOnFill.addColorStop(0.0, 'rgb(254, 212, 52)');
-            yellowOnFill.addColorStop(1.0, 'rgb(130, 51, 12)');
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOnFill = ctx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth);
+            yellowOnFill.addColorStop(0, '#fed434');
+            yellowOnFill.addColorStop(1, '#82330c');
             ctx.fillStyle = yellowOnFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.0, 0.5035971223021583 * imageHeight);
-            ctx.bezierCurveTo(0.0, 0.6007194244604317 * imageHeight, 0.22448979591836735 * imageWidth, 0.6798561151079137 * imageHeight, 0.5 * imageWidth, 0.6798561151079137 * imageHeight);
-            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.6798561151079137 * imageHeight, imageWidth, 0.6007194244604317 * imageHeight, imageWidth, 0.5 * imageHeight);
-            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.44244604316546765 * imageHeight, 0.7040816326530612 * imageWidth, 0.3776978417266187 * imageHeight, 0.5 * imageWidth, 0.3776978417266187 * imageHeight);
-            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.3776978417266187 * imageHeight, 0.08163265306122448 * imageWidth, 0.44244604316546765 * imageHeight, 0.0, 0.5035971223021583 * imageHeight);
+            ctx.moveTo(0, 0.503597 * imageHeight);
+            ctx.bezierCurveTo(0, 0.600719 * imageHeight, 0.224489 * imageWidth, 0.679856 * imageHeight, 0.5 * imageWidth, 0.679856 * imageHeight);
+            ctx.bezierCurveTo(0.775510 * imageWidth, 0.679856 * imageHeight, imageWidth, 0.600719 * imageHeight, imageWidth, 0.5 * imageHeight);
+            ctx.bezierCurveTo(0.908163 * imageWidth, 0.442446 * imageHeight, 0.704081 * imageWidth, 0.377697 * imageHeight, 0.5 * imageWidth, 0.377697 * imageHeight);
+            ctx.bezierCurveTo(0.285714 * imageWidth, 0.377697 * imageHeight, 0.081632 * imageWidth, 0.442446 * imageHeight, 0, 0.503597 * imageHeight);
             ctx.closePath();
-            var yellowOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.5153061224489796 * imageWidth);
-            yellowOnGlowFill.addColorStop(0.0, 'rgb(254, 212, 52)');
-            yellowOnGlowFill.addColorStop(1.0, 'rgba(130, 51, 12, 0)');
+            var yellowOnGlowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageHeight, 0.515306 * imageWidth);
+            yellowOnGlowFill.addColorStop(0, '#fed434');
+            yellowOnGlowFill.addColorStop(1, 'rgba(130, 51, 12, 0)');
             ctx.fillStyle = yellowOnGlowFill;
             ctx.fill();
             ctx.restore();
@@ -10359,27 +10359,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var yellowOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
-            yellowOffFill.addColorStop(0.0, 'rgba(255, 255, 0, 0.2470588235)');
-            yellowOffFill.addColorStop(1.0, 'rgba(255, 255, 0, 0.0470588235)');
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOffFill = ctx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth);
+            yellowOffFill.addColorStop(0, 'rgba(255, 255, 0, 0.25)');
+            yellowOffFill.addColorStop(1, 'rgba(255, 255, 0, 0.05)');
             ctx.fillStyle = yellowOffFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var yellowOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.5) * imageHeight), 0, ((0.5) * imageWidth), ((0.5) * imageHeight), 0.32653061224489793 * imageWidth);
-            yellowOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var yellowOffInnerShadowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.5 * imageHeight, 0, 0.5 * imageWidth, 0.5 * imageHeight, 0.326530 * imageWidth);
+            yellowOffInnerShadowFill.addColorStop(0, 'rgba(1, 1, 1, 0)');
             yellowOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
             yellowOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
-            yellowOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
-            yellowOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
-            yellowOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            yellowOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.12)');
+            yellowOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.13)');
+            yellowOffInnerShadowFill.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
             ctx.fillStyle = yellowOffInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10396,56 +10396,56 @@ var steelseries = function() {
 
             //lIGHT_RED_7_E_FRAME_0_1
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.18705035971223022 * imageHeight, 0.3979591836734694 * imageWidth, 0, 2 * Math.PI, false);
-            var lightRedFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.046762589928057555 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.3273381294964029) * imageHeight));
-            lightRedFrameFill.addColorStop(0.0, 'rgb(255, 255, 255)');
-            lightRedFrameFill.addColorStop(0.05, 'rgb(204, 204, 204)');
-            lightRedFrameFill.addColorStop(0.1, 'rgb(153, 153, 153)');
-            lightRedFrameFill.addColorStop(0.17, 'rgb(102, 102, 102)');
-            lightRedFrameFill.addColorStop(0.27, 'rgb(51, 51, 51)');
-            lightRedFrameFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.5 * imageWidth, 0.187050 * imageHeight, 0.397959 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedFrameFill = ctx.createLinearGradient((0.5 * imageWidth), (0.046762 * imageHeight), ((0.500000) * imageWidth), ((0.327338) * imageHeight));
+            lightRedFrameFill.addColorStop(0, '#ffffff');
+            lightRedFrameFill.addColorStop(0.05, '#cccccc');
+            lightRedFrameFill.addColorStop(0.1, '#999999');
+            lightRedFrameFill.addColorStop(0.17, '666666');
+            lightRedFrameFill.addColorStop(0.27, '#333333');
+            lightRedFrameFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightRedFrameFill;
             ctx.fill();
             ctx.restore();
 
             //lIGHT_RED_7_E_INNER_CLIP_1_2
             ctx.save();
-            ctx.scale(1.0833333333333333, 1);
+            ctx.scale(1.083333, 1);
             ctx.beginPath();
-            ctx.arc(0.46153846153846156 * imageWidth, 0.19784172661870503 * imageHeight, 0.3673469387755102 * imageWidth, 0, 2 * Math.PI, false);
-            var lightRedInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.0683453237410072 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.3273381294964029) * imageHeight));
-            lightRedInnerFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightRedInnerFill.addColorStop(0.35, 'rgb(4, 4, 4)');
-            lightRedInnerFill.addColorStop(0.66, 'rgb(0, 0, 0)');
-            lightRedInnerFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.461538 * imageWidth, 0.197841 * imageHeight, 0.367346 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedInnerFill = ctx.createLinearGradient((0.5 * imageWidth), (0.068345 * imageHeight), ((0.500000) * imageWidth), ((0.327338) * imageHeight));
+            lightRedInnerFill.addColorStop(0, '#000000');
+            lightRedInnerFill.addColorStop(0.35, '#040404');
+            lightRedInnerFill.addColorStop(0.66, '#000000');
+            lightRedInnerFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightRedInnerFill;
             ctx.fill();
             ctx.restore();
 
             //lIGHT_RED_7_E_LIGHT_EFFECT_2_3
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightRedEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.3622448979591837 * imageWidth);
-            lightRedEffectFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightRedEffectFill.addColorStop(0.88, 'rgb(0, 0, 0)');
-            lightRedEffectFill.addColorStop(0.95, 'rgb(94, 94, 94)');
-            lightRedEffectFill.addColorStop(1.0, 'rgb(1, 1, 1)');
+            ctx.arc(0.5 * imageWidth, 0.190647 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedEffectFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.190647) * imageHeight), 0, ((0.5) * imageWidth), ((0.190647) * imageHeight), 0.362244 * imageWidth);
+            lightRedEffectFill.addColorStop(0, '#000000');
+            lightRedEffectFill.addColorStop(0.88, '#000000');
+            lightRedEffectFill.addColorStop(0.95, '#5e5e5e');
+            lightRedEffectFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightRedEffectFill;
             ctx.fill();
             ctx.restore();
 
             //lIGHT_RED_7_E_INNER_SHADOW_3_4
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.35714285714285715 * imageWidth, 0, 2 * Math.PI, false);
-            var lightRedInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.0683453237410072 * imageHeight), ((0.5000000000000001) * imageWidth), ((0.29856115107913667) * imageHeight));
-            lightRedInnerShadowFill.addColorStop(0.0, 'rgb(0, 0, 0)');
-            lightRedInnerShadowFill.addColorStop(1.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.190647 * imageHeight, 0.357142 * imageWidth, 0, 2 * Math.PI, false);
+            var lightRedInnerShadowFill = ctx.createLinearGradient((0.5 * imageWidth), (0.068345 * imageHeight), ((0.500000) * imageWidth), ((0.298561) * imageHeight));
+            lightRedInnerShadowFill.addColorStop(0, '#000000');
+            lightRedInnerShadowFill.addColorStop(1, 'rgba(1, 1, 1, 0)');
             ctx.fillStyle = lightRedInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10456,27 +10456,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var redOnFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
-            redOnFill.addColorStop(0.0, 'rgb(255, 0, 0)');
-            redOnFill.addColorStop(1.0, 'rgb(65, 0, 4)');
+            ctx.arc(0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var redOnFill = ctx.createRadialGradient(0.5 * imageWidth, 0.190647 * imageHeight, 0, 0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth);
+            redOnFill.addColorStop(0, '#ff0000');
+            redOnFill.addColorStop(1, '#410004');
             ctx.fillStyle = redOnFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.0, 0.19424460431654678 * imageHeight);
-            ctx.bezierCurveTo(0.0, 0.29136690647482016 * imageHeight, 0.22448979591836735 * imageWidth, 0.37050359712230213 * imageHeight, 0.5 * imageWidth, 0.37050359712230213 * imageHeight);
-            ctx.bezierCurveTo(0.7755102040816326 * imageWidth, 0.37050359712230213 * imageHeight, imageWidth, 0.29136690647482016 * imageHeight, imageWidth, 0.1906474820143885 * imageHeight);
-            ctx.bezierCurveTo(0.9081632653061225 * imageWidth, 0.13309352517985612 * imageHeight, 0.7040816326530612 * imageWidth, 0.0683453237410072 * imageHeight, 0.5 * imageWidth, 0.0683453237410072 * imageHeight);
-            ctx.bezierCurveTo(0.2857142857142857 * imageWidth, 0.0683453237410072 * imageHeight, 0.08163265306122448 * imageWidth, 0.13309352517985612 * imageHeight, 0.0, 0.19424460431654678 * imageHeight);
+            ctx.moveTo(0, 0.194244 * imageHeight);
+            ctx.bezierCurveTo(0, 0.291366 * imageHeight, 0.224489 * imageWidth, 0.370503 * imageHeight, 0.5 * imageWidth, 0.370503 * imageHeight);
+            ctx.bezierCurveTo(0.775510 * imageWidth, 0.370503 * imageHeight, imageWidth, 0.291366 * imageHeight, imageWidth, 0.190647 * imageHeight);
+            ctx.bezierCurveTo(0.908163 * imageWidth, 0.133093 * imageHeight, 0.704081 * imageWidth, 0.068345 * imageHeight, 0.5 * imageWidth, 0.068345 * imageHeight);
+            ctx.bezierCurveTo(0.285714 * imageWidth, 0.068345 * imageHeight, 0.081632 * imageWidth, 0.133093 * imageHeight, 0, 0.194244 * imageHeight);
             ctx.closePath();
-            var redOnGlowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.5153061224489796 * imageWidth);
-            redOnGlowFill.addColorStop(0.0, 'rgb(255, 0, 0)');
-            redOnGlowFill.addColorStop(1.0, 'rgba(118, 5, 1, 0)');
+            var redOnGlowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.190647 * imageHeight, 0, 0.5 * imageWidth, 0.190647 * imageHeight, 0.515306 * imageWidth);
+            redOnGlowFill.addColorStop(0, '#ff0000');
+            redOnGlowFill.addColorStop(1, 'rgba(118, 5, 1, 0)');
             ctx.fillStyle = redOnGlowFill;
             ctx.fill();
             ctx.restore();
@@ -10488,27 +10488,27 @@ var steelseries = function() {
             ctx.save();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var redOffFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
-            redOffFill.addColorStop(0.0, 'rgba(255, 0, 0, 0.2470588235)');
-            redOffFill.addColorStop(1.0, 'rgba(255, 0, 0, 0.0470588235)');
+            ctx.arc(0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var redOffFill = ctx.createRadialGradient(0.5 * imageWidth, 0.190647 * imageHeight, 0, 0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth);
+            redOffFill.addColorStop(0, 'rgba(255, 0, 0, 0.25)');
+            redOffFill.addColorStop(1, 'rgba(255, 0, 0, 0.05)');
             ctx.fillStyle = redOffFill;
             ctx.fill();
             ctx.restore();
 
             ctx.save();
-            ctx.scale(1.0, 1);
+            ctx.scale(1, 1);
             ctx.beginPath();
-            ctx.arc(0.5 * imageWidth, 0.1906474820143885 * imageHeight, 0.32653061224489793 * imageWidth, 0, 2 * Math.PI, false);
-            var redOffInnerShadowFill = ctx.createRadialGradient((0.5) * imageWidth, ((0.1906474820143885) * imageHeight), 0, ((0.5) * imageWidth), ((0.1906474820143885) * imageHeight), 0.32653061224489793 * imageWidth);
-            redOffInnerShadowFill.addColorStop(0.0, 'rgba(1, 1, 1, 0)');
+            ctx.arc(0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth, 0, 2 * Math.PI, false);
+            var redOffInnerShadowFill = ctx.createRadialGradient(0.5 * imageWidth, 0.190647 * imageHeight, 0, 0.5 * imageWidth, 0.190647 * imageHeight, 0.326530 * imageWidth);
+            redOffInnerShadowFill.addColorStop(0, 'rgba(1, 1, 1, 0)');
             redOffInnerShadowFill.addColorStop(0.55, 'rgba(0, 0, 0, 0)');
             redOffInnerShadowFill.addColorStop(0.5501, 'rgba(0, 0, 0, 0)');
-            redOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.1215686275)');
-            redOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.1294117647)');
-            redOffInnerShadowFill.addColorStop(1.0, 'rgba(0, 0, 0, 0.4980392157)');
+            redOffInnerShadowFill.addColorStop(0.78, 'rgba(0, 0, 0, 0.12)');
+            redOffInnerShadowFill.addColorStop(0.79, 'rgba(0, 0, 0, 0.13)');
+            redOffInnerShadowFill.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
             ctx.fillStyle = redOffInnerShadowFill;
             ctx.fill();
             ctx.restore();
@@ -10633,7 +10633,7 @@ var steelseries = function() {
         parameters = parameters || {};
         var width = (undefined === parameters.width ? 100 : parameters.width);
         var height = (undefined === parameters.height ? 100 : parameters.height);
-        var glowColor = (undefined === parameters.glowColor ? 'rgb(255, 255, 0)' : parameters.glowColor);
+        var glowColor = (undefined === parameters.glowColor ? '#ffff00' : parameters.glowColor);
        
         // Get the canvas context and clear it
         var mainCtx = document.getElementById(canvas).getContext('2d');
@@ -10650,7 +10650,7 @@ var steelseries = function() {
         var initialized = false;
 
         var lightOn = false;
-        var alpha = 1.0;
+        var alpha = 1;
 
         function drawToBuffer(width, height, drawFunction) {
             var buffer = doc.createElement('canvas');
@@ -10696,23 +10696,23 @@ var steelseries = function() {
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
-            ctx.bezierCurveTo(0.2894736842105263 * imageWidth, 0.5614035087719298 * imageHeight, 0.38596491228070173 * imageWidth, 0.6052631578947368 * imageHeight, 0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.5877192982456141 * imageWidth, 0.6052631578947368 * imageHeight, 0.6929824561403509 * imageWidth, 0.5614035087719298 * imageHeight, 0.6929824561403509 * imageWidth, 0.43859649122807015 * imageHeight);
-            ctx.bezierCurveTo(0.6929824561403509 * imageWidth, 0.32456140350877194 * imageHeight, 0.6052631578947368 * imageWidth, 0.22807017543859648 * imageHeight, 0.5 * imageWidth, 0.22807017543859648 * imageHeight);
-            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.22807017543859648 * imageHeight, 0.2894736842105263 * imageWidth, 0.32456140350877194 * imageHeight, 0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.moveTo(0.289473 * imageWidth, 0.438596 * imageHeight);
+            ctx.bezierCurveTo(0.289473 * imageWidth, 0.561403 * imageHeight, 0.385964 * imageWidth, 0.605263 * imageHeight, 0.385964 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.385964 * imageWidth, 0.745614 * imageHeight, 0.587719 * imageWidth, 0.745614 * imageHeight, 0.587719 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.587719 * imageWidth, 0.605263 * imageHeight, 0.692982 * imageWidth, 0.561403 * imageHeight, 0.692982 * imageWidth, 0.438596 * imageHeight);
+            ctx.bezierCurveTo(0.692982 * imageWidth, 0.324561 * imageHeight, 0.605263 * imageWidth, 0.228070 * imageHeight, 0.5 * imageWidth, 0.228070 * imageHeight);
+            ctx.bezierCurveTo(0.385964 * imageWidth, 0.228070 * imageHeight, 0.289473 * imageWidth, 0.324561 * imageHeight, 0.289473 * imageWidth, 0.438596 * imageHeight);
             ctx.closePath();
-            var glassOffFill = ctx.createLinearGradient((0.5 * imageWidth), (0.2894736842105263 * imageHeight), ((0.5) * imageWidth), ((0.7017543859649122) * imageHeight));
-            glassOffFill.addColorStop(0.0, 'rgb(238, 238, 238)');
-            glassOffFill.addColorStop(0.99, 'rgb(153, 153, 153)');
-            glassOffFill.addColorStop(1.0, 'rgb(153, 153, 153)');
+            var glassOffFill = ctx.createLinearGradient(0, 0.289473 * imageHeight, 0, 0.701754 * imageHeight);
+            glassOffFill.addColorStop(0, '#eeeeee');
+            glassOffFill.addColorStop(0.99, '#999999');
+            glassOffFill.addColorStop(1, '#999999');
             ctx.fillStyle = glassOffFill;
             ctx.fill();
             ctx.lineCap = 'butt';
             ctx.lineJoin = 'round';
-            ctx.lineWidth = 0.008771929824561403 * imageWidth;
-            ctx.strokeStyle = 'rgb(204, 204, 204)';
+            ctx.lineWidth = 0.008771 * imageWidth;
+            ctx.strokeStyle = '#cccccc';
             ctx.stroke();
             ctx.restore();
             ctx.restore();
@@ -10723,22 +10723,22 @@ var steelseries = function() {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
-            ctx.bezierCurveTo(0.2894736842105263 * imageWidth, 0.5614035087719298 * imageHeight, 0.38596491228070173 * imageWidth, 0.6052631578947368 * imageHeight, 0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight, 0.5877192982456141 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.5877192982456141 * imageWidth, 0.6052631578947368 * imageHeight, 0.6929824561403509 * imageWidth, 0.5614035087719298 * imageHeight, 0.6929824561403509 * imageWidth, 0.43859649122807015 * imageHeight);
-            ctx.bezierCurveTo(0.6929824561403509 * imageWidth, 0.32456140350877194 * imageHeight, 0.6052631578947368 * imageWidth, 0.22807017543859648 * imageHeight, 0.5 * imageWidth, 0.22807017543859648 * imageHeight);
-            ctx.bezierCurveTo(0.38596491228070173 * imageWidth, 0.22807017543859648 * imageHeight, 0.2894736842105263 * imageWidth, 0.32456140350877194 * imageHeight, 0.2894736842105263 * imageWidth, 0.43859649122807015 * imageHeight);
+            ctx.moveTo(0.289473 * imageWidth, 0.438596 * imageHeight);
+            ctx.bezierCurveTo(0.289473 * imageWidth, 0.561403 * imageHeight, 0.385964 * imageWidth, 0.605263 * imageHeight, 0.385964 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.385964 * imageWidth, 0.745614 * imageHeight, 0.587719 * imageWidth, 0.745614 * imageHeight, 0.587719 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.587719 * imageWidth, 0.605263 * imageHeight, 0.692982 * imageWidth, 0.561403 * imageHeight, 0.692982 * imageWidth, 0.438596 * imageHeight);
+            ctx.bezierCurveTo(0.692982 * imageWidth, 0.324561 * imageHeight, 0.605263 * imageWidth, 0.228070 * imageHeight, 0.5 * imageWidth, 0.228070 * imageHeight);
+            ctx.bezierCurveTo(0.385964 * imageWidth, 0.228070 * imageHeight, 0.289473 * imageWidth, 0.324561 * imageHeight, 0.289473 * imageWidth, 0.438596 * imageHeight);
             ctx.closePath();
 
-            var glassOnFill = ctx.createLinearGradient((0.5 * imageWidth), (0.2894736842105263 * imageHeight), ((0.5) * imageWidth), ((0.7017543859649122) * imageHeight));
+            var glassOnFill = ctx.createLinearGradient(0, 0.289473 * imageHeight, 0, 0.701754 * imageHeight);
             var data = getColorValues(glowColor);
             var red = data[0];
             var green = data[1];
             var blue = data[2];
             var hsl = rgbToHsl(red, green, blue);
 
-            if (red === green && green == blue) {
+            if (red === green && green === blue) {
                 glassOnFill.addColorStop(0, 'hsl(0, 60%, 0%)');
                 glassOnFill.addColorStop(1, 'hsl(0, 40%, 0%)');
             } else {
@@ -10757,7 +10757,7 @@ var steelseries = function() {
 
             ctx.lineCap = 'butt';
             ctx.lineJoin = 'round';
-            ctx.lineWidth = 0.008771929824561403 * imageWidth;
+            ctx.lineWidth = 0.008771 * imageWidth;
             ctx.strokeStyle = 'rgba(' + red + ', ' + green + ', ' + blue + ', 0.4)';
             ctx.stroke();
 
@@ -10773,16 +10773,16 @@ var steelseries = function() {
 
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.3508771929824561 * imageWidth, 0.3333333333333333 * imageHeight);
-            ctx.bezierCurveTo(0.3508771929824561 * imageWidth, 0.2807017543859649 * imageHeight, 0.41228070175438597 * imageWidth, 0.23684210526315788 * imageHeight, 0.5 * imageWidth, 0.23684210526315788 * imageHeight);
-            ctx.bezierCurveTo(0.5789473684210527 * imageWidth, 0.23684210526315788 * imageHeight, 0.6403508771929824 * imageWidth, 0.2807017543859649 * imageHeight, 0.6403508771929824 * imageWidth, 0.3333333333333333 * imageHeight);
-            ctx.bezierCurveTo(0.6403508771929824 * imageWidth, 0.38596491228070173 * imageHeight, 0.5789473684210527 * imageWidth, 0.4298245614035088 * imageHeight, 0.5 * imageWidth, 0.4298245614035088 * imageHeight);
-            ctx.bezierCurveTo(0.41228070175438597 * imageWidth, 0.4298245614035088 * imageHeight, 0.3508771929824561 * imageWidth, 0.38596491228070173 * imageHeight, 0.3508771929824561 * imageWidth, 0.3333333333333333 * imageHeight);
+            ctx.moveTo(0.350877 * imageWidth, 0.333333 * imageHeight);
+            ctx.bezierCurveTo(0.350877 * imageWidth, 0.280701 * imageHeight, 0.412280 * imageWidth, 0.236842 * imageHeight, 0.5 * imageWidth, 0.236842 * imageHeight);
+            ctx.bezierCurveTo(0.578947 * imageWidth, 0.236842 * imageHeight, 0.640350 * imageWidth, 0.280701 * imageHeight, 0.640350 * imageWidth, 0.333333 * imageHeight);
+            ctx.bezierCurveTo(0.640350 * imageWidth, 0.385964 * imageHeight, 0.578947 * imageWidth, 0.429824 * imageHeight, 0.5 * imageWidth, 0.429824 * imageHeight);
+            ctx.bezierCurveTo(0.412280 * imageWidth, 0.429824 * imageHeight, 0.350877 * imageWidth, 0.385964 * imageHeight, 0.350877 * imageWidth, 0.333333 * imageHeight);
             ctx.closePath();
-            var highlight = ctx.createLinearGradient((0.5 * imageWidth), (0.24561403508771928 * imageHeight), ((0.5) * imageWidth), ((0.4298245614035088) * imageHeight));
-            highlight.addColorStop(0.0, 'rgb(255, 255, 255)');
+            var highlight = ctx.createLinearGradient(0, 0.245614 * imageHeight, 0, 0.429824 * imageHeight);
+            highlight.addColorStop(0, '#ffffff');
             highlight.addColorStop(0.99, 'rgba(255, 255, 255, 0)');
-            highlight.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+            highlight.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.fillStyle = highlight;
             ctx.fill();
             ctx.restore();
@@ -10790,47 +10790,47 @@ var steelseries = function() {
             //winding
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight, 0.4298245614035088 * imageWidth, 0.7280701754385965 * imageHeight, 0.49122807017543857 * imageWidth, 0.7280701754385965 * imageHeight);
-            ctx.bezierCurveTo(0.5614035087719298 * imageWidth, 0.7280701754385965 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7631578947368421 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.7807017543859649 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7982456140350878 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8157894736842105 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8333333333333334 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8508771929824561 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.868421052631579 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8859649122807017 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight);
-            ctx.bezierCurveTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight, 0.5701754385964912 * imageWidth, 0.956140350877193 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5175438596491229 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
-            ctx.bezierCurveTo(0.4824561403508772 * imageWidth, imageHeight, 0.47368421052631576 * imageWidth, imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8947368421052632 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8859649122807017 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.868421052631579 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8508771929824561 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8333333333333334 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8157894736842105 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7982456140350878 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7894736842105263 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7719298245614035 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7631578947368421 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.moveTo(0.377192 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.377192 * imageWidth, 0.745614 * imageHeight, 0.429824 * imageWidth, 0.728070 * imageHeight, 0.491228 * imageWidth, 0.728070 * imageHeight);
+            ctx.bezierCurveTo(0.561403 * imageWidth, 0.728070 * imageHeight, 0.605263 * imageWidth, 0.736842 * imageHeight, 0.605263 * imageWidth, 0.736842 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.763157 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.780701 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.798245 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.815789 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.833333 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.850877 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.868421 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.885964 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.894736 * imageHeight);
+            ctx.bezierCurveTo(0.605263 * imageWidth, 0.894736 * imageHeight, 0.570175 * imageWidth, 0.956140 * imageHeight, 0.535087 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.526315 * imageWidth, 0.991228 * imageHeight, 0.517543 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.482456 * imageWidth, imageHeight, 0.473684 * imageWidth, imageHeight, 0.464912 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.421052 * imageWidth, 0.947368 * imageHeight, 0.394736 * imageWidth, 0.903508 * imageHeight, 0.394736 * imageWidth, 0.903508 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.894736 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.885964 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.868421 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.850877 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.833333 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.815789 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.798245 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.789473 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.771929 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.763157 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.745614 * imageHeight);
             ctx.closePath();
-            var winding = ctx.createLinearGradient((0.47368421052631576 * imageWidth), (0.7280701754385965 * imageHeight), ((0.4847023065774619) * imageWidth), ((0.9383079722290332) * imageHeight));
-            winding.addColorStop(0.0, 'rgb(51, 51, 51)');
-            winding.addColorStop(0.04, 'rgb(217, 216, 214)');
-            winding.addColorStop(0.19, 'rgb(228, 229, 224)');
-            winding.addColorStop(0.24, 'rgb(151, 153, 150)');
-            winding.addColorStop(0.31, 'rgb(251, 255, 255)');
-            winding.addColorStop(0.4, 'rgb(129, 133, 132)');
-            winding.addColorStop(0.48, 'rgb(245, 247, 244)');
-            winding.addColorStop(0.56, 'rgb(149, 151, 148)');
-            winding.addColorStop(0.64, 'rgb(242, 242, 240)');
-            winding.addColorStop(0.7, 'rgb(130, 135, 131)');
-            winding.addColorStop(0.78, 'rgb(252, 252, 252)');
-            winding.addColorStop(1.0, 'rgb(102, 102, 102)');
+            var winding = ctx.createLinearGradient(0.473684 * imageWidth, 0.728070 * imageHeight, 0.484702 * imageWidth, 0.938307 * imageHeight);
+            winding.addColorStop(0, '#333333');
+            winding.addColorStop(0.04, '#d9dad6');
+            winding.addColorStop(0.19, '#e4e5e0');
+            winding.addColorStop(0.24, '#979996');
+            winding.addColorStop(0.31, '#fbffff');
+            winding.addColorStop(0.4, '#818584');
+            winding.addColorStop(0.48, '#f5f7f4');
+            winding.addColorStop(0.56, '#959794');
+            winding.addColorStop(0.64, '#f2f2f0');
+            winding.addColorStop(0.7, '#828783');
+            winding.addColorStop(0.78, '#fcfcfc');
+            winding.addColorStop(1, '#666666');
             ctx.fillStyle = winding;
             ctx.fill();
             ctx.restore();
@@ -10838,39 +10838,39 @@ var steelseries = function() {
             // winding
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
-            ctx.bezierCurveTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight, 0.4298245614035088 * imageWidth, 0.7280701754385965 * imageHeight, 0.49122807017543857 * imageWidth, 0.7280701754385965 * imageHeight);
-            ctx.bezierCurveTo(0.5614035087719298 * imageWidth, 0.7280701754385965 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight, 0.6052631578947368 * imageWidth, 0.7368421052631579 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7631578947368421 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.7807017543859649 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.7982456140350878 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8157894736842105 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8333333333333334 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8508771929824561 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.868421052631579 * imageHeight);
-            ctx.lineTo(0.5964912280701754 * imageWidth, 0.8859649122807017 * imageHeight);
-            ctx.lineTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight);
-            ctx.bezierCurveTo(0.6052631578947368 * imageWidth, 0.8947368421052632 * imageHeight, 0.5701754385964912 * imageWidth, 0.956140350877193 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5175438596491229 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
-            ctx.bezierCurveTo(0.4824561403508772 * imageWidth, imageHeight, 0.47368421052631576 * imageWidth, imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight, 0.39473684210526316 * imageWidth, 0.9035087719298246 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8947368421052632 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8859649122807017 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.868421052631579 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8508771929824561 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.8333333333333334 * imageHeight);
-            ctx.lineTo(0.38596491228070173 * imageWidth, 0.8157894736842105 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7982456140350878 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7894736842105263 * imageHeight);
-            ctx.lineTo(0.39473684210526316 * imageWidth, 0.7719298245614035 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7631578947368421 * imageHeight);
-            ctx.lineTo(0.37719298245614036 * imageWidth, 0.7456140350877193 * imageHeight);
+            ctx.moveTo(0.377192 * imageWidth, 0.745614 * imageHeight);
+            ctx.bezierCurveTo(0.377192 * imageWidth, 0.745614 * imageHeight, 0.429824 * imageWidth, 0.728070 * imageHeight, 0.491228 * imageWidth, 0.728070 * imageHeight);
+            ctx.bezierCurveTo(0.561403 * imageWidth, 0.728070 * imageHeight, 0.605263 * imageWidth, 0.736842 * imageHeight, 0.605263 * imageWidth, 0.736842 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.763157 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.780701 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.798245 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.815789 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.833333 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.850877 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.868421 * imageHeight);
+            ctx.lineTo(0.596491 * imageWidth, 0.885964 * imageHeight);
+            ctx.lineTo(0.605263 * imageWidth, 0.894736 * imageHeight);
+            ctx.bezierCurveTo(0.605263 * imageWidth, 0.894736 * imageHeight, 0.570175 * imageWidth, 0.956140 * imageHeight, 0.535087 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.526315 * imageWidth, 0.991228 * imageHeight, 0.517543 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.482456 * imageWidth, imageHeight, 0.473684 * imageWidth, imageHeight, 0.464912 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.421052 * imageWidth, 0.947368 * imageHeight, 0.394736 * imageWidth, 0.903508 * imageHeight, 0.394736 * imageWidth, 0.903508 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.894736 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.885964 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.868421 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.850877 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.833333 * imageHeight);
+            ctx.lineTo(0.385964 * imageWidth, 0.815789 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.798245 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.789473 * imageHeight);
+            ctx.lineTo(0.394736 * imageWidth, 0.771929 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.763157 * imageHeight);
+            ctx.lineTo(0.377192 * imageWidth, 0.745614 * imageHeight);
             ctx.closePath();
-            var winding1 = ctx.createLinearGradient((0.37719298245614036 * imageWidth), (0.7894736842105263 * imageHeight), ((0.6052631578947368) * imageWidth), ((0.7894736842105263) * imageHeight));
-            winding1.addColorStop(0.0, 'rgba(0, 0, 0, 0.4)');
-            winding1.addColorStop(0.15, 'rgba(0, 0, 0, 0.3254901961)');
-            winding1.addColorStop(0.85, 'rgba(0, 0, 0, 0.3294117647)');
-            winding1.addColorStop(1.0, 'rgba(0, 0, 0, 0.4)');
+            var winding1 = ctx.createLinearGradient(0.377192 * imageWidth, 0.789473 * imageHeight, 0.605263 * imageWidth, 0.789473 * imageHeight);
+            winding1.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
+            winding1.addColorStop(0.15, 'rgba(0, 0, 0, 0.32)');
+            winding1.addColorStop(0.85, 'rgba(0, 0, 0, 0.33)');
+            winding1.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
             ctx.fillStyle = winding1;
             ctx.fill();
             ctx.restore();
@@ -10878,20 +10878,20 @@ var steelseries = function() {
             // contact plate
             ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight);
-            ctx.bezierCurveTo(0.43859649122807015 * imageWidth, 0.956140350877193 * imageHeight, 0.4473684210526316 * imageWidth, 0.9736842105263158 * imageHeight, 0.4649122807017544 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.47368421052631576 * imageWidth, imageHeight, 0.4824561403508772 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
-            ctx.bezierCurveTo(0.5175438596491229 * imageWidth, imageHeight, 0.5263157894736842 * imageWidth, 0.9912280701754386 * imageHeight, 0.5350877192982456 * imageWidth, 0.9912280701754386 * imageHeight);
-            ctx.bezierCurveTo(0.543859649122807 * imageWidth, 0.9824561403508771 * imageHeight, 0.5614035087719298 * imageWidth, 0.956140350877193 * imageHeight, 0.5789473684210527 * imageWidth, 0.9473684210526315 * imageHeight);
-            ctx.bezierCurveTo(0.5526315789473685 * imageWidth, 0.9385964912280702 * imageHeight, 0.5263157894736842 * imageWidth, 0.9385964912280702 * imageHeight, 0.5 * imageWidth, 0.9385964912280702 * imageHeight);
-            ctx.bezierCurveTo(0.47368421052631576 * imageWidth, 0.9385964912280702 * imageHeight, 0.4473684210526316 * imageWidth, 0.9385964912280702 * imageHeight, 0.42105263157894735 * imageWidth, 0.9473684210526315 * imageHeight);
+            ctx.moveTo(0.421052 * imageWidth, 0.947368 * imageHeight);
+            ctx.bezierCurveTo(0.438596 * imageWidth, 0.956140 * imageHeight, 0.447368 * imageWidth, 0.973684 * imageHeight, 0.464912 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.473684 * imageWidth, imageHeight, 0.482456 * imageWidth, imageHeight, 0.5 * imageWidth, imageHeight);
+            ctx.bezierCurveTo(0.517543 * imageWidth, imageHeight, 0.526315 * imageWidth, 0.991228 * imageHeight, 0.535087 * imageWidth, 0.991228 * imageHeight);
+            ctx.bezierCurveTo(0.543859 * imageWidth, 0.982456 * imageHeight, 0.561403 * imageWidth, 0.956140 * imageHeight, 0.578947 * imageWidth, 0.947368 * imageHeight);
+            ctx.bezierCurveTo(0.552631 * imageWidth, 0.938596 * imageHeight, 0.526315 * imageWidth, 0.938596 * imageHeight, 0.5 * imageWidth, 0.938596 * imageHeight);
+            ctx.bezierCurveTo(0.473684 * imageWidth, 0.938596 * imageHeight, 0.447368 * imageWidth, 0.938596 * imageHeight, 0.421052 * imageWidth, 0.947368 * imageHeight);
             ctx.closePath();
-            var contactPlate = ctx.createLinearGradient((0.5 * imageWidth), (0.9385964912280702 * imageHeight), ((0.5) * imageWidth), ((1.0) * imageHeight));
-            contactPlate.addColorStop(0.0, 'rgb(5, 10, 6)');
-            contactPlate.addColorStop(0.61, 'rgb(7, 6, 2)');
-            contactPlate.addColorStop(0.71, 'rgb(153, 146, 136)');
-            contactPlate.addColorStop(0.83, 'rgb(1, 1, 1)');
-            contactPlate.addColorStop(1.0, 'rgb(0, 0, 0)');
+            var contactPlate = ctx.createLinearGradient(0, 0.938596 * imageHeight, 0, imageHeight);
+            contactPlate.addColorStop(0, '#050a06');
+            contactPlate.addColorStop(0.61, '#070602');
+            contactPlate.addColorStop(0.71, '#999288');
+            contactPlate.addColorStop(0.83, '#010101');
+            contactPlate.addColorStop(1, '#000000');
             ctx.fillStyle = contactPlate;
             ctx.fill();
             ctx.restore();
@@ -10964,7 +10964,7 @@ var steelseries = function() {
             if (lightOn) {
                 mainCtx.drawImage(onBuffer, 0, 0);
             }
-            mainCtx.globalAlpha = 1.0;
+            mainCtx.globalAlpha = 1;
 
             mainCtx.drawImage(bulbBuffer, 0, 0);
 
@@ -11379,7 +11379,7 @@ var steelseries = function() {
                 if (!shadow) {
                     grad = ctx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
                     grad.addColorStop(0, 'rgb(50, 50, 50)');
-                    grad.addColorStop(0.5, 'rgb(102, 102, 102)');
+                    grad.addColorStop(0.5, '#666666');
                     grad.addColorStop(1, 'rgb(50, 50, 50)');
                     ctx.fillStyle = grad;
                     ctx.strokeStyle = '#2E2E2E';
@@ -11650,16 +11650,16 @@ var steelseries = function() {
                 grad.addColorStop(0.33, '#ffffff');
                 grad.addColorStop(0.55, '#c5c5c5');
                 grad.addColorStop(0.79, '#ffffff');
-                grad.addColorStop(1, 'rgb(102, 102, 102)');
+                grad.addColorStop(1, '#666666');
                 radFCtx.fillStyle = grad;
                 radFCtx.fill();
                 break;
 
             case "tiltedBlack":
                 grad = radFCtx.createLinearGradient(0.228971 * imageWidth, 0.079439 * imageHeight, 0.802547 * imageWidth, 0.898591 * imageHeight);
-                grad.addColorStop(0, 'rgb(102, 102, 102)');
+                grad.addColorStop(0, '#666666');
                 grad.addColorStop(0.21, '#000000');
-                grad.addColorStop(0.47, 'rgb(102, 102, 102)');
+                grad.addColorStop(0.47, '#666666');
                 grad.addColorStop(0.99, '#000000');
                 grad.addColorStop(1, '#000000');
                 radFCtx.fillStyle = grad;
@@ -11935,16 +11935,16 @@ var steelseries = function() {
                 grad.addColorStop(0.33, '#ffffff');
                 grad.addColorStop(0.55, '#c5c5c5');
                 grad.addColorStop(0.79, '#ffffff');
-                grad.addColorStop(1, 'rgb(102, 102, 102)');
+                grad.addColorStop(1, '#666666');
                 linFCtx.fillStyle = grad;
                 linFCtx.fill();
                 break;
 
             case "tiltedBlack":
                 grad = linFCtx.createLinearGradient(0.228971 * imageWidth, 0.079439 * imageHeight, 0.802547 * imageWidth, 0.898591 * imageHeight);
-                grad.addColorStop(0, 'rgb(102, 102, 102)');
+                grad.addColorStop(0, '#666666');
                 grad.addColorStop(0.21, '#000000');
-                grad.addColorStop(0.47, 'rgb(102, 102, 102)');
+                grad.addColorStop(0.47, '#666666');
                 grad.addColorStop(0.99, '#000000');
                 grad.addColorStop(1, '#000000');
                 linFCtx.fillStyle = grad;
@@ -12845,10 +12845,10 @@ var steelseries = function() {
         var rB = Math.min(width, height) * 0.095;
 
         var lcdBackground = lcdCtx.createLinearGradient(0, yB, 0, yB + hB);
-        lcdBackground.addColorStop(0, 'rgb(76, 76, 76)');
+        lcdBackground.addColorStop(0, '#4c4c4c');
         lcdBackground.addColorStop(0.08, '#666666');
         lcdBackground.addColorStop(0.92, '#666666');
-        lcdBackground.addColorStop(1, 'rgb(230, 230, 230)');
+        lcdBackground.addColorStop(1, '#e6e6e6');
         lcdCtx.fillStyle = lcdBackground;
 
         roundedRectangle(lcdCtx, xB, yB, wB, hB, rB);
@@ -13038,7 +13038,7 @@ var steelseries = function() {
             offsetX = 0.5;
             offsetY = 0;
             var RURB_GRADIENT = ctx.createLinearGradient(0, offsetY * imageHeight, 0, 0.5 * imageHeight + offsetY * imageHeight);
-            RURB_GRADIENT.addColorStop(0, 'rgb(48, 48, 48)');
+            RURB_GRADIENT.addColorStop(0, '#303030');
             RURB_GRADIENT.addColorStop(1, 'rgb(40, 40, 40)');
             ctx.fillStyle = RURB_GRADIENT;
             ctx.fill();
