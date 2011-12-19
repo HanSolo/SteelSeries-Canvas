@@ -38,6 +38,7 @@
                     <option value="MUD">Mud</option>
                     <option value="PUNCHED_SHEET">PunchedSheet</option>
                     <option value="CARBON">Carbon</option>
+                    <option value="STAINLESS">Stainless</option>
                 </select>
                 <select id="comboValueColor" onchange="setValueColor(this)">
                     <option selected="selected" value="">Value color</option>
@@ -422,6 +423,14 @@
                 linear4.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 linear5.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 linear6.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                break;
+            case "STAINLESS":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 break;
         }
     }

@@ -1,5 +1,21 @@
 Main Changes
 
+v0.9.3
+> RadialVertical
+  * Changed to use the standard Radial drawRadialPointer() function rather than its own
+    custom version
+
+> Radial/RadialBargraph
+  * Reduced height of LCD panel slightly, and moved panel a little lower on Radial gauges
+
+> Linear
+  * Fixed error in frame radius for the 'Metal' frames
+  * Added Stainless background, and made bar track less transparent on 'material' backgrounds
+
+> WindDirection
+  * Changed vale ranges from 0-359 to 0-360 to allow for software using 0 for 'calm' and '360'
+    for North.
+
 v0.9.2
 > General Changes
   * Added STAINLESS background colour to Radial gauges (not linear yet)

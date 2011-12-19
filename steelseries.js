@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 16.12.2011
- * Revision      : 0.9.2
+ * Last modified : 19.12.2011
+ * Revision      : 0.9.3
  */
 
 var steelseries = function() {
@@ -235,7 +235,7 @@ var steelseries = function() {
                 mainCtx.font = stdFont;
             }
             //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.4)) / 2 - 2, imageWidth * 0.63, imageWidth * 0.4);
+            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.4)) / 2 - 2, imageWidth * 0.64, imageWidth * 0.42);
             //var unitWidth = mainCtx.measureText(unitString).width;
             //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
 
@@ -580,8 +580,8 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.15, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.55);
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.13, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.57);
                 }
             }
 
@@ -1264,8 +1264,9 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.48, imageHeight * 0.15, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.48)) / 2, imageHeight * 0.425);
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.48, imageHeight * 0.13, lcdColor);
+//                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.48)) / 2, imageHeight * 0.425);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.48)) / 2, imageHeight/2 - imageHeight * 0.13/2);
                 }
             }
 
@@ -1453,7 +1454,7 @@ var steelseries = function() {
                 mainCtx.font = stdFont;
             }
             //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.48)) / 2 - 2, imageWidth * 0.5, imageWidth * 0.48);
+            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.48)) / 2 - 2, imageWidth * 0.505, imageWidth * 0.48);
             //var unitWidth = mainCtx.measureText(unitString).width;
             //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
 
@@ -2219,333 +2220,6 @@ var steelseries = function() {
             ctx.restore();
         };
 
-        var drawPointerImage = function(ctx, shadow) {
-            ctx.save();
-            var grad;
-
-            if (shadow) {
-                    ctx.shadowColor = '#000000';
-                    ctx.shadowBlur = 3;
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-            }
-
-            switch (pointerType.type) {
-                case 'type2':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0, 0.733333 * imageHeight, 0, 0.3 * imageHeight);
-                        grad.addColorStop(0, backgroundColor.labelColor.getRgbaColor());
-                        grad.addColorStop(0.36, backgroundColor.labelColor.getRgbaColor());
-                        grad.addColorStop(0.36, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.light.getRgbaColor());
-                        ctx.fillStyle = grad;
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.518691, imageHeight * 0.705607);
-                    ctx.lineTo(imageWidth * 0.509345, imageHeight * 0.696261);
-                    ctx.lineTo(imageWidth * 0.509345, imageHeight * 0.574766);
-                    ctx.lineTo(imageWidth * 0.504672, imageHeight * 0.289719);
-                    ctx.lineTo(imageWidth * 0.495327, imageHeight * 0.289719);
-                    ctx.lineTo(imageWidth * 0.490654, imageHeight * 0.574766);
-                    ctx.lineTo(imageWidth * 0.490654, imageHeight * 0.696261);
-                    ctx.lineTo(imageWidth * 0.481308, imageHeight * 0.705607);
-                    ctx.bezierCurveTo(imageWidth * 0.481308, imageHeight * 0.705607, imageWidth * 0.467289, imageHeight * 0.724299, imageWidth * 0.467289, imageHeight * 0.733644);
-                    ctx.bezierCurveTo(imageWidth * 0.467289, imageHeight * 0.752336, imageWidth * 0.481308, imageHeight * 0.766355, imageWidth * 0.5, imageHeight * 0.766355);
-                    ctx.bezierCurveTo(imageWidth * 0.518691, imageHeight * 0.766355, imageWidth * 0.532710, imageHeight * 0.752336, imageWidth * 0.532710, imageHeight * 0.733644);
-                    ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.724299, imageWidth * 0.518691, imageHeight * 0.705607, imageWidth * 0.518691, imageHeight * 0.705607);
-                    ctx.closePath();
-                    ctx.fill();
-                    break;
-
-                case 'type3':
-                    ctx.beginPath();
-                    ctx.rect(imageWidth * 0.495327, imageHeight * 0.289719, imageWidth * 0.009345, imageHeight * 0.448598);
-                    ctx.closePath();
-                    if (!shadow) {
-                        ctx.fillStyle = pointerColor.light.getRgbaColor();
-                    }
-                    ctx.fill();
-                    break;
-
-                case 'type4':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.467289 * imageWidth, 0, 0.532710 * imageWidth, 0);
-                        grad.addColorStop(0, pointerColor.dark.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.dark.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.light.getRgbaColor());
-                        ctx.fillStyle = grad;
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.294392);
-                    ctx.lineTo(imageWidth * 0.514018, imageHeight * 0.303738);
-                    ctx.lineTo(imageWidth * 0.532710, imageHeight * 0.733644);
-                    ctx.lineTo(imageWidth * 0.523364, imageHeight * 0.836448);
-                    ctx.lineTo(imageWidth * 0.476635, imageHeight * 0.836448);
-                    ctx.lineTo(imageWidth * 0.467289, imageHeight * 0.733644);
-                    ctx.lineTo(imageWidth * 0.485982, imageHeight * 0.303738);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.294392);
-                    ctx.closePath();
-                    ctx.fill();
-                    break;
-
-                case 'type5':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.473333 * imageWidth, 0, 0.526666 * imageWidth, 0);
-                        grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.medium.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.74);
-                    ctx.lineTo(imageWidth * 0.526666, imageHeight * 0.74);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.3);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.74);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.74);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.lineWidth = 1;
-                    ctx.lineCap = 'square';
-                    ctx.lineJoin = 'miter';
-                    ctx.stroke();
-                    break;
-
-                case 'type6':
-                    if (!shadow) {
-                        ctx.fillStyle = pointerColor.medium.getRgbaColor();
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.473333, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.6);
-                    ctx.lineTo(imageWidth * 0.48, imageHeight * 0.493333);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.52, imageHeight * 0.493333);
-                    ctx.lineTo(imageWidth * 0.526666, imageHeight * 0.593333);
-                    ctx.lineTo(imageWidth * 0.526666, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.593333);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.493333);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.6);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.733333);
-                    ctx.closePath();
-                    ctx.fill();
-                    break;
-
-                case 'type7':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.473333 * imageWidth, 0, 0.526666 * imageWidth, 0);
-                        grad.addColorStop(0, pointerColor.dark.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.486666, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.526666, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.486666, imageHeight * 0.306666);
-                    ctx.closePath();
-                    ctx.fill();
-                    break;
-
-                case 'type8':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.46 * imageWidth, 0, 0.54 * imageWidth, 0);
-                        grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.medium.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.766666);
-                    ctx.lineTo(imageWidth * 0.533333, imageHeight * 0.733333);
-                    ctx.bezierCurveTo(imageWidth * 0.533333, imageHeight * 0.733333, imageWidth * 0.506666, imageHeight * 0.706666, imageWidth * 0.5, imageHeight * 0.313333);
-                    ctx.bezierCurveTo(imageWidth * 0.493333, imageHeight * 0.706666, imageWidth * 0.466666, imageHeight * 0.733333, imageWidth * 0.466666, imageHeight * 0.733333);
-                    ctx.lineTo(imageWidth * 0.5, imageHeight * 0.766666);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-
-                case 'type9':
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                        grad.addColorStop(0, '#323232');
-                        grad.addColorStop(0.5, '#666666');
-                        grad.addColorStop(1, '#323232');
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = '#2E2E2E';
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.493333, imageHeight * 0.42);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.42);
-                    ctx.lineTo(imageWidth * 0.513333, imageHeight * 0.66);
-                    ctx.lineTo(imageWidth * 0.486666, imageHeight * 0.66);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.42);
-                    ctx.closePath();
-                    ctx.moveTo(imageWidth * 0.493333, imageHeight * 0.3);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.7);
-                    ctx.lineTo(imageWidth * 0.473333, imageHeight * 0.766666);
-                    ctx.bezierCurveTo(imageWidth * 0.473333, imageHeight * 0.766666, imageWidth * 0.473333, imageHeight * 0.853333, imageWidth * 0.473333, imageHeight * 0.853333);
-                    ctx.bezierCurveTo(imageWidth * 0.473333, imageHeight * 0.86, imageWidth * 0.48, imageHeight * 0.86, imageWidth * 0.5, imageHeight * 0.86);
-                    ctx.bezierCurveTo(imageWidth * 0.52, imageHeight * 0.86, imageWidth * 0.526666, imageHeight * 0.86, imageWidth * 0.526666, imageHeight * 0.853333);
-                    ctx.bezierCurveTo(imageWidth * 0.526666, imageHeight * 0.853333, imageWidth * 0.526666, imageHeight * 0.766666, imageWidth * 0.526666, imageHeight * 0.766666);
-                    ctx.lineTo(imageWidth * 0.526666, imageHeight * 0.7);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.3);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.3);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.493333, imageHeight * 0.406666);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.406666);
-                    ctx.lineTo(imageWidth * 0.506666, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.306666);
-                    ctx.lineTo(imageWidth * 0.493333, imageHeight * 0.406666);
-                    ctx.closePath();
-                    if (!shadow) {
-                        ctx.fillStyle = pointerColor.medium.getRgbaColor();
-                    }
-                    ctx.fill();
-                    break;
-
-                case 'type10':
-                    // POINTER_TYPE10
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.149532);
-                    ctx.moveTo(imageWidth * 0.5, imageHeight * 0.3);
-                    ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.3, imageWidth * 0.433333, imageHeight * 0.713333, imageWidth * 0.433333, imageHeight * 0.726666);
-                    ctx.bezierCurveTo(imageWidth * 0.433333, imageHeight * 0.76, imageWidth * 0.46, imageHeight * 0.793333, imageWidth * 0.5, imageHeight * 0.793333);
-                    ctx.bezierCurveTo(imageWidth * 0.54, imageHeight * 0.793333, imageWidth * 0.566666, imageHeight * 0.76, imageWidth * 0.566666, imageHeight * 0.726666);
-                    ctx.bezierCurveTo(imageWidth * 0.566666, imageHeight * 0.713333, imageWidth * 0.5, imageHeight * 0.3, imageWidth * 0.5, imageHeight * 0.3);
-                    ctx.closePath();
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                        grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(0.5, pointerColor.medium.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.medium.getRgbaColor();
-                    }
-                    ctx.lineWidth = 1;
-                    ctx.lineCap = 'square';
-                    ctx.lineJoin = 'miter';
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-
-                case 'type11':
-                    // POINTER_TYPE11
-                    ctx.beginPath();
-                    ctx.moveTo(0.5 * imageWidth, 0.3 * imageHeight);
-                    ctx.lineTo(0.486666 * imageWidth, 0.733333 * imageHeight);
-                    ctx.bezierCurveTo(0.486666 * imageWidth, 0.733333 * imageHeight, 0.486666 * imageWidth, 0.806666 * imageHeight, 0.5 * imageWidth, 0.806666 * imageHeight);
-                    ctx.bezierCurveTo(0.513333 * imageWidth, 0.806666 * imageHeight, 0.513333 * imageWidth, 0.733333 * imageHeight, 0.513333 * imageWidth, 0.733333 * imageHeight);
-                    ctx.lineTo(0.5 * imageWidth, 0.3 * imageHeight);
-                    ctx.closePath();
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0, 0.226666 * imageHeight, 0, 0.866666 * imageHeight);
-                        grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    }
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-
-                case 'type12':
-                    // POINTER_TYPE12
-                    ctx.beginPath();
-                    ctx.moveTo(0.5 * imageWidth, 0.3 * imageHeight);
-                    ctx.lineTo(0.486666 * imageWidth, 0.733333 * imageHeight);
-                    ctx.lineTo(0.5 * imageWidth, 0.746666 * imageHeight);
-                    ctx.lineTo(0.513333 * imageWidth, 0.733333 * imageHeight);
-                    ctx.lineTo(0.5 * imageWidth, 0.3 * imageHeight);
-                    ctx.closePath();
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0, 0.226666 * imageHeight, 0, 0.746666 * imageHeight);
-                        grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    }
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-
-                case 'type13':
-                    // POINTER_TYPE13
-                case 'type14':
-                    // POINTER_TYPE13
-                    ctx.beginPath();
-                    ctx.moveTo(0.486666 * imageWidth, 0.326666 * imageHeight);
-                    ctx.lineTo(0.5 * imageWidth, 0.293333 * imageHeight);
-                    ctx.lineTo(0.513333 * imageWidth, 0.326666 * imageHeight);
-                    ctx.lineTo(0.513333 * imageWidth, 0.746666 * imageHeight);
-                    ctx.lineTo(0.486666 * imageWidth, 0.746666 * imageHeight);
-                    ctx.lineTo(0.486666 * imageWidth, 0.326666 * imageHeight);
-                    ctx.closePath();
-                    if (!shadow) {
-						if (pointerType.type === 'type13') {
-							// TYPE13
-							grad = ctx.createLinearGradient(0, 0.733333 * imageHeight, 0, 0.293333 * imageHeight);
-							grad.addColorStop(0, backgroundColor.labelColor.getRgbaColor());
-							grad.addColorStop(0.849999, backgroundColor.labelColor.getRgbaColor());
-							grad.addColorStop(0.85, pointerColor.medium.getRgbaColor());
-							grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-							ctx.fillStyle = grad;
-						} else {
-							// TYPE14
-							grad = ctx.createLinearGradient(0.486666 * imageWidth, 0, 0.513333 * imageWidth, 0);
-							grad.addColorStop(0, pointerColor.veryDark.getRgbaColor());
-							grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-							grad.addColorStop(1, pointerColor.veryDark.getRgbaColor());
-							ctx.fillStyle = grad;
-						}
-                    }
-                    ctx.fill();
-                    break;
-
-                case 'type1':
-                default:
-                    if (!shadow) {
-                        grad = ctx.createLinearGradient(0, 0.386666 * imageHeight, 0, 0.72 * imageHeight);
-                        grad.addColorStop(0, pointerColor.veryDark.getRgbaColor());
-                        grad.addColorStop(0.3, pointerColor.medium.getRgbaColor());
-                        grad.addColorStop(0.59, pointerColor.medium.getRgbaColor());
-                        grad.addColorStop(1, pointerColor.veryDark.getRgbaColor());
-                        ctx.fillStyle = grad;
-                        ctx.strokeStyle = pointerColor.light.getRgbaColor();
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(imageWidth * 0.518691, imageHeight * 0.705607);
-                    ctx.bezierCurveTo(imageWidth * 0.514018, imageHeight * 0.691588, imageWidth * 0.509345, imageHeight * 0.626168, imageWidth * 0.509345, imageHeight * 0.612149);
-                    ctx.bezierCurveTo(imageWidth * 0.504672, imageHeight * 0.598130, imageWidth * 0.5, imageHeight * 0.299065, imageWidth * 0.5, imageHeight * 0.299065);
-                    ctx.bezierCurveTo(imageWidth * 0.5, imageHeight * 0.299065, imageWidth * 0.490654, imageHeight * 0.598130, imageWidth * 0.490654, imageHeight * 0.612149);
-                    ctx.bezierCurveTo(imageWidth * 0.490654, imageHeight * 0.630841, imageWidth * 0.485981, imageHeight * 0.691588, imageWidth * 0.481308, imageHeight * 0.705607);
-                    ctx.bezierCurveTo(imageWidth * 0.471962, imageHeight * 0.714953, imageWidth * 0.467289, imageHeight * 0.724299, imageWidth * 0.467289, imageHeight * 0.733644);
-                    ctx.bezierCurveTo(imageWidth * 0.467289, imageHeight * 0.752336, imageWidth * 0.481308, imageHeight * 0.766355, imageWidth * 0.5, imageHeight * 0.766355);
-                    ctx.bezierCurveTo(imageWidth * 0.518691, imageHeight * 0.766355, imageWidth * 0.532710, imageHeight * 0.752336, imageWidth * 0.532710, imageHeight * 0.733644);
-                    ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.724299, imageWidth * 0.528037, imageHeight * 0.714953, imageWidth * 0.518691, imageHeight * 0.705607);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-                    break;
-            }
-            ctx.restore();
-        };
-
         // **************   Initialization  ********************
         // Draw all static painting code to background
         var init = function(parameters) {
@@ -2662,9 +2336,10 @@ var steelseries = function() {
 
             // Create pointer image in pointer buffer (contentBuffer)
             if (drawPointer) {
-                drawPointerImage(pointerContext, false);
-                drawPointerImage(pointerShadowContext, true);
-           }
+				drawPointerImage(pointerContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, false);
+				drawPointerImage(pointerShadowContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, true);
+
+			}
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
@@ -2951,11 +2626,12 @@ var steelseries = function() {
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
+			mainCtx.save();
             pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
             pointerRotContext.save();
             pointerRotContext.translate(centerX, centerY);
             pointerRotContext.rotate(angle);
-            pointerRotContext.translate(-centerX, -centerY);
+            pointerRotContext.translate(-imageWidth * 1.17 /2 , -imageWidth * 1.17 /2);
             pointerRotContext.drawImage(pointerShadowBuffer, 0, 0);
             pointerRotContext.restore();
             if (steelseries.Orientation.NORTH === orientation) {
@@ -2963,6 +2639,8 @@ var steelseries = function() {
             } else {
                 mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, -shadowOffset, shadowOffset, imageWidth - shadowOffset, imageHeight + shadowOffset);
             }
+			
+			mainCtx.restore();
             mainCtx.save();
 
             // Define rotation center
@@ -2970,7 +2648,7 @@ var steelseries = function() {
             mainCtx.rotate(angle);
 
             // Draw pointer
-            mainCtx.translate(-centerX, -centerY);
+            mainCtx.translate(-imageWidth * 1.17 /2 , -imageWidth * 1.17 /2);
             mainCtx.drawImage(pointerBuffer, 0, 0);
             mainCtx.restore();
 
@@ -3579,15 +3257,17 @@ var steelseries = function() {
                 valueBackgroundStopX = bottom;
                 valueBackgroundStopY = 0;
             }
-
+			var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
+						  backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+						  backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
-            labelColor.setAlpha(0.047058);
+            labelColor.setAlpha(0.05 + darker);
             valueBackgroundTrackGradient.addColorStop(0, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.145098);
+			labelColor.setAlpha(0.15 + darker);
             valueBackgroundTrackGradient.addColorStop(0.48, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.149019);
+            labelColor.setAlpha(0.15 + darker);
             valueBackgroundTrackGradient.addColorStop(0.49, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.047058);
+			labelColor.setAlpha(0.05 + darker);
             valueBackgroundTrackGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBackgroundTrackGradient;
 
@@ -3611,13 +3291,13 @@ var steelseries = function() {
                 valueBorderStopY = 0;
             }
             var valueBorderGradient = ctx.createLinearGradient(valueBorderStartX, valueBorderStartY, valueBorderStopX, valueBorderStopY);
-            labelColor.setAlpha(0.298039);
+			labelColor.setAlpha(0.3 + darker);
             valueBorderGradient.addColorStop(0, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.686274);
+            labelColor.setAlpha(0.69);
             valueBorderGradient.addColorStop(0.48, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.698039);
+            labelColor.setAlpha(0.7);
             valueBorderGradient.addColorStop(0.49, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.4);
+			labelColor.setAlpha(0.4);
             valueBorderGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBorderGradient;
             if (vertical) {
@@ -4625,14 +4305,18 @@ var steelseries = function() {
                 valueBackgroundStopY = valueBackgroundStartY + imageHeight * 0.142857;
             }
 
+			var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
+						  backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+						  backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
+
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
-            labelColor.setAlpha(0.047058);
+            labelColor.setAlpha(0.047058 + darker);
             valueBackgroundTrackGradient.addColorStop(0, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.145098);
+            labelColor.setAlpha(0.145098 + darker);
             valueBackgroundTrackGradient.addColorStop(0.48, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.149019);
+            labelColor.setAlpha(0.149019 + darker);
             valueBackgroundTrackGradient.addColorStop(0.49, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.047058);
+            labelColor.setAlpha(0.047058 + darker);
             valueBackgroundTrackGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBackgroundTrackGradient;
 
@@ -4657,13 +4341,13 @@ var steelseries = function() {
             }
 
             var valueBorderGradient = ctx.createLinearGradient(valueBorderStartX, valueBorderStartY, valueBorderStopX, valueBorderStopY);
-            labelColor.setAlpha(0.298039);
+            labelColor.setAlpha(0.298039 + darker);
             valueBorderGradient.addColorStop(0, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.686274);
+            labelColor.setAlpha(0.686274 + darker);
             valueBorderGradient.addColorStop(0.48, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.698039);
+            labelColor.setAlpha(0.698039 + darker);
             valueBorderGradient.addColorStop(0.49, labelColor.getRgbaColor());
-            labelColor.setAlpha(0.4);
+            labelColor.setAlpha(0.4 + darker);
             valueBorderGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBorderGradient;
             if (vertical) {
@@ -7215,7 +6899,10 @@ var steelseries = function() {
 
         //************************************ Public methods **************************************
         this.setValueLatest = function(newValue) {
-            newValue = newValue % 360;
+			// Actually need to handle 0-360 rather than 0-359
+			// 1-360 are used for directions
+			// 0 is used as a special case to indicate 'calm'
+            newValue = newValue === 360 ? 360 : newValue % 360;
             if (valueLatest !== newValue) {
                 valueLatest = newValue;
                 this.repaint();
@@ -7227,6 +6914,9 @@ var steelseries = function() {
         };
 
         this.setValueAverage = function(newValue) {
+			// Actually need to handle 0-360 rather than 0-359
+			// 1-360 are used for directions
+			// 0 is used as a special case to indicate 'calm'
             newValue = newValue % 360;
             if (valueAverage !== newValue) {
                 valueAverage = newValue;
@@ -7239,7 +6929,10 @@ var steelseries = function() {
         };
 
         this.setValueAnimatedLatest = function(newValue) {
-            var targetValue = newValue % 360;
+			// Actually need to handle 0-360 rather than 0-359
+			// 1-360 are used for directions
+			// 0 is used as a special case to indicate 'calm'
+            var targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueLatest !== targetValue) {
                 var gauge = this;
 
@@ -7255,12 +6948,22 @@ var steelseries = function() {
                     valueLatest = event.target._pos % 360;
                     gauge.repaint();
                 };
+				// Use onMotionFinished to set end value in case targetValue = 360
+                if (targetValue === 360) {
+					tweenLatest.onMotionFinished = function(event) {
+						valueLatest = targetValue;
+						gauge.repaint();
+					};
+				}
                 tweenLatest.start();
             }
         };
 
         this.setValueAnimatedAverage = function(newValue) {
-            var targetValue = newValue % 360;
+			// Actually need to handle 0-360 rather than 0-359
+			// 1-360 are used for directions
+			// 0 is used as a special case to indicate 'calm'
+            var targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueAverage !== newValue) {
                 var gauge = this;
 
@@ -7276,6 +6979,13 @@ var steelseries = function() {
                     valueAverage = event.target._pos % 360;
                     gauge.repaint();
                 };
+				// Use onMotionFinished to set end value in case targetValue = 360
+                if (targetValue === 360) {
+					tweenLatest.onMotionFinished = function(event) {
+						valueAverage = targetValue;
+						gauge.repaint();
+					};
+				}
                 tweenAverage.start();
             }
         };
@@ -12030,9 +11740,9 @@ var steelseries = function() {
                     new rgbaColor(254, 254, 254, 1)
                 ];
                 innerX = 0;
-                outerX = (vertical ? imageHeight : imageWidth);
+                outerX = Math.sqrt(imageHeight * imageHeight + imageWidth * imageWidth) / 2;
                 // Set the clip
-                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, SUBTRACT_CORNER_RADIUS));
+                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, OUTER_FRAME_CORNER_RADIUS));
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
                 break;
@@ -12063,10 +11773,10 @@ var steelseries = function() {
                 ];
 
                 innerX = 0;
-                outerX = (vertical ? imageHeight : imageWidth);
+                outerX = Math.sqrt(imageHeight * imageHeight + imageWidth * imageWidth) / 2;
 
                 // Set the clip
-                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, SUBTRACT_CORNER_RADIUS));
+                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, OUTER_FRAME_CORNER_RADIUS));
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
                 break;
@@ -12112,9 +11822,9 @@ var steelseries = function() {
                     new rgbaColor(255, 255, 255, 1)
                 ];
                 innerX = 0;
-                outerX = (vertical ? imageHeight : imageWidth);
+                outerX = Math.sqrt(imageHeight * imageHeight + imageWidth * imageWidth) / 2;
                 // Set the clip
-                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, SUBTRACT_CORNER_RADIUS));
+                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, OUTER_FRAME_CORNER_RADIUS));
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(linFCtx, imageWidth / 2, imageHeight / 2, innerX, outerX);
                 break;
@@ -12285,7 +11995,7 @@ var steelseries = function() {
         roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
 
         // If the backgroundColor is a texture fill it with the texture instead of the gradient
-        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET) {
+        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET || backgroundColor === steelseries.BackgroundColor.STAINLESS) {
             if (backgroundColor === steelseries.BackgroundColor.CARBON) {
                 linBCtx.fillStyle = linBCtx.createPattern(carbonBuffer, 'repeat');
                 linBCtx.fill();
@@ -12295,6 +12005,67 @@ var steelseries = function() {
                 linBCtx.fillStyle = linBCtx.createPattern(punchedSheetBuffer, 'repeat');
                 linBCtx.fill();
             }
+			
+			if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+				// Create a new buffer for the conical image
+				var swirlSize = 60;
+				var swirlBuffer = createBuffer(swirlSize, swirlSize);
+				var swirlCtx = swirlBuffer.getContext('2d');
+	
+				swirlCtx.save();
+				// Define the fraction of the conical gradient paint
+				var fractions= [
+								0,
+								0.03,
+								0.10,
+								0.14,
+								0.24,
+								0.33,
+								0.38,
+								0.5,
+								0.62,
+								0.67,
+								0.76,
+								0.81,
+								0.85,
+								0.97,
+								1 ];
+	
+				// Define the colors of the conical gradient paint
+				var colors = [
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#B2B2B4'),
+							new rgbaColor('#ACACAE'),
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#6E6E70'),
+							new rgbaColor('#6E6E70'),
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#6E6E70'),
+							new rgbaColor('#6E6E70'),
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#ACACAE'),
+							new rgbaColor('#B2B2B4'),
+							new rgbaColor('#FDFDFD'),
+							new rgbaColor('#FDFDFD')];
+				grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
+				// Set a clip as we will be drawing outside the required area
+ 				linBCtx.clip(roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4));
+				var radius = Math.sqrt(imageWidth*imageWidth + imageHeight*imageHeight)/2;
+				// Fade the effect a bit
+				linBCtx.globalAlpha = 1;
+				grad.fill(linBCtx, imageWidth/2, imageHeight/2, 0, radius);
+				linBCtx.globalAlpha = 1;
+				// Add an additional inner shadow to fade out brightness at the top
+				var fadeGradient = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
+				fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
+				fadeGradient.addColorStop(0.1, 'rgba(0, 0, 0, 0.05)');
+				fadeGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+				linBCtx.fillStyle = fadeGradient;
+				roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
+				linBCtx.fill();
+				linBCtx.restore();              
+			}
             // Add an additional inner shadow to make the look more realistic
             var fadeGradient = linBCtx.createLinearGradient(14, 14, imageWidth - 28, imageHeight -28);
             fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
@@ -12303,8 +12074,6 @@ var steelseries = function() {
             linBCtx.fillStyle = fadeGradient;
             roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
             linBCtx.fill();
-        } else if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
-			//createBrushMetalTexture(new Color(0x6E6E70), GAUGE_BACKGROUND.getBounds().width, GAUGE_BACKGROUND.getBounds().height, 5, 0.03f, true, 0.5f), GAUGE_BACKGROUND.getBounds())
 		} else {
             var grad = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
             grad.addColorStop(0, backgroundColor.gradientStart.getRgbaColor());
@@ -13300,8 +13069,7 @@ var steelseries = function() {
             var RAD_FACTOR = 180 / Math.PI;
             var TWO_PI = 2 * Math.PI;
             // Make the step value equate to a single pixel at the outer radius
-            var angleStep = (outerX * 2 - centerX) * TWO_PI / 300;   
-            angleStep = TWO_PI / (360 * angleStep);
+            var angleStep = 1 / outerX;   
             var range;
             var startColor;
             var stopColor;
