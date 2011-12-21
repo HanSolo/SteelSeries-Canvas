@@ -11868,8 +11868,9 @@ var steelseries = function() {
             radBCtx.fill();
 
             if (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
+                var mono = (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL ? true : false);
                 var textureColor = parseInt(backgroundColor.gradientStop.getHexColor().substr(-6), 16);
-                var texture = brushedMetalTexture(textureColor, 5, 0.1, true, 0.5);
+                var texture = brushedMetalTexture(textureColor, 5, 0.1, mono, 0.5);
                 radBCtx.fillStyle = radBCtx.createPattern(texture.fill(0, 0, imageWidth, imageHeight), 'no-repeat');
                 radBCtx.fill();
             }
@@ -12040,12 +12041,9 @@ var steelseries = function() {
                             new rgbaColor('#FDFDFD')];
                 grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
                 // Set a clip as we will be drawing outside the required area
-                 linBCtx.clip(roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4));
+                linBCtx.clip(roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4));
                 var radius = Math.sqrt(imageWidth*imageWidth + imageHeight*imageHeight)/2;
-                // Fade the effect a bit
-                linBCtx.globalAlpha = 1;
                 grad.fill(linBCtx, imageWidth/2, imageHeight/2, 0, radius);
-                linBCtx.globalAlpha = 1;
                 // Add an additional inner shadow to fade out brightness at the top
                 var fadeGradient = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
                 fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
@@ -12067,8 +12065,9 @@ var steelseries = function() {
             linBCtx.fill();
 
             if (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
+                var mono = (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL ? true : false);
                 var textureColor = parseInt(backgroundColor.gradientStop.getHexColor().substr(-6), 16);
-                var texture = brushedMetalTexture(textureColor, 5, 0.1, true, 0.5);
+                var texture = brushedMetalTexture(textureColor, 5, 0.1, mono, 0.5);
                 linBCtx.fillStyle = linBCtx.createPattern(texture.fill(0, 0, imageWidth, imageHeight), 'no-repeat');
                 linBCtx.fill();
             }
@@ -13004,6 +13003,15 @@ var steelseries = function() {
             var green = (color >> 8) & 0xff;
             var blue = color & 0xff;
             var n = 0;
+            var variation = 255 * amount;
+
+            // Precreate sin() values
+            if (shine != 0) {
+                var sinArr = [];
+                for (var i = 0; i < width; i++) {
+                    sinArr[i] = (255 * shine * Math.sin( i / width * Math.PI)) | 0;
+                }
+            }
 
             //for (var y = startY; y < endY; y++) {
             for (var y = 0; y < height; y++) {
@@ -13014,54 +13022,41 @@ var steelseries = function() {
                     var tg = green;
                     var tb = blue;
                     if (shine != 0) {
-                        var f = Math.floor(255 * shine * Math.sin( (x - startX) / width * Math.PI));
+                        var f = sinArr[x];
                         tr += f;
                         tg += f;
                         tb += f;
                     }
                     if (monochrome) {
-                        n = Math.floor(255 * (2 * Math.random() - 1) * amount);
+                        n = ((2 * Math.random() - 1) * variation) | 0;
                         inPixels.data[indx]   = clamp(tr + n);
                         inPixels.data[indx+1] = clamp(tg + n);
                         inPixels.data[indx+2] = clamp(tb + n);
                         inPixels.data[indx+3] = alpha;
                     } else {
-                        inPixels.data[indx]   = (Math.random() * tr) | 0;
-                        inPixels.data[indx+1] = (Math.random() * tg) | 0;
-                        inPixels.data[indx+2] = (Math.random() * tb) | 0;
+                        inPixels.data[indx]   = random(tr, variation);
+                        inPixels.data[indx+1] = random(tg, variation);
+                        inPixels.data[indx+2] = random(tb, variation);
                         inPixels.data[indx+3] = alpha;
                     }
                 }
                 if (radius != 0) {
-                    blur(inPixels, outPixels, width, radius);
-                    //ctx.putImageData(outPixels, startX, y);
+                    blur(inPixels, outPixels, width, radius, alpha);
                     outCanvasContext.putImageData(outPixels, 0, y);
                 } else {
-                    //ctx.putImageData(inPixels, startX, y);
                     outCanvasContext.putImageData(inPixels, 0, y);
                 }
             }
             return outCanvas;
         }
 
-        function random(x) {
-            x += Math.floor(255 * (2 * Math.random() - 1) * amount);
-            if (x < 0) {
-                x = 0;
-            } else if (x > 0xff) {
-                x = 0xff;
-            }
-            return x;
+        function random(x, vari) {
+            x += ((2 * Math.random() - 1) * vari) | 0;
+            return (x < 0 ? 0 : (x > 255 ? 255 : x));
         }
 
         function clamp(C) {
-            var ret = C;
-            if (C < 0) {
-                ret = 0;
-            } else if (C > 255) {
-                ret = 255;
-            }
-            return ret;
+            return (C < 0 ? 0 : (C > 255 ? 255 : C));
         }
 
         /**
@@ -13072,10 +13067,9 @@ var steelseries = function() {
          */
         function mod(a, B) {
             return a - Math.floor(a / B) * B;
-
         }
 
-        function blur(inPix, outPix, width, radius) {
+        function blur(inPix, outPix, width, radius, alpha) {
             var width_minus_1 = width - 1;
             var r2 = 2 * radius + 1;
             var tr = 0, tg = 0, tb = 0;
@@ -13092,7 +13086,7 @@ var steelseries = function() {
                 outPix.data[indx]     = tr / r2;
                 outPix.data[indx + 1] = tg / r2;
                 outPix.data[indx + 2] = tb / r2;
-                outPix.data[indx + 3] = inPix.data[indx + 3];
+                outPix.data[indx + 3] = alpha;
 
                 var i1 = x + radius + 1;
                 if (i1 > width_minus_1) {
