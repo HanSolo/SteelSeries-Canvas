@@ -1,5 +1,12 @@
 Main Changes
 
+v0.9.4
+> Radial/RadialBargraph
+  * Tweaks to LCD text positioning
+
+> General Changes
+  * Added BRUSHED_METAL and BRUSHED_STAINLESS background colours
+
 v0.9.3
 > RadialVertical
   * Changed to use the standard Radial drawRadialPointer() function rather than its own

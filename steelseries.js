@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 19.12.2011
- * Revision      : 0.9.3
+ * Last modified : 21.12.2011
+ * Revision      : 0.9.4
  */
 
 var steelseries = function() {
@@ -235,7 +235,7 @@ var steelseries = function() {
                 mainCtx.font = stdFont;
             }
             //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.4)) / 2 - 2, imageWidth * 0.64, imageWidth * 0.42);
+            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.4)) / 2 - 3, imageWidth * 0.6345, imageWidth * 0.42);
             //var unitWidth = mainCtx.measureText(unitString).width;
             //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
 
@@ -775,58 +775,58 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setTitleString = function(title){
+        this.setTitleString = function(title){
             titleString = title;
             init({background: true});
-		};
+        };
 
-		this.setUnitString = function(unit){
+        this.setUnitString = function(unit){
             unitString = unit;
             init({background: true});
-		};
+        };
 
-		this.setMinValue = function(value){
+        this.setMinValue = function(value){
             minValue = value;
             init({background: true});
-		};
+        };
 
-		this.getMinValue = function(){
-			return minValue;
-		};
+        this.getMinValue = function(){
+            return minValue;
+        };
 
-		this.setMaxValue = function(value){
+        this.setMaxValue = function(value){
             maxValue = value;
             init({background: true});
-		};
+        };
 
-		this.getMaxValue = function(){
-			return maxValue;
-		};
+        this.getMaxValue = function(){
+            return maxValue;
+        };
 
-		this.setThreshold = function(newValue) {
+        this.setThreshold = function(newValue) {
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             threshold = targetValue;
             init({background: true});
             this.repaint();
-		};
+        };
 
-		this.setArea = function(areaVal){
+        this.setArea = function(areaVal){
             area = areaVal;
             resetBuffers({foreground: true});
             init({background: true,
                 foreground: true
                 });
             this.repaint();
-		};
+        };
 
-		this.setSection = function(areaSec){
+        this.setSection = function(areaSec){
                 section = areaSec;
                 resetBuffers({foreground: true});
                 init({background: true,
                     foreground: true
                     });
                 this.repaint();
-		};
+        };
 
         this.setThresholdVisible = function(visible) {
             thresholdVisible = visible;
@@ -1454,7 +1454,7 @@ var steelseries = function() {
                 mainCtx.font = stdFont;
             }
             //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.48)) / 2 - 2, imageWidth * 0.505, imageWidth * 0.48);
+            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.48)) / 2 - 3, imageWidth * 0.5025, imageWidth * 0.48);
             //var unitWidth = mainCtx.measureText(unitString).width;
             //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
 
@@ -1666,11 +1666,11 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setSection = function(areaSec) {
+        this.setSection = function(areaSec) {
                 section = areaSec;
                 init();
                 this.repaint();
-		};
+        };
 
         this.setSectionActive = function(value) {
             useSectionColors = value;
@@ -1690,41 +1690,41 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setMinValue = function(value) {
+        this.setMinValue = function(value) {
             minValue = value;
             init({background: true,
                 foreground: true,
                 pointer: true});
             this.repaint();
-		};
+        };
 
-		this.getMinValue = function(){
-			return minValue;
-		};
+        this.getMinValue = function(){
+            return minValue;
+        };
 
-		this.setMaxValue = function(value){
+        this.setMaxValue = function(value){
             maxValue = value;
             init({background: true,
                 foreground: true,
                 pointer: true});
             this.repaint();
-		};
-
-		this.getMaxValue = function(){
-			return maxValue;
         };
 
-		this.setTitleString = function(title){
+        this.getMaxValue = function(){
+            return maxValue;
+        };
+
+        this.setTitleString = function(title){
             titleString = title;
             init({background: true});
             this.repaint();
-		};
+        };
 
-		this.setUnitString = function(unit){
+        this.setUnitString = function(unit){
             unitString = unit;
             init({background: true});
             this.repaint();
-		};
+        };
 
         this.repaint = function() {
 
@@ -2336,10 +2336,10 @@ var steelseries = function() {
 
             // Create pointer image in pointer buffer (contentBuffer)
             if (drawPointer) {
-				drawPointerImage(pointerContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, false);
-				drawPointerImage(pointerShadowContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, true);
+                drawPointerImage(pointerContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, false);
+                drawPointerImage(pointerShadowContext, imageWidth*1.17, pointerType, pointerColor, backgroundColor.labelColor, true);
 
-			}
+            }
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
@@ -2626,7 +2626,7 @@ var steelseries = function() {
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
-			mainCtx.save();
+            mainCtx.save();
             pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
             pointerRotContext.save();
             pointerRotContext.translate(centerX, centerY);
@@ -2639,8 +2639,8 @@ var steelseries = function() {
             } else {
                 mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, -shadowOffset, shadowOffset, imageWidth - shadowOffset, imageHeight + shadowOffset);
             }
-			
-			mainCtx.restore();
+
+            mainCtx.restore();
             mainCtx.save();
 
             // Define rotation center
@@ -3028,7 +3028,6 @@ var steelseries = function() {
                 }
             }
 
-
             ctx.restore();
         };
 
@@ -3257,17 +3256,17 @@ var steelseries = function() {
                 valueBackgroundStopX = bottom;
                 valueBackgroundStopY = 0;
             }
-			var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
-						  backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
-						  backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
+            var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
+                          backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+                          backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
             labelColor.setAlpha(0.05 + darker);
             valueBackgroundTrackGradient.addColorStop(0, labelColor.getRgbaColor());
-			labelColor.setAlpha(0.15 + darker);
+            labelColor.setAlpha(0.15 + darker);
             valueBackgroundTrackGradient.addColorStop(0.48, labelColor.getRgbaColor());
             labelColor.setAlpha(0.15 + darker);
             valueBackgroundTrackGradient.addColorStop(0.49, labelColor.getRgbaColor());
-			labelColor.setAlpha(0.05 + darker);
+            labelColor.setAlpha(0.05 + darker);
             valueBackgroundTrackGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBackgroundTrackGradient;
 
@@ -3291,13 +3290,13 @@ var steelseries = function() {
                 valueBorderStopY = 0;
             }
             var valueBorderGradient = ctx.createLinearGradient(valueBorderStartX, valueBorderStartY, valueBorderStopX, valueBorderStopY);
-			labelColor.setAlpha(0.3 + darker);
+            labelColor.setAlpha(0.3 + darker);
             valueBorderGradient.addColorStop(0, labelColor.getRgbaColor());
             labelColor.setAlpha(0.69);
             valueBorderGradient.addColorStop(0.48, labelColor.getRgbaColor());
             labelColor.setAlpha(0.7);
             valueBorderGradient.addColorStop(0.49, labelColor.getRgbaColor());
-			labelColor.setAlpha(0.4);
+            labelColor.setAlpha(0.4);
             valueBorderGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBorderGradient;
             if (vertical) {
@@ -4012,7 +4011,6 @@ var steelseries = function() {
                 }
             }
 
-
             ctx.restore();
         };
 
@@ -4305,9 +4303,9 @@ var steelseries = function() {
                 valueBackgroundStopY = valueBackgroundStartY + imageHeight * 0.142857;
             }
 
-			var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
-						  backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
-						  backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
+            var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
+                          backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+                          backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
 
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
             labelColor.setAlpha(0.047058 + darker);
@@ -4647,11 +4645,11 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setSection = function(areaSec) {
+        this.setSection = function(areaSec) {
                 section = areaSec;
                 init();
                 this.repaint();
-		};
+        };
 
         this.setSectionActive = function(value) {
             useSectionColors = value;
@@ -4851,7 +4849,7 @@ var steelseries = function() {
         // **************   Buffer creation  ********************
         // Buffer for the lcd
         var lcdBuffer;
-	    var sectionBuffer = [];
+        var sectionBuffer = [];
         var sectionForegroundColor = [];
 
         // **************   Image creation  ********************
@@ -4922,75 +4920,76 @@ var steelseries = function() {
             mainCtx.restore();
         };
 
-		var createLcdSectionImage = function(width, height, color, lcdColor) {
-			var lcdSectionBuffer = createBuffer(width, height);
-	        var lcdCtx = lcdSectionBuffer.getContext('2d');
+        var createLcdSectionImage = function(width, height, color, lcdColor) {
+            var lcdSectionBuffer = createBuffer(width, height);
+            var lcdCtx = lcdSectionBuffer.getContext('2d');
 
-	        lcdCtx.save();
-	        var xB = 0;
-	        var yB = 0;
-	        var wB = width;
-	        var hB = height;
-	        var rB = Math.min(width, height) * 0.095;
+            lcdCtx.save();
+            var xB = 0;
+            var yB = 0;
+            var wB = width;
+            var hB = height;
+            var rB = Math.min(width, height) * 0.095;
 
-	        var lcdBackground = lcdCtx.createLinearGradient(0, yB, 0, yB + hB);					
-			lcdBackground.addColorStop(0, '#4c4c4c');
-	        lcdBackground.addColorStop(0.08, '#666666');
-	        lcdBackground.addColorStop(0.92, '#666666');
-	        lcdBackground.addColorStop(1, '#e6e6e6');
-	        lcdCtx.fillStyle = lcdBackground;
+            var lcdBackground = lcdCtx.createLinearGradient(0, yB, 0, yB + hB);
 
-	        roundedRectangle(lcdCtx, xB, yB, wB, hB, rB);
+            lcdBackground.addColorStop(0, '#4c4c4c');
+            lcdBackground.addColorStop(0.08, '#666666');
+            lcdBackground.addColorStop(0.92, '#666666');
+            lcdBackground.addColorStop(1, '#e6e6e6');
+            lcdCtx.fillStyle = lcdBackground;
 
-	        lcdCtx.fill();
-	        lcdCtx.restore();
+            roundedRectangle(lcdCtx, xB, yB, wB, hB, rB);
 
-	        lcdCtx.save();	        
-		
-			var rgb = getColorValues(color);
-			var hsb = rgbToHsb(rgb[0], rgb[1], rgb[2]);
+            lcdCtx.fill();
+            lcdCtx.restore();
 
-			var rgbStart = getColorValues(lcdColor.gradientStartColor);
-			var hsbStart = rgbToHsb(rgbStart[0], rgbStart[1], rgbStart[2]);
-			var rgbFraction1 = getColorValues(lcdColor.gradientFraction1Color);
-			var hsbFraction1 = rgbToHsb(rgbFraction1[0], rgbFraction1[1], rgbFraction1[2]);
-			var rgbFraction2 = getColorValues(lcdColor.gradientFraction2Color);
-			var hsbFraction2 = rgbToHsb(rgbFraction2[0], rgbFraction2[1], rgbFraction2[2]);
-			var rgbFraction3 = getColorValues(lcdColor.gradientFraction3Color);
-			var hsbFraction3 = rgbToHsb(rgbFraction3[0], rgbFraction3[1], rgbFraction3[2]);
-			var rgbStop = getColorValues(lcdColor.gradientStopColor);
-			var hsbStop = rgbToHsb(rgbStop[0], rgbStop[1], rgbStop[2]);						
+            lcdCtx.save();
 
-			var startColor = hsb2Rgb(hsb[0], hsb[1], hsbStart[2] - 0.31);
-	        var fraction1Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction1[2] - 0.31);
-			var fraction2Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction2[2] - 0.31);
-			var fraction3Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction3[2] - 0.31);
-			var stopColor = hsb2Rgb(hsb[0], hsb[1], hsbStop[2] - 0.31);
+            var rgb = getColorValues(color);
+            var hsb = rgbToHsb(rgb[0], rgb[1], rgb[2]);
 
-			var xF = 1;
-	        var yF = 1;
-	        var wF = width - 2;
-	        var hF = height - 2;
-	        var rF = rB - 1;
-		    var lcdForeground = lcdCtx.createLinearGradient(0, yF, 0, yF + hF);
-	        lcdForeground.addColorStop(0, 'rgb(' + startColor[0] + ', ' + startColor[1] + ', ' + startColor[2] + ')');
-			lcdForeground.addColorStop(0.03, 'rgb(' + fraction1Color[0] + ',' + fraction1Color[1] + ',' + fraction1Color[2] + ')');
-			lcdForeground.addColorStop(0.49, 'rgb(' + fraction2Color[0] + ',' + fraction2Color[1] + ',' + fraction2Color[2] + ')');
-			lcdForeground.addColorStop(0.5, 'rgb(' + fraction3Color[0] + ',' + fraction3Color[1] + ',' + fraction3Color[2] + ')');
-			lcdForeground.addColorStop(1, 'rgb(' + stopColor[0] + ',' + stopColor[1] + ',' + stopColor[2] + ')');
-	        lcdCtx.fillStyle = lcdForeground;
+            var rgbStart = getColorValues(lcdColor.gradientStartColor);
+            var hsbStart = rgbToHsb(rgbStart[0], rgbStart[1], rgbStart[2]);
+            var rgbFraction1 = getColorValues(lcdColor.gradientFraction1Color);
+            var hsbFraction1 = rgbToHsb(rgbFraction1[0], rgbFraction1[1], rgbFraction1[2]);
+            var rgbFraction2 = getColorValues(lcdColor.gradientFraction2Color);
+            var hsbFraction2 = rgbToHsb(rgbFraction2[0], rgbFraction2[1], rgbFraction2[2]);
+            var rgbFraction3 = getColorValues(lcdColor.gradientFraction3Color);
+            var hsbFraction3 = rgbToHsb(rgbFraction3[0], rgbFraction3[1], rgbFraction3[2]);
+            var rgbStop = getColorValues(lcdColor.gradientStopColor);
+            var hsbStop = rgbToHsb(rgbStop[0], rgbStop[1], rgbStop[2]);
 
-	        roundedRectangle(lcdCtx, xF, yF, wF, hF, rF);
+            var startColor = hsb2Rgb(hsb[0], hsb[1], hsbStart[2] - 0.31);
+            var fraction1Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction1[2] - 0.31);
+            var fraction2Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction2[2] - 0.31);
+            var fraction3Color = hsb2Rgb(hsb[0], hsb[1], hsbFraction3[2] - 0.31);
+            var stopColor = hsb2Rgb(hsb[0], hsb[1], hsbStop[2] - 0.31);
 
-	        lcdCtx.fill();
-	        lcdCtx.restore();
+            var xF = 1;
+            var yF = 1;
+            var wF = width - 2;
+            var hF = height - 2;
+            var rF = rB - 1;
+            var lcdForeground = lcdCtx.createLinearGradient(0, yF, 0, yF + hF);
+            lcdForeground.addColorStop(0, 'rgb(' + startColor[0] + ', ' + startColor[1] + ', ' + startColor[2] + ')');
+            lcdForeground.addColorStop(0.03, 'rgb(' + fraction1Color[0] + ',' + fraction1Color[1] + ',' + fraction1Color[2] + ')');
+            lcdForeground.addColorStop(0.49, 'rgb(' + fraction2Color[0] + ',' + fraction2Color[1] + ',' + fraction2Color[2] + ')');
+            lcdForeground.addColorStop(0.5, 'rgb(' + fraction3Color[0] + ',' + fraction3Color[1] + ',' + fraction3Color[2] + ')');
+            lcdForeground.addColorStop(1, 'rgb(' + stopColor[0] + ',' + stopColor[1] + ',' + stopColor[2] + ')');
+            lcdCtx.fillStyle = lcdForeground;
 
-	        return lcdSectionBuffer;
-	    };
+            roundedRectangle(lcdCtx, xF, yF, wF, hF, rF);
+
+            lcdCtx.fill();
+            lcdCtx.restore();
+
+            return lcdSectionBuffer;
+        };
 
         var createSectionForegroundColor = function(sectionColor) {
             var rgbSection = getColorValues(sectionColor);
-			var hsbSection = rgbToHsb(rgbSection[0], rgbSection[1], rgbSection[2]);
+            var hsbSection = rgbToHsb(rgbSection[0], rgbSection[1], rgbSection[2]);
             var sectionForegroundRgb = hsb2Rgb(hsbSection[0], 0.57, 0.83);
             return 'rgb(' + sectionForegroundRgb[0] + ', ' + sectionForegroundRgb[1] + ', ' + sectionForegroundRgb[2] + ')';
         }
@@ -5014,8 +5013,8 @@ var steelseries = function() {
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
             lcdBuffer = createLcdBackgroundImage(width, height, lcdColor);
-			
-			if (null !== section && 0 < section.length) {
+
+            if (null !== section && 0 < section.length) {
                 for (var sectionIndex = 0 ; sectionIndex < section.length ; sectionIndex++) {
                     sectionBuffer[sectionIndex] = createLcdSectionImage(width, height, section[sectionIndex].color, lcdColor);
                     sectionForegroundColor[sectionIndex] = createSectionForegroundColor(section[sectionIndex].color);
@@ -5043,7 +5042,7 @@ var steelseries = function() {
                 resetBuffers({foreground: true});
                 init({background: true, foreground: true});
                 this.repaint();
-		};
+        };
 
         this.setScrolling = function(scroll) {
             if (scroll) {
@@ -5083,19 +5082,19 @@ var steelseries = function() {
             //mainCtx.save();
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
-			var lcdBackgroundBuffer = lcdBuffer;
+            var lcdBackgroundBuffer = lcdBuffer;
             var lcdTextColor = lcdColor.textColor;
-			// Draw sections
-			if (null !== section && 0 < section.length) {
+            // Draw sections
+            if (null !== section && 0 < section.length) {
                 for (var sectionIndex = 0 ; sectionIndex < section.length ; sectionIndex++) {
                     if (value >= section[sectionIndex].start && value <= section[sectionIndex].stop) {
-						lcdBackgroundBuffer = sectionBuffer[sectionIndex];
+                        lcdBackgroundBuffer = sectionBuffer[sectionIndex];
                         lcdTextColor = sectionForegroundColor[sectionIndex];
-						break;
-					}                
-				}
+                        break;
+                    }
+                }
             }
-			
+
             // Draw lcd background
             mainCtx.drawImage(lcdBackgroundBuffer, 0, 0);
 
@@ -5263,7 +5262,6 @@ var steelseries = function() {
         var angleStep = 2 * Math.PI / 360;
         var angle = this.value;
         var decimals = decimalsVisible ? 1 : 0;
-
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -6364,12 +6362,12 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setPointSymbols = function(newPointSymbols) {
+        this.setPointSymbols = function(newPointSymbols) {
             resetBuffers();
             pointSymbols = newPointSymbols;
             init();
             this.repaint();
-		};
+        };
 
         this.repaint = function() {
             if (!initialized) {
@@ -6515,7 +6513,6 @@ var steelseries = function() {
             if (value < 0){ value += 360; }
             value = "00" + Math.round(value);
             value = value.substring(value.length,value.length-3);
-
 
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
                 mainCtx.shadowColor = 'gray';
@@ -6768,7 +6765,6 @@ var steelseries = function() {
                 ctx.save();
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
                 ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
                 ctx.font = 0.040 * imageWidth + 'px sans-serif';
                 var titleWidth = ctx.measureText(lcdTitleStrings[0]).width;
@@ -6899,9 +6895,9 @@ var steelseries = function() {
 
         //************************************ Public methods **************************************
         this.setValueLatest = function(newValue) {
-			// Actually need to handle 0-360 rather than 0-359
-			// 1-360 are used for directions
-			// 0 is used as a special case to indicate 'calm'
+            // Actually need to handle 0-360 rather than 0-359
+            // 1-360 are used for directions
+            // 0 is used as a special case to indicate 'calm'
             newValue = newValue === 360 ? 360 : newValue % 360;
             if (valueLatest !== newValue) {
                 valueLatest = newValue;
@@ -6914,9 +6910,9 @@ var steelseries = function() {
         };
 
         this.setValueAverage = function(newValue) {
-			// Actually need to handle 0-360 rather than 0-359
-			// 1-360 are used for directions
-			// 0 is used as a special case to indicate 'calm'
+            // Actually need to handle 0-360 rather than 0-359
+            // 1-360 are used for directions
+            // 0 is used as a special case to indicate 'calm'
             newValue = newValue % 360;
             if (valueAverage !== newValue) {
                 valueAverage = newValue;
@@ -6929,9 +6925,9 @@ var steelseries = function() {
         };
 
         this.setValueAnimatedLatest = function(newValue) {
-			// Actually need to handle 0-360 rather than 0-359
-			// 1-360 are used for directions
-			// 0 is used as a special case to indicate 'calm'
+            // Actually need to handle 0-360 rather than 0-359
+            // 1-360 are used for directions
+            // 0 is used as a special case to indicate 'calm'
             var targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueLatest !== targetValue) {
                 var gauge = this;
@@ -6948,21 +6944,21 @@ var steelseries = function() {
                     valueLatest = event.target._pos % 360;
                     gauge.repaint();
                 };
-				// Use onMotionFinished to set end value in case targetValue = 360
+                // Use onMotionFinished to set end value in case targetValue = 360
                 if (targetValue === 360) {
-					tweenLatest.onMotionFinished = function(event) {
-						valueLatest = targetValue;
-						gauge.repaint();
-					};
-				}
+                    tweenLatest.onMotionFinished = function(event) {
+                        valueLatest = targetValue;
+                        gauge.repaint();
+                    };
+                }
                 tweenLatest.start();
             }
         };
 
         this.setValueAnimatedAverage = function(newValue) {
-			// Actually need to handle 0-360 rather than 0-359
-			// 1-360 are used for directions
-			// 0 is used as a special case to indicate 'calm'
+            // Actually need to handle 0-360 rather than 0-359
+            // 1-360 are used for directions
+            // 0 is used as a special case to indicate 'calm'
             var targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueAverage !== newValue) {
                 var gauge = this;
@@ -6979,13 +6975,13 @@ var steelseries = function() {
                     valueAverage = event.target._pos % 360;
                     gauge.repaint();
                 };
-				// Use onMotionFinished to set end value in case targetValue = 360
+                // Use onMotionFinished to set end value in case targetValue = 360
                 if (targetValue === 360) {
-					tweenLatest.onMotionFinished = function(event) {
-						valueAverage = targetValue;
-						gauge.repaint();
-					};
-				}
+                    tweenLatest.onMotionFinished = function(event) {
+                        valueAverage = targetValue;
+                        gauge.repaint();
+                    };
+                }
                 tweenAverage.start();
             }
         };
@@ -6997,16 +6993,16 @@ var steelseries = function() {
                 foreground: true
                 });
             this.repaint();
-		};
+        };
 
-		this.setSection = function(areaSec){
+        this.setSection = function(areaSec){
             section = areaSec;
             resetBuffers({foreground: true});
             init({background: true,
                 foreground: true
                 });
             this.repaint();
-		};
+        };
 
         this.setFrameDesign = function(newFrameDesign) {
             resetBuffers({background: true});
@@ -7058,12 +7054,12 @@ var steelseries = function() {
             this.repaint();
         };
 
-		this.setPointSymbols = function(newPointSymbols) {
+        this.setPointSymbols = function(newPointSymbols) {
             resetBuffers({background: true});
             pointSymbols = newPointSymbols;
             init({background: true});
             this.repaint();
-		};
+        };
 
         this.setLcdColor = function(newLcdColor) {
             lcdColor = newLcdColor;
@@ -7613,10 +7609,10 @@ var steelseries = function() {
         };
 
         this.setLedColor = function (newColor) {
-			ledColor = newColor;
-			initialized = false;
-			repaint();
-		};
+            ledColor = newColor;
+            initialized = false;
+            repaint();
+        };
 
         this.setLedOnOff = function(on) {
             if (true === on) {
@@ -9712,7 +9708,6 @@ var steelseries = function() {
             //Draw the foregound
             mainCtx.drawImage(foregroundBuffer, 0, 0);
 
-
         };
 
         // Visualize the component
@@ -9794,7 +9789,6 @@ var steelseries = function() {
         redOffBuffer.width = imageWidth;
         redOffBuffer.height = imageHeight;
         var redOffCtx = redOffBuffer.getContext('2d');
-
 
         var drawHousing = function(ctx) {
             ctx.save();
@@ -10103,7 +10097,6 @@ var steelseries = function() {
         var drawLightRed = function(ctx) {
             ctx.save();
 
-
             //lIGHT_RED_7_E_FRAME_0_1
             ctx.save();
             ctx.scale(1, 1);
@@ -10262,7 +10255,6 @@ var steelseries = function() {
             drawRedOff(redOffCtx);
         };
 
-
         // **************   P U B L I C   M E T H O D S   ********************************
         this.setRedOn = function(on) {
             redOn = on;
@@ -10328,10 +10320,8 @@ var steelseries = function() {
             }
 
             mainCtx.drawImage(redOffBuffer, 0, 0);
-
             mainCtx.restore();
         };
-
 
         // Visualize the component
         this.repaint();
@@ -10344,7 +10334,7 @@ var steelseries = function() {
         var width = (undefined === parameters.width ? 100 : parameters.width);
         var height = (undefined === parameters.height ? 100 : parameters.height);
         var glowColor = (undefined === parameters.glowColor ? '#ffff00' : parameters.glowColor);
-       
+
         // Get the canvas context and clear it
         var mainCtx = document.getElementById(canvas).getContext('2d');
         mainCtx.save();
@@ -10397,7 +10387,6 @@ var steelseries = function() {
         bulbBuffer.width = imageWidth;
         bulbBuffer.height = imageHeight;
         var bulbCtx = bulbBuffer.getContext('2d');
-
 
         var drawOff = function(ctx) {
             ctx.save();
@@ -10627,7 +10616,6 @@ var steelseries = function() {
             drawBulb(bulbCtx);
         };
 
-
         // **************   P U B L I C   M E T H O D S   ********************************
         this.setOn = function(on) {
             lightOn = on;
@@ -10657,7 +10645,6 @@ var steelseries = function() {
             return glowColor;
         }
 
-
         // Component visualization
         this.repaint = function() {
             if (!initialized) {
@@ -10675,10 +10662,7 @@ var steelseries = function() {
                 mainCtx.drawImage(onBuffer, 0, 0);
             }
             mainCtx.globalAlpha = 1;
-
             mainCtx.drawImage(bulbBuffer, 0, 0);
-
-
             mainCtx.restore();
         };
 
@@ -10686,7 +10670,6 @@ var steelseries = function() {
 
         return this;
     };
-
 
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
@@ -10712,9 +10695,8 @@ var steelseries = function() {
     var drawRoseImage = function(ctx, centerX, centerY, imageWidth, imageHeight, backgroundColor) {
         var alternate = 0;
         var i;
-		var PI_180 = Math.PI / 180;
-        ctx.save();
-        ctx.lineWidth = 1;
+        var PI_180 = Math.PI / 180;
+        ctx.save(); ctx.lineWidth = 1;
         ctx.fillStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.translate(centerX, centerY);
@@ -11860,7 +11842,8 @@ var steelseries = function() {
         radBCtx.closePath();
 
         // If the backgroundColor is a texture fill it with the texture instead of the gradient
-        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET) {
+        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+            backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
 
             if (backgroundColor === steelseries.BackgroundColor.CARBON) {
                 radBCtx.fillStyle = radBCtx.createPattern(carbonBuffer, 'repeat');
@@ -11883,50 +11866,58 @@ var steelseries = function() {
             radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true);
             radBCtx.closePath();
             radBCtx.fill();
-        } else if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
-			// Define the fraction of the conical gradient paint
-			var fractions= [
-							0,
-							0.03,
-							0.10,
-							0.14,
-							0.24,
-							0.33,
-							0.38,
-							0.5,
-							0.62,
-							0.67,
-							0.76,
-							0.81,
-							0.85,
-							0.97,
-							1 ];
 
-			// Define the colors of the conical gradient paint
-			var colors = [
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#B2B2B4'),
-						new rgbaColor('#ACACAE'),
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#6E6E70'),
-						new rgbaColor('#6E6E70'),
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#6E6E70'),
-						new rgbaColor('#6E6E70'),
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#ACACAE'),
-						new rgbaColor('#B2B2B4'),
-						new rgbaColor('#FDFDFD'),
-						new rgbaColor('#FDFDFD')];
-			radBCtx.save();
-			//radBCtx.clip(radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true));
-			outerX = imageWidth * 0.831775 / 2;
-			innerX = 0;
-			grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
-			grad.fill(radBCtx, centerX, centerY, innerX, outerX);
-			radBCtx.restore();
-		} else {
+            if (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
+                var textureColor = parseInt(backgroundColor.gradientStop.getHexColor().substr(-6), 16);
+                var texture = brushedMetalTexture(textureColor, 5, 0.1, true, 0.5);
+                radBCtx.fillStyle = radBCtx.createPattern(texture.fill(0, 0, imageWidth, imageHeight), 'no-repeat');
+                radBCtx.fill();
+            }
+
+        } else if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+            // Define the fraction of the conical gradient paint
+            var fractions= [
+                            0,
+                            0.03,
+                            0.10,
+                            0.14,
+                            0.24,
+                            0.33,
+                            0.38,
+                            0.5,
+                            0.62,
+                            0.67,
+                            0.76,
+                            0.81,
+                            0.85,
+                            0.97,
+                            1 ];
+
+            // Define the colors of the conical gradient paint
+            var colors = [
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#B2B2B4'),
+                        new rgbaColor('#ACACAE'),
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#6E6E70'),
+                        new rgbaColor('#6E6E70'),
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#6E6E70'),
+                        new rgbaColor('#6E6E70'),
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#ACACAE'),
+                        new rgbaColor('#B2B2B4'),
+                        new rgbaColor('#FDFDFD'),
+                        new rgbaColor('#FDFDFD')];
+            radBCtx.save();
+            //radBCtx.clip(radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true));
+            outerX = imageWidth * 0.831775 / 2;
+            innerX = 0;
+            grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
+            grad.fill(radBCtx, centerX, centerY, innerX, outerX);
+            radBCtx.restore();
+        } else {
             var grad = radBCtx.createLinearGradient(0, imageWidth * 0.084112, 0, imageHeight * 0.831775);
             grad.addColorStop(0, backgroundColor.gradientStart.getRgbaColor());
             grad.addColorStop(0.4, backgroundColor.gradientFraction.getRgbaColor());
@@ -11934,7 +11925,6 @@ var steelseries = function() {
             radBCtx.fillStyle = grad;
             radBCtx.fill();
         }
-		
 
         // Inner shadow
         var gradInnerShadow = radBCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, imageWidth * 0.831775 / 2);
@@ -11951,7 +11941,6 @@ var steelseries = function() {
         radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true);
         radBCtx.closePath();
         radBCtx.fill();
-
 
         ctx.drawImage(radBBuffer, 0, 0);
         ctx.restore();
@@ -11995,7 +11984,8 @@ var steelseries = function() {
         roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
 
         // If the backgroundColor is a texture fill it with the texture instead of the gradient
-        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET || backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+        if (backgroundColor === steelseries.BackgroundColor.CARBON || backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
+            backgroundColor === steelseries.BackgroundColor.STAINLESS || backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
             if (backgroundColor === steelseries.BackgroundColor.CARBON) {
                 linBCtx.fillStyle = linBCtx.createPattern(carbonBuffer, 'repeat');
                 linBCtx.fill();
@@ -12005,67 +11995,68 @@ var steelseries = function() {
                 linBCtx.fillStyle = linBCtx.createPattern(punchedSheetBuffer, 'repeat');
                 linBCtx.fill();
             }
-			
-			if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
-				// Create a new buffer for the conical image
-				var swirlSize = 60;
-				var swirlBuffer = createBuffer(swirlSize, swirlSize);
-				var swirlCtx = swirlBuffer.getContext('2d');
-	
-				swirlCtx.save();
-				// Define the fraction of the conical gradient paint
-				var fractions= [
-								0,
-								0.03,
-								0.10,
-								0.14,
-								0.24,
-								0.33,
-								0.38,
-								0.5,
-								0.62,
-								0.67,
-								0.76,
-								0.81,
-								0.85,
-								0.97,
-								1 ];
-	
-				// Define the colors of the conical gradient paint
-				var colors = [
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#B2B2B4'),
-							new rgbaColor('#ACACAE'),
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#6E6E70'),
-							new rgbaColor('#6E6E70'),
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#6E6E70'),
-							new rgbaColor('#6E6E70'),
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#ACACAE'),
-							new rgbaColor('#B2B2B4'),
-							new rgbaColor('#FDFDFD'),
-							new rgbaColor('#FDFDFD')];
-				grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
-				// Set a clip as we will be drawing outside the required area
- 				linBCtx.clip(roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4));
-				var radius = Math.sqrt(imageWidth*imageWidth + imageHeight*imageHeight)/2;
-				// Fade the effect a bit
-				linBCtx.globalAlpha = 1;
-				grad.fill(linBCtx, imageWidth/2, imageHeight/2, 0, radius);
-				linBCtx.globalAlpha = 1;
-				// Add an additional inner shadow to fade out brightness at the top
-				var fadeGradient = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
-				fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
-				fadeGradient.addColorStop(0.1, 'rgba(0, 0, 0, 0.05)');
-				fadeGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-				linBCtx.fillStyle = fadeGradient;
-				roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
-				linBCtx.fill();
-				linBCtx.restore();              
-			}
+
+            if (backgroundColor === steelseries.BackgroundColor.STAINLESS) {
+                // Create a new buffer for the conical image
+                var swirlSize = 60;
+                var swirlBuffer = createBuffer(swirlSize, swirlSize);
+                var swirlCtx = swirlBuffer.getContext('2d');
+
+                swirlCtx.save();
+                // Define the fraction of the conical gradient paint
+                var fractions= [
+                                0,
+                                0.03,
+                                0.10,
+                                0.14,
+                                0.24,
+                                0.33,
+                                0.38,
+                                0.5,
+                                0.62,
+                                0.67,
+                                0.76,
+                                0.81,
+                                0.85,
+                                0.97,
+                                1 ];
+
+                // Define the colors of the conical gradient paint
+                var colors = [
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#B2B2B4'),
+                            new rgbaColor('#ACACAE'),
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#6E6E70'),
+                            new rgbaColor('#6E6E70'),
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#6E6E70'),
+                            new rgbaColor('#6E6E70'),
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#ACACAE'),
+                            new rgbaColor('#B2B2B4'),
+                            new rgbaColor('#FDFDFD'),
+                            new rgbaColor('#FDFDFD')];
+                grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
+                // Set a clip as we will be drawing outside the required area
+                 linBCtx.clip(roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4));
+                var radius = Math.sqrt(imageWidth*imageWidth + imageHeight*imageHeight)/2;
+                // Fade the effect a bit
+                linBCtx.globalAlpha = 1;
+                grad.fill(linBCtx, imageWidth/2, imageHeight/2, 0, radius);
+                linBCtx.globalAlpha = 1;
+                // Add an additional inner shadow to fade out brightness at the top
+                var fadeGradient = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
+                fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
+                fadeGradient.addColorStop(0.1, 'rgba(0, 0, 0, 0.05)');
+                fadeGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                linBCtx.fillStyle = fadeGradient;
+                roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
+                linBCtx.fill();
+                linBCtx.restore();
+
+            }
             // Add an additional inner shadow to make the look more realistic
             var fadeGradient = linBCtx.createLinearGradient(14, 14, imageWidth - 28, imageHeight -28);
             fadeGradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
@@ -12074,7 +12065,15 @@ var steelseries = function() {
             linBCtx.fillStyle = fadeGradient;
             roundedRectangle(linBCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
             linBCtx.fill();
-		} else {
+
+            if (backgroundColor === steelseries.BackgroundColor.BRUSHED_METAL || backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS) {
+                var textureColor = parseInt(backgroundColor.gradientStop.getHexColor().substr(-6), 16);
+                var texture = brushedMetalTexture(textureColor, 5, 0.1, true, 0.5);
+                linBCtx.fillStyle = linBCtx.createPattern(texture.fill(0, 0, imageWidth, imageHeight), 'no-repeat');
+                linBCtx.fill();
+            }
+
+        } else {
             var grad = linBCtx.createLinearGradient(0, 14, 0, imageHeight - 28);
             grad.addColorStop(0, backgroundColor.gradientStart.getRgbaColor());
             grad.addColorStop(0.4, backgroundColor.gradientFraction.getRgbaColor());
@@ -12980,6 +12979,137 @@ var steelseries = function() {
         ctx.restore();
     });
 
+    var brushedMetalTexture = function(color, radius, amount, monochrome, shine) {
+
+        this.fill = function(startX, startY, endX, endY) {
+            startX = Math.floor(startX);
+            startY = Math.floor(startY);
+            endX = Math.ceil(endX);
+            endY = Math.ceil(endY);
+
+            var width = endX - startX;
+            var height = endY - startY;
+
+            // Create output canvas
+            var outCanvas = createBuffer(width, height);
+            var outCanvasContext = outCanvas.getContext('2d');
+
+            // Create pixel arrays
+            var inPixels = outCanvasContext.createImageData(width, 1);
+            var outPixels = outCanvasContext.createImageData(width, 1);
+
+            //var alpha = color & 0xff000000;
+            var alpha = 255;
+            var red = (color >> 16) & 0xff;
+            var green = (color >> 8) & 0xff;
+            var blue = color & 0xff;
+            var n = 0;
+
+            //for (var y = startY; y < endY; y++) {
+            for (var y = 0; y < height; y++) {
+                // The pixel array is addressed as 4 elements per pixel [r,g,b,a]
+                for (var x = 0; x < width; x ++) {
+                    var indx = x * 4;
+                    var tr = red
+                    var tg = green;
+                    var tb = blue;
+                    if (shine != 0) {
+                        var f = Math.floor(255 * shine * Math.sin( (x - startX) / width * Math.PI));
+                        tr += f;
+                        tg += f;
+                        tb += f;
+                    }
+                    if (monochrome) {
+                        n = Math.floor(255 * (2 * Math.random() - 1) * amount);
+                        inPixels.data[indx]   = clamp(tr + n);
+                        inPixels.data[indx+1] = clamp(tg + n);
+                        inPixels.data[indx+2] = clamp(tb + n);
+                        inPixels.data[indx+3] = alpha;
+                    } else {
+                        inPixels.data[indx]   = (Math.random() * tr) | 0;
+                        inPixels.data[indx+1] = (Math.random() * tg) | 0;
+                        inPixels.data[indx+2] = (Math.random() * tb) | 0;
+                        inPixels.data[indx+3] = alpha;
+                    }
+                }
+                if (radius != 0) {
+                    blur(inPixels, outPixels, width, radius);
+                    //ctx.putImageData(outPixels, startX, y);
+                    outCanvasContext.putImageData(outPixels, 0, y);
+                } else {
+                    //ctx.putImageData(inPixels, startX, y);
+                    outCanvasContext.putImageData(inPixels, 0, y);
+                }
+            }
+            return outCanvas;
+        }
+
+        function random(x) {
+            x += Math.floor(255 * (2 * Math.random() - 1) * amount);
+            if (x < 0) {
+                x = 0;
+            } else if (x > 0xff) {
+                x = 0xff;
+            }
+            return x;
+        }
+
+        function clamp(C) {
+            var ret = C;
+            if (C < 0) {
+                ret = 0;
+            } else if (C > 255) {
+                ret = 255;
+            }
+            return ret;
+        }
+
+        /**
+         * Return a mod b. This differs from the % operator with respect to negative numbers.
+         * @param a the dividend
+         * @param B the divisor
+         * @return a mod b
+         */
+        function mod(a, B) {
+            return a - Math.floor(a / B) * B;
+
+        }
+
+        function blur(inPix, outPix, width, radius) {
+            var width_minus_1 = width - 1;
+            var r2 = 2 * radius + 1;
+            var tr = 0, tg = 0, tb = 0;
+
+            for (var i = -radius; i <= radius; i++) {
+                var indx = mod(i, width) * 4;
+                tr += inPix.data[indx];
+                tg += inPix.data[indx + 1];
+                tb += inPix.data[indx + 2];
+            }
+
+            for (var x = 0; x < width; x++) {
+                var indx = x * 4;
+                outPix.data[indx]     = tr / r2;
+                outPix.data[indx + 1] = tg / r2;
+                outPix.data[indx + 2] = tb / r2;
+                outPix.data[indx + 3] = inPix.data[indx + 3];
+
+                var i1 = x + radius + 1;
+                if (i1 > width_minus_1) {
+                    i1 = mod(i1, width);
+                }
+                var i2 = x - radius;
+                if (i2 < 0) {
+                    i2 = mod(i2, width);
+                }
+                tr += inPix.data[i1*4] - inPix.data[i2*4];
+                tg += inPix.data[i1*4 + 1] - inPix.data[i2*4 + 1];
+                tb += inPix.data[i1*4 + 2] - inPix.data[i2*4 + 2];
+            }
+        }
+        return this;
+    }
+
     //********************************************   T O O L S   *******************************************************
     var rgbaColor = function(r, g, b, a) {
         var red;
@@ -12987,15 +13117,15 @@ var steelseries = function() {
         var blue;
         var alpha;
 
-		if (arguments.length === 1) {
-			// hexadecimal input #112233
-			b = parseInt(r.substr(5,2), 16);
-			g = parseInt(r.substr(3,2), 16);
-			r = parseInt(r.substr(1,2), 16);
-			a = 1
-		} else if (arguments.length === 3) {
-			a = 1;
-		}
+        if (arguments.length === 1) {
+            // hexadecimal input #112233
+            b = parseInt(r.substr(5,2), 16);
+            g = parseInt(r.substr(3,2), 16);
+            r = parseInt(r.substr(1,2), 16);
+            a = 1
+        } else if (arguments.length === 3) {
+            a = 1;
+        }
 
         validateColors();
 
@@ -13069,7 +13199,8 @@ var steelseries = function() {
             var RAD_FACTOR = 180 / Math.PI;
             var TWO_PI = 2 * Math.PI;
             // Make the step value equate to a single pixel at the outer radius
-            var angleStep = 1 / outerX;   
+            var angleStep = 1 / outerX;
+
             var range;
             var startColor;
             var stopColor;
@@ -13519,80 +13650,98 @@ var steelseries = function() {
     }
 
     function hsb2Rgb(hue, saturation, brightness) {
-	    var r, g, b;
+        var r, g, b;
 
-	    var i = Math.floor(hue * 6);
-	    var f = hue * 6 - i;
-	    var p = brightness * (1 - saturation);
-	    var q = brightness * (1 - f * saturation);
-	    var t = brightness * (1 - (1 - f) * saturation);
+        var i = Math.floor(hue * 6);
+        var f = hue * 6 - i;
+        var p = brightness * (1 - saturation);
+        var q = brightness * (1 - f * saturation);
+        var t = brightness * (1 - (1 - f) * saturation);
 
-	    switch(i % 6){
-	        case 0: 
-				r = brightness;
-				g = t
-				b = p; 
-				break;
-	        case 1: 
-				r = q
-				g = brightness;
-				b = p;
-				break;
-	        case 2: 
-				r = p;
-				g = brightness;
-				b = t; 
-				break;
-	        case 3: 
-				r = p;
-				g = q;
-				b = brightness; 
-				break;
-	        case 4: 
-				r = t;
-				g = p;
-				b = brightness; 
-				break;
-	        case 5: 
-				r = brightness;
-				g = p;
-				b = q; 
-				break;
-	    }
+        switch(i % 6){
+            case 0:
 
-	    return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
+                r = brightness;
+                g = t
+                b = p;
+
+                break;
+            case 1:
+
+                r = q
+                g = brightness;
+                b = p;
+                break;
+            case 2:
+
+                r = p;
+                g = brightness;
+                b = t;
+
+                break;
+            case 3:
+
+                r = p;
+                g = q;
+                b = brightness;
+
+                break;
+            case 4:
+
+                r = t;
+                g = p;
+                b = brightness;
+
+                break;
+            case 5:
+
+                r = brightness;
+                g = p;
+                b = q;
+
+                break;
+        }
+
+        return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
     }
-	function rgbToHsb(r, g, b){
-	    r = r/255;
-	    g = g/255; 
-	    b = b/255;
-	    var max = Math.max(r, g, b);
-	    var min = Math.min(r, g, b);
-	    var hue;
-	    var saturation;
-	    var brightness = max;
+    function rgbToHsb(r, g, b){
+        r = r/255;
+        g = g/255;
 
-	    var delta = max - min;
-	    saturation = max == 0 ? 0 : delta / max;
+        b = b/255;
+        var max = Math.max(r, g, b);
+        var min = Math.min(r, g, b);
+        var hue;
+        var saturation;
+        var brightness = max;
 
-	    if(max == min) {
-	        hue = 0; // achromatic
-	    } else {
-	        switch(max){
-	            case r: 
-	                hue = (g - b) / delta + (g < b ? 6 : 0); 
-	                break;
-	            case g: 
-	                hue = (b - r) / delta + 2; 
-					break;
-	            case b: 
-					hue = (r - g) / delta + 4; 
-					break;
-	        }
-	        hue /= 6;
-	    }
-	    return [hue, saturation, brightness];
-	}
+        var delta = max - min;
+        saturation = max == 0 ? 0 : delta / max;
+
+        if(max == min) {
+            hue = 0; // achromatic
+        } else {
+            switch(max){
+                case r:
+
+                    hue = (g - b) / delta + (g < b ? 6 : 0);
+
+                    break;
+                case g:
+
+                    hue = (b - r) / delta + 2;
+
+                    break;
+                case b:
+
+                    hue = (r - g) / delta + 4;
+
+                    break;
+            }
+            hue /= 6;
+        }
+        return [hue, saturation, brightness];
+    }
     function darker(color, fraction) {
         var red = Math.floor(color.getRed() * (1 - fraction));
         var green = Math.floor(color.getGreen() * (1 - fraction));
@@ -13636,7 +13785,7 @@ var steelseries = function() {
     var backgroundColorDef;
     (function() {
         backgroundColorDef = function(gradientStart, gradientFraction, gradientStop, labelColor, symbolColor) {
-            this.gradientStart = gradientStop;
+            this.gradientStart = gradientStart;
             this.gradientFraction = gradientFraction;
             this.gradientStop = gradientStop;
             this.labelColor = labelColor;
@@ -13760,7 +13909,9 @@ var steelseries = function() {
         MUD: new backgroundColorDef(new rgbaColor(80, 86, 82, 1), new rgbaColor(70, 76, 72, 1), new rgbaColor(57, 62, 58, 1), new rgbaColor(255, 255, 240, 1), new rgbaColor(225, 225, 210, 1)),
         PUNCHED_SHEET: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1)),
         CARBON: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47, 47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1)),
-		STAINLESS: new backgroundColorDef(new rgbaColor(130, 130, 130, 1), new rgbaColor(181, 181, 181, 1), new rgbaColor(253, 253, 253, 1), new rgbaColor(0, 0, 0, 1), new rgbaColor(80, 80, 80, 1))
+        STAINLESS: new backgroundColorDef(new rgbaColor(130, 130, 130, 1), new rgbaColor(181, 181, 181, 1), new rgbaColor(253, 253, 253, 1), new rgbaColor(0, 0, 0, 1), new rgbaColor(80, 80, 80, 1)),
+        BRUSHED_METAL: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47,47, 51, 1), new rgbaColor(69, 69, 74, 1), new rgbaColor(0, 0, 0, 1), new rgbaColor(80, 80, 80, 1)),
+        BRUSHED_STAINLESS: new backgroundColorDef(new rgbaColor(50, 50, 54, 1), new rgbaColor(47,47, 51, 1), new rgbaColor(110, 110, 112, 1), new rgbaColor(0, 0, 0, 1), new rgbaColor(80, 80, 80, 1))
     };
 
     var lcdColor = {

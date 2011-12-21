@@ -39,6 +39,8 @@
                     <option value="PUNCHED_SHEET">PunchedSheet</option>
                     <option value="CARBON">Carbon</option>
                     <option value="STAINLESS">Stainless</option>
+                    <option value="BRUSHED_METAL">BrushedMetal</option>
+                    <option value="BRUSHED_STAINLESS">BrushedStainless</option>
                 </select>
                 <select id="comboPointerColor" onchange="setPointerColor(this)">
                     <option selected="selected" value="">Pointer color</option>
@@ -177,6 +179,12 @@
                 break;
             case "STAINLESS":
                 radial1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                break;
+            case "BRUSHED_METAL":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                break;
+            case "BRUSHED_STAINLESS":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 break;
         }
     }

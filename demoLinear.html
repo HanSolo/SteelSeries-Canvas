@@ -39,6 +39,8 @@
                     <option value="PUNCHED_SHEET">PunchedSheet</option>
                     <option value="CARBON">Carbon</option>
                     <option value="STAINLESS">Stainless</option>
+                    <option value="BRUSHED_METAL">BrushedMetal</option>
+                    <option value="BRUSHED_STAINLESS">BrushedStainless</option>
                 </select>
                 <select id="comboValueColor" onchange="setValueColor(this)">
                     <option selected="selected" value="">Value color</option>
@@ -431,6 +433,22 @@
                 linear4.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 linear5.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 linear6.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                break;
+            case "BRUSHED_METAL":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                break;
+            case "BRUSHED_STAINLESS":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 break;
         }
     }

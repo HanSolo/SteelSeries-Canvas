@@ -39,6 +39,8 @@
                     <option value="PUNCHED_SHEET">PunchedSheet</option>
                     <option value="CARBON">Carbon</option>
                     <option value="STAINLESS">Stainless</option>
+                    <option value="BRUSHED_METAL">BrushedMetal</option>
+                    <option value="BRUSHED_STAINLESS">BrushedStainless</option>
                 </select>
                 <select id="comboPointerColor" onchange="setPointerColor(this)">
                     <option selected="selected" value="">Pointer color</option>
@@ -249,7 +251,7 @@
                             });
         altimeter1 = new steelseries.Altimeter('canvasAltimeter1', {
                             size: 201 });
-
+/*
         // Start the random update
         setInterval(function(){ setRandomValue(radial1, 360); }, 3000);
         setInterval(function(){ setDirRandomValue(radial2, 360); }, 3100);
@@ -259,7 +261,7 @@
         setInterval(function(){ setRandomValue3(single2, 100); }, 8000);
         setInterval(function(){ setRandomValue2(multi1, 100); }, 2000);
         setInterval(function(){ battery(); }, 200);
-        setInterval(function(){ setRandomValue(altimeter1, 10000);}, 5000);
+        setInterval(function(){ setRandomValue(altimeter1, 10000);}, 5000); */
    }
 
     var batVal = 0;
@@ -497,6 +499,20 @@
                 radial3.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                break;
+            case "BRUSHED_METAL":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                break;
+            case "BRUSHED_STAINLESS":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 break;
         }
     }
@@ -970,5 +986,5 @@
 
 </script>
 <script src="tween-min.js"></script>
-<script src="steelseries-min.js"></script>
+<script src="steelseries.js"></script>
 </body></html>
