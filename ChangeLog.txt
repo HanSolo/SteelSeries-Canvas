@@ -1,5 +1,12 @@
 Main Changes
 
+v0.9.5
+> WindDirection
+  * LCD panels slightly reduced in size
+
+> General Changes
+  * Brushed Metal texture routine is now 75% faster
+
 v0.9.4
 > Radial/RadialBargraph
   * Tweaks to LCD text positioning

@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 21.12.2011
- * Revision      : 0.9.4
+ * Last modified : 26.12.2011
+ * Revision      : 0.9.5
  */
 
 var steelseries = function() {
@@ -6579,7 +6579,6 @@ var steelseries = function() {
 //            var smlFont = 0.06 * imageWidth + 'px serif';
 
             ctx.save();
-            //ctx.strokeStyle = '#83827E';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
@@ -6590,11 +6589,12 @@ var steelseries = function() {
                 smlFont = 0.06 * imageWidth + 'px serif';
 
                 //var angleStep = 2 * Math.PI / 360;
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
 
                 for (i = 0; 360 > i; i+= 2.5) {
 
                     if (0 === i % 5) {
-                        ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(imageWidth * 0.38, 0);
                         ctx.lineTo(imageWidth * 0.36, 0);
@@ -6609,56 +6609,56 @@ var steelseries = function() {
                             ctx.translate(imageWidth * 0.35, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = stdFont;
-                            ctx.fillText(pointSymbols[2], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[2], 0, 0);
                             ctx.translate(-imageWidth * 0.35, 0);
                             break;
                         case 45: //SE
                             ctx.translate(imageWidth * 0.29, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = smlFont;
-                            ctx.fillText(pointSymbols[3], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[3], 0, 0);
                             ctx.translate(-imageWidth * 0.29, 0);
                             break;
                         case 90: //S
                             ctx.translate(imageWidth * 0.35, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = stdFont;
-                            ctx.fillText(pointSymbols[4], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[4], 0, 0);
                             ctx.translate(-imageWidth * 0.35, 0);
                             break;
                         case 135: //SW
                             ctx.translate(imageWidth * 0.29, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = smlFont;
-                            ctx.fillText(pointSymbols[5], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[5], 0, 0);
                             ctx.translate(-imageWidth * 0.29, 0);
                             break;
                         case 180: //W
                             ctx.translate(imageWidth * 0.35, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = stdFont;
-                            ctx.fillText(pointSymbols[6], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[6], 0, 0);
                             ctx.translate(-imageWidth * 0.35, 0);
                             break;
                         case 225: //NW
                             ctx.translate(imageWidth * 0.29, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = smlFont;
-                            ctx.fillText(pointSymbols[7], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[7], 0, 0);
                             ctx.translate(-imageWidth * 0.29, 0);
                             break;
                         case 270: //N
                             ctx.translate(imageWidth * 0.35, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = stdFont;
-                            ctx.fillText(pointSymbols[0], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[0], 0, 0);
                             ctx.translate(-imageWidth * 0.35, 0);
                             break;
                         case 315: //NE
                             ctx.translate(imageWidth * 0.29, 0);
                             ctx.rotate(Math.PI/2);
                             ctx.font = smlFont;
-                            ctx.fillText(pointSymbols[1], 0, 0, imageWidth);
+                            ctx.fillText(pointSymbols[1], 0, 0);
                             ctx.translate(-imageWidth * 0.29, 0);
                             break;
                     }
@@ -6677,8 +6677,6 @@ var steelseries = function() {
                         ctx.lineTo(imageWidth * 0.1, 0);
                         ctx.closePath();
                         ctx.restore();
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
                         ctx.stroke();
                     }
                     ctx.rotate(angleStep * 2.5);
@@ -6742,12 +6740,10 @@ var steelseries = function() {
                                 ctx.closePath();
                                 ctx.stroke();
                                 var val = (i+90) % 360;
-//                                ctx.translate(imageWidth * 0.37, 0);
                                 ctx.translate(TEXT_TRANSLATE_X, 0);
                                 ctx.rotate(Math.PI/2);
                                 ctx.font = smlFont;
                                 ctx.fillText(("0".substring(val>=100) + val), 0, 0, TEXT_WIDTH);
-//                                ctx.translate(-imageWidth * 0.37, 0);
                                 ctx.translate(-TEXT_TRANSLATE_X, 0);
                             }
                     }
@@ -6763,18 +6759,15 @@ var steelseries = function() {
         var drawLcdTitles = function(ctx) {
             if (lcdTitleStrings.length > 0) {
                 ctx.save();
-                ctx.textAlign = 'left';
+                ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
                 ctx.font = 0.040 * imageWidth + 'px sans-serif';
-                var titleWidth = ctx.measureText(lcdTitleStrings[0]).width;
-                ctx.fillText(lcdTitleStrings[0], (imageWidth - titleWidth) / 2, imageHeight * 0.27, imageWidth * 0.3);
-                titleWidth = ctx.measureText(lcdTitleStrings[1]).width;
-                ctx.fillText(lcdTitleStrings[1], (imageWidth - titleWidth) / 2, imageHeight * 0.73, imageWidth * 0.3);
+                ctx.fillText(lcdTitleStrings[0], imageWidth / 2, imageHeight * 0.29, imageWidth * 0.3);
+                ctx.fillText(lcdTitleStrings[1], imageWidth / 2, imageHeight * 0.71, imageWidth * 0.3);
                 if (titleString.length > 0) {
                     ctx.font = 0.0467 * imageWidth + 'px sans-serif';
-                    titleWidth = ctx.measureText(titleString).width;
-                    ctx.fillText(titleString, (imageWidth - titleWidth) / 2, imageHeight * 0.5, imageWidth * 0.3);
+                    ctx.fillText(titleString, imageWidth / 2, imageHeight * 0.5, imageWidth * 0.3);
                 }
             }
         };
@@ -6831,9 +6824,9 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.3, imageHeight * 0.15, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.55);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.305);
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.3, imageHeight * 0.12, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.565);
+                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.32);
                     // Create title in background buffer (backgroundBuffer)
                     drawLcdTitles(backgroundContext);
                 }
@@ -10693,26 +10686,23 @@ var steelseries = function() {
     //************************************  I M A G E   -   F U N C T I O N S  *****************************************
 
     var drawRoseImage = function(ctx, centerX, centerY, imageWidth, imageHeight, backgroundColor) {
-        var alternate = 0;
+        var fill = true;
         var i;
         var PI_180 = Math.PI / 180;
-        ctx.save(); ctx.lineWidth = 1;
+        ctx.save();
+        ctx.lineWidth = 1;
         ctx.fillStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.strokeStyle = backgroundColor.symbolColor.getRgbaColor();
         ctx.translate(centerX, centerY);
         // broken ring
-        for (i = 0; 360 > i; i += 15) {
-            alternate++;
+        for (i = 0; i < 360; i += 15) {
+            fill = !fill;
 
             ctx.beginPath();
-            ctx.rotate(i * PI_180);
-            ctx.moveTo(imageWidth * 0.23, 0);
-            ctx.lineTo(imageWidth * 0.26, 0);
-            ctx.rotate(-i * PI_180);
             ctx.arc(0, 0, imageWidth * 0.26, i * PI_180, (i + 15) * PI_180, false);
             ctx.arc(0, 0, imageWidth * 0.23, (i + 15) * PI_180, i * PI_180, true);
             ctx.closePath();
-            if (0 === alternate % 2) {
+            if (fill) {
                 ctx.fill();
             }
             ctx.stroke();
@@ -12994,8 +12984,8 @@ var steelseries = function() {
             var outCanvasContext = outCanvas.getContext('2d');
 
             // Create pixel arrays
-            var inPixels = outCanvasContext.createImageData(width, 1);
-            var outPixels = outCanvasContext.createImageData(width, 1);
+            var inPixels = outCanvasContext.createImageData(width, height);
+            var outPixels = outCanvasContext.createImageData(width, height);
 
             //var alpha = color & 0xff000000;
             var alpha = 255;
@@ -13013,11 +13003,15 @@ var steelseries = function() {
                 }
             }
 
-            //for (var y = startY; y < endY; y++) {
             for (var y = 0; y < height; y++) {
                 // The pixel array is addressed as 4 elements per pixel [r,g,b,a]
+                if (radius != 0) {
+                    var totR = 0;
+                    var totG = 0;
+                    var totB = 0;
+                }
                 for (var x = 0; x < width; x ++) {
-                    var indx = x * 4;
+                    var indx = (y * width * 4) + (x * 4);
                     var tr = red
                     var tg = green;
                     var tb = blue;
@@ -13027,6 +13021,7 @@ var steelseries = function() {
                         tg += f;
                         tb += f;
                     }
+
                     if (monochrome) {
                         n = ((2 * Math.random() - 1) * variation) | 0;
                         inPixels.data[indx]   = clamp(tr + n);
@@ -13040,12 +13035,13 @@ var steelseries = function() {
                         inPixels.data[indx+3] = alpha;
                     }
                 }
-                if (radius != 0) {
-                    blur(inPixels, outPixels, width, radius, alpha);
-                    outCanvasContext.putImageData(outPixels, 0, y);
-                } else {
-                    outCanvasContext.putImageData(inPixels, 0, y);
-                }
+            }
+
+            if (radius > 0) {
+                horizontalBlur(inPixels, outPixels, width, height, radius, alpha);
+                outCanvasContext.putImageData(outPixels, startX, startY);
+            } else {
+                outCanvasContext.putImageData(inPixels, startX, startY);
             }
             return outCanvas;
         }
@@ -13059,48 +13055,45 @@ var steelseries = function() {
             return (C < 0 ? 0 : (C > 255 ? 255 : C));
         }
 
-        /**
-         * Return a mod b. This differs from the % operator with respect to negative numbers.
-         * @param a the dividend
-         * @param B the divisor
-         * @return a mod b
-         */
-        function mod(a, B) {
-            return a - Math.floor(a / B) * B;
-        }
-
-        function blur(inPix, outPix, width, radius, alpha) {
-            var width_minus_1 = width - 1;
-            var r2 = 2 * radius + 1;
-            var tr = 0, tg = 0, tb = 0;
-
-            for (var i = -radius; i <= radius; i++) {
-                var indx = mod(i, width) * 4;
-                tr += inPix.data[indx];
-                tg += inPix.data[indx + 1];
-                tb += inPix.data[indx + 2];
+        function horizontalBlur(inPix, outPix, width, height, radius, alpha) {
+            if (radius >= width) {
+                radius = width - 1;
             }
-
-            for (var x = 0; x < width; x++) {
-                var indx = x * 4;
-                outPix.data[indx]     = tr / r2;
-                outPix.data[indx + 1] = tg / r2;
-                outPix.data[indx + 2] = tb / r2;
-                outPix.data[indx + 3] = alpha;
-
-                var i1 = x + radius + 1;
-                if (i1 > width_minus_1) {
-                    i1 = mod(i1, width);
+            var mul = 1 / (radius * 2 + 1);
+            var indx = 0;
+            for (var y = 0; y < height; y++) {
+                var totR = 0;
+                var totG = 0;
+                var totB = 0;
+                for (var x = 0; x < radius ; x++) {
+                    var i = (indx + x) * 4;
+                    totR += inPix.data[i];
+                    totG += inPix.data[i + 1];
+                    totB += inPix.data[i + 2];
                 }
-                var i2 = x - radius;
-                if (i2 < 0) {
-                    i2 = mod(i2, width);
+                for (var x = 0; x < width; x++) {
+                    if (x > radius) {
+                        var i = (indx - radius - 1) * 4;
+                        totR -= inPix.data[i];
+                        totG -= inPix.data[i + 1];
+                        totB -= inPix.data[i + 2];
+                    }
+                    if (x + radius < width) {
+                        var i = (indx + radius) * 4;
+                        totR += inPix.data[i];
+                        totG += inPix.data[i + 1];
+                        totB += inPix.data[i + 2];
+                    }
+                    var i = indx * 4;
+                    outPix.data[i] = (totR * mul) | 0;
+                    outPix.data[i + 1] = (totG * mul) | 0;
+                    outPix.data[i + 2] = (totB * mul) | 0;
+                    outPix.data[i + 3] = alpha;
+                    indx++;
                 }
-                tr += inPix.data[i1*4] - inPix.data[i2*4];
-                tg += inPix.data[i1*4 + 1] - inPix.data[i2*4 + 1];
-                tb += inPix.data[i1*4 + 2] - inPix.data[i2*4 + 2];
             }
         }
+
         return this;
     }
 
