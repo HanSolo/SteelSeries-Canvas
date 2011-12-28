@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 26.12.2011
- * Revision      : 0.9.5
+ * Last modified : 28.12.2011
+ * Revision      : 0.9.6
  */
 
 var steelseries = function() {
@@ -1299,6 +1299,7 @@ var steelseries = function() {
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
+                foregroundContext.clearRect(0, 0, foregroundContext.canvas.width, foregroundContext.canvas.height);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false, gaugeType);
             }
         };
@@ -1704,9 +1705,7 @@ var steelseries = function() {
 
         this.setMaxValue = function(value){
             maxValue = value;
-            init({background: true,
-                foreground: true,
-                pointer: true});
+            init({background: true});
             this.repaint();
         };
 
@@ -1736,7 +1735,6 @@ var steelseries = function() {
                       foreground: true});
             }
 
-            mainCtx.save();
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame image
@@ -1788,8 +1786,7 @@ var steelseries = function() {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold)
-                {
+                if (value < threshold) {
                     ledBlinking = false;
                     ledBuffer = ledBufferOff;
                 }
@@ -1798,8 +1795,6 @@ var steelseries = function() {
 
             // Draw foreground
             mainCtx.drawImage(foregroundBuffer, 0, 0);
-
-            mainCtx.restore();
         };
 
         // Visualize the component
