@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 02.01.2012
- * Revision      : 0.9.7
+ * Revision      : 0.9.7a
  */
 
 var steelseries = function() {
@@ -805,7 +805,8 @@ var steelseries = function() {
 
         this.setMinValue = function(value){
             minValue = value;
-            init({background: true});
+            init({frame: true,
+                  background: true});
         };
 
         this.getMinValue = function(){
@@ -814,7 +815,8 @@ var steelseries = function() {
 
         this.setMaxValue = function(value){
             maxValue = value;
-            init({background: true});
+            init({frame: true,
+                  background: true});
         };
 
         this.getMaxValue = function(){
@@ -832,8 +834,8 @@ var steelseries = function() {
             area = areaVal;
             resetBuffers({foreground: true});
             init({background: true,
-                foreground: true
-                });
+                  foreground: true
+                  });
             this.repaint();
         };
 
@@ -841,8 +843,8 @@ var steelseries = function() {
                 section = areaSec;
                 resetBuffers({foreground: true});
                 init({background: true,
-                    foreground: true
-                    });
+                      foreground: true
+                      });
                 this.repaint();
         };
 
@@ -1739,9 +1741,7 @@ var steelseries = function() {
 
         this.setMinValue = function(value) {
             minValue = value;
-            init({background: true,
-                foreground: true,
-                pointer: true});
+            init({background: true});
             this.repaint();
         };
 
@@ -2568,10 +2568,9 @@ var steelseries = function() {
         };
 
         this.setBackgroundColor = function(newBackgroundColor) {
-            resetBuffers({
-                background: true,
-                pointer: true   //type2 depends on background
-                });
+            resetBuffers({background: true,
+                          pointer: true   //type2 depends on background
+                          });
             backgroundColor = newBackgroundColor;
             init({
                 background: true,
@@ -7022,19 +7021,13 @@ var steelseries = function() {
 
         this.setArea = function(areaVal){
             area = areaVal;
-            resetBuffers({foreground: true});
-            init({background: true,
-                foreground: true
-                });
+            init({background: true});
             this.repaint();
         };
 
         this.setSection = function(areaSec){
             section = areaSec;
-            resetBuffers({foreground: true});
-            init({background: true,
-                foreground: true
-                });
+            init({background: true});
             this.repaint();
         };
 
@@ -8354,9 +8347,11 @@ var steelseries = function() {
         };
 
         this.setBackgroundColor = function(newBackgroundColor) {
-            resetBuffers({ background: true });
+            resetBuffers({ frame: true,
+                           background: true });
             backgroundColor = newBackgroundColor;
-            init({ background: true });
+            init({ frame: true,
+                   background: true });
             this.repaint();
         };
 
@@ -8368,11 +8363,8 @@ var steelseries = function() {
         };
 
         this.setPointerType = function(newPointerType) {
-            resetBuffers({
-                background: true,
-                pointers: true,
-                foreground: true
-                });
+            resetBuffers({ foreground: true,
+                           pointers: true });
             pointerType = newPointerType;
             if (pointerType.type === 'type1') {
                 pointerColor = steelseries.ColorDef.GRAY;
@@ -8381,12 +8373,8 @@ var steelseries = function() {
                 pointerColor = steelseries.ColorDef.BLACK;
                 backgroundColor = steelseries.BackgroundColor.LIGHT_GRAY;
             }
-            init({
-                frame: true,
-                background: true,
-                pointers: true,
-                foreground: true
-                });
+            init({ foreground: true,
+                   pointers: true });
             this.repaint();
         };
 
@@ -12134,8 +12122,6 @@ var steelseries = function() {
 
     var drawRadialForegroundImage = function(ctx, foregroundType, imageWidth, imageHeight, withCenterKnob, knob, style, gaugeType, orientation) {
         ctx.save();
-        // As the foreground is transparent clear the area before we redraw it
-        ctx.clearRect(0, 0, imageWidth, imageHeight);
         if (foregroundType.type === radFgType && imageWidth === radFgBuffer.width && imageHeight === radFgBuffer.height && withCenterKnob === radWithKnob && knob === radKnob && style === radFgStyle && radGaugeType === gaugeType && radOrientation === orientation) {
             ctx.drawImage(radFgBuffer, 0, 0);
             ctx.restore();
