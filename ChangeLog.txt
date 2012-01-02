@@ -1,5 +1,26 @@
 Main Changes
 
+v0.9.7
+> Radial
+  * Added optional trend indicator
+    Initialisation param: trendVisible
+    Methods: setTrendVisible(bool), setTrend(state)
+    States: steelseries.TrendState.UP|STEADY|DOWN|OFF
+
+> RadialBargraph
+  * Fixed the LED track backround, it was being drawn at a fixed size, it now scales with the gauge
+
+> WindDirection
+  * Fixed bug in some of the redraw routines that caused the frame to be dropped in some circumstances
+
+> General Changes
+  * Changed drawRadialForeground() to clear the buffer before drawing as the semi-transparent foregrounds
+    added together if re-drawn.
+
+v0.9.6
+> RadialBargraph
+  * Stopped setMaxValue() from redrawing the foreground buffer
+
 v0.9.5
 > WindDirection
   * LCD panels slightly reduced in size

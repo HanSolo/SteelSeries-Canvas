@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 28.12.2011
- * Revision      : 0.9.6
+ * Last modified : 02.01.2012
+ * Revision      : 0.9.7
  */
 
 var steelseries = function() {
@@ -44,6 +44,7 @@ var steelseries = function() {
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
         var tickLabelOrientation = (undefined === parameters.tickLabelOrientation ? (gaugeType === steelseries.GaugeType.TYPE1 ? steelseries.TickLabelOrientation.TANGENT : steelseries.TickLabelOrientation.NORMAL) : parameters.tickLabelOrientation);
+        var trendVisible = (undefined === parameters.trendVisible ? false : parameters.trendVisible);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -64,6 +65,11 @@ var steelseries = function() {
 
         var ledTimerId = 0;
         var tween;
+
+        var trendIndicator = steelseries.TrendState.OFF; 
+        var trendSize = size * 0.06;
+        var trendPosX = size * 0.33;
+        var trendPosY = size * 0.38;
 
         // GaugeType specific private variables
         var freeAreaAngle;
@@ -214,6 +220,9 @@ var steelseries = function() {
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
         var foregroundContext = foregroundBuffer.getContext('2d');
+
+        // Buffers for trend indicators
+        var trendUpBuffer, trendSteadyBuffer, trendDownBuffer, trendOffBuffer;
 
         // **************   Image creation  ********************
         var drawLcdText = function(value) {
@@ -498,6 +507,7 @@ var steelseries = function() {
             var drawLed = (undefined === parameters.led ? false : parameters.led);
             var drawPointer = (undefined === parameters.pointer ? false : parameters.pointer);
             var drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
+            var drawTrend = (undefined === parameters.trend ? false : parameters.trend);
 
             initialized = true;
 
@@ -594,6 +604,14 @@ var steelseries = function() {
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle, gaugeType);
+            }
+
+            // Create the trend indicator buffers
+            if (drawTrend && trendVisible) {
+                trendUpBuffer = createTrendIndicator(trendSize, steelseries.TrendState.UP);
+                trendSteadyBuffer = createTrendIndicator(trendSize, steelseries.TrendState.STEADY);
+                trendDownBuffer = createTrendIndicator(trendSize, steelseries.TrendState.DOWN);
+                trendOffBuffer = createTrendIndicator(trendSize, steelseries.TrendState.OFF);
             }
         };
 
@@ -892,12 +910,23 @@ var steelseries = function() {
             this.repaint();
         };
 
+        this.setTrend = function(newValue) {
+            trendIndicator = newValue;
+            this.repaint();
+        };
+
+        this.setTrendVisible = function(visible) {
+            trendVisible = visible;
+            this.repaint();
+        };
+
         this.repaint = function() {
             if (!initialized) {
                 init({frame: true,
                       background: true,
                       led: true,
                       pointer: true,
+                      trend: true,
                       foreground: true});
             }
 
@@ -922,6 +951,24 @@ var steelseries = function() {
                     ledBuffer = ledBufferOff;
                 }
                 mainCtx.drawImage(ledBuffer, ledPosX, ledPosY);
+            }
+
+            // Draw the trend indicator
+            if (trendVisible){
+                switch (trendIndicator.state) {
+                    case 'up':
+                        mainCtx.drawImage(trendUpBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'steady':
+                        mainCtx.drawImage(trendSteadyBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'down':
+                        mainCtx.drawImage(trendDownBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'off':
+                        mainCtx.drawImage(trendOffBuffer, trendPosX, trendPosY);
+                        break;
+                }
             }
 
             // Draw min measured value indicator
@@ -1299,7 +1346,6 @@ var steelseries = function() {
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
-                foregroundContext.clearRect(0, 0, foregroundContext.canvas.width, foregroundContext.canvas.height);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false, gaugeType);
             }
         };
@@ -1364,7 +1410,7 @@ var steelseries = function() {
 
             // Frame
             ctx.save();
-            ctx.lineWidth = 17;
+            ctx.lineWidth = size * 0.085;
             ctx.beginPath();
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset - 4 * RAD_FACTOR);
@@ -1382,7 +1428,7 @@ var steelseries = function() {
 
             // Main
             ctx.save();
-            ctx.lineWidth = 15;
+            ctx.lineWidth = size * 0.075;
             ctx.beginPath();
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset - 4 * RAD_FACTOR);
@@ -6993,7 +7039,6 @@ var steelseries = function() {
         };
 
         this.setFrameDesign = function(newFrameDesign) {
-            resetBuffers({background: true});
             frameDesign = newFrameDesign;
             init({frame: true,
                   background: true});
@@ -7001,9 +7046,9 @@ var steelseries = function() {
         };
 
         this.setBackgroundColor = function(newBackgroundColor) {
-            resetBuffers();
             backgroundColor = newBackgroundColor;
-            init({background: true});
+            init({frame: true,
+                  background: true});
             this.repaint();
         };
 
@@ -7043,9 +7088,9 @@ var steelseries = function() {
         };
 
         this.setPointSymbols = function(newPointSymbols) {
-            resetBuffers({background: true});
             pointSymbols = newPointSymbols;
-            init({background: true});
+            init({frame: true,
+                  background: true});
             this.repaint();
         };
 
@@ -12089,7 +12134,8 @@ var steelseries = function() {
 
     var drawRadialForegroundImage = function(ctx, foregroundType, imageWidth, imageHeight, withCenterKnob, knob, style, gaugeType, orientation) {
         ctx.save();
-
+        // As the foreground is transparent clear the area before we redraw it
+        ctx.clearRect(0, 0, imageWidth, imageHeight);
         if (foregroundType.type === radFgType && imageWidth === radFgBuffer.width && imageHeight === radFgBuffer.height && withCenterKnob === radWithKnob && knob === radKnob && style === radFgStyle && radGaugeType === gaugeType && radOrientation === orientation) {
             ctx.drawImage(radFgBuffer, 0, 0);
             ctx.restore();
@@ -12714,6 +12760,166 @@ var steelseries = function() {
 
         return indicatorBuffer;
     };
+
+    var createTrendIndicator = function(width, onSection) {
+        var trendBuffer = doc.createElement('canvas');
+        var height = width * 2;
+        trendBuffer.width = width;
+        trendBuffer.height = height;
+        var trendCtx = trendBuffer.getContext('2d');
+        var fill, stroke;
+        trendCtx.save();
+        // draw up arrow (red)
+        var ledColor = steelseries.LedColor.RED_LED;
+        if (onSection.state === 'up') {
+            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
+            fill.addColorStop(0, ledColor.innerColor1_ON);
+            fill.addColorStop(0.2, ledColor.innerColor2_ON);
+            fill.addColorStop(1, ledColor.outerColor_ON);
+//            stroke = ledColor.outerColor_ON;
+
+        } else {
+//            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
+            fill = trendCtx.createLinearGradient(0, 0, 0, 0.396 * height);
+//            fill.addColorStop(0, '#3c3c3c');
+//            fill.addColorStop(1, '#323232');
+            fill.addColorStop(0, ledColor.innerColor1_OFF);
+            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+            fill.addColorStop(1, ledColor.outerColor_OFF);
+//            stroke = '#101010';
+        }
+        trendCtx.fillStyle = fill;
+        trendCtx.strokeStyle = stroke;
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.5 * width, 0);
+        trendCtx.lineTo(width, 0.2 * height);
+        trendCtx.lineTo(0.752 * width, 0.2 * height);
+        trendCtx.lineTo(0.752 * width, 0.37 * height);
+        trendCtx.lineTo(0.252 * width, 0.37 * height);
+        trendCtx.lineTo(0.252 * width, 0.2 * height);
+        trendCtx.lineTo(0, 0.2 * height);
+        trendCtx.closePath();
+        trendCtx.fill();
+        // Inner shadow
+        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0, 0.2 * height);
+        trendCtx.lineTo(0.5 * width, 0);
+        trendCtx.moveTo(0.252 * width, 0.2 * height);
+        trendCtx.lineTo(0.252 * width, 0.37 * height);
+        trendCtx.stroke();
+        // Inner highlight
+        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.252 * width, 0.37 * height);
+        trendCtx.lineTo(0.752 * width, 0.37 * height);
+        trendCtx.lineTo(0.752 * width, 0.2 * height);
+        trendCtx.lineTo(width, 0.2 * height);
+        trendCtx.stroke();
+
+        // draw equal symbol
+        ledColor = steelseries.LedColor.GREEN_LED;
+        trendCtx.beginPath();
+        if (onSection.state === 'steady') {
+            fill = trendCtx.createRadialGradient(0.5 * width, 0.5 * height, 0, 0.5 * width, 0.5 * height, 0.744* width);
+            fill.addColorStop(0, ledColor.innerColor2_ON);
+            fill.addColorStop(0.2, ledColor.outerColor_ON);
+            fill.addColorStop(1, ledColor.outerColor_ON);
+            stroke = ledColor.outerColor_ON;
+        } else {
+            fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.516 * height + 0.074 * height);
+//            fill.addColorStop(0, '#3c3c3c');
+//            fill.addColorStop(1, '#323232');
+            fill.addColorStop(0, ledColor.innerColor1_OFF);
+            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+            fill.addColorStop(1, ledColor.outerColor_OFF);
+            stroke = '#101010';
+        }
+        trendCtx.fillStyle = fill;
+        trendCtx.strokeStyle = stroke;
+        trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
+        trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+        trendCtx.closePath();
+        trendCtx.fill();
+        // inner shadow
+        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.128 * width, 0.41 * height + 0.074 * height);
+        trendCtx.lineTo(0.128 * width, 0.41 * height);
+        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height);
+        trendCtx.stroke();
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.128 * width, 0.516 * height + 0.074 * height);
+        trendCtx.lineTo(0.128 * width, 0.516 * height);
+        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height);
+        trendCtx.stroke();
+        // inner highlight
+        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.128 * width + 0.744 * width, 0.41 * height);
+        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height + 0.074 * height);
+        trendCtx.lineTo(0.128 * width, 0.41 * height + 0.074 * height);
+        trendCtx.stroke();
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.128 * width + 0.744 * width, 0.516 * height);
+        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
+        trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
+        trendCtx.stroke();
+
+        // draw down arrow
+        ledColor = steelseries.LedColor.CYAN_LED;
+        if (onSection.state === 'down') {
+            fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, width * 0.5);
+            fill.addColorStop(0, ledColor.innerColor1_ON);
+            fill.addColorStop(0.2, ledColor.innerColor2_ON);
+            fill.addColorStop(1, ledColor.outerColor_ON);
+        } else {
+//            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
+            fill = trendCtx.createLinearGradient(0, 0.604 * height, 0, height);
+//            fill.addColorStop(0, '#3c3c3c');
+//            fill.addColorStop(1, '#323232');
+            fill.addColorStop(0, ledColor.innerColor1_OFF);
+            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+            fill.addColorStop(1, ledColor.outerColor_OFF);
+        }
+        trendCtx.beginPath();
+        trendCtx.fillStyle = fill;
+        trendCtx.strokeStyle = stroke;
+        trendCtx.moveTo(0.5 * width, height);
+        trendCtx.lineTo(width, 0.8 * height);
+        trendCtx.lineTo(0.725 * width, 0.8 * height);
+        trendCtx.lineTo(0.725 * width, 0.63 * height);
+        trendCtx.lineTo(0.252 * width, 0.63 * height);
+        trendCtx.lineTo(0.252 * width, 0.8 * height);
+        trendCtx.lineTo(0, 0.8 * height);
+        trendCtx.closePath();
+        trendCtx.fill();
+        // Inner shadow
+        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0, 0.8 * height);
+        trendCtx.lineTo(0.252 * width, 0.8 * height);
+        trendCtx.moveTo(0.252 * width, 0.63 * height);
+        trendCtx.lineTo(0.752 * width, 0.63 * height);
+        trendCtx.stroke();
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.752 * width, 0.8 * height);
+        trendCtx.lineTo(width, 0.8 * height);
+        trendCtx.stroke();
+        // Inner highlight
+        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        trendCtx.beginPath();
+        trendCtx.moveTo(0, 0.8 * height);
+        trendCtx.lineTo(0.5 * width, height);
+        trendCtx.lineTo(width, 0.8 * height);
+        trendCtx.stroke();
+        trendCtx.beginPath();
+        trendCtx.moveTo(0.752 * width, 0.8 * height);
+        trendCtx.lineTo(0.752 * width, 0.63 * height);
+        trendCtx.stroke();
+
+        return trendBuffer;
+    }
 
     var drawTitleImage = function(ctx, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, radial, altPos) {
         var unitWidth = ctx.measureText(unitString).width;
@@ -13875,6 +14081,14 @@ var steelseries = function() {
         };
     }());
 
+    var trendStateDef;
+    (function() {
+        trendStateDef = function(state) {
+            this.state = state;
+        };
+    }());
+
+
     //*************************   I m p l e m e n t a t i o n s   o f   d e f i n i t i o n s   ************************
     var backgroundColor = {
         DARK_GRAY: new backgroundColorDef(new rgbaColor(0,0,0, 1), new rgbaColor(51, 51, 51, 1), new rgbaColor(153, 153, 153, 1), new rgbaColor(255, 255, 255, 1), new rgbaColor(180, 180, 180, 1)),
@@ -14024,6 +14238,13 @@ var steelseries = function() {
         TANGENT: new tickLabelOrientationDef('tangent')
     };
 
+    var trendState = {
+        UP: new trendStateDef('up'),
+        STEADY: new trendStateDef('steady'),
+        DOWN: new trendStateDef('down'),
+        OFF: new trendStateDef('off')
+    };
+
     //**********************************   E X P O R T   F U N C T I O N S   *******************************************
     return {
         // Components EXTERNAL : INTERNAL
@@ -14071,6 +14292,7 @@ var steelseries = function() {
         KnobStyle: knobStyle,
         LabelNumberFormat: labelNumberFormat,
         TickLabelOrientation: tickLabelOrientation,
+        TrendState: trendState,
 
         // Other
         Section : section
