@@ -1,5 +1,13 @@
 Main Changes
 
+v0.9.8
+> Radial
+  * Tweaked the trend indicator, switched segments from dark colour to gray background when 'off'
+  * Tweaked the conicalGradient frames to smooth the outer non anti-aliased edge
+
+> General Changes
+  * Changed conicalGradient() from using line sections to arc segments so it scales to very large/small gauges better
+
 v0.9.7
 > Radial
   * Added optional trend indicator
