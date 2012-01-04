@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 02.01.2012
- * Revision      : 0.9.7a
+ * Last modified : 04.01.2012
+ * Revision      : 0.9.8
  */
 
 var steelseries = function() {
@@ -932,7 +932,6 @@ var steelseries = function() {
                       foreground: true});
             }
 
-            //mainCtx.save();
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
@@ -1089,7 +1088,6 @@ var steelseries = function() {
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
-        mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
         // Set the size
@@ -1604,12 +1602,8 @@ var steelseries = function() {
                     ledBuffer = ledBufferOn;
                 }
 
-                mainCtx.save();
-               // mainCtx.clearRect(imageWidth * 0.453271, imageHeight * 0.65, Math.ceil(size * 0.093457), Math.ceil(size * 0.093457));
-               // mainCtx.putImageData(ledBackground, imageWidth * 0.453271, imageHeight * 0.65);
                 mainCtx.drawImage(ledBuffer, imageWidth * 0.453271, imageHeight * 0.65);
 
-                mainCtx.restore();
             }
         };
 
@@ -1902,7 +1896,6 @@ var steelseries = function() {
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
-        mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
         // Set the size
@@ -2017,8 +2010,8 @@ var steelseries = function() {
 
         // **************   Image creation  ********************
         var drawPostsImage = function(ctx) {
-            ctx.save();
             if ('type5' === gaugeType.type) {
+                ctx.save();
                 switch(orientation.type) {
                     case 'west':
                         // Min post
@@ -2036,8 +2029,8 @@ var steelseries = function() {
                         ctx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.037383), steelseries.KnobType.STANDARD_KNOB, knobStyle), imageWidth * 0.8, imageHeight * 0.446666);
                         break;
                 }
+                ctx.restore();
             }
-            ctx.restore();
         };
 
         var createThresholdImage = function() {
@@ -2616,7 +2609,6 @@ var steelseries = function() {
                       foreground: true});
             }
 
-            //mainCtx.save();
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
@@ -2666,7 +2658,6 @@ var steelseries = function() {
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
-            mainCtx.save();
             pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
             pointerRotContext.save();
             pointerRotContext.translate(centerX, centerY);
@@ -2680,7 +2671,6 @@ var steelseries = function() {
                 mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, -shadowOffset, shadowOffset, imageWidth - shadowOffset, imageHeight + shadowOffset);
             }
 
-            mainCtx.restore();
             mainCtx.save();
 
             // Define rotation center
@@ -2692,6 +2682,7 @@ var steelseries = function() {
             mainCtx.drawImage(pointerBuffer, 0, 0);
             mainCtx.restore();
 
+            mainCtx.save();
             // Draw foreground
             if (steelseries.Orientation.WEST === orientation) {
                 mainCtx.translate(centerX, centerX);
@@ -2699,6 +2690,7 @@ var steelseries = function() {
                 mainCtx.translate(-centerX, -centerX);
             }
             mainCtx.drawImage(foregroundBuffer, 0, 0);
+            mainCtx.restore();
         };
 
         // Visualize the component
@@ -2756,7 +2748,6 @@ var steelseries = function() {
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
-        mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
         // Set the size
@@ -3600,7 +3591,6 @@ var steelseries = function() {
 
             var valuePos;
 
-            //mainCtx.save();
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
@@ -3719,7 +3709,6 @@ var steelseries = function() {
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
-        mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
         // Set the size
@@ -11436,6 +11425,14 @@ var steelseries = function() {
                 innerX = imageWidth * 0.420560;
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(radFCtx, centerX, centerY, innerX, outerX);
+                // fade outer edge
+                radFCtx.strokeStyle = '#848484';
+                radFCtx.strokeStyle = 'rgba(132, 132, 132, 0.8)';
+                radFCtx.beginPath();
+                radFCtx.lineWidth = imageWidth / 90;
+                radFCtx.arc(centerX, centerY, imageWidth / 2, 0, Math.PI * 2, true);
+                radFCtx.closePath();
+                radFCtx.stroke();
                 radFCtx.restore();
                 break;
 
@@ -11470,6 +11467,14 @@ var steelseries = function() {
                 innerX = imageWidth * 0.420560;
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(radFCtx, centerX, centerY, innerX, outerX);
+                // fade outer edge
+                radFCtx.strokeStyle = '#848484';
+                radFCtx.strokeStyle = 'rgba(132, 132, 132, 0.8)';
+                radFCtx.beginPath();
+                radFCtx.lineWidth = imageWidth / 90;
+                radFCtx.arc(centerX, centerY, imageWidth / 2, 0, Math.PI * 2, true);
+                radFCtx.closePath();
+                radFCtx.stroke();
                 radFCtx.restore();
                 break;
 
@@ -11520,7 +11525,16 @@ var steelseries = function() {
                 innerX = imageWidth * 0.420560;
                 grad = new conicalGradient(fractions, colors, -Math.PI / 2);
                 grad.fill(radFCtx, centerX, centerY, innerX, outerX);
+                // fade outer edge
+                radFCtx.strokeStyle = '#848484';
+                radFCtx.strokeStyle = 'rgba(132, 132, 132, 0.8)';
+                radFCtx.beginPath();
+                radFCtx.lineWidth = imageWidth / 90;
+                radFCtx.arc(centerX, centerY, imageWidth / 2, 0, Math.PI * 2, true);
+                radFCtx.closePath();
+                radFCtx.stroke();
                 radFCtx.restore();
+
                 break;
         }
 
@@ -12762,20 +12776,16 @@ var steelseries = function() {
             fill.addColorStop(0, ledColor.innerColor1_ON);
             fill.addColorStop(0.2, ledColor.innerColor2_ON);
             fill.addColorStop(1, ledColor.outerColor_ON);
-//            stroke = ledColor.outerColor_ON;
 
         } else {
-//            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
-            fill = trendCtx.createLinearGradient(0, 0, 0, 0.396 * height);
-//            fill.addColorStop(0, '#3c3c3c');
-//            fill.addColorStop(1, '#323232');
-            fill.addColorStop(0, ledColor.innerColor1_OFF);
-            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-            fill.addColorStop(1, ledColor.outerColor_OFF);
-//            stroke = '#101010';
+            fill = trendCtx.createLinearGradient(0, 0, 0, 0.37 * height);
+            fill.addColorStop(0, '#323232');
+            fill.addColorStop(1, '#5c5c5c');
+//            fill.addColorStop(0, ledColor.innerColor1_OFF);
+//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+//            fill.addColorStop(1, ledColor.outerColor_OFF);
         }
         trendCtx.fillStyle = fill;
-        trendCtx.strokeStyle = stroke;
         trendCtx.beginPath();
         trendCtx.moveTo(0.5 * width, 0);
         trendCtx.lineTo(width, 0.2 * height);
@@ -12786,23 +12796,25 @@ var steelseries = function() {
         trendCtx.lineTo(0, 0.2 * height);
         trendCtx.closePath();
         trendCtx.fill();
-        // Inner shadow
-        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0, 0.2 * height);
-        trendCtx.lineTo(0.5 * width, 0);
-        trendCtx.moveTo(0.252 * width, 0.2 * height);
-        trendCtx.lineTo(0.252 * width, 0.37 * height);
-        trendCtx.stroke();
-        // Inner highlight
-        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.252 * width, 0.37 * height);
-        trendCtx.lineTo(0.752 * width, 0.37 * height);
-        trendCtx.lineTo(0.752 * width, 0.2 * height);
-        trendCtx.lineTo(width, 0.2 * height);
-        trendCtx.stroke();
-
+        if (onSection.state !== 'up') {
+            // Inner shadow
+            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0, 0.2 * height);
+            trendCtx.lineTo(0.5 * width, 0);
+            trendCtx.lineTo(width, 0.2 * height);
+            trendCtx.moveTo(0.252 * width, 0.2 * height);
+            trendCtx.lineTo(0.252 * width, 0.37 * height);
+            trendCtx.stroke();
+            // Inner highlight
+            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.252 * width, 0.37 * height);
+            trendCtx.lineTo(0.752 * width, 0.37 * height);
+            trendCtx.lineTo(0.752 * width, 0.2 * height);
+            trendCtx.lineTo(width, 0.2 * height);
+            trendCtx.stroke();
+        }
         // draw equal symbol
         ledColor = steelseries.LedColor.GREEN_LED;
         trendCtx.beginPath();
@@ -12811,47 +12823,45 @@ var steelseries = function() {
             fill.addColorStop(0, ledColor.innerColor2_ON);
             fill.addColorStop(0.2, ledColor.outerColor_ON);
             fill.addColorStop(1, ledColor.outerColor_ON);
-            stroke = ledColor.outerColor_ON;
         } else {
             fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.516 * height + 0.074 * height);
-//            fill.addColorStop(0, '#3c3c3c');
-//            fill.addColorStop(1, '#323232');
-            fill.addColorStop(0, ledColor.innerColor1_OFF);
-            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-            fill.addColorStop(1, ledColor.outerColor_OFF);
-            stroke = '#101010';
+            fill.addColorStop(0, '#323232');
+            fill.addColorStop(1, '#5c5c5c');
+//            fill.addColorStop(0, ledColor.innerColor1_OFF);
+//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+//            fill.addColorStop(1, ledColor.outerColor_OFF);
         }
         trendCtx.fillStyle = fill;
-        trendCtx.strokeStyle = stroke;
         trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
         trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
         trendCtx.closePath();
         trendCtx.fill();
-        // inner shadow
-        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.128 * width, 0.41 * height + 0.074 * height);
-        trendCtx.lineTo(0.128 * width, 0.41 * height);
-        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height);
-        trendCtx.stroke();
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.128 * width, 0.516 * height + 0.074 * height);
-        trendCtx.lineTo(0.128 * width, 0.516 * height);
-        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height);
-        trendCtx.stroke();
-        // inner highlight
-        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.128 * width + 0.744 * width, 0.41 * height);
-        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height + 0.074 * height);
-        trendCtx.lineTo(0.128 * width, 0.41 * height + 0.074 * height);
-        trendCtx.stroke();
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.128 * width + 0.744 * width, 0.516 * height);
-        trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
-        trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
-        trendCtx.stroke();
-
+        if (onSection.state !== 'steady') {
+            // inner shadow
+            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.128 * width, 0.41 * height + 0.074 * height);
+            trendCtx.lineTo(0.128 * width, 0.41 * height);
+            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height);
+            trendCtx.stroke();
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.128 * width, 0.516 * height + 0.074 * height);
+            trendCtx.lineTo(0.128 * width, 0.516 * height);
+            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height);
+            trendCtx.stroke();
+            // inner highlight
+            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.128 * width + 0.744 * width, 0.41 * height);
+            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height + 0.074 * height);
+            trendCtx.lineTo(0.128 * width, 0.41 * height + 0.074 * height);
+            trendCtx.stroke();
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.128 * width + 0.744 * width, 0.516 * height);
+            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
+            trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
+            trendCtx.stroke();
+        }
         // draw down arrow
         ledColor = steelseries.LedColor.CYAN_LED;
         if (onSection.state === 'down') {
@@ -12860,17 +12870,15 @@ var steelseries = function() {
             fill.addColorStop(0.2, ledColor.innerColor2_ON);
             fill.addColorStop(1, ledColor.outerColor_ON);
         } else {
-//            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
-            fill = trendCtx.createLinearGradient(0, 0.604 * height, 0, height);
-//            fill.addColorStop(0, '#3c3c3c');
-//            fill.addColorStop(1, '#323232');
-            fill.addColorStop(0, ledColor.innerColor1_OFF);
-            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-            fill.addColorStop(1, ledColor.outerColor_OFF);
+            fill = trendCtx.createLinearGradient(0, 0.63 * height, 0, height);
+            fill.addColorStop(0, '#323232');
+            fill.addColorStop(1, '#5c5c5c');
+//            fill.addColorStop(0, ledColor.innerColor1_OFF);
+//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
+//            fill.addColorStop(1, ledColor.outerColor_OFF);
         }
         trendCtx.beginPath();
         trendCtx.fillStyle = fill;
-        trendCtx.strokeStyle = stroke;
         trendCtx.moveTo(0.5 * width, height);
         trendCtx.lineTo(width, 0.8 * height);
         trendCtx.lineTo(0.725 * width, 0.8 * height);
@@ -12880,30 +12888,31 @@ var steelseries = function() {
         trendCtx.lineTo(0, 0.8 * height);
         trendCtx.closePath();
         trendCtx.fill();
-        // Inner shadow
-        trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0, 0.8 * height);
-        trendCtx.lineTo(0.252 * width, 0.8 * height);
-        trendCtx.moveTo(0.252 * width, 0.63 * height);
-        trendCtx.lineTo(0.752 * width, 0.63 * height);
-        trendCtx.stroke();
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.752 * width, 0.8 * height);
-        trendCtx.lineTo(width, 0.8 * height);
-        trendCtx.stroke();
-        // Inner highlight
-        trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        trendCtx.beginPath();
-        trendCtx.moveTo(0, 0.8 * height);
-        trendCtx.lineTo(0.5 * width, height);
-        trendCtx.lineTo(width, 0.8 * height);
-        trendCtx.stroke();
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.752 * width, 0.8 * height);
-        trendCtx.lineTo(0.752 * width, 0.63 * height);
-        trendCtx.stroke();
-
+        if (onSection.state !== 'down') {
+            // Inner shadow
+            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0, 0.8 * height);
+            trendCtx.lineTo(0.252 * width, 0.8 * height);
+            trendCtx.moveTo(0.252 * width, 0.63 * height);
+            trendCtx.lineTo(0.752 * width, 0.63 * height);
+            trendCtx.stroke();
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.752 * width, 0.8 * height);
+            trendCtx.lineTo(width, 0.8 * height);
+            trendCtx.stroke();
+            // Inner highlight
+            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            trendCtx.beginPath();
+            trendCtx.moveTo(0, 0.8 * height);
+            trendCtx.lineTo(0.5 * width, height);
+            trendCtx.lineTo(width, 0.8 * height);
+            trendCtx.stroke();
+            trendCtx.beginPath();
+            trendCtx.moveTo(0.752 * width, 0.8 * height);
+            trendCtx.lineTo(0.752 * width, 0.63 * height);
+            trendCtx.stroke();
+        }
         return trendBuffer;
     }
 
@@ -13368,35 +13377,35 @@ var steelseries = function() {
         rotationOffset = (rotationOffset === undefined ? -Math.PI / 2 : rotationOffset);
 
         this.fill = function(ctx, centerX, centerY, innerX, outerX) {
+
+            var TWO_PI = 2 * Math.PI;
             var startAngle;
             var stopAngle;
             var RAD_FACTOR = 180 / Math.PI;
-            var TWO_PI = 2 * Math.PI;
-            // Make the step value equate to a single pixel at the outer radius
-            var angleStep = 1 / outerX;
-
-            var range;
-            var startColor;
-            var stopColor;
-
+            var radius = innerX + (outerX - innerX) * 0.5;
+            var angleStep = TWO_PI / Math.max(360, outerX * 2.2);
             ctx.save();
             ctx.lineWidth = 1.5;
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
-
+            ctx.translate(-centerX, -centerY);
             for (var i = 0, size = fractions.length - 1; i < size; i++) {
                 startAngle = TWO_PI * fractions[i];
                 stopAngle = TWO_PI * fractions[i + 1];
-                range = (stopAngle - startAngle) * RAD_FACTOR;
+                range = stopAngle - startAngle;
                 startColor = colors[i];
                 stopColor = colors[i + 1];
                 for (var angle = startAngle; angle < stopAngle; angle += angleStep) {
-                    ctx.rotate(angleStep);
-                    ctx.strokeStyle = getColorFromFraction(startColor, stopColor, range, (angle - startAngle) * RAD_FACTOR).getRgbaColor();
                     ctx.beginPath();
-                    ctx.moveTo(innerX, 0);
-                    ctx.lineTo(outerX, 0);
-                    ctx.closePath();
+                    ctx.fillStyle = getColorFromFraction(startColor, stopColor, range, (angle - startAngle)).getRgbaColor();
+                    ctx.strokeStyle = ctx.fillStyle;
+                    if (innerX > 0) {
+                        ctx.arc(centerX, centerY, innerX, angle + angleStep, angle, true);
+                    } else {
+                        ctx.moveTo(centerX, centerY);
+                    }
+                    ctx.arc(centerX, centerY, outerX, angle, angle + angleStep);
+                    ctx.fill();
                     ctx.stroke();
                 }
             }
