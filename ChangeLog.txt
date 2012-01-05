@@ -1,5 +1,10 @@
 Main Changes
 
+v0.9.8a
+> General Changes
+  * Fixed bug introduced into radialVertical
+  * Minor tweak to the TrenIndicator
+
 v0.9.8
 > Radial
   * Tweaked the trend indicator, switched segments from dark colour to gray background when 'off'

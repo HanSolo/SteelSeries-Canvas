@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 04.01.2012
- * Revision      : 0.9.8
+ * Last modified : 05.01.2012
+ * Revision      : 0.9.8a
  */
 
 var steelseries = function() {
@@ -2610,6 +2610,7 @@ var steelseries = function() {
             }
 
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+            mainCtx.save();
 
             // Draw frame
             mainCtx.drawImage(frameBuffer, 0, 0);
@@ -2690,6 +2691,7 @@ var steelseries = function() {
                 mainCtx.translate(-centerX, -centerX);
             }
             mainCtx.drawImage(foregroundBuffer, 0, 0);
+            mainCtx.restore();
             mainCtx.restore();
         };
 
@@ -12772,18 +12774,11 @@ var steelseries = function() {
         // draw up arrow (red)
         var ledColor = steelseries.LedColor.RED_LED;
         if (onSection.state === 'up') {
-            fill = trendCtx.createRadialGradient(0.5 * width, 0.198 * height, 0, 0.5 * width, 0.198 * height, width * 0.5);
-            fill.addColorStop(0, ledColor.innerColor1_ON);
-            fill.addColorStop(0.2, ledColor.innerColor2_ON);
-            fill.addColorStop(1, ledColor.outerColor_ON);
-
+            fill = ledColor.outerColor_ON;
         } else {
-            fill = trendCtx.createLinearGradient(0, 0, 0, 0.37 * height);
+            fill = trendCtx.createLinearGradient(0, 0, 0, 0.5 * height);
             fill.addColorStop(0, '#323232');
             fill.addColorStop(1, '#5c5c5c');
-//            fill.addColorStop(0, ledColor.innerColor1_OFF);
-//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-//            fill.addColorStop(1, ledColor.outerColor_OFF);
         }
         trendCtx.fillStyle = fill;
         trendCtx.beginPath();
@@ -12819,23 +12814,28 @@ var steelseries = function() {
         ledColor = steelseries.LedColor.GREEN_LED;
         trendCtx.beginPath();
         if (onSection.state === 'steady') {
-            fill = trendCtx.createRadialGradient(0.5 * width, 0.5 * height, 0, 0.5 * width, 0.5 * height, 0.744* width);
-            fill.addColorStop(0, ledColor.innerColor2_ON);
-            fill.addColorStop(0.2, ledColor.outerColor_ON);
-            fill.addColorStop(1, ledColor.outerColor_ON);
+            fill = ledColor.outerColor_ON;
+            trendCtx.fillStyle = fill;
+            trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
+            trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+            trendCtx.closePath();
+            trendCtx.fill();
         } else {
-            fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.516 * height + 0.074 * height);
+            fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.41 * height + 0.074 * height);
             fill.addColorStop(0, '#323232');
             fill.addColorStop(1, '#5c5c5c');
-//            fill.addColorStop(0, ledColor.innerColor1_OFF);
-//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-//            fill.addColorStop(1, ledColor.outerColor_OFF);
+            trendCtx.fillStyle = fill;
+            trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
+            trendCtx.closePath();
+            trendCtx.fill();
+            fill = trendCtx.createLinearGradient(0, 0.516 * height, 0, 0.516 * height + 0.074 * height);
+            fill.addColorStop(0, '#323232');
+            fill.addColorStop(1, '#5c5c5c');
+            trendCtx.fillStyle = fill;
+            trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+            trendCtx.closePath();
+            trendCtx.fill();
         }
-        trendCtx.fillStyle = fill;
-        trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
-        trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
-        trendCtx.closePath();
-        trendCtx.fill();
         if (onSection.state !== 'steady') {
             // inner shadow
             trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
@@ -12865,17 +12865,11 @@ var steelseries = function() {
         // draw down arrow
         ledColor = steelseries.LedColor.CYAN_LED;
         if (onSection.state === 'down') {
-            fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, width * 0.5);
-            fill.addColorStop(0, ledColor.innerColor1_ON);
-            fill.addColorStop(0.2, ledColor.innerColor2_ON);
-            fill.addColorStop(1, ledColor.outerColor_ON);
+            fill = ledColor.outerColor_ON;
         } else {
             fill = trendCtx.createLinearGradient(0, 0.63 * height, 0, height);
             fill.addColorStop(0, '#323232');
             fill.addColorStop(1, '#5c5c5c');
-//            fill.addColorStop(0, ledColor.innerColor1_OFF);
-//            fill.addColorStop(0.2, ledColor.innerColor2_OFF);
-//            fill.addColorStop(1, ledColor.outerColor_OFF);
         }
         trendCtx.beginPath();
         trendCtx.fillStyle = fill;
