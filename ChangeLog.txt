@@ -1,5 +1,9 @@
 Main Changes
 
+v0.9.8b
+> General Changes
+  * Fixed bug in title/unit centring on Radial gauges
+
 v0.9.8a
 > General Changes
   * Fixed bug introduced into radialVertical

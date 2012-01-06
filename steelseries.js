@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 05.01.2012
- * Revision      : 0.9.8a
+ * Last modified : 06.01.2012
+ * Revision      : 0.9.8b
  */
 
 var steelseries = function() {
@@ -12915,7 +12915,7 @@ var steelseries = function() {
         var baseSize = imageWidth;
 
         ctx.save();
-        ctx.textAlign = 'left';
+        ctx.textAlign = (radial ? 'center' : 'left');
         ctx.textBaseline = 'middle';
         ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
         ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
@@ -12925,10 +12925,8 @@ var steelseries = function() {
 
         if (radial) {
             ctx.font = 0.046728 * imageWidth + 'px sans-serif';
-            var titleWidth = ctx.measureText(titleString).width;
-            ctx.fillText(titleString, (imageWidth - titleWidth) / 2, imageHeight * 0.3, imageWidth * 0.3);
-//            ctx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
-            ctx.fillText(unitString, (imageWidth - Math.min(unitWidth, imageWidth * 0.2)) / 2, imageHeight * 0.38, imageWidth * 0.2);
+            ctx.fillText(titleString, imageWidth / 2, imageHeight * 0.3, imageWidth * 0.3);
+            ctx.fillText(unitString, imageWidth / 2, imageHeight * 0.38, imageWidth * 0.3);
         } else {
             if (vertical) {
                 ctx.font = 0.1 * imageWidth + 'px sans-serif';
@@ -12944,17 +12942,13 @@ var steelseries = function() {
                 if (altPos) {
                     ctx.fillText(unitString, 0.63 * imageWidth, imageHeight * 0.85, imageWidth * 0.2);
                 } else {
-                    ctx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.89, imageWidth * 0.2);
+                    ctx.fillText(unitString, imageWidth / 2, imageHeight * 0.89, imageWidth * 0.2);
                 }
             } else {
-                //var titleWidth = ctx.measureText(titleString).width;
                 ctx.font = 0.1 * imageHeight + 'px sans-serif';
-                ctx.fillText(titleString, (imageWidth * 0.15), imageHeight * 0.25, imageWidth * 0.3);
-                //var unitWidth = ctx.measureText(unitString).width;
-//                ctx.font = 0.025 * imageWidth + 'px sans-serif';
+                ctx.fillText(titleString, imageWidth * 0.15, imageHeight * 0.25, imageWidth * 0.3);
                 ctx.font = 0.03 * imageWidth + 'px sans-serif';
-//                ctx.fillText(unitString, (imageWidth * 0.0625), imageHeight * 0.7, imageWidth * 0.2);
-                ctx.fillText(unitString, (imageWidth * 0.0625), imageHeight * 0.7, imageWidth * 0.07);
+                ctx.fillText(unitString, imageWidth * 0.0625, imageHeight * 0.7, imageWidth * 0.07);
             }
         }
 
