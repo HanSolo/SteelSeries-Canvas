@@ -1,5 +1,11 @@
 Main Changes
 
+v0.9.9
+> General Changes
+  * Added TURNED background pattern to Radial and Linear gauges
+  * Added pointer TYPE15
+  * Added shadow blurring to all pointers
+
 v0.9.8b
 > General Changes
   * Fixed bug in title/unit centring on Radial gauges

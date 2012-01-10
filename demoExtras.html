@@ -41,6 +41,7 @@
                     <option value="STAINLESS">Stainless</option>
                     <option value="BRUSHED_METAL">BrushedMetal</option>
                     <option value="BRUSHED_STAINLESS">BrushedStainless</option>
+                    <option value="TURNED">Turned</option>
                 </select>
                 <select id="comboPointerColor" onchange="setPointerColor(this)">
                     <option selected="selected" value="">Pointer color</option>
@@ -513,6 +514,13 @@
                 radial3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                break;
+            case "TURNED":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                clock1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                altimeter1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
                 break;
         }
     }

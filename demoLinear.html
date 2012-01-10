@@ -41,6 +41,7 @@
                     <option value="STAINLESS">Stainless</option>
                     <option value="BRUSHED_METAL">BrushedMetal</option>
                     <option value="BRUSHED_STAINLESS">BrushedStainless</option>
+                    <option value="TURNED">Turned</option>
                 </select>
                 <select id="comboValueColor" onchange="setValueColor(this)">
                     <option selected="selected" value="">Value color</option>
@@ -449,6 +450,14 @@
                 linear5.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 linear3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 linear6.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                break;
+            case "TURNED":
+                linear1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                linear2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                linear4.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                linear5.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                linear3.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                linear6.setBackgroundColor(steelseries.BackgroundColor.TURNED);
                 break;
         }
     }

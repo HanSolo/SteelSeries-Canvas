@@ -41,6 +41,7 @@
                     <option value="STAINLESS">Stainless</option>
                     <option value="BRUSHED_METAL">BrushedMetal</option>
                     <option value="BRUSHED_STAINLESS">BrushedStainless</option>
+                    <option value="TURNED">Turned</option>
                 </select>
                 <select id="comboPointerColor" onchange="setPointerColor(this)">
                     <option selected="selected" value="">Pointer color</option>
@@ -74,6 +75,7 @@
                     <option value="TYPE12">Type12</option>
                     <option value="TYPE13">Type13</option>
                     <option value="TYPE14">Type14</option>
+                    <option value="TYPE15">Type15</option>
                 </select>
                 <select id="comboLcdColor" onchange="setLcdColor(this)">
                     <option selected="selected" value="">LCD color</option>
@@ -641,6 +643,18 @@
                 vertical1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 vertical2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 break;
+            case "TURNED":
+                radial1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial3.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial4.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial5.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial6.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial7.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                radial8.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                vertical1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                vertical2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                break;
         }
     }
 
@@ -983,6 +997,14 @@
                 radial4.setPointerType(steelseries.PointerType.TYPE14);
                 vertical1.setPointerType(steelseries.PointerType.TYPE14);
                 vertical2.setPointerType(steelseries.PointerType.TYPE14);
+                break;
+            case "TYPE15":
+                radial1.setPointerType(steelseries.PointerType.TYPE15);
+                radial2.setPointerType(steelseries.PointerType.TYPE15);
+                radial3.setPointerType(steelseries.PointerType.TYPE15);
+                radial4.setPointerType(steelseries.PointerType.TYPE15);
+                vertical1.setPointerType(steelseries.PointerType.TYPE15);
+                vertical2.setPointerType(steelseries.PointerType.TYPE15);
                 break;
         }
     }
