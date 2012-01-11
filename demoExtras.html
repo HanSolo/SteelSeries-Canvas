@@ -75,6 +75,8 @@
                     <option value="TYPE12">Type12</option>
                     <option value="TYPE13">Type13</option>
                     <option value="TYPE14">Type14</option>
+                    <option value="TYPE15">Type15</option>
+                    <option value="TYPE16">Type16</option>
                 </select>
                 <select id="comboLcdColor" onchange="setLcdColor(this)">
                     <option selected="selected" value="">LCD color</option>
@@ -154,6 +156,9 @@
                     <option value="TYPE11">Type11</option>
                     <option value="TYPE12">Type12</option>
                     <option value="TYPE13">Type13</option>
+                    <option value="TYPE14">Type14</option>
+                    <option value="TYPE15">Type15</option>
+                    <option value="TYPE16">Type16</option>
                 </select>
             </td>
         </tr>
@@ -713,6 +718,14 @@
                 radial1.setPointerType(steelseries.PointerType.TYPE14);
                 radial2.setPointerType(steelseries.PointerType.TYPE14);
                 break;
+            case "TYPE15":
+                radial1.setPointerType(steelseries.PointerType.TYPE15);
+                radial2.setPointerType(steelseries.PointerType.TYPE15);
+                break;
+            case "TYPE16":
+                radial1.setPointerType(steelseries.PointerType.TYPE16);
+                radial2.setPointerType(steelseries.PointerType.TYPE16);
+                break;
         }
     }
 
@@ -944,6 +957,12 @@
                 break;
             case "TYPE14":
                 radial2.setPointerTypeAverage(steelseries.PointerType.TYPE14);
+                break;
+            case "TYPE15":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE15);
+                break;
+            case "TYPE16":
+                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE16);
                 break;
         }
     }

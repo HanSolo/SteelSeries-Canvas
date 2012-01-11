@@ -1,9 +1,15 @@
 Main Changes
 
+v0.9.10
+> General Changes
+  * Added pointer TYPE16 - the same as Gerrits stopwatch pointer,
+    and TYPE15 without the crescent - as it was very easy to do!
+  * Added 'glow' to the trend indicator
+
 v0.9.9
 > General Changes
   * Added TURNED background pattern to Radial and Linear gauges
-  * Added pointer TYPE15
+  * Added TYPE15 crescent pointer based on stopwatch pointer
   * Added shadow blurring to all pointers
 
 v0.9.8b

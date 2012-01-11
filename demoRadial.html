@@ -76,6 +76,7 @@
                     <option value="TYPE13">Type13</option>
                     <option value="TYPE14">Type14</option>
                     <option value="TYPE15">Type15</option>
+                    <option value="TYPE16">Type16</option>
                 </select>
                 <select id="comboLcdColor" onchange="setLcdColor(this)">
                     <option selected="selected" value="">LCD color</option>
@@ -1005,6 +1006,14 @@
                 radial4.setPointerType(steelseries.PointerType.TYPE15);
                 vertical1.setPointerType(steelseries.PointerType.TYPE15);
                 vertical2.setPointerType(steelseries.PointerType.TYPE15);
+                break;
+            case "TYPE16":
+                radial1.setPointerType(steelseries.PointerType.TYPE16);
+                radial2.setPointerType(steelseries.PointerType.TYPE16);
+                radial3.setPointerType(steelseries.PointerType.TYPE16);
+                radial4.setPointerType(steelseries.PointerType.TYPE16);
+                vertical1.setPointerType(steelseries.PointerType.TYPE16);
+                vertical2.setPointerType(steelseries.PointerType.TYPE16);
                 break;
         }
     }

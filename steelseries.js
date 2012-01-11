@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 10.01.2012
- * Revision      : 0.9.9
+ * Last modified : 11.01.2012
+ * Revision      : 0.9.10
  */
 
 var steelseries = function() {
@@ -68,8 +68,8 @@ var steelseries = function() {
 
         var trendIndicator = steelseries.TrendState.OFF;
         var trendSize = size * 0.06;
-        var trendPosX = size * 0.33;
-        var trendPosY = size * 0.38;
+        var trendPosX = size * 0.29;
+        var trendPosY = size * 0.36;
 
         // GaugeType specific private variables
         var freeAreaAngle;
@@ -603,7 +603,7 @@ var steelseries = function() {
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
-                var knobVisible = (pointerType.type === 'type15' ? false : true);
+                var knobVisible = (pointerType.type === 'type15' || pointerType.type === 'type16' ? false : true);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle, gaugeType);
             }
 
@@ -2382,7 +2382,7 @@ var steelseries = function() {
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground) {
-                var knobVisible = (pointerType.type === 'type15' ? false : true);
+                var knobVisible = (pointerType.type === 'type15' || pointerType.type === 'type16' ? false : true);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle, gaugeType, orientation);
             }
         };
@@ -6882,7 +6882,8 @@ var steelseries = function() {
             }
 
             if (drawForeground) {
-                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
+                var knobVisible = (pointerTypeLatest.type === 'type15' || pointerTypeLatest.type === 'type16' ? false : true);
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle);
             }
         };
 
@@ -11215,22 +11216,29 @@ var steelseries = function() {
                 break;
 
             case 'type15':
-                // POINTER TYPE15 - Classic
+                // POINTER TYPE15 - Classic with crescent
+            case 'type16':
+                // POINTER TYPE16 - Classic without crescent
                 ctx.beginPath();
                 ctx.moveTo(size * 0.509345, size * 0.457943);
-                ctx.lineTo(size * 0.5015, size * 0.132803);
-                ctx.lineTo(size * 0.4985, size * 0.132803);
+                ctx.lineTo(size * 0.5015, size * 0.13);
+                ctx.lineTo(size * 0.4985, size * 0.13);
                 ctx.lineTo(size * 0.490654, size * 0.457943);
                 ctx.bezierCurveTo(size * 0.490654, size * 0.457943, size * 0.490654, size * 0.457943, size * 0.490654, size * 0.457943);
                 ctx.bezierCurveTo(size * 0.471962, size * 0.462616, size * 0.457943, size * 0.481308, size * 0.457943, size * 0.5);
                 ctx.bezierCurveTo(size * 0.457943, size * 0.518691, size * 0.471962, size * 0.537383, size * 0.490654, size * 0.542056);
                 ctx.bezierCurveTo(size * 0.490654, size * 0.542056, size * 0.490654, size * 0.542056, size * 0.490654, size * 0.542056);
-                ctx.lineTo(size * 0.490654, size * 0.57);
-                ctx.bezierCurveTo(size * 0.46, size * 0.58, size * 0.46, size * 0.62, size * 0.490654, size * 0.63);
-                ctx.bezierCurveTo(size * 0.47, size * 0.62, size * 0.48, size * 0.59, size * 0.5, size * 0.59);
-                ctx.bezierCurveTo(size * 0.53, size * 0.59, size * 0.52, size * 0.62, size * 0.509345, size * 0.63);
-                ctx.bezierCurveTo(size * 0.54, size * 0.62, size * 0.54, size * 0.58, size * 0.509345, size * 0.57);
-                ctx.lineTo(size * 0.509345, size * 0.57);
+                if (ptrType.type === 'type15') {
+                    ctx.lineTo(size * 0.490654, size * 0.57);
+                    ctx.bezierCurveTo(size * 0.46, size * 0.58, size * 0.46, size * 0.62, size * 0.490654, size * 0.63);
+                    ctx.bezierCurveTo(size * 0.47, size * 0.62, size * 0.48, size * 0.59, size * 0.5, size * 0.59);
+                    ctx.bezierCurveTo(size * 0.53, size * 0.59, size * 0.52, size * 0.62, size * 0.509345, size * 0.63);
+                    ctx.bezierCurveTo(size * 0.54, size * 0.62, size * 0.54, size * 0.58, size * 0.509345, size * 0.57);
+                    ctx.lineTo(size * 0.509345, size * 0.57);
+                } else {
+                    ctx.lineTo(size * 0.490654, size * 0.621495);
+                    ctx.lineTo(size * 0.509345, size * 0.621495);
+                }
                 ctx.lineTo(size * 0.509345, size * 0.542056);
                 ctx.bezierCurveTo(size * 0.509345, size * 0.542056, size * 0.509345, size * 0.542056, size * 0.509345, size * 0.542056);
                 ctx.bezierCurveTo(size * 0.528037, size * 0.537383, size * 0.542056, size * 0.518691, size * 0.542056, size * 0.5);
@@ -11240,7 +11248,11 @@ var steelseries = function() {
                 if (shadow) {
                     ctx.fill();
                 } else {
-                    grad = ctx.createLinearGradient(0, 0, 0, size * 0.63);
+                    if (ptrType.type === 'type15') {
+                        grad = ctx.createLinearGradient(0, 0, 0, size * 0.63);
+                    } else {
+                        grad = ctx.createLinearGradient(0, 0, 0, size * 0.621495);
+                    }
                     grad.addColorStop(0, ptrColor.medium.getRgbaColor());
                     grad.addColorStop(0.388888, ptrColor.medium.getRgbaColor());
                     grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
@@ -12922,145 +12934,185 @@ var steelseries = function() {
 
     var createTrendIndicator = function(width, onSection) {
         var height = width * 2;
-        var trendBuffer = createBuffer(width, height);
+        // create oversized buffer for the glow
+        var trendBuffer = createBuffer(width * 2, width * 4);
         var trendCtx = trendBuffer.getContext('2d');
         var fill, stroke;
-        trendCtx.save();
-        // draw up arrow (red)
-        var ledColor = steelseries.LedColor.RED_LED;
-        if (onSection.state === 'up') {
-            fill = ledColor.outerColor_ON;
-        } else {
-            fill = trendCtx.createLinearGradient(0, 0, 0, 0.5 * height);
-            fill.addColorStop(0, '#323232');
-            fill.addColorStop(1, '#5c5c5c');
-        }
-        trendCtx.fillStyle = fill;
-        trendCtx.beginPath();
-        trendCtx.moveTo(0.5 * width, 0);
-        trendCtx.lineTo(width, 0.2 * height);
-        trendCtx.lineTo(0.752 * width, 0.2 * height);
-        trendCtx.lineTo(0.752 * width, 0.37 * height);
-        trendCtx.lineTo(0.252 * width, 0.37 * height);
-        trendCtx.lineTo(0.252 * width, 0.2 * height);
-        trendCtx.lineTo(0, 0.2 * height);
-        trendCtx.closePath();
-        trendCtx.fill();
-        if (onSection.state !== 'up') {
-            // Inner shadow
-            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+
+        var drawUpArrow = function () {
+            // draw up arrow (red)
+            var ledColor = steelseries.LedColor.RED_LED;
+            if (onSection.state === 'up') {
+                fill = ledColor.outerColor_ON;
+                trendCtx.shadowColor = ledColor.coronaColor;
+                trendCtx.shadowBlur = width * 0.25;
+            } else {
+                fill = trendCtx.createLinearGradient(0, 0, 0, 0.5 * height);
+                fill.addColorStop(0, '#323232');
+                fill.addColorStop(1, '#5c5c5c');
+                trendCtx.shadowBlur = 0;
+            }
+            trendCtx.fillStyle = fill;
             trendCtx.beginPath();
-            trendCtx.moveTo(0, 0.2 * height);
-            trendCtx.lineTo(0.5 * width, 0);
+            trendCtx.moveTo(0.5 * width, 0);
             trendCtx.lineTo(width, 0.2 * height);
-            trendCtx.moveTo(0.252 * width, 0.2 * height);
-            trendCtx.lineTo(0.252 * width, 0.37 * height);
-            trendCtx.stroke();
-            // Inner highlight
-            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.252 * width, 0.37 * height);
-            trendCtx.lineTo(0.752 * width, 0.37 * height);
             trendCtx.lineTo(0.752 * width, 0.2 * height);
-            trendCtx.lineTo(width, 0.2 * height);
-            trendCtx.stroke();
-        }
-        // draw equal symbol
-        ledColor = steelseries.LedColor.GREEN_LED;
-        trendCtx.beginPath();
-        if (onSection.state === 'steady') {
-            fill = ledColor.outerColor_ON;
-            trendCtx.fillStyle = fill;
-            trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
-            trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+            trendCtx.lineTo(0.752 * width, 0.37 * height);
+            trendCtx.lineTo(0.252 * width, 0.37 * height);
+            trendCtx.lineTo(0.252 * width, 0.2 * height);
+            trendCtx.lineTo(0, 0.2 * height);
             trendCtx.closePath();
             trendCtx.fill();
-        } else {
-            fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.41 * height + 0.074 * height);
-            fill.addColorStop(0, '#323232');
-            fill.addColorStop(1, '#5c5c5c');
+            if (onSection.state !== 'up') {
+                // Inner shadow
+                trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0, 0.2 * height);
+                trendCtx.lineTo(0.5 * width, 0);
+                trendCtx.lineTo(width, 0.2 * height);
+                trendCtx.moveTo(0.252 * width, 0.2 * height);
+                trendCtx.lineTo(0.252 * width, 0.37 * height);
+                trendCtx.stroke();
+                // Inner highlight
+                trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.252 * width, 0.37 * height);
+                trendCtx.lineTo(0.752 * width, 0.37 * height);
+                trendCtx.lineTo(0.752 * width, 0.2 * height);
+                trendCtx.lineTo(width, 0.2 * height);
+                trendCtx.stroke();
+            }
+        };
+
+        var drawEquals = function() {
+            // draw equal symbol
+            ledColor = steelseries.LedColor.GREEN_LED;
+            trendCtx.beginPath();
+            if (onSection.state === 'steady') {
+                fill = ledColor.outerColor_ON;
+                trendCtx.fillStyle = fill;
+                trendCtx.shadowColor = ledColor.coronaColor;
+                trendCtx.shadowBlur = width * 0.25;
+                trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
+                trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+                trendCtx.closePath();
+                trendCtx.fill();
+            } else {
+                fill = trendCtx.createLinearGradient(0, 0.41 * height, 0, 0.41 * height + 0.074 * height);
+                fill.addColorStop(0, '#323232');
+                fill.addColorStop(1, '#5c5c5c');
+                trendCtx.fillStyle = fill;
+                trendCtx.shadowBlur = 0;
+                trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
+                trendCtx.closePath();
+                trendCtx.fill();
+                fill = trendCtx.createLinearGradient(0, 0.516 * height, 0, 0.516 * height + 0.074 * height);
+                fill.addColorStop(0, '#323232');
+                fill.addColorStop(1, '#5c5c5c');
+                trendCtx.fillStyle = fill;
+                trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
+                trendCtx.closePath();
+                trendCtx.fill();
+            }
+            if (onSection.state !== 'steady') {
+                // inner shadow
+                trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.128 * width, 0.41 * height + 0.074 * height);
+                trendCtx.lineTo(0.128 * width, 0.41 * height);
+                trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height);
+                trendCtx.stroke();
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.128 * width, 0.516 * height + 0.074 * height);
+                trendCtx.lineTo(0.128 * width, 0.516 * height);
+                trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height);
+                trendCtx.stroke();
+                // inner highlight
+                trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.128 * width + 0.744 * width, 0.41 * height);
+                trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height + 0.074 * height);
+                trendCtx.lineTo(0.128 * width, 0.41 * height + 0.074 * height);
+                trendCtx.stroke();
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.128 * width + 0.744 * width, 0.516 * height);
+                trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
+                trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
+                trendCtx.stroke();
+            }
+        };
+
+        var drawDownArrow = function () {
+            // draw down arrow
+            ledColor = steelseries.LedColor.CYAN_LED;
+            if (onSection.state === 'down') {
+                fill = ledColor.outerColor_ON;
+                trendCtx.shadowColor = ledColor.coronaColor;
+                trendCtx.shadowBlur = width * 0.25;
+            } else {
+                fill = trendCtx.createLinearGradient(0, 0.63 * height, 0, height);
+                fill.addColorStop(0, '#323232');
+                fill.addColorStop(1, '#5c5c5c');
+                trendCtx.shadowBlur = 0;
+            }
+            trendCtx.beginPath();
             trendCtx.fillStyle = fill;
-            trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
-            trendCtx.closePath();
-            trendCtx.fill();
-            fill = trendCtx.createLinearGradient(0, 0.516 * height, 0, 0.516 * height + 0.074 * height);
-            fill.addColorStop(0, '#323232');
-            fill.addColorStop(1, '#5c5c5c');
-            trendCtx.fillStyle = fill;
-            trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
-            trendCtx.closePath();
-            trendCtx.fill();
-        }
-        if (onSection.state !== 'steady') {
-            // inner shadow
-            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.128 * width, 0.41 * height + 0.074 * height);
-            trendCtx.lineTo(0.128 * width, 0.41 * height);
-            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height);
-            trendCtx.stroke();
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.128 * width, 0.516 * height + 0.074 * height);
-            trendCtx.lineTo(0.128 * width, 0.516 * height);
-            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height);
-            trendCtx.stroke();
-            // inner highlight
-            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.128 * width + 0.744 * width, 0.41 * height);
-            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.41 * height + 0.074 * height);
-            trendCtx.lineTo(0.128 * width, 0.41 * height + 0.074 * height);
-            trendCtx.stroke();
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.128 * width + 0.744 * width, 0.516 * height);
-            trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
-            trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
-            trendCtx.stroke();
-        }
-        // draw down arrow
-        ledColor = steelseries.LedColor.CYAN_LED;
-        if (onSection.state === 'down') {
-            fill = ledColor.outerColor_ON;
-        } else {
-            fill = trendCtx.createLinearGradient(0, 0.63 * height, 0, height);
-            fill.addColorStop(0, '#323232');
-            fill.addColorStop(1, '#5c5c5c');
-        }
-        trendCtx.beginPath();
-        trendCtx.fillStyle = fill;
-        trendCtx.moveTo(0.5 * width, height);
-        trendCtx.lineTo(width, 0.8 * height);
-        trendCtx.lineTo(0.725 * width, 0.8 * height);
-        trendCtx.lineTo(0.725 * width, 0.63 * height);
-        trendCtx.lineTo(0.252 * width, 0.63 * height);
-        trendCtx.lineTo(0.252 * width, 0.8 * height);
-        trendCtx.lineTo(0, 0.8 * height);
-        trendCtx.closePath();
-        trendCtx.fill();
-        if (onSection.state !== 'down') {
-            // Inner shadow
-            trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-            trendCtx.beginPath();
-            trendCtx.moveTo(0, 0.8 * height);
+            trendCtx.moveTo(0.5 * width, height);
+            trendCtx.lineTo(width, 0.8 * height);
+            trendCtx.lineTo(0.725 * width, 0.8 * height);
+            trendCtx.lineTo(0.725 * width, 0.63 * height);
+            trendCtx.lineTo(0.252 * width, 0.63 * height);
             trendCtx.lineTo(0.252 * width, 0.8 * height);
-            trendCtx.moveTo(0.252 * width, 0.63 * height);
-            trendCtx.lineTo(0.752 * width, 0.63 * height);
-            trendCtx.stroke();
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.752 * width, 0.8 * height);
-            trendCtx.lineTo(width, 0.8 * height);
-            trendCtx.stroke();
-            // Inner highlight
-            trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            trendCtx.beginPath();
-            trendCtx.moveTo(0, 0.8 * height);
-            trendCtx.lineTo(0.5 * width, height);
-            trendCtx.lineTo(width, 0.8 * height);
-            trendCtx.stroke();
-            trendCtx.beginPath();
-            trendCtx.moveTo(0.752 * width, 0.8 * height);
-            trendCtx.lineTo(0.752 * width, 0.63 * height);
-            trendCtx.stroke();
+            trendCtx.lineTo(0, 0.8 * height);
+            trendCtx.closePath();
+            trendCtx.fill();
+            if (onSection.state !== 'down') {
+                // Inner shadow
+                trendCtx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0, 0.8 * height);
+                trendCtx.lineTo(0.252 * width, 0.8 * height);
+                trendCtx.moveTo(0.252 * width, 0.63 * height);
+                trendCtx.lineTo(0.752 * width, 0.63 * height);
+                trendCtx.stroke();
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.752 * width, 0.8 * height);
+                trendCtx.lineTo(width, 0.8 * height);
+                trendCtx.stroke();
+                // Inner highlight
+                trendCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                trendCtx.beginPath();
+                trendCtx.moveTo(0, 0.8 * height);
+                trendCtx.lineTo(0.5 * width, height);
+                trendCtx.lineTo(width, 0.8 * height);
+                trendCtx.stroke();
+                trendCtx.beginPath();
+                trendCtx.moveTo(0.752 * width, 0.8 * height);
+                trendCtx.lineTo(0.752 * width, 0.63 * height);
+                trendCtx.stroke();
+            }
+        };
+
+        trendCtx.save();
+        trendCtx.translate(width * 0.5, width * 0.5);
+        // Must draw the active section last so the 'glow' is on top
+        switch (onSection.state) {
+            case 'up':
+                drawDownArrow();
+                drawEquals();
+                drawUpArrow();
+                break;
+            case 'steady':
+                drawDownArrow();
+                drawUpArrow();
+                drawEquals();
+                break;
+            case 'down':
+            default:
+                drawUpArrow();
+                drawEquals();
+                drawDownArrow();
+                break;
         }
         return trendBuffer;
     }
@@ -14440,7 +14492,8 @@ var steelseries = function() {
         TYPE12: new pointerTypeDef('type12'),
         TYPE13: new pointerTypeDef('type13'),
         TYPE14: new pointerTypeDef('type14'),
-        TYPE15: new pointerTypeDef('type15')
+        TYPE15: new pointerTypeDef('type15'),
+        TYPE16: new pointerTypeDef('type16')
     };
 
     var foregroundType = {
