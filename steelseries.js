@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 11.01.2012
- * Revision      : 0.9.10
+ * Last modified : 13.01.2012
+ * Revision      : 0.9.11
  */
 
 var steelseries = function() {
@@ -580,7 +580,7 @@ var steelseries = function() {
                     backgroundContext.translate(centerX, centerY);
                     backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
                     backgroundContext.translate(-centerX, -centerY);
-                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.480369, imageHeight * 0.13);
+                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.13);
                     backgroundContext.translate(centerX, centerY);
                     backgroundContext.restore();
                 }
@@ -2294,22 +2294,12 @@ var steelseries = function() {
 
             // Draw min measured value indicator in minMeasuredValueBuffer
             if (minMeasuredValueVisible) {
-                if (steelseries.Orientation.WEST === orientation) {
-                    minMeasuredValueCtx.translate(centerX, centerX);
-                    minMeasuredValueCtx.rotate(-Math.PI / 2);
-                    minMeasuredValueCtx.translate(-centerX, -centerX);
-                }
                 minMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.BLUE.dark.getRgbaColor(), true, true), 0, 0);
                 minMeasuredValueCtx.restore();
             }
 
             // Draw max measured value indicator in maxMeasuredValueBuffer
             if (maxMeasuredValueVisible) {
-                if (steelseries.Orientation.WEST === orientation) {
-                    maxMeasuredValueCtx.translate(centerX, centerX);
-                    maxMeasuredValueCtx.rotate(-Math.PI / 2);
-                    maxMeasuredValueCtx.translate(-centerX, -centerX);
-                }
                 maxMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.RED.medium.getRgbaColor(), true), 0, 0);
                 maxMeasuredValueCtx.restore();
             }
@@ -2365,7 +2355,7 @@ var steelseries = function() {
                     backgroundContext.translate(centerX, centerY);
                     backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
                     backgroundContext.translate(-centerX, -centerY);
-                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.33);
+                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
                     backgroundContext.restore();
                 }
 
@@ -2649,7 +2639,7 @@ var steelseries = function() {
                 mainCtx.translate(centerX, centerY);
                 mainCtx.rotate(rotationOffset + HALF_PI + (minMeasuredValue - minValue) * angleStep);
                 mainCtx.translate(-centerX, -centerY);
-                mainCtx.drawImage(minMeasuredValueBuffer, mainCtx.canvas.width * 0.4865, mainCtx.canvas.height * 0.105);
+                mainCtx.drawImage(minMeasuredValueBuffer, mainCtx.canvas.width * 0.4865, mainCtx.canvas.height * 0.27);
                 mainCtx.restore();
             }
 
@@ -2659,7 +2649,7 @@ var steelseries = function() {
                 mainCtx.translate(centerX, centerY);
                 mainCtx.rotate(rotationOffset + HALF_PI + (maxMeasuredValue - minValue) * angleStep);
                 mainCtx.translate(-centerX, -centerY);
-                mainCtx.drawImage(maxMeasuredValueBuffer, mainCtx.canvas.width * 0.4865, mainCtx.canvas.height * 0.105);
+                mainCtx.drawImage(maxMeasuredValueBuffer, mainCtx.canvas.width * 0.4865, mainCtx.canvas.height * 0.27);
                 mainCtx.restore();
             }
 
