@@ -7,7 +7,7 @@ v0.9.11
   * Fixed min/max indicators not displaying in correct place in orientation:North, and
     not displaying at all in orientation:West
 > General Changes
-  * Added new LCD colours AMBER and LIGHTBLUE
+  * Added new LCD colours AMBER and LIGHTBLUE 
 
 v0.9.10
 > General Changes
