@@ -5,9 +5,9 @@ v0.9.11
   * Fixed misalignment of threshold indicator
 > RadialVertical
   * Fixed min/max indicators not displaying in correct place in orientation:North, and
-    not displaying at all in orientation:West
+    not displaying at all in orientation:Wes
 > General Changes
-  * Added new LCD colours AMBER and LIGHTBLUE 
+  * Added new LCD colours AMBER and LIGHTBLUE
 
 v0.9.10
 > General Changes
