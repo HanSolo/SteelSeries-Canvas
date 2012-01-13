@@ -5,7 +5,9 @@ v0.9.11
   * Fixed misalignment of threshold indicator
 > RadialVertical
   * Fixed min/max indicators not displaying in correct place in orientation:North, and
-    not displaying at all in orientation:Wes
+    not displaying at all in orientation:West
+> TrafficLight
+  * Fixed typo bug that caused component to not work correct in InternetExplorer
 > General Changes
   * Added new LCD colours AMBER and LIGHTBLUE
 

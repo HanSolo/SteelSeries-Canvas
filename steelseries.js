@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 13.01.2012
- * Revision      : 0.9.11
+ * Revision      : 0.9.11a
  */
 
 var steelseries = function() {
@@ -10105,7 +10105,7 @@ var steelseries = function() {
             lightRedFrameFill.addColorStop(0, '#ffffff');
             lightRedFrameFill.addColorStop(0.05, '#cccccc');
             lightRedFrameFill.addColorStop(0.1, '#999999');
-            lightRedFrameFill.addColorStop(0.17, '666666');
+            lightRedFrameFill.addColorStop(0.17, '#666666');
             lightRedFrameFill.addColorStop(0.27, '#333333');
             lightRedFrameFill.addColorStop(1, '#010101');
             ctx.fillStyle = lightRedFrameFill;
