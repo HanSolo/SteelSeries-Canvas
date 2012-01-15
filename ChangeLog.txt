@@ -1,5 +1,11 @@
 Main Changes
 
+v0.9.12
+> Linear/LinearBargraph
+  * Added missing darker value track for the TURNED background
+  * Fixed up misalignment of bargraph track backgrounds
+  * Changed so zero value lights first LED to be consistent with RadialBargraphs
+
 v0.9.11
 > Radial
   * Fixed misalignment of threshold indicator

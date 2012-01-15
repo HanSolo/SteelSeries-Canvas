@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 13.01.2012
- * Revision      : 0.9.11a
+ * Last modified : 15.01.2012
+ * Revision      : 0.9.12
  */
 
 var steelseries = function() {
@@ -3291,7 +3291,9 @@ var steelseries = function() {
             }
             var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
                           backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
-                          backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
+                          backgroundColor === steelseries.BackgroundColor.STAINLESS ||
+                          backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS ||
+                          backgroundColor === steelseries.BackgroundColor.TURNED) ? 0.3 : 0;
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
             labelColor.setAlpha(0.05 + darker);
             valueBackgroundTrackGradient.addColorStop(0, labelColor.getRgbaColor());
@@ -4320,7 +4322,7 @@ var steelseries = function() {
                 valueBackgroundStartX = 0;
                 valueBackgroundStartY = top;
                 valueBackgroundStopX = 0;
-                valueBackgroundStopY = top + fullSize;
+                valueBackgroundStopY = top + fullSize * 1.014;
             } else {
                 // Horizontal orientation
                 top = imageWidth * 0.856796; // position of max value
@@ -4328,15 +4330,17 @@ var steelseries = function() {
                 fullSize = top - bottom;
                 valueSize = fullSize * (value - minValue) / (maxValue - minValue);
                 valueTop = bottom;
-                valueBackgroundStartX = imageWidth * 0.142857;
+                valueBackgroundStartX = imageWidth * 0.13;
                 valueBackgroundStartY = imageHeight * 0.435714;
-                valueBackgroundStopX = valueBackgroundStartX + fullSize;
-                valueBackgroundStopY = valueBackgroundStartY + imageHeight * 0.142857;
+                valueBackgroundStopX = valueBackgroundStartX + fullSize * 1.035;
+                valueBackgroundStopY = valueBackgroundStartY;
             }
 
             var darker = (backgroundColor === steelseries.BackgroundColor.CARBON ||
                           backgroundColor === steelseries.BackgroundColor.PUNCHED_SHEET ||
-                          backgroundColor === steelseries.BackgroundColor.STAINLESS) ? 0.3 : 0;
+                          backgroundColor === steelseries.BackgroundColor.STAINLESS ||
+                          backgroundColor === steelseries.BackgroundColor.BRUSHED_STAINLESS ||
+                          backgroundColor === steelseries.BackgroundColor.TURNED) ? 0.3 : 0;
 
             var valueBackgroundTrackGradient = ctx.createLinearGradient(valueBackgroundStartX, valueBackgroundStartY, valueBackgroundStopX, valueBackgroundStopY);
             labelColor.setAlpha(0.047058 + darker);
@@ -4350,9 +4354,9 @@ var steelseries = function() {
             ctx.fillStyle = valueBackgroundTrackGradient;
 
             if (vertical) {
-                ctx.fillRect(imageWidth * 0.435714, top, imageWidth * 0.142857, fullSize);
+                ctx.fillRect(imageWidth * 0.435714, top, imageWidth * 0.15, fullSize * 1.014);
             } else {
-                ctx.fillRect(valueBackgroundStartX, valueBackgroundStartY, fullSize, imageHeight * 0.142857);
+                ctx.fillRect(valueBackgroundStartX, valueBackgroundStartY, fullSize * 1.035, imageHeight * 0.152857);
             }
 
             if (vertical) {
@@ -4360,7 +4364,7 @@ var steelseries = function() {
                 valueBorderStartX = 0;
                 valueBorderStartY = top;
                 valueBorderStopX = 0;
-                valueBorderStopY = top + fullSize;
+                valueBorderStopY = top + fullSize * 1.014;
             } else {
                 // Horizontal orientation                ;
                 valueBorderStartX = valueBackgroundStartX;
@@ -4380,11 +4384,11 @@ var steelseries = function() {
             valueBorderGradient.addColorStop(1, labelColor.getRgbaColor());
             ctx.fillStyle = valueBorderGradient;
             if (vertical) {
-                ctx.fillRect(imageWidth * 0.435714, top, imageWidth * 0.007142, fullSize);
-                ctx.fillRect(imageWidth * 0.571428, top, imageWidth * 0.007142, fullSize);
+                ctx.fillRect(imageWidth * 0.435714, top, imageWidth * 0.007142, fullSize * 1.014);
+                ctx.fillRect(imageWidth * 0.571428, top, imageWidth * 0.007142, fullSize * 1.014);
             } else {
-                ctx.fillRect(imageWidth * 0.142857, imageHeight * 0.435714, fullSize, imageHeight * 0.007142);
-                ctx.fillRect(imageWidth * 0.142857, imageHeight * 0.571428, fullSize, imageHeight * 0.007142);
+                ctx.fillRect(imageWidth * 0.13, imageHeight * 0.435714, fullSize * 1.035, imageHeight * 0.007142);
+                ctx.fillRect(imageWidth * 0.13, imageHeight * 0.571428, fullSize * 1.035, imageHeight * 0.007142);
             }
 
             // Prepare led specific variables
@@ -4428,37 +4432,35 @@ var steelseries = function() {
                     ctx.translate(0, translateY);
                 }
                 // Draw the active leds in dependence on the current value
-                if (0 !== value) {
-                    activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                    for (translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
-                        //check for LED color
-                        activeLedColor = valueColor;
-                        // Use a gradient for value colors?
-                        if (isGradientVisible) {
-                            // Convert pixel back to value
-                            var currentValue = minValue + (translateY / fullSize) * (maxValue - minValue);
-                            var gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                            var fraction = currentValue / gradRange;
-                            fraction = Math.max(Math.min(fraction, 1),0);
-                            activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
-                        } else if (isSectionsVisible) {
-                            for (var i =0; i < sectionPixels.length; i++) {
-                                if (translateY >= sectionPixels[i].start && translateY < sectionPixels[i].stop) {
-                                    activeLedColor = sectionPixels[i].color;
-                                    break;
-                                }
+                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                for (translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
+                    //check for LED color
+                    activeLedColor = valueColor;
+                    // Use a gradient for value colors?
+                    if (isGradientVisible) {
+                        // Convert pixel back to value
+                        var currentValue = minValue + (translateY / fullSize) * (maxValue - minValue);
+                        var gradRange = valueGradient.getEnd() - valueGradient.getStart();
+                        var fraction = currentValue / gradRange;
+                        fraction = Math.max(Math.min(fraction, 1),0);
+                        activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
+                    } else if (isSectionsVisible) {
+                        for (var i =0; i < sectionPixels.length; i++) {
+                            if (translateY >= sectionPixels[i].start && translateY < sectionPixels[i].stop) {
+                                activeLedColor = sectionPixels[i].color;
+                                break;
                             }
                         }
-                        // Has LED color changed? If so redraw the buffer
-                        if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
-                            drawActiveLed(activeLedContext, activeLedColor);
-                            lastActiveLedColor = activeLedColor;
-                        }
-                        // Draw LED
-                        ctx.translate(0, -translateY);
-                        ctx.drawImage(activeLedBuffer, ledX, ledY);
-                        ctx.translate(0, translateY);
                     }
+                    // Has LED color changed? If so redraw the buffer
+                    if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
+                        drawActiveLed(activeLedContext, activeLedColor);
+                        lastActiveLedColor = activeLedColor;
+                    }
+                    // Draw LED
+                    ctx.translate(0, -translateY);
+                    ctx.drawImage(activeLedBuffer, ledX, ledY);
+                    ctx.translate(0, translateY);
                 }
             } else {
                 // Draw the inactive leds
@@ -4469,35 +4471,33 @@ var steelseries = function() {
                     ctx.translate(-translateX, 0);
                 }
                 // Draw the active leds in dependence on the current value
-                if (0 !== value) {
-                    activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
-                    for (translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
-                        //check for LED color
-                        activeLedColor = valueColor;
-                        if (isGradientVisible) {
-                            // Convert pixel back to value
-                            var currentValue = minValue + (translateX / fullSize) * (maxValue - minValue);
-                            var gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                            var fraction = currentValue / gradRange;
-                            fraction = Math.max(Math.min(fraction, 1),0);
-                            activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
-                        } else if (isSectionsVisible) {
-                            for (var i =0; i < sectionPixels.length; i++) {
-                                if (translateX >= sectionPixels[i].start && translateX < sectionPixels[i].stop) {
-                                    activeLedColor = sectionPixels[i].color;
-                                    break;
-                                }
+                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                for (translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
+                    //check for LED color
+                    activeLedColor = valueColor;
+                    if (isGradientVisible) {
+                        // Convert pixel back to value
+                        var currentValue = minValue + (translateX / fullSize) * (maxValue - minValue);
+                        var gradRange = valueGradient.getEnd() - valueGradient.getStart();
+                        var fraction = currentValue / gradRange;
+                        fraction = Math.max(Math.min(fraction, 1),0);
+                        activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
+                    } else if (isSectionsVisible) {
+                        for (var i =0; i < sectionPixels.length; i++) {
+                            if (translateX >= sectionPixels[i].start && translateX < sectionPixels[i].stop) {
+                                activeLedColor = sectionPixels[i].color;
+                                break;
                             }
                         }
-                        // Has LED color changed? If so redraw the buffer
-                        if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
-                            drawActiveLed(activeLedContext, activeLedColor);
-                            lastActiveLedColor = activeLedColor;
-                        }
-                        ctx.translate(translateX, 0);
-                        ctx.drawImage(activeLedBuffer, ledX, ledY);
-                        ctx.translate(-translateX, 0);
                     }
+                    // Has LED color changed? If so redraw the buffer
+                    if (lastActiveLedColor.medium.getHexColor() != activeLedColor.medium.getHexColor()) {
+                        drawActiveLed(activeLedContext, activeLedColor);
+                        lastActiveLedColor = activeLedColor;
+                    }
+                    ctx.translate(translateX, 0);
+                    ctx.drawImage(activeLedBuffer, ledX, ledY);
+                    ctx.translate(-translateX, 0);
                 }
             }
         };
