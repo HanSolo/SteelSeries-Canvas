@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 15.01.2012
- * Revision      : 0.9.12
+ * Last modified : 19.01.2012
+ * Revision      : 0.9.13
  */
 
 var steelseries = function() {
@@ -126,14 +126,11 @@ var steelseries = function() {
                 minValue = niceMinValue;
                 maxValue = niceMaxValue;
                 range = maxValue - minValue;
-            }
-            else {
+            } else {
                 niceRange = (maxValue - minValue);
                 niceMinValue = minValue;
                 niceMaxValue = maxValue;
                 range = niceRange;
-//                minorTickSpacing = 1;
-//                majorTickSpacing = 10;
                 majorTickSpacing = calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true);
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
@@ -3318,7 +3315,7 @@ var steelseries = function() {
                 valueBorderStopX = 0;
                 valueBorderStopY = top + fullSize;
             } else {
-                // Horizontal orientation                ;
+                // Horizontal orientation
                 valueBorderStartX = imageWidth * 0.142857 + fullSize;
                 valueBorderStartY = 0;
                 valueBorderStopX = imageWidth * 0.142857;
@@ -4411,7 +4408,6 @@ var steelseries = function() {
             } else {
                 // HORIZONTAL
                 ledX = imageWidth * 0.142857;
-                //ledX = imageWidth * 0.3;
                 ledY = imageHeight * 0.45;
                 ledW = imageWidth * 0.012135;
                 ledH = imageHeight * 0.121428;
@@ -12933,14 +12929,14 @@ var steelseries = function() {
             // draw up arrow (red)
             var ledColor = steelseries.LedColor.RED_LED;
             if (onSection.state === 'up') {
-                fill = ledColor.outerColor_ON;
-                trendCtx.shadowColor = ledColor.coronaColor;
-                trendCtx.shadowBlur = width * 0.25;
+                fill = trendCtx.createRadialGradient(0.5 * width, 0.2 * height, 0, 0.5 * width, 0.2 * height, 0.5 * width);
+                fill.addColorStop(0, ledColor.innerColor1_ON);
+                fill.addColorStop(0.2, ledColor.innerColor2_ON);
+                fill.addColorStop(1, ledColor.outerColor_ON);
             } else {
                 fill = trendCtx.createLinearGradient(0, 0, 0, 0.5 * height);
                 fill.addColorStop(0, '#323232');
                 fill.addColorStop(1, '#5c5c5c');
-                trendCtx.shadowBlur = 0;
             }
             trendCtx.fillStyle = fill;
             trendCtx.beginPath();
@@ -12971,6 +12967,21 @@ var steelseries = function() {
                 trendCtx.lineTo(0.752 * width, 0.2 * height);
                 trendCtx.lineTo(width, 0.2 * height);
                 trendCtx.stroke();
+            } else {
+                // draw halo
+                fill = trendCtx.createRadialGradient(0.5 * width, 0.2 * height, 0, 0.5 * width, 0.2 * height, 0.7 * width);
+                fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
+                fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
+                fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
+                fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
+                fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
+                fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                trendCtx.fillStyle = fill;
+
+                trendCtx.beginPath();
+                trendCtx.arc(0.5 * width, 0.2 * height, 0.7 * width, 0, Math.PI * 2, true);
+                trendCtx.closePath();
+                trendCtx.fill();
             }
         };
 
@@ -12981,8 +12992,6 @@ var steelseries = function() {
             if (onSection.state === 'steady') {
                 fill = ledColor.outerColor_ON;
                 trendCtx.fillStyle = fill;
-                trendCtx.shadowColor = ledColor.coronaColor;
-                trendCtx.shadowBlur = width * 0.25;
                 trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
                 trendCtx.rect(0.128 * width, 0.516 * height, 0.744* width, 0.074 * height);
                 trendCtx.closePath();
@@ -12992,7 +13001,6 @@ var steelseries = function() {
                 fill.addColorStop(0, '#323232');
                 fill.addColorStop(1, '#5c5c5c');
                 trendCtx.fillStyle = fill;
-                trendCtx.shadowBlur = 0;
                 trendCtx.rect(0.128 * width, 0.41 * height, 0.744* width, 0.074 * height);
                 trendCtx.closePath();
                 trendCtx.fill();
@@ -13029,6 +13037,20 @@ var steelseries = function() {
                 trendCtx.lineTo(0.128 * width + 0.744 * width, 0.516 * height + 0.074 * height);
                 trendCtx.lineTo(0.128 * width, 0.516 * height + 0.074 * height);
                 trendCtx.stroke();
+            } else {
+                // draw halo
+                fill = trendCtx.createRadialGradient(0.5 * width, 0.5 * height, 0, 0.5 * width, 0.5 * height, 0.7 * width);
+                fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
+                fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
+                fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
+                fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
+                fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
+                fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                trendCtx.fillStyle = fill;
+                trendCtx.beginPath();
+                trendCtx.arc(0.5 * width, 0.5 * height, 0.7 * width, 0, Math.PI * 2, true);
+                trendCtx.closePath();
+                trendCtx.fill();
             }
         };
 
@@ -13036,14 +13058,14 @@ var steelseries = function() {
             // draw down arrow
             ledColor = steelseries.LedColor.CYAN_LED;
             if (onSection.state === 'down') {
-                fill = ledColor.outerColor_ON;
-                trendCtx.shadowColor = ledColor.coronaColor;
-                trendCtx.shadowBlur = width * 0.25;
+                fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, 0.5 * width);
+                fill.addColorStop(0, ledColor.innerColor1_ON);
+                fill.addColorStop(0.2, ledColor.innerColor2_ON);
+                fill.addColorStop(1, ledColor.outerColor_ON);
             } else {
                 fill = trendCtx.createLinearGradient(0, 0.63 * height, 0, height);
                 fill.addColorStop(0, '#323232');
                 fill.addColorStop(1, '#5c5c5c');
-                trendCtx.shadowBlur = 0;
             }
             trendCtx.beginPath();
             trendCtx.fillStyle = fill;
@@ -13080,6 +13102,20 @@ var steelseries = function() {
                 trendCtx.moveTo(0.752 * width, 0.8 * height);
                 trendCtx.lineTo(0.752 * width, 0.63 * height);
                 trendCtx.stroke();
+            } else {
+                // draw halo
+                fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, 0.7 * width);
+                fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
+                fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
+                fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
+                fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
+                fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
+                fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                trendCtx.fillStyle = fill;
+                trendCtx.beginPath();
+                trendCtx.arc(0.5 * width, 0.8 * height, 0.7 * width, 0, Math.PI * 2, true);
+                trendCtx.closePath();
+                trendCtx.fill();
             }
         };
 
@@ -13108,17 +13144,12 @@ var steelseries = function() {
     }
 
     var drawTitleImage = function(ctx, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, radial, altPos) {
-        var unitWidth = ctx.measureText(unitString).width;
-        var baseSize = imageWidth;
 
         ctx.save();
         ctx.textAlign = (radial ? 'center' : 'left');
         ctx.textBaseline = 'middle';
         ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
         ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
-        if (!radial && !vertical) {
-            baseSize = imageHeight;
-        }
 
         if (radial) {
             ctx.font = 0.046728 * imageWidth + 'px sans-serif';
@@ -13127,28 +13158,25 @@ var steelseries = function() {
         } else {
             if (vertical) {
                 ctx.font = 0.1 * imageWidth + 'px sans-serif';
-
                 ctx.save();
                 ctx.translate(0.671428 * imageWidth, 0.1375 * imageHeight);
                 ctx.rotate(1.570796);
                 ctx.fillText(titleString, 0, 0);
                 ctx.translate(-0.671428 * imageWidth, -0.1375 * imageHeight);
                 ctx.restore();
-
                 ctx.font = 0.071428 * imageWidth + 'px sans-serif';
                 if (altPos) {
                     ctx.fillText(unitString, 0.63 * imageWidth, imageHeight * 0.85, imageWidth * 0.2);
                 } else {
                     ctx.fillText(unitString, imageWidth / 2, imageHeight * 0.89, imageWidth * 0.2);
                 }
-            } else {
-                ctx.font = 0.1 * imageHeight + 'px sans-serif';
+            } else { //linear
+                ctx.font = 0.035 * imageWidth + 'px sans-serif';
                 ctx.fillText(titleString, imageWidth * 0.15, imageHeight * 0.25, imageWidth * 0.3);
-                ctx.font = 0.03 * imageWidth + 'px sans-serif';
+                ctx.font = 0.025 * imageWidth + 'px sans-serif';
                 ctx.fillText(unitString, imageWidth * 0.0625, imageHeight * 0.7, imageWidth * 0.07);
             }
         }
-
         ctx.restore();
     };
 

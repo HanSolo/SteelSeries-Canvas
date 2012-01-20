@@ -1,5 +1,9 @@
 Main Changes
 
+v0.9.13
+> Radial
+  * Changed TrendIndicator 'glow' as the canvas 'shadow' effect did not really work well
+
 v0.9.12
 > Linear/LinearBargraph
   * Added missing darker value track for the TURNED background
