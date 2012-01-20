@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 19.01.2012
- * Revision      : 0.9.13
+ * Last modified : 20.01.2012
+ * Revision      : 0.9.14
  */
 
 var steelseries = function() {
@@ -794,17 +794,20 @@ var steelseries = function() {
         this.setTitleString = function(title){
             titleString = title;
             init({background: true});
+            this.repaint();
         };
 
         this.setUnitString = function(unit){
             unitString = unit;
             init({background: true});
+            this.repaint();
         };
 
         this.setMinValue = function(value){
             minValue = value;
             init({frame: true,
                   background: true});
+            this.repaint();
         };
 
         this.getMinValue = function(){
@@ -815,6 +818,7 @@ var steelseries = function() {
             maxValue = value;
             init({frame: true,
                   background: true});
+            this.repaint();
         };
 
         this.getMaxValue = function(){
@@ -3540,9 +3544,9 @@ var steelseries = function() {
         };
 
         this.setTitleString = function(title){
-                 titleString = title;
-                init({background: true});
-                this.repaint();
+            titleString = title;
+            init({background: true});
+            this.repaint();
         };
 
         this.setUnitString = function(unit){

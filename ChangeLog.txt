@@ -1,5 +1,9 @@
 Main Changes
 
+>v0.9.14
+> Radial
+  * Fixed missing repaint() calls on setMaxValue/setMinValue setTitleString/setUnitString public methods
+
 v0.9.13
 > Radial
   * Changed TrendIndicator 'glow' as the canvas 'shadow' effect did not really work well
