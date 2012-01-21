@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 20.01.2012
- * Revision      : 0.9.14
+ * Last modified : 21.01.2012
+ * Revision      : 0.9.15
  */
 
 var steelseries = function() {
@@ -98,8 +98,14 @@ var steelseries = function() {
         // Misc
         var ledPosX = 0.6 * imageWidth;
         var ledPosY = 0.4 * imageHeight;
-        var stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
-        var lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+        var lcdFontHeight = Math.floor(imageWidth / 10);
+        var stdFont = lcdFontHeight + 'px sans-serif';
+        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdHeight = imageHeight * 0.13;
+        var lcdWidth = imageWidth * 0.4;
+        var lcdPosX = (imageWidth - lcdWidth) / 2;
+        var lcdPosY = imageHeight * 0.57;
+
         // Constants
         var HALF_PI = Math.PI / 2;
         var RAD_FACTOR = Math.PI / 180;
@@ -225,7 +231,6 @@ var steelseries = function() {
         var drawLcdText = function(value) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
-            mainCtx.textBaseline = 'middle';
             mainCtx.strokeStyle = lcdColor.textColor;
             mainCtx.fillStyle = lcdColor.textColor;
 
@@ -233,17 +238,14 @@ var steelseries = function() {
                 mainCtx.shadowColor = 'gray';
                 mainCtx.shadowOffsetX = imageWidth * 0.007;
                 mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.009;
+                mainCtx.shadowBlur = imageWidth * 0.007;
             }
             if (digitalFont) {
                 mainCtx.font = lcdFont;
             } else {
                 mainCtx.font = stdFont;
             }
-            //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.4)) / 2 - 3, imageWidth * 0.6345, imageWidth * 0.42);
-            //var unitWidth = mainCtx.measureText(unitString).width;
-            //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
+            mainCtx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth * 0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
 
             mainCtx.restore();
         };
@@ -346,7 +348,6 @@ var steelseries = function() {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-//            var fontSize = imageWidth * 0.04;
             var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -400,7 +401,6 @@ var steelseries = function() {
                     ctx.rotate(textRotationAngle);
                     switch(labelNumberFormat.format) {
                         case 'fractional':
-//                            ctx.fillText((valueCounter.toFixed(2)), 0, 0, TEXT_WIDTH);
                             ctx.fillText((valueCounter.toFixed(fractionalScaleDecimals)), 0, 0, TEXT_WIDTH);
                             break;
 
@@ -587,8 +587,8 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.13, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.57);
+                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
                 }
             }
 
@@ -1107,8 +1107,13 @@ var steelseries = function() {
         var centerY = imageHeight / 2;
 
         // Misc
-        var stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
-        var lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+        var lcdFontHeight = Math.floor(imageWidth / 10);
+        var stdFont = lcdFontHeight + 'px sans-serif';
+        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdHeight = imageHeight * 0.13;
+        var lcdWidth = imageWidth * 0.4;
+        var lcdPosX = (imageWidth - lcdWidth) / 2;
+        var lcdPosY = imageHeight /2 - lcdHeight /2;
 
         // Constants
         var HALF_PI = Math.PI / 2;
@@ -1317,9 +1322,8 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.48, imageHeight * 0.13, lcdColor);
-//                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.48)) / 2, imageHeight * 0.425);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.48)) / 2, imageHeight/2 - imageHeight * 0.13/2);
+                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
                 }
             }
 
@@ -1490,7 +1494,6 @@ var steelseries = function() {
 
             mainCtx.save();
             mainCtx.textAlign = 'right';
-            mainCtx.textBaseline = 'middle';
             mainCtx.strokeStyle = lcdColor.textColor;
             mainCtx.fillStyle = lcdColor.textColor;
 
@@ -1498,7 +1501,7 @@ var steelseries = function() {
                 mainCtx.shadowColor = 'gray';
                 mainCtx.shadowOffsetX = imageWidth * 0.007;
                 mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.009;
+                mainCtx.shadowBlur = imageWidth * 0.007;
             }
 
             if (digitalFont) {
@@ -1506,10 +1509,7 @@ var steelseries = function() {
             } else {
                 mainCtx.font = stdFont;
             }
-            //var valueWidth = mainCtx.measureText(value).width;
-            mainCtx.fillText(value.toFixed(lcdDecimals), (imageWidth + (imageWidth * 0.48)) / 2 - 3, imageWidth * 0.5025, imageWidth * 0.48);
-            //var unitWidth = mainCtx.measureText(unitString).width;
-            //mainCtx.fillText(unitString, (imageWidth - unitWidth) / 2, imageHeight * 0.38, imageWidth * 0.2);
+            mainCtx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth *0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
 
             mainCtx.restore();
         };
@@ -1519,7 +1519,6 @@ var steelseries = function() {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-//            var fontSize = imageWidth * 0.04;
             var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -1562,7 +1561,6 @@ var steelseries = function() {
                     ctx.rotate(textRotationAngle);
                     switch(labelNumberFormat.format) {
                         case 'fractional':
-//                            ctx.fillText((valueCounter.toFixed(2)), 0, 0, TEXT_WIDTH);
                             ctx.fillText((valueCounter.toFixed(fractionalScaleDecimals)), 0, 0, TEXT_WIDTH);
                             break;
 
@@ -2129,7 +2127,6 @@ var steelseries = function() {
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-//            var fontSize = imageWidth * 0.04;
             var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -2775,7 +2772,6 @@ var steelseries = function() {
             stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
             lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
         } else {
-//            ledPosX = (imageWidth - 18 - 16) / imageWidth * imageWidth;
             ledPosX = 0.89 * imageWidth;
             ledPosY = 0.453271 * imageHeight;
             stdFont = Math.floor(imageHeight / 10) + 'px sans-serif';
@@ -2940,8 +2936,6 @@ var steelseries = function() {
             backgroundColor.labelColor.setAlpha(1);
             ctx.save();
             ctx.textBaseline = 'middle';
-//            var fontSize;
-//            var TEXT_WIDTH = imageWidth * 0.0375;
             var TEXT_WIDTH = imageWidth * 0.1;
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
@@ -3866,7 +3860,6 @@ var steelseries = function() {
             if (vertical) {
                 lcdTextX = (imageWidth - (imageWidth * 0.571428)) / 2 + 1 + imageWidth * 0.571428 - 2;
                 lcdTextY = imageHeight * 0.88 + 1 + (imageHeight * 0.055 - 2) / 2;
-//                lcdTextWidth = imageWidth * 0.571428 - 2;
                 lcdTextWidth = imageWidth * 0.7 - 2;
             } else {
                 lcdTextX = (imageWidth * 0.695) + imageWidth * 0.18 - 2;
@@ -3924,10 +3917,7 @@ var steelseries = function() {
             backgroundColor.labelColor.setAlpha(1);
             ctx.save();
             ctx.textBaseline = 'middle';
-//            var fontSize;
-//            var TEXT_WIDTH = imageWidth * 0.0375;
             var TEXT_WIDTH = imageWidth * 0.1;
-//            ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
 
@@ -3952,7 +3942,6 @@ var steelseries = function() {
                 mediumTickStop = (0.36 * imageWidth);
                 majorTickStart = (0.32 * imageWidth);
                 majorTickStop = (0.36 * imageWidth);
-//                fontSize = imageWidth * 0.62;
                 ctx.textAlign = 'right';
                 scaleBoundsX = 0;
                 scaleBoundsY = imageHeight * 0.128640;
@@ -3966,7 +3955,6 @@ var steelseries = function() {
                 mediumTickStop = (0.63 * imageHeight);
                 majorTickStart = (0.67 * imageHeight);
                 majorTickStop = (0.63 * imageHeight);
-//                fontSize = imageHeight * 0.62;
                 ctx.textAlign = 'center';
                 scaleBoundsX = imageWidth * 0.142857;
                 scaleBoundsY = 0;
@@ -4872,8 +4860,9 @@ var steelseries = function() {
         var imageHeight = height;
         var textWidth = 0;
 
-        var stdFont = Math.floor(imageHeight / 1.5) + 'px sans-serif';
-        var lcdFont = Math.floor(imageHeight / 1.5) + 'px LCDMono2Ultra';
+        var fontHeight = Math.floor(imageHeight / 1.5);
+        var stdFont = fontHeight + 'px sans-serif';
+        var lcdFont = fontHeight + 'px LCDMono2Ultra';
 
         var initialized = false;
 
@@ -4887,9 +4876,14 @@ var steelseries = function() {
         var drawLcdText = function(value, color) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
-            mainCtx.textBaseline = 'middle';
             mainCtx.strokeStyle = color;
             mainCtx.fillStyle = color;
+
+            mainCtx.beginPath();
+            mainCtx.rect(2, 2, imageWidth - 4, imageHeight - 4);
+            mainCtx.closePath();
+            mainCtx.clip();
+
             if ((lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN)
                  && section === null) {
                 mainCtx.shadowColor = 'gray';
@@ -4897,17 +4891,15 @@ var steelseries = function() {
                 mainCtx.shadowOffsetY = imageHeight * 0.05;
                 mainCtx.shadowBlur = imageHeight * 0.06;
             }
-            // Define the clipping area
-            //roundedRectangle(mainCtx, 2, 2, imageWidth - 4, imageHeight - 4, Math.min(imageWidth, imageHeight) * 0.05);
 
-            mainCtx.beginPath();
-            mainCtx.rect(2, 2, imageWidth - 4, imageHeight - 4);
-            mainCtx.closePath();
-            mainCtx.clip();
+            if (digitalFont) {
+                mainCtx.font = lcdFont;
+            } else {
+                mainCtx.font = stdFont;
+            }
 
             if (valuesNumeric) {
                 // Numeric value
-                mainCtx.font = Math.floor(imageHeight / 2.5) + 'px sans-serif';
                 var unitWidth = 0;
                 textWidth = 0;
                 if (unitStringVisible) {
@@ -4921,19 +4913,14 @@ var steelseries = function() {
                 }
                 var lcdText = value.toFixed(lcdDecimals);
                 textWidth = mainCtx.measureText(lcdText).width;
-                mainCtx.fillText(lcdText, imageWidth - unitWidth - 4 - scrollX, imageHeight * 0.5);
+                mainCtx.fillText(lcdText, imageWidth - unitWidth - 4 - scrollX, imageHeight * 0.5 + fontHeight * 0.38);
 
                 if (unitStringVisible) {
                     mainCtx.font = Math.floor(imageHeight / 2.5) + 'px sans-serif';
-                    mainCtx.fillText(unitString, imageWidth - 2 - scrollX, imageHeight * 0.58);
+                    mainCtx.fillText(unitString, imageWidth - 2 - scrollX, imageHeight * 0.5 + fontHeight * 0.38);
                 }
             } else {
                 // Text value
-                if (digitalFont) {
-                    mainCtx.font = lcdFont;
-                } else {
-                    mainCtx.font = stdFont;
-                }
                 textWidth = mainCtx.measureText(value).width;
                 if (autoScroll && textWidth > imageWidth -4) {
                     if (!scrolling) {
@@ -4946,7 +4933,7 @@ var steelseries = function() {
                     scrollX = 0;
                     scrolling = false;
                 }
-                mainCtx.fillText(value, imageWidth - 2 - scrollX, imageHeight * 0.5);
+                mainCtx.fillText(value, imageWidth - 2 - scrollX, imageHeight * 0.5 + fontHeight * 0.38);
             }
             mainCtx.restore();
         };
@@ -5971,11 +5958,8 @@ var steelseries = function() {
             ctx.textBaseline = 'middle';
 
             var stdFont, smlFont;
-//            var stdFont = 0.12 * imageWidth + 'px serif';
-//            var smlFont = 0.06 * imageWidth + 'px serif';
 
             ctx.save();
-            //ctx.strokeStyle = '#83827E';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
@@ -5984,8 +5968,6 @@ var steelseries = function() {
 
                 stdFont = 0.12 * imageWidth + 'px serif';
                 smlFont = 0.06 * imageWidth + 'px serif';
-
-                //var angleStep = 2 * Math.PI / 360;
 
                 for (i = 0; 360 > i; i+= 2.5) {
 
@@ -6496,8 +6478,14 @@ var steelseries = function() {
         var centerX = imageWidth / 2;
         var centerY = imageHeight / 2;
 
-        var stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
-        var lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+        var lcdFontHeight = Math.floor(imageWidth / 10);
+        var stdFont = lcdFontHeight + 'px sans-serif';
+        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdWidth = imageWidth * 0.3;
+        var lcdHeight = imageHeight * 0.12;
+        var lcdPosX = (imageWidth - lcdWidth) / 2;
+        var lcdPosY1 = imageHeight * 0.32;
+        var lcdPosY2 = imageHeight * 0.565;
 
         var initialized = false;
 
@@ -6537,7 +6525,6 @@ var steelseries = function() {
         var drawLcdText = function(value, bLatest) {
             mainCtx.save();
             mainCtx.textAlign = 'center';
-            mainCtx.textBaseline = 'middle';
             mainCtx.strokeStyle = lcdColor.textColor;
             mainCtx.fillStyle = lcdColor.textColor;
 
@@ -6550,7 +6537,7 @@ var steelseries = function() {
                 mainCtx.shadowColor = 'gray';
                 mainCtx.shadowOffsetX = imageWidth * 0.007;
                 mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.01;
+                mainCtx.shadowBlur = imageWidth * 0.007;
             }
             if (digitalFont) {
                 mainCtx.font = lcdFont;
@@ -6558,9 +6545,9 @@ var steelseries = function() {
                 mainCtx.font = stdFont;
             }
             if (bLatest) {
-                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + 2, imageWidth * 0.385, imageWidth * 0.4);
+                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + lcdWidth * 0.05, lcdPosY1 + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
             } else {
-                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + 2, imageWidth * 0.63, imageWidth * 0.4);
+                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + lcdWidth * 0.05, lcdPosY2 + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
             }
 
             mainCtx.restore();
@@ -6607,8 +6594,6 @@ var steelseries = function() {
             var CARDINAL_TRANSLATE_X = imageWidth * 0.36;
 
             var stdFont, smlFont;
-//            var stdFont = 0.12 * imageWidth + 'px serif';
-//            var smlFont = 0.06 * imageWidth + 'px serif';
 
             ctx.save();
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -6856,9 +6841,9 @@ var steelseries = function() {
 
                 // Create lcd background if selected in background buffer (backgroundBuffer)
                 if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.3, imageHeight * 0.12, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.565);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.3)) / 2, imageHeight * 0.32);
+                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY1);
+                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY2);
                     // Create title in background buffer (backgroundBuffer)
                     drawLcdTitles(backgroundContext);
                 }
@@ -7553,7 +7538,6 @@ var steelseries = function() {
             mainCtx.translate(0, (pitch * pitchPixel));
 
             // Draw horizon
-//            mainCtx.drawImage(valueBuffer, 0, ((imageHeight * 0.5 - valueBuffer.height) / 2));
             mainCtx.drawImage(valueBuffer, 0, -valueBuffer.height / 2);
 
             // Draw the scale and angle indicator
@@ -8717,7 +8701,6 @@ var steelseries = function() {
                     if (numberCounter === 5) {
                         if (valueCounter !== range) {
                             if (Math.round(valueCounter) !== 60) {
-//                                ctx.fillText(Math.round(valueCounter), textPoint[0], textPoint[1], TEXT_WIDTH);
                                 ctx.fillText(Math.round(valueCounter), textPoint[0], textPoint[1], TEXT_WIDTH);
                             }
                         }
@@ -9174,7 +9157,6 @@ var steelseries = function() {
         var centerY = imageHeight / 2;
 
         var stdFont = Math.floor(imageWidth * 0.09) + 'px sans-serif';
-//        var lcdFont = Math.floor(imageWidth / 12) + 'px LCDMono2Ultra';
 
         // Constants
         var HALF_PI = Math.PI / 2;

@@ -1,5 +1,10 @@
 Main Changes
 
+>0.9.15
+> Radial/RadialBargraph/DisplaySingle/WindDirection
+  * Changed LCD font positioning code to make appearance consistent across browsers
+    Tested on Chrome 16, IE9, FF 9
+
 >v0.9.14
 > Radial
   * Fixed missing repaint() calls on setMaxValue/setMinValue setTitleString/setUnitString public methods
