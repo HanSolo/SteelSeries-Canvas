@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 24.01.2012
- * Revision      : 0.9.16
+ * Revision      : 0.9.16a
  */
 
 var steelseries = function() {
@@ -593,12 +593,12 @@ var steelseries = function() {
 
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true);
+            }
 
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
-                }
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
             }
 
             // Create pointer image in pointer buffer (contentBuffer)
@@ -1350,12 +1350,12 @@ var steelseries = function() {
 
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true);
+            }
 
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
-                }
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
             }
 
             // Convert Section values into angles
@@ -3251,15 +3251,16 @@ var steelseries = function() {
                 } else {
                     drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, null, lcdVisible);
                 }
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    if (vertical) {
-                        lcdBuffer = createLcdBackgroundImage(imageWidth * 0.571428, imageHeight * 0.055, lcdColor);
-                        backgroundContext.drawImage(lcdBuffer, ((imageWidth - (imageWidth * 0.571428)) / 2), imageHeight * 0.88);
-                    } else {
-                        lcdBuffer = createLcdBackgroundImage(imageWidth * 0.18, imageHeight * 0.15, lcdColor);
-                        backgroundContext.drawImage(lcdBuffer, imageWidth * 0.695, imageHeight * 0.22);
-                    }
+            }
+
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                if (vertical) {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.571428, imageHeight * 0.055, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, ((imageWidth - (imageWidth * 0.571428)) / 2), imageHeight * 0.88);
+                } else {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.18, imageHeight * 0.15, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, imageWidth * 0.695, imageHeight * 0.22);
                 }
             }
 
@@ -4237,16 +4238,16 @@ var steelseries = function() {
                 } else {
                     drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, null, lcdVisible);
                 }
+            }
 
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    if (vertical) {
-                        lcdBuffer = createLcdBackgroundImage(imageWidth * 0.571428, imageHeight * 0.055, lcdColor);
-                        backgroundContext.drawImage(lcdBuffer, ((imageWidth - (imageWidth * 0.571428)) / 2), imageHeight * 0.88);
-                    } else {
-                        lcdBuffer = createLcdBackgroundImage(imageWidth * 0.18, imageHeight * 0.15, lcdColor);
-                        backgroundContext.drawImage(lcdBuffer, imageWidth * 0.695, imageHeight * 0.22);
-                    }
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                if (vertical) {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.571428, imageHeight * 0.055, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, ((imageWidth - (imageWidth * 0.571428)) / 2), imageHeight * 0.88);
+                } else {
+                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.18, imageHeight * 0.15, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, imageWidth * 0.695, imageHeight * 0.22);
                 }
             }
 
@@ -6679,12 +6680,6 @@ var steelseries = function() {
         };
 
         var drawAreaSectionImage = function(ctx, start, stop, color, filled) {
-            if (start < minValue) start = minValue;
-            else if (start > maxValue) start = maxValue;
-            if (stop < minValue) stop = minValue;
-            else if (stop > maxValue) stop = maxValue;
-
-            if (start >= stop) return;
 
             ctx.save();
             ctx.strokeStyle = color;
@@ -6970,15 +6965,15 @@ var steelseries = function() {
                 }
 
                 drawTickmarksImage(backgroundContext);
+            }
 
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY1);
-                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY2);
-                    // Create title in background buffer (backgroundBuffer)
-                    drawLcdTitles(backgroundContext);
-                }
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY1);
+                backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY2);
+                // Create title in background buffer (backgroundBuffer)
+                drawLcdTitles(backgroundContext);
             }
 
             if (drawPointer) {
