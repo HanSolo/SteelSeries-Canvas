@@ -1,6 +1,20 @@
 Main Changes
 
->0.9.15
+v0.9.16
+> Radial
+  * Added range checking to section/area drawing code
+  * Added initialisation parameter 'trendColors', takes an array of 3x LED colors for Up/Steady/Down
+    Default: [steelseries.LedColor.RED_LED, steelseries.LedColor.GREEN_LED, steelseries.LedColor.CYAN_LED]
+> RadialBargraph
+  * Added TrendIndicator as per Radial implementation
+> WindDirection
+  * Added range checking to section/area drawing code
+> General Changes
+  * Added initialisation parameters foregroundVisible','backgroundVisible','foregroundVisible' to all gauge components
+  * Extracted the digital font name to a variable at the top of the script to make it easier to
+    change in the future.
+
+v0.9.15
 > Radial/RadialBargraph/DisplaySingle/WindDirection
   * Changed LCD font positioning code to make appearance consistent across browsers
     Tested on Chrome 16, IE9, FF 9

@@ -1,12 +1,13 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 21.01.2012
- * Revision      : 0.9.15
+ * Last modified : 24.01.2012
+ * Revision      : 0.9.16
  */
 
 var steelseries = function() {
     var doc = document;
+    var lcdFontName = 'LCDMono2Ultra';
 
     //*************************************   C O M P O N O N E N T S   ************************************************
     var radial = function(canvas, parameters) {
@@ -24,6 +25,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType);
@@ -39,12 +41,14 @@ var steelseries = function() {
         var minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible);
         var maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat);
         var playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm);
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
         var tickLabelOrientation = (undefined === parameters.tickLabelOrientation ? (gaugeType === steelseries.GaugeType.TYPE1 ? steelseries.TickLabelOrientation.TANGENT : steelseries.TickLabelOrientation.NORMAL) : parameters.tickLabelOrientation);
         var trendVisible = (undefined === parameters.trendVisible ? false : parameters.trendVisible);
+        var trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED,steelseries.LedColor.GREEN_LED,steelseries.LedColor.CYAN_LED] : parameters.trendColors);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -100,7 +104,7 @@ var steelseries = function() {
         var ledPosY = 0.4 * imageHeight;
         var lcdFontHeight = Math.floor(imageWidth / 10);
         var stdFont = lcdFontHeight + 'px sans-serif';
-        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdFont = lcdFontHeight + 'px ' + lcdFontName;
         var lcdHeight = imageHeight * 0.13;
         var lcdWidth = imageWidth * 0.4;
         var lcdPosX = (imageWidth - lcdWidth) / 2;
@@ -316,6 +320,13 @@ var steelseries = function() {
         };
 
         var drawAreaSectionImage = function(ctx, start, stop, color, filled) {
+            if (start < minValue) start = minValue;
+            else if (start > maxValue) start = maxValue;
+            if (stop < minValue) stop = minValue;
+            else if (stop > maxValue) stop = maxValue;
+
+            if (start >= stop) return;
+
             ctx.save();
             ctx.strokeStyle = color;
             ctx.fillStyle = color;
@@ -517,12 +528,10 @@ var steelseries = function() {
             }
 
             // Create background in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
-            }
 
-            // Create custom layer in background buffer (backgroundBuffer)
-            if (drawBackground) {
+                // Create custom layer in background buffer (backgroundBuffer)
                 drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
             }
 
@@ -545,7 +554,7 @@ var steelseries = function() {
             }
 
             // Create alignment posts in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawPostsImage(backgroundContext);
 
                 // Create section in background buffer (backgroundBuffer)
@@ -599,17 +608,17 @@ var steelseries = function() {
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 var knobVisible = (pointerType.type === 'type15' || pointerType.type === 'type16' ? false : true);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle, gaugeType);
             }
 
             // Create the trend indicator buffers
             if (drawTrend && trendVisible) {
-                trendUpBuffer = createTrendIndicator(trendSize, steelseries.TrendState.UP);
-                trendSteadyBuffer = createTrendIndicator(trendSize, steelseries.TrendState.STEADY);
-                trendDownBuffer = createTrendIndicator(trendSize, steelseries.TrendState.DOWN);
-                trendOffBuffer = createTrendIndicator(trendSize, steelseries.TrendState.OFF);
+                trendUpBuffer = createTrendIndicator(trendSize, steelseries.TrendState.UP, trendColors);
+                trendSteadyBuffer = createTrendIndicator(trendSize, steelseries.TrendState.STEADY, trendColors);
+                trendDownBuffer = createTrendIndicator(trendSize, steelseries.TrendState.DOWN, trendColors);
+                trendOffBuffer = createTrendIndicator(trendSize, steelseries.TrendState.OFF, trendColors);
             }
         };
 
@@ -941,10 +950,14 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw lcd display
             if (lcdVisible) {
@@ -1025,7 +1038,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -1049,6 +1064,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor);
         var lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor);
         var lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
@@ -1060,11 +1076,14 @@ var steelseries = function() {
         var ledVisible = (undefined === parameters.ledVisible ? true : parameters.ledVisible);
         var labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm);
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
         var valueGradient  = (undefined === parameters.valueGradient  ? null : parameters.valueGradient );
         var useValueGradient = (undefined === parameters.useValueGradient ? false : parameters.useValueGradient);
         var tickLabelOrientation = (undefined === parameters.tickLabelOrientation ? (gaugeType === steelseries.GaugeType.TYPE1 ? steelseries.TickLabelOrientation.TANGENT : steelseries.TickLabelOrientation.NORMAL) : parameters.tickLabelOrientation);
+        var trendVisible = (undefined === parameters.trendVisible ? false : parameters.trendVisible);
+        var trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED,steelseries.LedColor.GREEN_LED,steelseries.LedColor.CYAN_LED] : parameters.trendColors);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -1109,7 +1128,7 @@ var steelseries = function() {
         // Misc
         var lcdFontHeight = Math.floor(imageWidth / 10);
         var stdFont = lcdFontHeight + 'px sans-serif';
-        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdFont = lcdFontHeight + 'px ' + lcdFontName;
         var lcdHeight = imageHeight * 0.13;
         var lcdWidth = imageWidth * 0.4;
         var lcdPosX = (imageWidth - lcdWidth) / 2;
@@ -1119,9 +1138,16 @@ var steelseries = function() {
         var HALF_PI = Math.PI / 2;
         var ACTIVE_LED_POS_X = imageWidth * 0.116822;
         var ACTIVE_LED_POS_Y = imageWidth * 0.485981;
-        var LED_POS_X = imageWidth * 0.453271;
-        var LED_POS_Y = imageHeight * 0.65;
+        var LED_SIZE = Math.ceil(size * 0.093457);
+//        var LED_POS_X = imageWidth * 0.453271;
+        var LED_POS_X = imageWidth * 0.53;
+        var LED_POS_Y = imageHeight * 0.61;
         var RAD_FACTOR = Math.PI / 180;
+
+        var trendIndicator = steelseries.TrendState.OFF;
+        var trendSize = size * 0.06;
+        var trendPosX = size * 0.38;
+        var trendPosY = size * 0.57;
 
         switch (gaugeType.type) {
             case "type1":
@@ -1182,11 +1208,11 @@ var steelseries = function() {
         var activeLedContext = activeLedBuffer.getContext('2d');
 
         // Buffer for led on painting code
-        var ledBufferOn = createBuffer(Math.ceil(size * 0.093457), Math.ceil(size * 0.093457));
+        var ledBufferOn = createBuffer(LED_SIZE, LED_SIZE);
         var ledContextOn = ledBufferOn.getContext('2d');
 
         // Buffer for led off painting code
-        var ledBufferOff = createBuffer(Math.ceil(size * 0.093457), Math.ceil(size * 0.093457));
+        var ledBufferOff = createBuffer(LED_SIZE, LED_SIZE);
         var ledContextOff = ledBufferOff.getContext('2d');
 
         // Buffer for current led painting code
@@ -1198,6 +1224,9 @@ var steelseries = function() {
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
         var foregroundContext = foregroundBuffer.getContext('2d');
+
+        // Buffers for trend indicators
+        var trendUpBuffer, trendSteadyBuffer, trendDownBuffer, trendOffBuffer;
 
         var initialized = false;
 
@@ -1279,6 +1308,7 @@ var steelseries = function() {
             var drawLed = (undefined === parameters.led ? false : parameters.led);
             var drawValue =  (undefined === parameters.value ? false : parameters.value);
             var drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
+            var drawTrend = (undefined === parameters.trend ? false : parameters.trend);
 
             initialized = true;
 
@@ -1290,32 +1320,33 @@ var steelseries = function() {
             }
 
             // Create background in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
-            }
 
-            // Create custom layer in background buffer (backgroundBuffer)
-            if (drawBackground) {
+                // Create custom layer in background buffer (backgroundBuffer)
                 drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
             }
 
             // Draw LED ON in ledBuffer_ON
             if (drawLed) {
-                ledContextOn.drawImage(createLedImage(Math.ceil(size * 0.093457), 1, ledColor), 0, 0);
+                ledContextOn.drawImage(createLedImage(LED_SIZE, 1, ledColor), 0, 0);
 
                 // Draw LED ON in ledBuffer_OFF
-                ledContextOff.drawImage(createLedImage(Math.ceil(size * 0.093457), 0, ledColor), 0, 0);
+                ledContextOff.drawImage(createLedImage(LED_SIZE, 0, ledColor), 0, 0);
 
                 // Buffer the background of the led for blinking
-                ledBackground = backgroundContext.getImageData(imageWidth * 0.453271, imageHeight * 0.65, Math.ceil(size * 0.093457), Math.ceil(size * 0.093457));
+                ledBackground = backgroundContext.getImageData(LED_POS_X, LED_POS_Y, LED_SIZE, LED_SIZE);
+            }
+
+            if (drawBackground) {
+                // Create bargraphtrack in background buffer (backgroundBuffer)
+                drawBargraphTrackImage(backgroundContext);
             }
 
             // Create tickmarks in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground  && backgroundVisible) {
                 drawTickmarksImage(backgroundContext, labelNumberFormat);
 
-                // Create bargraphtrack in background buffer (backgroundBuffer)
-                drawBargraphTrackImage(backgroundContext);
 
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true);
@@ -1355,8 +1386,16 @@ var steelseries = function() {
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false, gaugeType);
+            }
+
+            // Create the trend indicator buffers
+            if (drawTrend && trendVisible) {
+                trendUpBuffer = createTrendIndicator(trendSize, steelseries.TrendState.UP, trendColors);
+                trendSteadyBuffer = createTrendIndicator(trendSize, steelseries.TrendState.STEADY, trendColors);
+                trendDownBuffer = createTrendIndicator(trendSize, steelseries.TrendState.DOWN, trendColors);
+                trendOffBuffer = createTrendIndicator(trendSize, steelseries.TrendState.OFF, trendColors);
             }
         };
 
@@ -1606,7 +1645,7 @@ var steelseries = function() {
                     ledBuffer = ledBufferOn;
                 }
 
-                mainCtx.drawImage(ledBuffer, imageWidth * 0.453271, imageHeight * 0.65);
+                mainCtx.drawImage(ledBuffer, LED_POS_X, LED_POS_Y);
 
             }
         };
@@ -1757,6 +1796,13 @@ var steelseries = function() {
             return maxValue;
         };
 
+        this.setThreshold = function(newValue) {
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            threshold = targetValue;
+            init({background: true});
+            this.repaint();
+        };
+
         this.setTitleString = function(title){
             titleString = title;
             init({background: true});
@@ -1769,6 +1815,16 @@ var steelseries = function() {
             this.repaint();
         };
 
+        this.setTrend = function(newValue) {
+            trendIndicator = newValue;
+            this.repaint();
+        };
+
+        this.setTrendVisible = function(visible) {
+            trendVisible = visible;
+            this.repaint();
+        };
+
         this.repaint = function() {
 
             if (!initialized) {
@@ -1776,13 +1832,16 @@ var steelseries = function() {
                       background: true,
                       led: true,
                       value: true,
+                      trend: true,
                       foreground: true});
             }
 
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame image
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
             mainCtx.drawImage(backgroundBuffer, 0, 0);
@@ -1837,8 +1896,28 @@ var steelseries = function() {
                 mainCtx.drawImage(ledBuffer, LED_POS_X, LED_POS_Y);
             }
 
+            // Draw the trend indicator
+            if (trendVisible){
+                switch (trendIndicator.state) {
+                    case 'up':
+                        mainCtx.drawImage(trendUpBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'steady':
+                        mainCtx.drawImage(trendSteadyBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'down':
+                        mainCtx.drawImage(trendDownBuffer, trendPosX, trendPosY);
+                        break;
+                    case 'off':
+                        mainCtx.drawImage(trendOffBuffer, trendPosX, trendPosY);
+                        break;
+                }
+            }
+
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -1862,6 +1941,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType);
@@ -1872,6 +1952,7 @@ var steelseries = function() {
         var minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible);
         var maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat);
         var playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm);
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
@@ -2278,7 +2359,7 @@ var steelseries = function() {
             }
 
             // Create background in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, size/2, imageWidth, imageHeight);
             }
 
@@ -2303,7 +2384,7 @@ var steelseries = function() {
             }
 
             // Create alignment posts in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawPostsImage(backgroundContext);
 
                 // Create section in background buffer (backgroundBuffer)
@@ -2369,7 +2450,7 @@ var steelseries = function() {
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 var knobVisible = (pointerType.type === 'type15' || pointerType.type === 'type16' ? false : true);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle, gaugeType, orientation);
             }
@@ -2611,10 +2692,14 @@ var steelseries = function() {
             mainCtx.save();
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw led
             if (ledVisible) {
@@ -2681,15 +2766,17 @@ var steelseries = function() {
             mainCtx.drawImage(pointerBuffer, 0, 0);
             mainCtx.restore();
 
-            mainCtx.save();
             // Draw foreground
-            if (steelseries.Orientation.WEST === orientation) {
-                mainCtx.translate(centerX, centerX);
-                mainCtx.rotate(Math.PI / 2);
-                mainCtx.translate(-centerX, -centerX);
+            if (foregroundVisible) {
+                mainCtx.save();
+                if (steelseries.Orientation.WEST === orientation) {
+                    mainCtx.translate(centerX, centerX);
+                    mainCtx.rotate(Math.PI / 2);
+                    mainCtx.translate(-centerX, -centerX);
+                }
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+                mainCtx.restore();
             }
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
-            mainCtx.restore();
             mainCtx.restore();
         };
 
@@ -2712,6 +2799,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor);
         var lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor);
         var lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
@@ -2723,6 +2811,7 @@ var steelseries = function() {
         var minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible);
         var maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible);
         var labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm);
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
 
@@ -2770,12 +2859,12 @@ var steelseries = function() {
             ledPosX = 0.453271 * imageWidth;
             ledPosY = (18 / imageHeight) * imageHeight;
             stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
-            lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+            lcdFont = Math.floor(imageWidth / 10) + 'px ' + lcdFontName;
         } else {
             ledPosX = 0.89 * imageWidth;
             ledPosY = 0.453271 * imageHeight;
             stdFont = Math.floor(imageHeight / 10) + 'px sans-serif';
-            lcdFont = Math.floor(imageHeight / 10) + 'px LCDMono2Ultra';
+            lcdFont = Math.floor(imageHeight / 10) + 'px ' + lcdFontName;
         }
 
         var initialized = false;
@@ -3096,7 +3185,7 @@ var steelseries = function() {
             }
 
             // Create background in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight);
             }
 
@@ -3135,7 +3224,7 @@ var steelseries = function() {
             }
 
             // Create alignment posts in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
 
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat, vertical);
@@ -3175,7 +3264,7 @@ var steelseries = function() {
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawLinearForegroundImage(foregroundContext, imageWidth, imageHeight, vertical, false);
             }
         };
@@ -3593,10 +3682,14 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw lcd display
             if (lcdVisible) {
@@ -3645,7 +3738,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -3669,6 +3764,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor);
         var lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor);
         var lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
@@ -3680,6 +3776,7 @@ var steelseries = function() {
         var minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible);
         var maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible);
         var labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm);
         var alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
         var valueGradient  = (undefined === parameters.valueGradient  ? null : parameters.valueGradient );
@@ -3729,12 +3826,12 @@ var steelseries = function() {
             ledPosX = 0.453271 * imageWidth;
             ledPosY = (18 / imageHeight) * imageHeight;
             stdFont = Math.floor(imageWidth / 10) + 'px sans-serif';
-            lcdFont = Math.floor(imageWidth / 10) + 'px LCDMono2Ultra';
+            lcdFont = Math.floor(imageWidth / 10) + 'px ' + lcdFontName;
         } else {
             ledPosX = (imageWidth - 18 - 16) / imageWidth * imageWidth;
             ledPosY = 0.453271 * imageHeight;
             stdFont = Math.floor(imageHeight / 10) + 'px sans-serif';
-            lcdFont = Math.floor(imageHeight / 10) + 'px LCDMono2Ultra';
+            lcdFont = Math.floor(imageHeight / 10) + 'px ' + lcdFontName;
         }
 
         var initialized = false;
@@ -4074,7 +4171,7 @@ var steelseries = function() {
             }
 
             // Create background in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight);
             }
 
@@ -4113,7 +4210,7 @@ var steelseries = function() {
             }
 
             // Create alignment posts in background buffer (backgroundBuffer)
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 var valuePos;
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat, vertical);
@@ -4197,7 +4294,7 @@ var steelseries = function() {
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawLinearForegroundImage(foregroundContext, imageWidth, imageHeight, vertical, false);
             }
         };
@@ -4765,10 +4862,14 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw lcd display
             if (lcdVisible) {
@@ -4818,7 +4919,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -4862,7 +4965,7 @@ var steelseries = function() {
 
         var fontHeight = Math.floor(imageHeight / 1.5);
         var stdFont = fontHeight + 'px sans-serif';
-        var lcdFont = fontHeight + 'px LCDMono2Ultra';
+        var lcdFont = fontHeight + 'px ' + lcdFontName;
 
         var initialized = false;
 
@@ -4876,14 +4979,15 @@ var steelseries = function() {
         var drawLcdText = function(value, color) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
+//            mainCtx.textBaseline = 'top';
             mainCtx.strokeStyle = color;
             mainCtx.fillStyle = color;
 
             mainCtx.beginPath();
-            mainCtx.rect(2, 2, imageWidth - 4, imageHeight - 4);
+            mainCtx.rect(2, 0, imageWidth - 4, imageHeight);
             mainCtx.closePath();
             mainCtx.clip();
-
+/*
             if ((lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN)
                  && section === null) {
                 mainCtx.shadowColor = 'gray';
@@ -4891,7 +4995,7 @@ var steelseries = function() {
                 mainCtx.shadowOffsetY = imageHeight * 0.05;
                 mainCtx.shadowBlur = imageHeight * 0.06;
             }
-
+ */
             if (digitalFont) {
                 mainCtx.font = lcdFont;
             } else {
@@ -5153,9 +5257,9 @@ var steelseries = function() {
         var imageHeight = height;
 
         var stdFont = Math.floor(imageHeight / 1.875) + 'px sans-serif';
-        var lcdFont = Math.floor(imageHeight / 1.875) + 'px LCDMono2Ultra';
+        var lcdFont = Math.floor(imageHeight / 1.875) + 'px ' + lcdFontName;
         var stdOldFont = Math.floor(imageHeight / 3.5) + 'px sans-serif';
-        var lcdOldFont = Math.floor(imageHeight / 3.5) + 'px LCDMono2Ultra';
+        var lcdOldFont = Math.floor(imageHeight / 3.5) + 'px ' + lcdFontName;
 
         var initialized = false;
 
@@ -5269,8 +5373,10 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
 
         var tween;
 
@@ -5646,9 +5752,10 @@ var steelseries = function() {
                 drawRadialFrameImage(backgroundContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
-
-            drawTickmarksImage(backgroundContext);
+            if (backgroundVisible) {
+                drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
+                drawTickmarksImage(backgroundContext);
+            }
 
             drawMarkerImage(pointerContext);
 
@@ -5656,7 +5763,9 @@ var steelseries = function() {
 
             drawStepPointerImage(stepPointerContext);
 
-            drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
+            if (foregroundVisible) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
+            }
         };
 
         var resetBuffers = function() {
@@ -5841,7 +5950,9 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (frameVisible || backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             angle = Math.PI / 2 + value * angleStep - Math.PI / 2;
 
@@ -5883,7 +5994,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
 
             mainCtx.restore();
         };
@@ -5900,11 +6013,13 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE2 : parameters.pointerType);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType);
         var knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var pointSymbols = (undefined === parameters.pointSymbols ? ["N","NE","E","SE","S","SW","W","NW"] : parameters.pointSymbols);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
         var degreeScale = (undefined === parameters.degreeScale ? false : parameters.degreeScale);
@@ -6266,19 +6381,23 @@ var steelseries = function() {
                 drawRadialFrameImage(backgroundContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
-            drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
-            if (roseVisible) {
-                drawRoseImage(backgroundContext, centerX, centerY, imageWidth, imageHeight, backgroundColor);
-            //drawSymbolImage(backgroundContext);
-            }
+            if (backgroundVisible) {
+                drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
+                drawRadialCustomImage(backgroundContext, customLayer, centerX, centerY, imageWidth, imageHeight);
 
-            drawTickmarksImage(backgroundContext);
+                if (roseVisible) {
+                    drawRoseImage(backgroundContext, centerX, centerY, imageWidth, imageHeight, backgroundColor);
+                }
+
+                drawTickmarksImage(backgroundContext);
+            }
 
             drawPointerImage(pointerContext, false);
             drawPointerImage(pointerShadowContext, true);
 
-            drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
+            if (foregroundVisible) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
+            }
         };
 
         var resetBuffers = function() {
@@ -6390,7 +6509,9 @@ var steelseries = function() {
 
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (frameVisible || backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Define rotation center
             angle = Math.PI / 2 + value * angleStep - Math.PI / 2;
@@ -6416,7 +6537,9 @@ var steelseries = function() {
             mainCtx.drawImage(pointerBuffer, 0, 0);
             mainCtx.restore();
 
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
 
             mainCtx.restore();
         };
@@ -6433,6 +6556,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var pointerTypeLatest = (undefined === parameters.pointerTypeLatest ? steelseries.PointerType.TYPE1 : parameters.pointerTypeLatest);
         var pointerTypeAverage = (undefined === parameters.pointerTypeAverage ? steelseries.PointerType.TYPE8 : parameters.pointerTypeAverage);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor);
@@ -6440,6 +6564,7 @@ var steelseries = function() {
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType);
         var knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var pointSymbols = (undefined === parameters.pointSymbols ? ["N","NE","E","SE","S","SW","W","NW"] : parameters.pointSymbols);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
         var degreeScale = (undefined === parameters.degreeScale ? true : parameters.degreeScale);
@@ -6480,7 +6605,7 @@ var steelseries = function() {
 
         var lcdFontHeight = Math.floor(imageWidth / 10);
         var stdFont = lcdFontHeight + 'px sans-serif';
-        var lcdFont = lcdFontHeight + 'px LCDMono2Ultra';
+        var lcdFont = lcdFontHeight + 'px ' + lcdFontName;
         var lcdWidth = imageWidth * 0.3;
         var lcdHeight = imageHeight * 0.12;
         var lcdPosX = (imageWidth - lcdWidth) / 2;
@@ -6554,6 +6679,13 @@ var steelseries = function() {
         };
 
         var drawAreaSectionImage = function(ctx, start, stop, color, filled) {
+            if (start < minValue) start = minValue;
+            else if (start > maxValue) start = maxValue;
+            if (stop < minValue) stop = minValue;
+            else if (stop > maxValue) stop = maxValue;
+
+            if (start >= stop) return;
+
             ctx.save();
             ctx.strokeStyle = color;
             ctx.fillStyle = color;
@@ -6805,7 +6937,7 @@ var steelseries = function() {
                 drawRadialFrameImage(backgroundContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 // Create background in background buffer (backgroundBuffer)
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
 
@@ -6856,7 +6988,7 @@ var steelseries = function() {
                 drawPointerImage(pointerShadowContextLatest, imageWidth, pointerTypeLatest, pointerColor, backgroundColor.labelColor, true);
             }
 
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 var knobVisible = (pointerTypeLatest.type === 'type15' || pointerTypeLatest.type === 'type16' ? false : true);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, knobVisible, knobType, knobStyle);
             }
@@ -7082,7 +7214,9 @@ var steelseries = function() {
 
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (frameVisible || backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw lcd display
             if (lcdVisible) {
@@ -7134,7 +7268,9 @@ var steelseries = function() {
             mainCtx.drawImage(pointerBufferLatest, 0, 0);
             mainCtx.restore();
 
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
 
         };
 
@@ -7150,6 +7286,7 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.WHITE : parameters.pointerColor);
 
         var tweenRoll;
@@ -7386,7 +7523,9 @@ var steelseries = function() {
 
             drawHorizonForegroundImage(foregroundContext);
 
-            drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle, gaugeType);
+            if (foregroundVisible) {
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle, gaugeType);
+            }
         };
 
         var resetBuffers = function() {
@@ -7522,6 +7661,7 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             mainCtx.drawImage(backgroundBuffer, 0, 0);
+
             mainCtx.save();
 
             // Set the clipping area
@@ -7547,7 +7687,7 @@ var steelseries = function() {
 
             mainCtx.drawImage(foregroundBuffer, 0, 0);
 
-//            mainCtx.restore();
+            mainCtx.restore();
         };
 
         // Visualize the component
@@ -7674,7 +7814,9 @@ var steelseries = function() {
         var pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType);
         var pointerColor = (undefined === parameters.pointerColor ? (pointerType===steelseries.PointerType.TYPE1 ? steelseries.ColorDef.GRAY : steelseries.ColorDef.BLACK ): parameters.pointerColor);
         var backgroundColor = (undefined === parameters.backgroundColor ? (pointerType===steelseries.PointerType.TYPE1 ? steelseries.BackgroundColor.ANTHRACITE : steelseries.BackgroundColor.LIGHT_GRAY) : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
         var isAutomatic = (undefined === parameters.isAutomatic ? true : parameters.isAutomatic);
         var hour = (undefined === parameters.hour ? 11 : parameters.hour);
@@ -8117,7 +8259,7 @@ var steelseries = function() {
                 drawRadialFrameImage(frameContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 // Create background in background buffer (backgroundBuffer)
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
 
@@ -8136,7 +8278,7 @@ var steelseries = function() {
                 drawSecondPointer(secondShadowContext, pointerType, true);
             }
 
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawTopKnob(foregroundContext, pointerType);
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
             }
@@ -8351,10 +8493,14 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // have to draw to a rotated temporary image area so we can translate in
             // absolute x, y values when drawing to main context
@@ -8421,7 +8567,9 @@ var steelseries = function() {
             }
 
             // Draw foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -8561,7 +8709,9 @@ var steelseries = function() {
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.BLACK : parameters.pointerColor);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.LIGHT_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
 
         var minutePointerAngle = 0;
@@ -8880,7 +9030,7 @@ var steelseries = function() {
                 drawRadialFrameImage(frameContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 // Create background in background buffer (backgroundBuffer)
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
 
@@ -8897,7 +9047,7 @@ var steelseries = function() {
                 drawSmallPointer(smallPointerShadowContext, true);
             }
 
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
             }
         };
@@ -9060,7 +9210,9 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // have to draw to a rotated temporary image area so we can translate in
             // absolute x, y values when drawing to main context
@@ -9105,7 +9257,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             // Draw the foreground
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
         };
 
         // Visualize the component
@@ -9121,12 +9275,14 @@ var steelseries = function() {
         var frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
         var frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
         var backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
+        var backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
         var knobType = (undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType);
         var knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.BLACK : parameters.knobStyle);
         var lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.BLACK : parameters.lcdColor);
         var lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
         var digitalFont = (undefined === parameters.digitalFont ? false : parameters.digitalFont);
         var foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
+        var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
         var customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
 
         var minValue = 0;
@@ -9223,7 +9379,7 @@ var steelseries = function() {
                 mainCtx.shadowBlur = imageWidth * 0.009;
             }
             if (digitalFont) {
-                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px LCDMono2Ultra';
+                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px ' + lcdFontName;
             } else {
                 mainCtx.font = Math.floor(imageWidth * 0.075) + 'px sans-serif';
             }
@@ -9437,7 +9593,7 @@ var steelseries = function() {
                 drawRadialFrameImage(frameContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
-            if (drawBackground) {
+            if (drawBackground && backgroundVisible) {
                 // Create background in background buffer (backgroundBuffer)
                 drawRadialBackgroundImage(backgroundContext, backgroundColor, centerX, centerY, imageWidth, imageHeight);
 
@@ -9469,7 +9625,7 @@ var steelseries = function() {
                 draw10000ftPointer(pointer10000ShadowContext, true);
             }
 
-            if (drawForeground) {
+            if (drawForeground && foregroundVisible) {
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
             }
         };
@@ -9611,10 +9767,14 @@ var steelseries = function() {
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
-            mainCtx.drawImage(frameBuffer, 0, 0);
+            if (frameVisible) {
+                mainCtx.drawImage(frameBuffer, 0, 0);
+            }
 
             // Draw buffered image to visible canvas
-            mainCtx.drawImage(backgroundBuffer, 0, 0);
+            if (backgroundVisible) {
+                mainCtx.drawImage(backgroundBuffer, 0, 0);
+            }
 
             // Draw lcd display
             if (lcdVisible) {
@@ -9687,7 +9847,9 @@ var steelseries = function() {
             mainCtx.restore();
 
             //Draw the foregound
-            mainCtx.drawImage(foregroundBuffer, 0, 0);
+            if (foregroundVisible) {
+                mainCtx.drawImage(foregroundBuffer, 0, 0);
+            }
 
         };
 
@@ -11598,6 +11760,14 @@ var steelseries = function() {
         radFCtx.closePath();
         radFCtx.fill();
 
+        // clip out center so it is transparent if the background is not visible
+        radFCtx.globalCompositeOperation = 'destination-out';
+        // Background ellipse
+        radFCtx.beginPath();
+        radFCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true);
+        radFCtx.closePath();
+        radFCtx.fill();
+
         ctx.drawImage(radFBuffer, 0, 0);
         ctx.restore();
 
@@ -11900,6 +12070,11 @@ var steelseries = function() {
         roundedRectangle(linFCtx, 13, 13, imageWidth - 26, imageHeight - 26, SUBTRACT_CORNER_RADIUS - 1);
         linFCtx.fillStyle = 'rgb(192, 192, 192)';
 //        linFCtx.fill();
+
+        // clip out the center of the frame for transparent backgrounds
+        linFCtx.globalCompositeOperation = 'destination-out';
+        roundedRectangle(linFCtx, 14, 14, imageWidth - 28, imageHeight - 28, 4);
+        linFCtx.fill();
 
         ctx.drawImage(linFBuffer, 0, 0);
         ctx.restore();
@@ -12904,7 +13079,7 @@ var steelseries = function() {
         return indicatorBuffer;
     };
 
-    var createTrendIndicator = function(width, onSection) {
+    var createTrendIndicator = function(width, onSection, colors) {
         var height = width * 2;
         // create oversized buffer for the glow
         var trendBuffer = createBuffer(width * 2, width * 4);
@@ -12913,7 +13088,7 @@ var steelseries = function() {
 
         var drawUpArrow = function () {
             // draw up arrow (red)
-            var ledColor = steelseries.LedColor.RED_LED;
+            var ledColor = colors[0];
             if (onSection.state === 'up') {
                 fill = trendCtx.createRadialGradient(0.5 * width, 0.2 * height, 0, 0.5 * width, 0.2 * height, 0.5 * width);
                 fill.addColorStop(0, ledColor.innerColor1_ON);
@@ -12973,7 +13148,7 @@ var steelseries = function() {
 
         var drawEquals = function() {
             // draw equal symbol
-            ledColor = steelseries.LedColor.GREEN_LED;
+            ledColor = colors[1];
             trendCtx.beginPath();
             if (onSection.state === 'steady') {
                 fill = ledColor.outerColor_ON;
@@ -13042,7 +13217,7 @@ var steelseries = function() {
 
         var drawDownArrow = function () {
             // draw down arrow
-            ledColor = steelseries.LedColor.CYAN_LED;
+            ledColor = colors[2];
             if (onSection.state === 'down') {
                 fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, 0.5 * width);
                 fill.addColorStop(0, ledColor.innerColor1_ON);
