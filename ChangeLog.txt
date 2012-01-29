@@ -1,5 +1,11 @@
 Main Changes
 
+v0.9.17
+> Radial/RadialBargraph
+  * Fixed radial sector/area drawing instructions so they work with Chrome Dev build 19
+> General Changes
+  * Change background visible logic so that the LCD background display is controlled solely by lcdVisible parameter.
+
 v0.9.16
 > Radial
   * Added range checking to section/area drawing code

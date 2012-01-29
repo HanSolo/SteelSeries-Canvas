@@ -1,13 +1,13 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 24.01.2012
- * Revision      : 0.9.16a
+ * Last modified : 29.01.2012
+ * Revision      : 0.9.17
  */
 
 var steelseries = function() {
     var doc = document;
-    var lcdFontName = 'LCDMono2Ultra';
+    var lcdFontName = 'LCDMono2Ultra,sans-serif';
 
     //*************************************   C O M P O N O N E N T S   ************************************************
     var radial = function(canvas, parameters) {
@@ -342,9 +342,9 @@ var steelseries = function() {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-            ctx.moveTo(0, 0);
-            ctx.closePath();
+//            ctx.closePath();
             if (filled) {
+                ctx.moveTo(0, 0);
                 ctx.fill();
             } else {
                 ctx.stroke();
@@ -580,19 +580,19 @@ var steelseries = function() {
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat);
 
-                // Draw threshold image to background context
-                if (thresholdVisible) {
-                    backgroundContext.save();
-                    backgroundContext.translate(centerX, centerY);
-                    backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
-                    backgroundContext.translate(-centerX, -centerY);
-                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.13);
-                    backgroundContext.translate(centerX, centerY);
-                    backgroundContext.restore();
-                }
-
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true);
+            }
+
+            // Draw threshold image to background context
+            if (drawBackground && thresholdVisible) {
+                backgroundContext.save();
+                backgroundContext.translate(centerX, centerY);
+                backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
+                backgroundContext.translate(-centerX, -centerY);
+                backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.13);
+                backgroundContext.translate(centerX, centerY);
+                backgroundContext.restore();
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -955,9 +955,8 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-            if (backgroundVisible) {
-                mainCtx.drawImage(backgroundBuffer, 0, 0);
-            }
+             mainCtx.drawImage(backgroundBuffer, 0, 0);
+
 
             // Draw lcd display
             if (lcdVisible) {
@@ -1346,7 +1345,6 @@ var steelseries = function() {
             // Create tickmarks in background buffer (backgroundBuffer)
             if (drawBackground  && backgroundVisible) {
                 drawTickmarksImage(backgroundContext, labelNumberFormat);
-
 
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true);
@@ -2164,9 +2162,9 @@ var steelseries = function() {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-            ctx.moveTo(0, 0);
-            ctx.closePath();
+//            ctx.closePath();
             if (filled) {
+                ctx.moveTo(0, 0);
                 ctx.fill();
             } else {
                 ctx.stroke();
@@ -2423,23 +2421,23 @@ var steelseries = function() {
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat);
 
-                // Draw threshold image to background context
-                if (thresholdVisible) {
-                    backgroundContext.save();
-                    if (steelseries.Orientation.WEST === orientation) {
-                        backgroundContext.translate(centerX, centerX);
-                        backgroundContext.rotate(-Math.PI / 2);
-                        backgroundContext.translate(-centerX, -centerX);
-                    }
-                    backgroundContext.translate(centerX, centerY);
-                    backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
-                    backgroundContext.translate(-centerX, -centerY);
-                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
-                    backgroundContext.restore();
-                }
-
                 // Create title in background buffer (backgroundBuffer)
                 drawTitleImage(backgroundContext);
+            }
+
+            // Draw threshold image to background context
+            if (thresholdVisible) {
+                backgroundContext.save();
+                if (steelseries.Orientation.WEST === orientation) {
+                    backgroundContext.translate(centerX, centerX);
+                    backgroundContext.rotate(-Math.PI / 2);
+                    backgroundContext.translate(-centerX, -centerX);
+                }
+                backgroundContext.translate(centerX, centerY);
+                backgroundContext.rotate(rotationOffset + (threshold - minValue) * angleStep + HALF_PI);
+                backgroundContext.translate(-centerX, -centerY);
+                backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
+                backgroundContext.restore();
             }
 
             // Create pointer image in pointer buffer (contentBuffer)
@@ -2697,9 +2695,7 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-            if (backgroundVisible) {
-                mainCtx.drawImage(backgroundBuffer, 0, 0);
-            }
+             mainCtx.drawImage(backgroundBuffer, 0, 0);
 
             // Draw led
             if (ledVisible) {
@@ -3229,21 +3225,6 @@ var steelseries = function() {
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, labelNumberFormat, vertical);
                 var valuePos;
-                // Draw threshold image to background context
-                if (thresholdVisible) {
-                    backgroundContext.save();
-                    if (vertical) {
-                        // Vertical orientation
-                        valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold / (maxValue - minValue));
-                        backgroundContext.translate(imageWidth * 0.435714 - Math.ceil(imageWidth * 0.046728) - 2, valuePos - Math.ceil(imageWidth * 0.046728) / 2);
-                    } else {
-                        // Horizontal orientation
-                        valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * threshold / (maxValue - minValue);
-                        backgroundContext.translate(imageWidth * 0.142857 - Math.ceil(imageHeight * 0.046728) / 2 + valuePos, imageHeight * 0.571428 + 2);
-                    }
-                    backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
-                    backgroundContext.restore();
-                }
 
                 // Create title in background buffer (backgroundBuffer)
                 if (vertical) {
@@ -3251,6 +3232,22 @@ var steelseries = function() {
                 } else {
                     drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, vertical, null, lcdVisible);
                 }
+            }
+
+            // Draw threshold image to background context
+            if (drawBackground && thresholdVisible) {
+                backgroundContext.save();
+                if (vertical) {
+                    // Vertical orientation
+                    valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold / (maxValue - minValue));
+                    backgroundContext.translate(imageWidth * 0.435714 - Math.ceil(imageWidth * 0.046728) - 2, valuePos - Math.ceil(imageWidth * 0.046728) / 2);
+                } else {
+                    // Horizontal orientation
+                    valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * threshold / (maxValue - minValue);
+                    backgroundContext.translate(imageWidth * 0.142857 - Math.ceil(imageHeight * 0.046728) / 2 + valuePos, imageHeight * 0.571428 + 2);
+                }
+                backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
+                backgroundContext.restore();
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -3688,9 +3685,7 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-            if (backgroundVisible) {
-                mainCtx.drawImage(backgroundBuffer, 0, 0);
-            }
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
 
             // Draw lcd display
             if (lcdVisible) {
@@ -6696,9 +6691,9 @@ var steelseries = function() {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-            ctx.moveTo(0, 0);
-            ctx.closePath();
+//            ctx.closePath();
             if (filled) {
+                ctx.moveTo(0, 0);
                 ctx.fill();
             } else {
                 ctx.stroke();
@@ -6959,12 +6954,12 @@ var steelseries = function() {
                     while (0 < areaIndex);
                 }
 
-                if (roseVisible) {
-                    drawRoseImage(backgroundContext, centerX, centerY, imageWidth, imageHeight, backgroundColor);
-                //drawSymbolImage(backgroundContext);
-                }
 
                 drawTickmarksImage(backgroundContext);
+            }
+
+            if (drawBackground && roseVisible) {
+                drawRoseImage(backgroundContext, centerX, centerY, imageWidth, imageHeight, backgroundColor);
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -9597,12 +9592,12 @@ var steelseries = function() {
 
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, 0, TICKMARK_OFFSET, 0, 10, angleStep100ft, tickLabelPeriod, 0, true, true, null);
+            }
 
-                // Create lcd background if selected in background buffer (backgroundBuffer)
-                if (lcdVisible) {
-                    lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.09, lcdColor);
-                    backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.56);
-                }
+            // Create lcd background if selected in background buffer (backgroundBuffer)
+            if (drawBackground && lcdVisible) {
+                lcdBuffer = createLcdBackgroundImage(imageWidth * 0.4, imageHeight * 0.09, lcdColor);
+                backgroundContext.drawImage(lcdBuffer, (imageWidth - (imageWidth * 0.4)) / 2, imageHeight * 0.56);
             }
 
             if (drawPointers) {
@@ -9767,9 +9762,7 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-            if (backgroundVisible) {
-                mainCtx.drawImage(backgroundBuffer, 0, 0);
-            }
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
 
             // Draw lcd display
             if (lcdVisible) {
@@ -11453,7 +11446,6 @@ var steelseries = function() {
     };
 
     var drawRadialFrameImage = function(ctx, frameDesign, centerX, centerY, imageWidth, imageHeight) {
-        ctx.save();
 
         if (imageWidth === radFBuffer.width && imageHeight === radFBuffer.height && frameDesign === radFDesign) {
             ctx.drawImage(radFBuffer, 0, 0);
@@ -11764,7 +11756,6 @@ var steelseries = function() {
         radFCtx.fill();
 
         ctx.drawImage(radFBuffer, 0, 0);
-        ctx.restore();
 
         return this;
     };
@@ -12077,7 +12068,6 @@ var steelseries = function() {
     };
 
     var drawRadialBackgroundImage = function(ctx, backgroundColor, centerX, centerY, imageWidth, imageHeight) {
-        ctx.save();
 
         if (imageWidth === radBBuffer.width && imageHeight === radBBuffer.height && backgroundColor === radBColor) {
             ctx.drawImage(radBBuffer, 0, 0);
@@ -12167,14 +12157,11 @@ var steelseries = function() {
                         new rgbaColor('#B2B2B4'),
                         new rgbaColor('#FDFDFD'),
                         new rgbaColor('#FDFDFD')];
-            radBCtx.save();
-            //radBCtx.clip(radBCtx.arc(centerX, centerY, imageWidth * 0.831775 / 2, 0, Math.PI * 2, true));
             outerX = imageWidth * 0.831775 / 2;
             innerX = 0;
             grad = new conicalGradient(fractions, colors, Math.PI / 1.75);
             grad.fill(radBCtx, centerX, centerY, innerX, outerX);
             radBCtx.closePath();
-            radBCtx.restore();
 
             if (backgroundColor === steelseries.BackgroundColor.TURNED) {
                 var TWO_PI = Math.PI * 2;
@@ -12246,7 +12233,6 @@ var steelseries = function() {
         radBCtx.fill();
 
         ctx.drawImage(radBBuffer, 0, 0);
-        ctx.restore();
 
         return this;
     };
@@ -12360,8 +12346,6 @@ var steelseries = function() {
                 if (backgroundColor === steelseries.BackgroundColor.TURNED) {
                     var TWO_PI = Math.PI * 2;
                     // Define the turning radius
-                    //var radius = imageWidth * 0.831775 / 2;
-                    //var radius = Math.sqr(imageWidth*imageWidth + imageHeight*imageHeight);
                     var turnRadius = radius * 0.55;
                     var centerX = imageWidth / 2;
                     var centerY = imageHeight / 2;
@@ -12453,7 +12437,6 @@ var steelseries = function() {
     };
 
     var drawRadialForegroundImage = function(ctx, foregroundType, imageWidth, imageHeight, withCenterKnob, knob, style, gaugeType, orientation) {
-        ctx.save();
         if (foregroundType.type === radFgType && imageWidth === radFgBuffer.width && imageHeight === radFgBuffer.height && withCenterKnob === radWithKnob && knob === radKnob && style === radFgStyle && radGaugeType === gaugeType && radOrientation === orientation) {
             ctx.drawImage(radFgBuffer, 0, 0);
             ctx.restore();
@@ -12587,8 +12570,6 @@ var steelseries = function() {
         radFgCtx.fill();
 
         ctx.drawImage(radFgBuffer, 0, 0);
-
-        ctx.restore();
 
         return this;
     };
@@ -12863,7 +12844,9 @@ var steelseries = function() {
                 knobCtx.fill();
                 break;
         }
-        knobCtx.restore();
+//        knobCtx.restore();
+        //  Negate the offset the drawing to leave room for shadows
+        knobCtx.translate(-size * 0.06, -size * 0.06);
 
         if (shadow) {
             // Apply the shadow blur
@@ -14066,7 +14049,8 @@ var steelseries = function() {
         ctx.quadraticCurveTo(x, b, x, b - radius);
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
-        //ctx.stroke();
+        ctx.closePath();
+        ctx.stroke();
     }
 
     function createBuffer(width, height) {
@@ -14203,7 +14187,6 @@ var steelseries = function() {
 
     function hsb2Rgb(hue, saturation, brightness) {
         var r, g, b;
-
         var i = Math.floor(hue * 6);
         var f = hue * 6 - i;
         var p = brightness * (1 - saturation);
@@ -14212,45 +14195,34 @@ var steelseries = function() {
 
         switch(i % 6){
             case 0:
-
                 r = brightness;
                 g = t
                 b = p;
-
                 break;
             case 1:
-
                 r = q
                 g = brightness;
                 b = p;
                 break;
             case 2:
-
                 r = p;
                 g = brightness;
                 b = t;
-
                 break;
             case 3:
-
                 r = p;
                 g = q;
                 b = brightness;
-
                 break;
             case 4:
-
                 r = t;
                 g = p;
                 b = brightness;
-
                 break;
             case 5:
-
                 r = brightness;
                 g = p;
                 b = q;
-
                 break;
         }
 
@@ -14266,7 +14238,6 @@ var steelseries = function() {
         var hue;
         var saturation;
         var brightness = max;
-
         var delta = max - min;
         saturation = max == 0 ? 0 : delta / max;
 
@@ -14275,19 +14246,13 @@ var steelseries = function() {
         } else {
             switch(max){
                 case r:
-
                     hue = (g - b) / delta + (g < b ? 6 : 0);
-
                     break;
                 case g:
-
                     hue = (b - r) / delta + 2;
-
                     break;
                 case b:
-
                     hue = (r - g) / delta + 4;
-
                     break;
             }
             hue /= 6;
@@ -14720,6 +14685,7 @@ var steelseries = function() {
         Altimeter : altimeter,
         TrafficLight: trafficlight,
         LightBulb: lightbulb,
+
         // Images
         drawFrame : drawRadialFrameImage,
         drawBackground : drawRadialBackgroundImage,
