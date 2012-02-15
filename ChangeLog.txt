@@ -1,5 +1,10 @@
 Main Changes
 
+v0.10.0
+> Linear
+  * Added gaugeType initialisation parameter - switches to Linear a 'themometer' type gauge
+  * Altered scaling factors of Linear and LinearBargraph, frame width now proportional to gauge size
+
 v0.9.17
 > Radial/RadialBargraph
   * Fixed radial sector/area drawing instructions so they work with Chrome Dev build 19
