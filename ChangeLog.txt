@@ -1,5 +1,9 @@
 Main Changes
 
+v0.10.1a
+> Linear
+  * Fixes stupid or/and error on gaugeType checking!
+
 v0.10.1
 > Linear
   * Added range check to gaugeType, forcing default = TYPE1 if anything other than TYPE1 or TYPE2 is supplied

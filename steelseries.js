@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 18.02.2012
- * Revision      : 0.10.1
+ * Revision      : 0.10.1a
  */
 
 var steelseries = function() {
@@ -2828,7 +2828,7 @@ var steelseries = function() {
         var maxMeasuredValue = minValue;
 
         // Check gaugeType is 1 or 2
-        if (gaugeType.type !== 'type1' || gaugeType.type !== 'type2') {
+        if (gaugeType.type !== 'type1' && gaugeType.type !== 'type2') {
             gaugeType = steelseries.GaugeType.TYPE1;
         }
 
