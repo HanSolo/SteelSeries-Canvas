@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 15.02.2012
- * Revision      : 0.10.0
+ * Last modified : 18.02.2012
+ * Revision      : 0.10.1
  */
 
 var steelseries = function() {
@@ -2827,6 +2827,11 @@ var steelseries = function() {
         var minMeasuredValue = maxValue;
         var maxMeasuredValue = minValue;
 
+        // Check gaugeType is 1 or 2
+        if (gaugeType.type !== 'type1' || gaugeType.type !== 'type2') {
+            gaugeType = steelseries.GaugeType.TYPE1;
+        }
+
         var tween;
         var ledBlinking = false;
 
@@ -3186,7 +3191,7 @@ var steelseries = function() {
 
             // Create background in background buffer (backgroundBuffer)
             if (drawBackground && backgroundVisible) {
-                drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight);
+                drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight, vertical);
             }
 
             // draw Thermometer outline
@@ -3345,7 +3350,6 @@ var steelseries = function() {
         };
 
         var drawValue = function(ctx, imageWidth, imageHeight) {
-            var vertical = imageWidth < imageHeight;
             var top; // position of max value
             var bottom; // position of min value
             var labelColor = backgroundColor.labelColor;
@@ -4308,7 +4312,7 @@ var steelseries = function() {
 
             // Create background in background buffer (backgroundBuffer)
             if (drawBackground && backgroundVisible) {
-                drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight);
+                drawLinearBackgroundImage(backgroundContext, backgroundColor, imageWidth, imageHeight, vertical);
             }
 
             if (drawLed) {
@@ -4517,7 +4521,6 @@ var steelseries = function() {
         };
 
         var drawValue = function(ctx, imageWidth, imageHeight) {
-            var vertical = imageWidth < imageHeight;
             var top; // position of max value
             var bottom; // position of min value
             var labelColor = backgroundColor.labelColor;
@@ -11908,7 +11911,8 @@ var steelseries = function() {
             ctx.restore();
             return this;
         }
-        var frameWidth = (vertical ? imageHeight : imageWidth) * 0.045;
+        var frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
+        frameWidth = Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1);
 
         // Setup buffer
         linFDesign = frameDesign;
@@ -12397,7 +12401,7 @@ var steelseries = function() {
         return this;
     };
 
-    var drawLinearBackgroundImage = function(ctx, backgroundColor, imageWidth, imageHeight) {
+    var drawLinearBackgroundImage = function(ctx, backgroundColor, imageWidth, imageHeight, vertical) {
         ctx.save();
 
         if (imageWidth === linBBuffer.width && imageHeight === linBBuffer.height && backgroundColor === linBColor) {
@@ -12406,7 +12410,8 @@ var steelseries = function() {
             return this;
         }
 
-        var frameWidth = Math.max(imageHeight, imageWidth) * 0.035;
+        var frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
+        frameWidth = Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1);
 
         // Setup buffer
         linBColor = backgroundColor;
@@ -12719,11 +12724,9 @@ var steelseries = function() {
     };
 
     var drawLinearForegroundImage = function(ctx, imageWidth, imageHeight, vertical) {
-        ctx.save();
 
         if (imageWidth === linFgBuffer.width && imageHeight === linFgBuffer.height && linVertical === vertical) {
             ctx.drawImage(linFgBuffer, 0, 0);
-            ctx.restore();
             return this;
         }
 
@@ -12734,36 +12737,22 @@ var steelseries = function() {
         var linFgCtx = linFgBuffer.getContext('2d');
         var foregroundGradient;
 
-/*        if (vertical) {
-            // GLASSEFFECT_VERTICAL
-            linFgCtx.save();
-            linFgCtx.beginPath();
-            linFgCtx.moveTo(18, 18);
-            linFgCtx.lineTo(18, imageHeight - 18);
-            linFgCtx.bezierCurveTo(18, imageHeight - 18, 27, imageHeight - 27, imageWidth * 0.5, imageHeight - 27);
-            linFgCtx.bezierCurveTo(imageWidth - 27, imageHeight - 27, imageWidth - 18, imageHeight - 18, imageWidth - 18, imageHeight - 18);
-            linFgCtx.lineTo(imageWidth - 18, 18);
-            linFgCtx.bezierCurveTo(imageWidth - 18, 18, imageWidth - 27, 27, imageWidth * 0.5, 27);
-            linFgCtx.bezierCurveTo(27, 27, 18, 18, 18, 18);
-            linFgCtx.closePath();
+        var frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
+        frameWidth = Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1);
+        var fgOffset = frameWidth * 1.3;
+        var fgOffset2 = fgOffset * 1.33;
 
-            foregroundGradient = linFgCtx.createLinearGradient(14, 0, (imageWidth - 14), 0);
-        } else {
-*/            // GLASSEFFECT_HORIZONTAL
-            linFgCtx.save();
-            linFgCtx.beginPath();
-            linFgCtx.moveTo(18, imageHeight - 18);
-            linFgCtx.lineTo(imageWidth - 18, imageHeight - 18);
-            linFgCtx.bezierCurveTo(imageWidth - 18, imageHeight - 18, imageWidth - 27, imageHeight * 0.7, imageWidth - 27, imageHeight * 0.5);
-            linFgCtx.bezierCurveTo(imageWidth - 27, 27, imageWidth - 18, 18, imageWidth - 18, 18);
-            linFgCtx.lineTo(18, 18);
-            linFgCtx.bezierCurveTo(18, 18, 27, imageHeight * 0.285714, 27, imageHeight * 0.5);
-            linFgCtx.bezierCurveTo(27, imageHeight * 0.7, 18, imageHeight - 18, 18, imageHeight - 18);
-            linFgCtx.closePath();
+        linFgCtx.beginPath();
+        linFgCtx.moveTo(fgOffset, imageHeight - fgOffset);
+        linFgCtx.lineTo(imageWidth - fgOffset, imageHeight - fgOffset);
+        linFgCtx.bezierCurveTo(imageWidth - fgOffset, imageHeight - fgOffset, imageWidth - fgOffset2, imageHeight * 0.7, imageWidth - fgOffset2, imageHeight * 0.5);
+        linFgCtx.bezierCurveTo(imageWidth - fgOffset2, fgOffset2, imageWidth - fgOffset, fgOffset, imageWidth - frameWidth, fgOffset);
+        linFgCtx.lineTo(fgOffset, fgOffset);
+        linFgCtx.bezierCurveTo(fgOffset, fgOffset, fgOffset2, imageHeight * 0.285714, fgOffset2, imageHeight * 0.5);
+        linFgCtx.bezierCurveTo(fgOffset2, imageHeight * 0.7, fgOffset, imageHeight - fgOffset, frameWidth, imageHeight - fgOffset);
+        linFgCtx.closePath();
 
-            foregroundGradient = linFgCtx.createLinearGradient(0, (imageHeight - 14), 0, 14);
-//        }
-
+        foregroundGradient = linFgCtx.createLinearGradient(0, (imageHeight - frameWidth), 0, frameWidth);
         foregroundGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
         foregroundGradient.addColorStop(0.06, 'rgba(255, 255, 255, 0)');
         foregroundGradient.addColorStop(0.07, 'rgba(255, 255, 255, 0)');
@@ -12782,8 +12771,6 @@ var steelseries = function() {
         linFgCtx.fill();
 
         ctx.drawImage(linFgBuffer, 0, 0);
-
-        ctx.restore();
 
         return this;
     };

@@ -1,5 +1,13 @@
 Main Changes
 
+v0.10.1
+> Linear
+  * Added range check to gaugeType, forcing default = TYPE1 if anything other than TYPE1 or TYPE2 is supplied
+    as a parameter.
+  * Change frame width scaling calculations to use a ratio of the diagonal length or min of width/height depending
+    on which is the smaller
+  * Fixed error in foreground scaling
+
 v0.10.0
 > Linear
   * Added gaugeType initialisation parameter - switches to Linear a 'themometer' type gauge
