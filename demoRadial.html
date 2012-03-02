@@ -145,6 +145,8 @@
             <td width="100%">
                 <canvas id="canvasVertical1" width="201" height="201"></canvas>
                 <canvas id="canvasVertical2" width="201" height="201"></canvas>
+                <canvas id="canvasRadial9" width="201" height="201"></canvas>
+                <canvas id="canvasRadial10" width="201" height="201"></canvas>
             </td>
         </tr>
     </tbody></table>
@@ -159,8 +161,11 @@
     var radial6;
     var radial7;
     var radial8;
+    var radial9;
+    var radial10;
     var vertical1;
     var vertical2;
+    var odoValue = 99998.2;
 
 
     function init() {
@@ -189,7 +194,7 @@
                             section: sections,
                             area: areas,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Type1',
                             threshold: 50,
                             lcdVisible: true
                             });
@@ -200,7 +205,7 @@
                             section: sections,
                             area: areas,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Type2',
                             threshold: 50,
                             lcdVisible: true
                             });
@@ -211,7 +216,7 @@
                             section: sections,
                             area: areas,
                             titleString: "Title",
-                            unitString: "Unit",
+                            unitString: "Type3",
                             lcdVisible: true
                             });
 
@@ -221,7 +226,7 @@
                             section: sections,
                             area: areas,
                             titleString: "Title",
-                            unitString: "Unit",
+                            unitString: "Type4",
                             threshold: 50,
                             lcdVisible: true
                             });
@@ -230,7 +235,7 @@
                             gaugeType: steelseries.GaugeType.TYPE1,
                             size: 201,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Type1',
                             lcdVisible: true
                             });
 
@@ -238,7 +243,7 @@
                             gaugeType: steelseries.GaugeType.TYPE2,
                             size: 201,
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'Type2',
                             lcdVisible: true
                             });
 
@@ -262,30 +267,62 @@
                             lcdVisible: true
                             });
 
+        radial9 = new steelseries.Radial('canvasRadial9', {
+                            gaugeType: steelseries.GaugeType.TYPE4,
+                            size: 201,
+                            section: sections,
+                            area: areas,
+                            titleString: "Title",
+                            unitString: "Type4",
+                            threshold: 50,
+                            lcdVisible: true,
+                            useOdometer: true,
+                            odometerUseValue: true,
+                            odometerParams: {digits: 3, decimals: 2}
+                            });
+
+        radial10 = new steelseries.Radial('canvasRadial10', {
+                            gaugeType: steelseries.GaugeType.TYPE4,
+                            size: 201,
+                            section: sections,
+                            area: areas,
+                            titleString: "Title",
+                            unitString: "Type4",
+                            threshold: 50,
+                            lcdVisible: true,
+                            lcdDecimals: 1,
+                            useOdometer: true,
+                            odometerParams: {digits: 5, value: odoValue}
+                            });
+
         vertical1 = new steelseries.RadialVertical('canvasVertical1', {
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'North',
                             size: 201
                             });
 
         vertical2 = new steelseries.RadialVertical('canvasVertical2', {
                             titleString: 'Title',
-                            unitString: 'Unit',
+                            unitString: 'West',
                             size: 201,
                             orientation: steelseries.Orientation.WEST
                             });
 
         // Start the random update
-        setInterval(function(){ setRandomValue(radial1, 100); }, 2200);
-        setInterval(function(){ setRandomValue(radial2, 100); }, 2300);
-        setInterval(function(){ setRandomValue(radial3, 100); }, 2400);
-        setInterval(function(){ setRandomValue(radial4, 100); }, 2500);
-        setInterval(function(){ setRandomValue(radial5, 100); }, 2600);
-        setInterval(function(){ setRandomValue(radial6, 100); }, 2700);
-        setInterval(function(){ setRandomValue(radial7, 100); }, 2800);
-        setInterval(function(){ setRandomValue(radial8, 100); }, 2900);
-        setInterval(function(){ setRandomValue(vertical1, 100); }, 2100);
-        setInterval(function(){ setRandomValue(vertical2, 100); }, 2000);
+        setInterval(function(){ setRandomValue(radial1, 100); }, 4200);
+        setInterval(function(){ setRandomValue(radial2, 100); }, 4300);
+        setInterval(function(){ setRandomValue(radial3, 100); }, 4400);
+        setInterval(function(){ setRandomValue(radial4, 100); }, 4500);
+        setInterval(function(){ setRandomValue(radial5, 100); }, 4600);
+        setInterval(function(){ setRandomValue(radial6, 100); }, 4700);
+        setInterval(function(){ setRandomValue(radial7, 100); }, 4800);
+        setInterval(function(){ setRandomValue(radial8, 100); }, 4900);
+        setInterval(function(){ setRandomValue(radial9, 100); }, 4850);
+        setInterval(function(){ setRandomValue(radial10, 100); }, 4750);
+        setInterval(function(){ setOdometer(radial10); }, 100);
+        setInterval(function(){ setRandomValue(vertical1, 100); }, 4100);
+        setInterval(function(){ setRandomValue(vertical1, 100); }, 4100);
+        setInterval(function(){ setRandomValue(vertical2, 100); }, 4000);
     }
 
     function setRandomValue(gauge, range) {
@@ -304,6 +341,11 @@
         gauge.setRollAnimated(roll);
     }
 
+    function setOdometer(gauge) {
+        odoValue += 0.02
+        gauge.setOdoValue(odoValue);
+    }
+    
     function setFrameDesign(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "BLACK_METAL":

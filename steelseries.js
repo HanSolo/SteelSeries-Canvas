@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 18.02.2012
- * Revision      : 0.10.1a
+ * Last modified : 01.03.2012
+ * Revision      : 0.11.0
  */
 
 var steelseries = function() {
@@ -49,6 +49,9 @@ var steelseries = function() {
         var tickLabelOrientation = (undefined === parameters.tickLabelOrientation ? (gaugeType === steelseries.GaugeType.TYPE1 ? steelseries.TickLabelOrientation.TANGENT : steelseries.TickLabelOrientation.NORMAL) : parameters.tickLabelOrientation);
         var trendVisible = (undefined === parameters.trendVisible ? false : parameters.trendVisible);
         var trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED,steelseries.LedColor.GREEN_LED,steelseries.LedColor.CYAN_LED] : parameters.trendColors);
+        var useOdometer = (undefined === parameters.useOdometer ? false : parameters.useOdometer);
+        var odometerParams = (undefined === parameters.odometerParams ? {} : parameters.odometerParams);
+        var odometerUseValue = (undefined === parameters.odometerUseValue ? false : parameters.odometerUseValue);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -59,6 +62,7 @@ var steelseries = function() {
         }
 
         var value = minValue;
+        var odoValue = minValue;
         var self = this;
 
         // Properties
@@ -109,6 +113,7 @@ var steelseries = function() {
         var lcdWidth = imageWidth * 0.4;
         var lcdPosX = (imageWidth - lcdWidth) / 2;
         var lcdPosY = imageHeight * 0.57;
+        var odoPosX, odoPosY = imageHeight * 0.61;
 
         // Constants
         var HALF_PI = Math.PI / 2;
@@ -230,6 +235,13 @@ var steelseries = function() {
 
         // Buffers for trend indicators
         var trendUpBuffer, trendSteadyBuffer, trendDownBuffer, trendOffBuffer;
+
+        // Buffer for odometer
+        var odoGauge, odoBuffer, odoContext;
+        if (useOdometer && lcdVisible) {
+            odoBuffer = createBuffer(10, 10);          // size doesn't matter, it will get reset by odometer code
+            odoContext = odoBuffer.getContext('2d');
+        }
 
         // **************   Image creation  ********************
         var drawLcdText = function(value) {
@@ -597,8 +609,24 @@ var steelseries = function() {
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
             if (drawBackground && lcdVisible) {
-                lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
-                backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
+                if (useOdometer) {
+                    odoGauge = new odometer('', {
+                                            _context: odoContext,
+                                            height: size * 0.075,
+                                            decimals: odometerParams.decimals,
+                                            digits: (odometerParams.digits === undefined ? 5 : odometerParams.digits),
+                                            valueForeColor: odometerParams.valueForeColor,
+                                            valueBackColor: odometerParams.valueBackColor,
+                                            decimalForeColor: odometerParams.decimalForeColor,
+                                            decimalBackColor: odometerParams.decimalBackColor,
+                                            font: odometerParams.font,
+                                            value: value
+                                            });
+                    odoPosX = (imageWidth - odoBuffer.width) / 2;
+                } else {
+                    lcdBuffer = createLcdBackgroundImage(lcdWidth, lcdHeight, lcdColor);
+                    backgroundContext.drawImage(lcdBuffer, lcdPosX, lcdPosY);
+                }
             }
 
             // Create pointer image in pointer buffer (contentBuffer)
@@ -728,6 +756,18 @@ var steelseries = function() {
 
         this.getValue = function() {
             return value;
+        };
+
+        this.setOdoValue = function(newValue) {
+            var targetValue = (newValue < 0 ? 0 : newValue);
+            if (odoValue !== targetValue) {
+                 odoValue = targetValue;
+                this.repaint();
+           }
+        };
+
+        this.getOdoValue = function() {
+            return odoValue;
         };
 
         this.setValueAnimated = function(newValue) {
@@ -955,12 +995,17 @@ var steelseries = function() {
             }
 
             // Draw buffered image to visible canvas
-             mainCtx.drawImage(backgroundBuffer, 0, 0);
+            mainCtx.drawImage(backgroundBuffer, 0, 0);
 
 
             // Draw lcd display
             if (lcdVisible) {
-                drawLcdText(value);
+                if (useOdometer) {
+                    odoGauge.setValue(odometerUseValue ? value : odoValue);
+                    mainCtx.drawImage(odoBuffer, odoPosX, odoPosY);
+                } else {
+                    drawLcdText(value);
+                }
             }
 
             // Draw led
@@ -3409,13 +3454,13 @@ var steelseries = function() {
                 labelColor.setAlpha(0.05 + darker);
                 valueBackgroundTrackGradient.addColorStop(1, labelColor.getRgbaColor());
                 ctx.fillStyle = valueBackgroundTrackGradient;
-    
+
                 if (vertical) {
                     ctx.fillRect(imageWidth * 0.435714, top, imageWidth * 0.142857, fullSize);
                 } else {
                     ctx.fillRect(imageWidth * 0.142857, imageHeight * 0.435714, fullSize, imageHeight * 0.142857);
                 }
-    
+
                 if (vertical) {
                     // Vertical orientation
                     valueBorderStartX = 0;
@@ -7043,11 +7088,14 @@ var steelseries = function() {
                 ctx.save();
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
+//                ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
+                ctx.fillStyle = pointerColor.light.getRgbaColor();
                 ctx.font = 0.040 * imageWidth + 'px sans-serif';
                 ctx.fillText(lcdTitleStrings[0], imageWidth / 2, imageHeight * 0.29, imageWidth * 0.3);
+                ctx.fillStyle = pointerColorAverage.light.getRgbaColor();
                 ctx.fillText(lcdTitleStrings[1], imageWidth / 2, imageHeight * 0.71, imageWidth * 0.3);
                 if (titleString.length > 0) {
+                    ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
                     ctx.font = 0.0467 * imageWidth + 'px sans-serif';
                     ctx.fillText(titleString, imageWidth / 2, imageHeight * 0.5, imageWidth * 0.3);
                 }
@@ -7332,6 +7380,12 @@ var steelseries = function() {
 
         this.setLcdColor = function(newLcdColor) {
             lcdColor = newLcdColor;
+            init({background: true});
+            this.repaint();
+        };
+
+        this.setLcdTitleStrings = function(titles){
+            lcdTitleStrings = titles;
             init({background: true});
             this.repaint();
         };
@@ -10944,6 +10998,201 @@ var steelseries = function() {
 
         return this;
     };
+
+    var odometer = function (canvas, parameters) {
+        parameters = parameters || {};
+        var _context = (undefined === parameters.height ? null : parameters._context);  // If component used internally by steelseries
+        var height = (undefined === parameters.height ? 40 : parameters.height);
+        var digits = (undefined === parameters.digits ? 6 : parameters.digits);
+        var decimals = (undefined === parameters.decimals ? 1 : parameters.decimals);
+        var decimalBackColor = (undefined === parameters.decimalBackColor ? '#F0F0F0' : parameters.decimalBackColor);
+        var decimalForeColor = (undefined === parameters.decimalForeColor ? '#F01010' : parameters.decimalForeColor);
+        var font = (undefined === parameters.font ? 'sans-serif' : parameters.font);
+        var value = (undefined === parameters.value ? 0 : parameters.value);
+        var valueBackColor = (undefined === parameters.valueBackColor ? '#050505' : parameters.valueBackColor);
+        var valueForeColor = (undefined === parameters.valueForeColor ? '#F8F8F8' : parameters.valueForeColor);
+        var wobbleFactor = (undefined === parameters.wobbleFactor ? 0.07 : parameters.wobbleFactor);
+
+        var doc = document;
+        var initialized = false;
+
+        // Get the canvas context and clear it
+        var ctx;
+        if (_context) {
+            ctx = _context;
+        } else {
+            ctx = doc.getElementById(canvas).getContext('2d');
+        }
+
+        // Cannot display negative values yet
+        if (value < 0) {
+            value = 0;
+        }
+
+        var digitHeight = Math.floor(height * 0.85);
+        var stdFont = '600 ' + digitHeight + 'px ' + font;
+
+        var digitWidth = Math.floor(height * 0.68);
+        var width = digitWidth * (digits + decimals);
+        var columnHeight = digitHeight * 11;
+        var verticalSpace = columnHeight / 12;
+        var zeroOffset = verticalSpace * 0.81;
+
+        var wobble = [];
+
+        // Resize and clear the main context
+        ctx.canvas.width = width;
+        ctx.canvas.height = height;
+
+        // Create buffers
+        var backgroundBuffer = createBuffer(width, height);
+        var backgroundContext = backgroundBuffer.getContext('2d');
+
+        var foregroundBuffer = createBuffer(width, height);
+        var foregroundContext = foregroundBuffer.getContext('2d');
+
+        var digitBuffer = createBuffer(digitWidth, columnHeight * 1.1);
+        var digitContext = digitBuffer.getContext('2d');
+
+        var decimalBuffer = createBuffer(digitWidth, columnHeight * 1.1);
+        var decimalContext = decimalBuffer.getContext('2d');
+
+
+        function init() {
+
+            initialized = true;
+
+            // Create the foreground
+            foregroundContext.rect(0, 0, width, height);
+            gradHighlight = foregroundContext.createLinearGradient(0, 0, 0, height);
+            gradHighlight.addColorStop(0, 'rgba(0, 0, 0, 1)');
+            gradHighlight.addColorStop(0.1, 'rgba(0, 0, 0, 0.4)');
+            gradHighlight.addColorStop(0.33, 'rgba(255, 255, 255, 0.45)');
+            gradHighlight.addColorStop(0.46, 'rgba(255, 255, 255, 0)');
+            gradHighlight.addColorStop(0.9, 'rgba(0, 0, 0, 0.4)');
+            gradHighlight.addColorStop(1, 'rgba(0, 0, 0, 1)');
+            foregroundContext.fillStyle = gradHighlight;
+            foregroundContext.fill();
+
+
+            // Create a digit column
+            // background
+            digitContext.rect(0, 0, digitWidth, columnHeight * 1.1);
+            digitContext.fillStyle = valueBackColor;
+            digitContext.fill();
+            // edges
+            digitContext.strokeStyle = '#f0f0f0';
+            digitContext.lineWidth = '1px'; //height * 0.1 + "px";
+            digitContext.moveTo(0, 0);
+            digitContext.lineTo(0, columnHeight * 1.1);
+            digitContext.stroke();
+            digitContext.strokeStyle = '#202020';
+            digitContext.moveTo(digitWidth, 0);
+            digitContext.lineTo(digitWidth, columnHeight * 1.1);
+            digitContext.stroke();
+            // numerals
+            digitContext.textAlign = 'center';
+            digitContext.textBaseline = 'middle';
+            digitContext.font = stdFont;
+            digitContext.fillStyle = valueForeColor;
+            // put the digits 901234567890 vertically into the buffer
+            for (var i=9; i<21; i++) {
+                digitContext.fillText(i % 10, digitWidth * 0.5, verticalSpace * (i-9) + verticalSpace / 2);
+            }
+
+            // Create a decimal column
+            if (decimals > 0) {
+                // background
+                decimalContext.rect(0, 0, digitWidth, columnHeight * 1.1);
+                decimalContext.fillStyle = decimalBackColor;
+                decimalContext.fill();
+                // edges
+                decimalContext.strokeStyle = '#f0f0f0';
+                decimalContext.lineWidth = '1px'; //height * 0.1 + "px";
+                decimalContext.moveTo(0, 0);
+                decimalContext.lineTo(0, columnHeight * 1.1);
+                decimalContext.stroke();
+                decimalContext.strokeStyle = '#202020';
+                decimalContext.moveTo(digitWidth, 0);
+                decimalContext.lineTo(digitWidth, columnHeight * 1.1);
+                decimalContext.stroke();
+                // numerals
+                decimalContext.textAlign = 'center';
+                decimalContext.textBaseline = 'middle';
+                decimalContext.font = stdFont;
+                decimalContext.fillStyle = decimalForeColor;
+                // put the digits 901234567890 vertically into the buffer
+                for (var i=9; i<21; i++) {
+                    decimalContext.fillText(i % 10, digitWidth * 0.5, verticalSpace * (i-9) + verticalSpace / 2);
+                }
+            }
+            // wobble factors
+            for (var i=0; i<(digits + decimals); i++) {
+                wobble[i] = Math.random() * wobbleFactor * height - wobbleFactor * height /2;
+            }
+
+        }
+
+        function drawDigits(){
+            var pos = 1;
+            var val;
+
+            val = value;
+            // do not use Math.pow() - rounding errors!
+            for (var i=0; i<decimals; i++) {
+                val *= 10;
+            }
+
+            var numb = Math.floor(val);
+            var frac = val - numb;
+            numb = String(numb);
+            var prevNum = 9;
+
+            for (var i = 0; i < decimals + digits; i++) {
+                var num = +numb.substring(numb.length - i - 1, numb.length - i) || 0;
+                if (prevNum != 9) {
+                    frac = 0;
+                }
+                if (i < decimals) {
+                    backgroundContext.drawImage(decimalBuffer, width - digitWidth * pos, -(verticalSpace * (num + frac) + zeroOffset + wobble[i]));
+                } else {
+                    backgroundContext.drawImage(digitBuffer, width - digitWidth * pos, -(verticalSpace * (num + frac) + zeroOffset + wobble[i]));
+                }
+                pos++;
+                prevNum = num;
+            }
+        }
+
+        this.setValue = function(newVal) {
+            value = newVal;
+            if (value < 0) {
+                value = 0;
+            }
+            this.repaint();
+        }
+
+        this.getValue = function() {
+            return value;
+        }
+
+        this.repaint = function() {
+            if (!initialized) {
+                init();
+            }
+
+            // draw digits
+            drawDigits();
+
+            // draw the foreground
+            backgroundContext.drawImage(foregroundBuffer, 0, 0);
+
+            // paint back to the main context
+            ctx.drawImage(backgroundBuffer, 0, 0);
+
+        }
+
+        this.repaint();
+    }
 
     //************************************   M E M O R I Z E   B U F F E R S   *******************************************
     var radFBuffer = createBuffer(1,1);
@@ -14668,6 +14917,7 @@ var steelseries = function() {
         Altimeter : altimeter,
         TrafficLight: trafficlight,
         LightBulb: lightbulb,
+        Odometer: odometer,
 
         // Images
         drawFrame : drawRadialFrameImage,

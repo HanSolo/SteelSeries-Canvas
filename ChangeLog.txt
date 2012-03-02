@@ -1,5 +1,23 @@
 Main Changes
 
+v0.11.0
+> Odometer
+  * Added new gauge odometer type
+> Radial
+  * Added optional odometer in place of LCD display.
+    New initialisation parameters:
+    - useOdometer: use an odometer instead of an LCD, still obeys LCDvisible. Default=false
+    - odometerParams: pass a set of parameters in an object to over-ride the defaults. The height parameter will be ignored. Default={}
+    - odometerUseValue: if true display the current gauge 'value' in the odometer, otherwise the odometer
+      value is set independently. Default=false
+    New methods:
+    - .setOdoValue()
+    - .getOdoValue()
+
+v0.10.2
+> WindDirection
+  * Added setLcdTitleStrings() method
+
 v0.10.1a
 > Linear
   * Fixes stupid or/and error on gaugeType checking!
@@ -14,7 +32,7 @@ v0.10.1
 
 v0.10.0
 > Linear
-  * Added gaugeType initialisation parameter - switches to Linear a 'themometer' type gauge
+  * Added gaugeType initialisation parameter - switches to Linear a 'thermometer' type gauge
   * Altered scaling factors of Linear and LinearBargraph, frame width now proportional to gauge size
 
 v0.9.17
