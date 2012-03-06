@@ -1,5 +1,9 @@
 Main Changes
 
+v0.11.1
+> WindDirection
+  * Added 'useColorLabels' initialisation parameter
+
 v0.11.0
 > Odometer
   * Added new gauge odometer type

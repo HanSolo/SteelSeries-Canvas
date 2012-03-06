@@ -1,8 +1,8 @@
 ﻿/*!
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
- * Last modified : 01.03.2012
- * Revision      : 0.11.0
+ * Last modified : 06.03.2012
+ * Revision      : 0.11.1
  */
 
 var steelseries = function() {
@@ -6760,6 +6760,7 @@ var steelseries = function() {
         var area = (undefined === parameters.area ? null : parameters.area);
         var lcdTitleStrings = (undefined === parameters.lcdTitleStrings ? ["Latest","Average"] : parameters.lcdTitleStrings);
         var titleString = (undefined === parameters.titleString ? "" : parameters.titleString);
+        var useColorLabels = (undefined === parameters.useColorLabels ? false : parameters.useColorLabels);
 
         var tweenLatest;
         var tweenAverage;
@@ -6848,16 +6849,8 @@ var steelseries = function() {
                 mainCtx.shadowOffsetY = imageWidth * 0.007;
                 mainCtx.shadowBlur = imageWidth * 0.007;
             }
-            if (digitalFont) {
-                mainCtx.font = lcdFont;
-            } else {
-                mainCtx.font = stdFont;
-            }
-            if (bLatest) {
-                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + lcdWidth * 0.05, lcdPosY1 + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
-            } else {
-                mainCtx.fillText(value + "\u00B0", imageWidth / 2 + lcdWidth * 0.05, lcdPosY2 + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
-            }
+            mainCtx.font = (digitalFont ? lcdFont : stdFont);
+            mainCtx.fillText(value + "\u00B0", imageWidth / 2 + lcdWidth * 0.05, (bLatest ? lcdPosY1 : lcdPosY2) + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
 
             mainCtx.restore();
         };
@@ -7088,11 +7081,10 @@ var steelseries = function() {
                 ctx.save();
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-//                ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
-                ctx.fillStyle = pointerColor.light.getRgbaColor();
+                ctx.fillStyle = (useColorLabels ? pointerColor.medium.getRgbaColor() : backgroundColor.labelColor.getRgbaColor());
                 ctx.font = 0.040 * imageWidth + 'px sans-serif';
                 ctx.fillText(lcdTitleStrings[0], imageWidth / 2, imageHeight * 0.29, imageWidth * 0.3);
-                ctx.fillStyle = pointerColorAverage.light.getRgbaColor();
+                ctx.fillStyle = (useColorLabels ? pointerColorAverage.medium.getRgbaColor() : backgroundColor.labelColor.getRgbaColor());
                 ctx.fillText(lcdTitleStrings[1], imageWidth / 2, imageHeight * 0.71, imageWidth * 0.3);
                 if (titleString.length > 0) {
                     ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
