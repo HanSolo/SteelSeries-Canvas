@@ -1,5 +1,21 @@
 Main Changes
 
+v0.11.2
+> Radial
+  * Fixed Odometer being reinitialised every time the background was redrawn
+  * Fixed background changes drawing LCD background when Odometer visisble
+  * Disabled pointer shadow blurring, it was causing performance issues in some browsers
+> Odometer
+  * Added setValueAnimated() method
+> RadialBargraph
+  * Fixed issue with LED halo still displaying when LED was off
+> General
+  * Added full caching to: trendIndicator, MaxMinIndicators, LCDbackground, LEDimage,
+    LinearForeground, LinearBackground, LinearFrame,
+    RadialForeground, RadialBackground, RadialFrame, and RadialPointers
+  * Stopped some variable leakage to the global scope
+  * Some code styling changes and fixes for minor syntax niggles
+
 v0.11.1
 > WindDirection
   * Added 'useColorLabels' initialisation parameter
