@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Author        : Gerrit Grunwald, Mark Crossley
  * Last modified : 09.05.2012
- * Revision      : 0.11.2
+ * Revision      : 0.11.3
  */
 
 
@@ -12897,7 +12897,7 @@ var steelseries = (function () {
         var radFgBuffer, radFgCtx,
             shadowOffset = imageWidth * 0.008,
             gradHighlight, gradHighlight2,
-            cacheKey = foregroundType.type + imageWidth + imageHeight + withCenterKnob + knob.type +
+            cacheKey = foregroundType.type + imageWidth + imageHeight + withCenterKnob + (knob !== undefined ? knob.type : '-') +
                        (style !== undefined ? style.style : '-') + (gaugeType !== undefined ? gaugeType.type : '-') + (orientation !== undefined ? orientation.type : '-');
 
         // check if we have already created and cached this buffer, if so return it and exit
