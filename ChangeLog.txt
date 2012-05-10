@@ -1,5 +1,9 @@
 Main Changes
 
+v0.11.4
+> General
+  * More shadow tweaking - the Canvas shadow really is a bit too transparent!
+
 v0.11.3
 > Radial
   * added check for 'knob' parameter in drawRadialForegroundImage()

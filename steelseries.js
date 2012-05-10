@@ -1,10 +1,10 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 09.05.2012
- * Revision      : 0.11.3
+ * Last modified : 10.05.2012
+ * Revision      : 0.11.4
  *
- * Copyright (c) 2011, Gerrit Grunwald
+ * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -2818,12 +2818,13 @@ var steelseries = (function () {
             // we have to draw to a rotated temporary image area so we can translate in
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
+            var pointerOffset = imageWidth * 1.17 / 2;
 
             pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
             pointerRotContext.save();
             pointerRotContext.translate(centerX, centerY);
             pointerRotContext.rotate(angle);
-            pointerRotContext.translate(-imageWidth * 1.17 / 2, -imageWidth * 1.17 / 2);
+            pointerRotContext.translate(-pointerOffset, -pointerOffset);
             pointerRotContext.drawImage(pointerShadowBuffer, 0, 0);
             pointerRotContext.restore();
             if (steelseries.Orientation.NORTH === orientation) {
@@ -2839,7 +2840,7 @@ var steelseries = (function () {
             mainCtx.rotate(angle);
 
             // Draw pointer
-            mainCtx.translate(-imageWidth * 1.17 / 2, -imageWidth * 1.17 / 2);
+            mainCtx.translate(-pointerOffset, -pointerOffset);
             mainCtx.drawImage(pointerBuffer, 0, 0);
             mainCtx.restore();
 
@@ -11546,11 +11547,10 @@ var steelseries = (function () {
             ptrCtx = ptrBuffer.getContext('2d');
 
             if (shadow) {
-                // Canvas Shadows are only drawn if the shadowBlur and shadowOffset values are non-zero.
-                // As we want the shadow to be in the same place as the pointer we cannot use this, so ...
-                // The only option is to blur pixel-by-pixel which is expensive.
-                ptrCtx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-                ptrCtx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ptrCtx.fillStyle = 'rgba(0, 0, 0, 1)';
+                ptrCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
+                ptrCtx.shadowBlur = 3;
+                ptrCtx.globalAlpha = 0.5;
             }
 
             switch (ptrType.type) {
@@ -11939,10 +11939,10 @@ var steelseries = (function () {
                 ptrCtx.fill();
                 break;
             }
-            if (shadow) {
+//            if (shadow) {
                 // Apply the blur
-                blur(ptrCtx, size, size, Math.floor(size * 0.006));
-            }
+//                blur(ptrCtx, size, size, Math.floor(size * 0.006));
+//            }
             // cache buffer
             drawPointerImage.cache[cacheKey] = ptrBuffer;
         }
@@ -12912,6 +12912,9 @@ var steelseries = (function () {
 
     var drawRadialForegroundImage = function (ctx, foregroundType, imageWidth, imageHeight, withCenterKnob, knob, style, gaugeType, orientation) {
         var radFgBuffer, radFgCtx,
+            knobSize = Math.ceil(imageHeight * 0.084112),
+            knobX = imageWidth * 0.5 - knobSize / 2,
+            knobY = imageHeight * 0.5 - knobSize / 2,
             shadowOffset = imageWidth * 0.008,
             gradHighlight, gradHighlight2,
             cacheKey = foregroundType.type + imageWidth + imageHeight + withCenterKnob + (knob !== undefined ? knob.type : '-') +
@@ -12927,15 +12930,17 @@ var steelseries = (function () {
             if (withCenterKnob) {
                 if (gaugeType === steelseries.GaugeType.TYPE5) {
                     if (steelseries.Orientation.WEST === orientation) {
-                        radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, true), imageWidth * 0.687 + shadowOffset, imageHeight * 0.45 + shadowOffset);
-                        radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, false), imageWidth * 0.687, imageHeight * 0.45);
+                        knobX = imageWidth * 0.733644 - knobSize / 2;
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, knobY + shadowOffset);
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, knobY);
                     } else {
-                        radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, true), imageWidth * 0.45 + shadowOffset, imageHeight * 0.6857 + shadowOffset);
-                        radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, false), imageWidth * 0.45, imageHeight * 0.6857);
+                        knobY = imageHeight * 0.733644 - knobSize / 2;
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, imageHeight * 0.6857 + shadowOffset);
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, imageHeight * 0.6857);
                     }
                 } else {
-                    radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, true), imageWidth * 0.45 + shadowOffset, imageHeight * 0.45 + shadowOffset);
-                    radFgCtx.drawImage(createKnobImage(Math.ceil(imageHeight * 0.084112), knob, style, false), imageWidth * 0.45, imageHeight * 0.45);
+                    radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, knobY + shadowOffset);
+                    radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, knobY);
                 }
             }
 
@@ -13110,13 +13115,13 @@ var steelseries = (function () {
             knobCtx = knobBuffer.getContext('2d');
 
             if (shadow) {
-                // Canvas Shadows are only drawn if the shadowBlur and shadowOffset values are non-zero
-                // As we want the shadow to be in the same place as the knob we cannot use this, so shadow will be hard edged.
-                knobCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                knobCtx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                knobCtx.fillStyle = 'rgba(0, 0, 0, 1)';
+                knobCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
+                knobCtx.shadowBlur = 3;
+                knobCtx.globalAlpha = 0.5;
             }
             // Offset the drawing to leave room for shadows
-            knobCtx.translate(size * 0.06, size * 0.06);
+//            knobCtx.translate(size * 0.06, size * 0.06);
 
             switch (knob.type) {
             case 'metalKnob':
@@ -13294,12 +13299,8 @@ var steelseries = (function () {
                 break;
             }
             //  Negate the offset the drawing to leave room for shadows
-            knobCtx.translate(-size * 0.06, -size * 0.06);
+//            knobCtx.translate(-size * 0.06, -size * 0.06);
 
-            if (shadow) {
-                // Apply the shadow blur
-                blur(knobCtx, knobBuffer.width, knobBuffer.height, Math.floor(size * 0.06));
-            }
             // cache the buffer
             createKnobImage.cache[cacheKey] = knobBuffer;
         }
@@ -14611,15 +14612,14 @@ var steelseries = (function () {
     function getShortestAngle(angle1, angle2) {
         return wrap((angle2 - angle1), -180, 180);
     }
-
+/*
     function blur(ctx, width, height, radius) {
-        return;
     // This function is too CPU expensive
     // leave disabled for now :(
     
         // Cheap'n'cheerful blur filter, just applies horizontal and vertical blurs
         // Only works for square canvas's at present
-/*
+
         var j, x, y,      // loop counters
             i,
             end,
@@ -14703,9 +14703,9 @@ var steelseries = (function () {
         ctx.clearRect(0, 0, width, height);
         ctx.drawImage(tempBuffer, 0, 0);
         ctx.restore();
-*/
-    }
 
+    }
+*/
     //****************************************   C O N S T A N T S   ***************************************************
     var BackgroundColorDef;
     (function () {
