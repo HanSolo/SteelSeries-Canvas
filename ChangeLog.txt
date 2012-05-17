@@ -1,5 +1,11 @@
 Main Changes
 
+v0.11.5
+> WindDirection
+  * Fixed 360 degree value handling (sort-of!)
+> General
+  * Added lots of missing buffer resets to most gauges
+
 v0.11.4
 > General
   * More shadow tweaking - the Canvas shadow really is a bit too transparent!

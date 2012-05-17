@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 10.05.2012
- * Revision      : 0.11.4
+ * Last modified : 17.05.2012
+ * Revision      : 0.11.5
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -393,35 +393,36 @@ var steelseries = (function () {
         };
 
         var drawTickmarksImage = function (ctx, labelNumberFormat) {
+            var fontSize = Math.ceil(imageWidth * 0.04),
+                alpha = rotationOffset,      // Tracks total rotation
+                rotationStep = angleStep * minorTickSpacing,
+                textRotationAngle,
+                valueCounter = minValue,
+                majorTickCounter = maxNoOfMinorTicks - 1,
+                OUTER_POINT = imageWidth * 0.38,
+                MAJOR_INNER_POINT = imageWidth * 0.35,
+                MED_INNER_POINT = imageWidth * 0.355,
+                MINOR_INNER_POINT = imageWidth * 0.36,
+                TEXT_TRANSLATE_X = imageWidth * 0.3,
+                TEXT_WIDTH = imageWidth * 0.1,
+                HALF_MAX_NO_OF_MINOR_TICKS = maxNoOfMinorTicks / 2,
+                MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2)),
+                i;
+
             backgroundColor.labelColor.setAlpha(1);
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
-            var alpha = rotationOffset;      // Tracks total rotation
-            var rotationStep = angleStep * minorTickSpacing;
-            var textRotationAngle;
 
-            var valueCounter = minValue;
-            var majorTickCounter = maxNoOfMinorTicks - 1;
 
-            var OUTER_POINT = imageWidth * 0.38;
-            var MAJOR_INNER_POINT = imageWidth * 0.35;
-            var MED_INNER_POINT = imageWidth * 0.355;
-            var MINOR_INNER_POINT = imageWidth * 0.36;
-            var TEXT_TRANSLATE_X = imageWidth * 0.3;
-            var TEXT_WIDTH = imageWidth * 0.1;
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
                 TEXT_WIDTH = imageWidth * 0.035;
             }
-            var HALF_MAX_NO_OF_MINOR_TICKS = maxNoOfMinorTicks / 2;
-            var MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2));
-            var i;
 
             for (i = minValue; parseFloat(i.toFixed(2)) <= MAX_VALUE_ROUNDED; i += minorTickSpacing) {
                 textRotationAngle = rotationStep + HALF_PI;
@@ -876,18 +877,22 @@ var steelseries = (function () {
 
         this.setTitleString = function (title) {
             titleString = title;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setUnitString = function (unit) {
             unitString = unit;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setMinValue = function (value) {
             minValue = value;
+            resetBuffers({frame: true,
+                          background: true});
             init({frame: true,
                   background: true});
             this.repaint();
@@ -899,6 +904,8 @@ var steelseries = (function () {
 
         this.setMaxValue = function (value) {
             maxValue = value;
+            resetBuffers({frame: true,
+                          background: true});
             init({frame: true,
                   background: true});
             this.repaint();
@@ -911,13 +918,15 @@ var steelseries = (function () {
         this.setThreshold = function (newValue) {
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             threshold = targetValue;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setArea = function (areaVal) {
             area = areaVal;
-            resetBuffers({foreground: true});
+            resetBuffers({background: true,
+                          foreground: true});
             init({background: true,
                   foreground: true
                   });
@@ -926,7 +935,8 @@ var steelseries = (function () {
 
         this.setSection = function (areaSec) {
             section = areaSec;
-            resetBuffers({foreground: true});
+            resetBuffers({background: true,
+                          foreground: true});
             init({background: true,
                   foreground: true
                   });
@@ -995,6 +1005,7 @@ var steelseries = (function () {
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -1632,30 +1643,30 @@ var steelseries = (function () {
         };
 
         var drawTickmarksImage = function (ctx, labelNumberFormat) {
+            var alpha = rotationOffset,      // Tracks total rotation
+                rotationStep = angleStep * minorTickSpacing,
+                textRotationAngle,
+                fontSize = Math.ceil(imageWidth * 0.04),
+                valueCounter = minValue,
+                majorTickCounter = maxNoOfMinorTicks - 1,
+                TEXT_TRANSLATE_X = imageWidth * 0.28,
+                TEXT_WIDTH = imageWidth * 0.1,
+                MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2)),
+                i;
+
             backgroundColor.labelColor.setAlpha(1);
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            var fontSize = Math.ceil(imageWidth * 0.04);
             ctx.font = fontSize + 'px sans-serif';
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
-            var alpha = rotationOffset;      // Tracks total rotation
-            var rotationStep = angleStep * minorTickSpacing;
-            var textRotationAngle;
 
-            var valueCounter = minValue;
-            var majorTickCounter = maxNoOfMinorTicks - 1;
-
-            var TEXT_TRANSLATE_X = imageWidth * 0.28;
-            var TEXT_WIDTH = imageWidth * 0.1;
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
                 TEXT_WIDTH = imageWidth * 0.0375;
             }
-            var MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2));
-            var i;
 
             for (i = minValue; parseFloat(i.toFixed(2)) <= MAX_VALUE_ROUNDED; i += minorTickSpacing) {
                 textRotationAngle = + rotationStep + HALF_PI;
@@ -1738,7 +1749,6 @@ var steelseries = (function () {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
-
                 if (value >= threshold && !ledBlinking) {
                     ledBlinking = true;
                     blink(ledBlinking);
@@ -1752,7 +1762,6 @@ var steelseries = (function () {
                         audioElement.pause();
                     }
                 }
-
                 this.repaint();
             }
         };
@@ -1762,7 +1771,9 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
+                gauge = this;
+
             if (value !== targetValue) {
                 if (undefined !== tween) {
                     if (tween.playing) {
@@ -1772,9 +1783,6 @@ var steelseries = (function () {
 
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
-
-                var gauge = this;
-
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
@@ -1831,6 +1839,7 @@ var steelseries = (function () {
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -1871,6 +1880,7 @@ var steelseries = (function () {
 
         this.setMaxValue = function (value) {
             maxValue = value;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -1882,18 +1892,21 @@ var steelseries = (function () {
         this.setThreshold = function (newValue) {
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             threshold = targetValue;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setTitleString = function (title) {
             titleString = title;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setUnitString = function (unit) {
             unitString = unit;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -1909,6 +1922,13 @@ var steelseries = (function () {
         };
 
         this.repaint = function () {
+            var activeLedAngle = ((value + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange,
+                activeLedColor,
+                lastActiveLedColor = valueColor,
+                angle, i,
+                currentValue,
+                gradRange,
+                fraction;
 
             if (!initialized) {
                 init({frame: true,
@@ -1930,20 +1950,15 @@ var steelseries = (function () {
             mainCtx.drawImage(backgroundBuffer, 0, 0);
 
             // Draw active leds
-            var activeLedAngle = ((value + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange;
-            var activeLedColor;
-            var lastActiveLedColor = valueColor;
-            var angle;
-            var i;
             for (angle = 0; angle <= activeLedAngle; angle += 5) {
                 //check for LED color
                 activeLedColor = valueColor;
                 // Use a gradient for value colors?
                 if (isGradientVisible) {
                     // Convert angle back to value
-                    var currentValue = minValue + (angle / degAngleRange) * (maxValue - minValue);
-                    var gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                    var fraction = currentValue / gradRange;
+                    currentValue = minValue + (angle / degAngleRange) * (maxValue - minValue);
+                    gradRange = valueGradient.getEnd() - valueGradient.getStart();
+                    fraction = currentValue / gradRange;
                     fraction = Math.max(Math.min(fraction, 1), 0);
                     activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
                 } else if (isSectionsVisible) {
@@ -2646,7 +2661,9 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
+                gauge = this;
+
             if (value !== targetValue) {
                 if (undefined !==  tween) {
                     if (tween.playing) {
@@ -2655,9 +2672,6 @@ var steelseries = (function () {
                 }
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-                var gauge = this;
-
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
@@ -3839,12 +3853,14 @@ var steelseries = (function () {
 
         this.setTitleString = function (title) {
             titleString = title;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setUnitString = function (unit) {
             unitString = unit;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -3886,6 +3902,7 @@ var steelseries = (function () {
         this.setThreshold = function (threshVal) {
             var targetValue = (threshVal < minValue ? minValue : (threshVal > maxValue ? maxValue : threshVal));
             threshold = targetValue;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -4888,7 +4905,9 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
+                gauge = this;
+
             if (value !== targetValue) {
                 if (undefined !== tween) {
                     if (tween.playing) {
@@ -4898,9 +4917,6 @@ var steelseries = (function () {
 
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-                var gauge = this;
-
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
@@ -4986,6 +5002,7 @@ var steelseries = (function () {
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -5032,18 +5049,23 @@ var steelseries = (function () {
 
         this.setTitleString = function (title) {
             titleString = title;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setUnitString = function (unit) {
             unitString = unit;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setMinValue = function (value) {
             minValue = value;
+            resetBuffers({background: true,
+                          foreground: true,
+                          pointer: true});
             init({background: true,
                 foreground: true,
                 pointer: true});
@@ -5057,6 +5079,9 @@ var steelseries = (function () {
         this.setMaxValue = function (value) {
             if (maxValue !== value) {
                 maxValue = value;
+                resetBuffers({background: true,
+                              foreground: true,
+                              pointer: true});
                 init({background: true,
                     foreground: true,
                     pointer: true});
@@ -5072,6 +5097,7 @@ var steelseries = (function () {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (threshold !== targetValue) {
                 threshold = targetValue;
+                resetBuffers({background: true});
                 init({background: true});
                 this.repaint();
             }
@@ -5654,14 +5680,14 @@ var steelseries = (function () {
 
         // **************   Image creation  ********************
         var drawTickmarksImage = function (ctx) {
+            var stdFont, smlFont, i;
+
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.save();
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
-            var stdFont;
-            var smlFont;
 
             for (i = 0; 360 > i; i++) {
                 ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -6304,7 +6330,7 @@ var steelseries = (function () {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            var stdFont, smlFont;
+            var stdFont, smlFont, i;
 
             ctx.save();
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -7158,14 +7184,13 @@ var steelseries = (function () {
 
         var init = function (parameters) {
             parameters = parameters || {};
-            var drawFrame = (undefined === parameters.frame ? false : parameters.frame);
             var drawBackground = (undefined === parameters.background ? false : parameters.background);
             var drawPointer = (undefined === parameters.pointer ? false : parameters.pointer);
             var drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
 
             initialized = true;
 
-            if (drawFrame && frameVisible) {
+            if (drawBackground && frameVisible) {
                 drawRadialFrameImage(backgroundContext, frameDesign, centerX, centerY, imageWidth, imageHeight);
             }
 
@@ -7288,7 +7313,7 @@ var steelseries = (function () {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
-            newValue = newValue % 360;
+            newValue = newValue === 360 ? 360 : newValue % 360;
             if (valueAverage !== newValue) {
                 valueAverage = newValue;
                 this.repaint();
@@ -7303,9 +7328,11 @@ var steelseries = (function () {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
-            var targetValue = (newValue === 360 ? 360 : newValue % 360);
+            var targetValue = (newValue === 360 ? 360 : newValue % 360),
+                gauge = this,
+                diff;
+
             if (valueLatest !== targetValue) {
-                var gauge = this;
 
                 if (undefined !== tweenLatest) {
                     if (tweenLatest.playing) {
@@ -7313,10 +7340,10 @@ var steelseries = (function () {
                     }
                 }
 
-                var diff = getShortestAngle(valueLatest, targetValue);
+                diff = getShortestAngle(valueLatest, targetValue);
                 tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 2.5);
                 tweenLatest.onMotionChanged = function (event) {
-                    valueLatest = event.target._pos % 360;
+                    valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
                     gauge.repaint();
                 };
                 // Use onMotionFinished to set end value in case targetValue = 360
@@ -7326,6 +7353,7 @@ var steelseries = (function () {
                         gauge.repaint();
                     };
                 }
+
                 tweenLatest.start();
             }
         };
@@ -7347,7 +7375,7 @@ var steelseries = (function () {
                 var diff = getShortestAngle(valueAverage, targetValue);
                 tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 2.5);
                 tweenAverage.onMotionChanged = function (event) {
-                    valueAverage = event.target._pos % 360;
+                    valueAverage = event.target._pos === 360 ? 360 : event.target._pos % 360;
                     gauge.repaint();
                 };
                 // Use onMotionFinished to set end value in case targetValue = 360
@@ -7363,27 +7391,29 @@ var steelseries = (function () {
 
         this.setArea = function (areaVal) {
             area = areaVal;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setSection = function (areaSec) {
             section = areaSec;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setFrameDesign = function (newFrameDesign) {
             frameDesign = newFrameDesign;
-            init({frame: true,
-                  background: true});
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
             backgroundColor = newBackgroundColor;
-            init({frame: true,
-                  background: true});
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
         };
 
@@ -7424,19 +7454,21 @@ var steelseries = (function () {
 
         this.setPointSymbols = function (newPointSymbols) {
             pointSymbols = newPointSymbols;
-            init({frame: true,
-                  background: true});
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
         };
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
 
         this.setLcdTitleStrings = function (titles) {
             lcdTitleStrings = titles;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -7802,9 +7834,9 @@ var steelseries = (function () {
         };
 
         this.setRollAnimated = function (newRoll) {
+            var gauge = this;
             newRoll = newRoll % 360;
             if (roll !== newRoll) {
-                var gauge = this;
 
                 if (undefined !== tweenRoll) {
                     if (tweenRoll.playing) {
@@ -7853,6 +7885,7 @@ var steelseries = (function () {
         };
 
         this.setPitchAnimated = function (newPitch) {
+            var gauge = this;
             // perform all range checking in setPitch()
             if (pitch !== newPitch) {
                 if (undefined !== tweenPitch) {
@@ -7860,7 +7893,6 @@ var steelseries = (function () {
                         tweenPitch.stop();
                     }
                 }
-                var gauge = this;
                 tweenPitch = new Tween({}, '', Tween.regularEaseInOut, pitch, newPitch, 1);
                 tweenPitch.onMotionChanged = function (event) {
                     //pitch = event.target._pos;
@@ -8701,7 +8733,8 @@ var steelseries = (function () {
         };
 
         this.setPointerType = function (newPointerType) {
-            resetBuffers({ foreground: true,
+            resetBuffers({ background: true,
+                           foreground: true,
                            pointers: true });
             pointerType = newPointerType;
             if (pointerType.type === 'type1') {
@@ -9507,9 +9540,21 @@ var steelseries = (function () {
     };
 
     var altimeter = function (canvas, parameters) {
+        parameters = parameters || {};
             // parameters
-        var size, frameDesign, frameVisible, backgroundColor, backgroundVisible, knobType, knobStyle,
-            lcdColor, lcdVisible, digitalFont, foregroundType, foregroundVisible, customLayer,
+        var size = (undefined === parameters.size ? 200 : parameters.size),
+            frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
+            frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
+            backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
+            backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
+            knobType = (undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType),
+            knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.BLACK : parameters.knobStyle),
+            lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.BLACK : parameters.lcdColor),
+            lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible),
+            digitalFont = (undefined === parameters.digitalFont ? false : parameters.digitalFont),
+            foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
+            foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible),
+            customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer),
             //
             minValue = 0, maxValue = 10, value = minValue,
             value100 = 0, value1000 = 0, value10000 = 0,
@@ -9567,22 +9612,7 @@ var steelseries = (function () {
             // Buffer for static foreground painting code
             foregroundBuffer = createBuffer(size, size),
             foregroundContext = foregroundBuffer.getContext('2d');
-
-        // Process parameters
-        parameters = parameters || {};
-        size = (undefined === parameters.size ? 200 : parameters.size);
-        frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign);
-        frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible);
-        backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor);
-        backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible);
-        knobType = (undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType);
-        knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.BLACK : parameters.knobStyle);
-        lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.BLACK : parameters.lcdColor);
-        lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible);
-        digitalFont = (undefined === parameters.digitalFont ? false : parameters.digitalFont);
-        foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType);
-        foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
-        customLayer = (undefined === parameters.customLayer ? null : parameters.customLayer);
+            // End of variables
 
         // Get the canvas context and clear it
         mainCtx.save();
@@ -9815,14 +9845,12 @@ var steelseries = (function () {
         // **************   Initialization  ********************
         // Draw all static painting code to background
         var init = function (parameters) {
-            // Parameters
-            var drawFrame, drawBackground, drawPointers, drawForeground;
-
             parameters = parameters || {};
-            drawFrame = (undefined === parameters.frame ? false : parameters.frame);
-            drawBackground = (undefined === parameters.background ? false : parameters.background);
-            drawPointers = (undefined === parameters.pointers ? false : parameters.pointers);
-            drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
+            // Parameters
+            var drawFrame = (undefined === parameters.frame ? false : parameters.frame),
+                drawBackground = (undefined === parameters.background ? false : parameters.background),
+                drawPointers = (undefined === parameters.pointers ? false : parameters.pointers),
+                drawForeground = (undefined === parameters.foreground ? false : parameters.foreground);
 
             initialized = true;
 
@@ -9871,13 +9899,11 @@ var steelseries = (function () {
         };
 
         var resetBuffers = function (buffers) {
-            var resetFrame, resetBackground, resetPointers, resetForeground;
-
             buffers = buffers || {};
-            resetFrame = (undefined === buffers.frame ? false : buffers.frame);
-            resetBackground = (undefined === buffers.background ? false : buffers.background);
-            resetPointers = (undefined === buffers.pointers ? false : buffers.pointers);
-            resetForeground = (undefined === buffers.foreground ? false : buffers.foreground);
+            var resetFrame = (undefined === buffers.frame ? false : buffers.frame),
+                resetBackground = (undefined === buffers.background ? false : buffers.background),
+                resetPointers = (undefined === buffers.pointers ? false : buffers.pointers),
+                resetForeground = (undefined === buffers.foreground ? false : buffers.foreground);
 
             if (resetFrame) {
                 frameBuffer.width = size;
@@ -9953,8 +9979,6 @@ var steelseries = (function () {
                 time = Math.max(Math.abs(value - targetValue) / 10000 * 5, 1);
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-
                 tween.onMotionChanged = function (event) {
                         value = event.target._pos;
                         gauge.repaint();
@@ -9991,6 +10015,7 @@ var steelseries = (function () {
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
@@ -10099,7 +10124,10 @@ var steelseries = (function () {
     };
 
     var trafficlight = function (canvas, parameters) {
-        var width, height,
+        parameters = parameters || {};
+        var width = (undefined === parameters.width ? 98 : parameters.width),
+            height = (undefined === parameters.height ? 278 : parameters.height),
+            //
             mainCtx,
             prefHeight, imageWidth, imageHeight,
             redOn = false,
@@ -10126,10 +10154,7 @@ var steelseries = (function () {
             redOnCtx = redOnBuffer.getContext('2d'),
             redOffBuffer = doc.createElement('canvas'),
             redOffCtx = redOffBuffer.getContext('2d');
-
-        parameters = parameters || {};
-        width = (undefined === parameters.width ? 98 : parameters.width);
-        height = (undefined === parameters.height ? 278 : parameters.height);
+            // End of variables
 
         // Get the canvas context and clear it
         mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -10734,10 +10759,13 @@ var steelseries = (function () {
     };
 
     var lightbulb = function (canvas, parameters) {
+        parameters = parameters || {};
         var mainCtx,
             // parameters
-            width, height, glowColor,
-
+            width = (undefined === parameters.width ? 100 : parameters.width),
+            height = (undefined === parameters.height ? 100 : parameters.height),
+            glowColor = (undefined === parameters.glowColor ? '#ffff00' : parameters.glowColor),
+            //
             size, imageWidth, imageHeight,
             initialized = false,
             lightOn = false,
@@ -10748,13 +10776,7 @@ var steelseries = (function () {
             onCtx = onBuffer.getContext('2d'),
             bulbBuffer = doc.createElement('canvas'),
             bulbCtx = bulbBuffer.getContext('2d');
-
-            
-            
-        parameters = parameters || {};
-        width = (undefined === parameters.width ? 100 : parameters.width);
-        height = (undefined === parameters.height ? 100 : parameters.height);
-        glowColor = (undefined === parameters.glowColor ? '#ffff00' : parameters.glowColor);
+            // End of variables
 
         // Get the canvas context and clear it
         mainCtx = document.getElementById(canvas).getContext('2d');
@@ -10779,13 +10801,13 @@ var steelseries = (function () {
         var getColorValues = function (color) {
             var colorData,
                 lookupBuffer = drawToBuffer(1, 1, function (ctx) {
-                        ctx.fillStyle = color;
-                        ctx.beginPath();
-                        ctx.rect(0, 0, 1, 1);
-                        ctx.fill();
-                    });
-            colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.rect(0, 0, 1, 1);
+                    ctx.fill();
+                });
 
+            colorData = lookupBuffer.getContext('2d').getImageData(0, 0, 2, 2).data;
             return [colorData[0], colorData[1], colorData[2]];
         };
 
@@ -11088,11 +11110,21 @@ var steelseries = (function () {
     };
 
     var odometer = function (canvas, parameters) {
+        parameters = parameters || {};
         var doc = document,
             // parameters
-            _context, height, digits, decimals, decimalBackColor, decimalForeColor,
-            font, value, valueBackColor, valueForeColor, wobbleFactor,
-
+            _context = (undefined === parameters.height ? null : parameters._context),  // If component used internally by steelseries
+            height = (undefined === parameters.height ? 40 : parameters.height),
+            digits = (undefined === parameters.digits ? 6 : parameters.digits),
+            decimals = (undefined === parameters.decimals ? 1 : parameters.decimals),
+            decimalBackColor = (undefined === parameters.decimalBackColor ? '#F0F0F0' : parameters.decimalBackColor),
+            decimalForeColor = (undefined === parameters.decimalForeColor ? '#F01010' : parameters.decimalForeColor),
+            font = (undefined === parameters.font ? 'sans-serif' : parameters.font),
+            value = (undefined === parameters.value ? 0 : parameters.value),
+            valueBackColor = (undefined === parameters.valueBackColor ? '#050505' : parameters.valueBackColor),
+            valueForeColor = (undefined === parameters.valueForeColor ? '#F8F8F8' : parameters.valueForeColor),
+            wobbleFactor = (undefined === parameters.wobbleFactor ? 0.07 : parameters.wobbleFactor),
+            //
             initialized = false,
             tween, ctx,
             digitHeight, digitWidth, stdFont,
@@ -11103,20 +11135,7 @@ var steelseries = (function () {
             foregroundBuffer, foregroundContext,
             digitBuffer, digitContext,
             decimalBuffer, decimalContext;
-
-        // Process parameters
-        parameters = parameters || {};
-        _context = (undefined === parameters.height ? null : parameters._context);  // If component used internally by steelseries
-        height = (undefined === parameters.height ? 40 : parameters.height);
-        digits = (undefined === parameters.digits ? 6 : parameters.digits);
-        decimals = (undefined === parameters.decimals ? 1 : parameters.decimals);
-        decimalBackColor = (undefined === parameters.decimalBackColor ? '#F0F0F0' : parameters.decimalBackColor);
-        decimalForeColor = (undefined === parameters.decimalForeColor ? '#F01010' : parameters.decimalForeColor);
-        font = (undefined === parameters.font ? 'sans-serif' : parameters.font);
-        value = (undefined === parameters.value ? 0 : parameters.value);
-        valueBackColor = (undefined === parameters.valueBackColor ? '#050505' : parameters.valueBackColor);
-        valueForeColor = (undefined === parameters.valueForeColor ? '#F8F8F8' : parameters.valueForeColor);
-        wobbleFactor = (undefined === parameters.wobbleFactor ? 0.07 : parameters.wobbleFactor);
+            // End of variables
 
         // Get the canvas context and clear it
         if (_context) {
@@ -11233,9 +11252,9 @@ var steelseries = (function () {
         }
 
         function drawDigits() {
-            var pos = 1, val, i, num, numb, frac, prevNum;
+            var pos = 1,
+            val = value, i, num, numb, frac, prevNum;
 
-            val = value;
             // do not use Math.pow() - rounding errors!
             for (i = 0; i < decimals; i++) {
                 val *= 10;
@@ -14609,8 +14628,8 @@ var steelseries = (function () {
         return value - (times * distance);
     }
 
-    function getShortestAngle(angle1, angle2) {
-        return wrap((angle2 - angle1), -180, 180);
+    function getShortestAngle(from, to) {
+        return wrap((to - from), -180, 180);
     }
 /*
     function blur(ctx, width, height, radius) {
