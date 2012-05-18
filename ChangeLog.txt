@@ -1,5 +1,9 @@
 Main Changes
 
+v0.11.6
+> Radial
+  * Fixed setValueAnimated() whereby it did not stop a tween already playing
+
 v0.11.5
 > WindDirection
   * Fixed 360 degree value handling (sort-of!)

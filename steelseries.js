@@ -2,7 +2,7 @@
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
  * Last modified : 17.05.2012
- * Revision      : 0.11.5
+ * Revision      : 0.11.6
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -806,7 +806,8 @@ var steelseries = (function () {
 
         this.setValueAnimated = function (newValue) {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
-                tween;
+                gauge = this;
+
             if (value !== targetValue) {
                 if (undefined !== tween) {
                     if (tween.playing) {
@@ -816,8 +817,6 @@ var steelseries = (function () {
 
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
-
-                var gauge = this;
 
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
@@ -1870,6 +1869,7 @@ var steelseries = (function () {
 
         this.setMinValue = function (value) {
             minValue = value;
+            resetBuffers({background: true});
             init({background: true});
             this.repaint();
         };
