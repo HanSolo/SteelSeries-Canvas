@@ -1,5 +1,13 @@
 Main Changes
 
+v0.11.7
+> Radial
+  * Added .setFractionalScaleDecimals() and .setLabelNumberFormat()
+> RadialBargraph
+  * Added .setFractionalScaleDecimals(), .setLabelNumberFormat() and .setLcdDecimals()
+
+
+
 v0.11.6
 > Radial
   * Fixed setValueAnimated() whereby it did not stop a tween already playing

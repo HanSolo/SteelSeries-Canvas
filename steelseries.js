@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 17.05.2012
- * Revision      : 0.11.6
+ * Last modified : 19.05.2012
+ * Revision      : 0.11.7
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -1019,6 +1019,20 @@ var steelseries = (function () {
             this.repaint();
         };
 
+        this.setFractionalScaleDecimals = function (decimals) {
+            fractionalScaleDecimals = decimals;
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+        };
+
+        this.setLabelNumberFormat = function (format) {
+            labelNumberFormat = format;
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+        };
+
         this.repaint = function () {
             if (!initialized) {
                 init({frame: true,
@@ -1843,6 +1857,11 @@ var steelseries = (function () {
             this.repaint();
         };
 
+        this.setLcdDecimals = function (decimals) {
+            lcdDecimals = decimals;
+            this.repaint();
+        };
+
         this.setSection = function (areaSec) {
             section = areaSec;
             init();
@@ -1918,6 +1937,20 @@ var steelseries = (function () {
 
         this.setTrendVisible = function (visible) {
             trendVisible = visible;
+            this.repaint();
+        };
+
+        this.setFractionalScaleDecimals = function (decimals) {
+            fractionalScaleDecimals = decimals;
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+        };
+
+        this.setLabelNumberFormat = function (format) {
+            labelNumberFormat = format;
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
         };
 
