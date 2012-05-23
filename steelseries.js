@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 19.05.2012
- * Revision      : 0.11.7
+ * Last modified : 23.05.2012
+ * Revision      : 0.11.8
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -264,26 +264,27 @@ var steelseries = (function () {
         }
 
         // **************   Image creation  ********************
-        var drawLcdText = function (value) {
-            mainCtx.save();
-            mainCtx.textAlign = 'right';
-            mainCtx.strokeStyle = lcdColor.textColor;
-            mainCtx.fillStyle = lcdColor.textColor;
+        var drawLcdText = function (ctx, value) {
+            ctx.restore();
+            ctx.save();
+            ctx.textAlign = 'right';
+            ctx.strokeStyle = lcdColor.textColor;
+            ctx.fillStyle = lcdColor.textColor;
 
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
-                mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.007;
-                mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.007;
+                ctx.shadowColor = 'gray';
+                ctx.shadowOffsetX = imageWidth * 0.007;
+                ctx.shadowOffsetY = imageWidth * 0.007;
+                ctx.shadowBlur = imageWidth * 0.007;
             }
             if (digitalFont) {
-                mainCtx.font = lcdFont;
+                ctx.font = lcdFont;
             } else {
-                mainCtx.font = stdFont;
+                ctx.font = stdFont;
             }
-            mainCtx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth * 0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
+            ctx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth * 0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
 
-            mainCtx.restore();
+            ctx.restore();
         };
 
         var drawPostsImage = function (ctx) {
@@ -835,7 +836,6 @@ var steelseries = (function () {
                     if (value < minMeasuredValue) {
                         minMeasuredValue = value;
                     }
-
                     gauge.repaint();
                 };
                 tween.start();
@@ -1044,7 +1044,7 @@ var steelseries = (function () {
                       odo: true});
             }
 
-            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+            mainCtx.clearRect(0, 0, size, size);
 
             // Draw frame
             if (frameVisible) {
@@ -1061,7 +1061,7 @@ var steelseries = (function () {
                     odoGauge.setValue(odometerUseValue ? value : odoValue);
                     mainCtx.drawImage(odoBuffer, odoPosX, odoPosY);
                 } else {
-                    drawLcdText(value);
+                    drawLcdText(mainCtx, value);
                 }
             }
 
@@ -1142,6 +1142,7 @@ var steelseries = (function () {
             if (foregroundVisible) {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
+
         };
 
         // Visualize the component
@@ -1489,7 +1490,7 @@ var steelseries = (function () {
 
             // Create foreground in foreground buffer (foregroundBuffer)
             if (drawForeground && foregroundVisible) {
-                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false, gaugeType);
+                drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, false);
             }
 
             // Create the trend indicator buffers
@@ -1631,28 +1632,28 @@ var steelseries = (function () {
             ctx.restore();
         };
 
-        var drawLcdText = function (value) {
+        var drawLcdText = function (ctx, value) {
 
-            mainCtx.save();
-            mainCtx.textAlign = 'right';
-            mainCtx.strokeStyle = lcdColor.textColor;
-            mainCtx.fillStyle = lcdColor.textColor;
+            ctx.save();
+            ctx.textAlign = 'right';
+            ctx.strokeStyle = lcdColor.textColor;
+            ctx.fillStyle = lcdColor.textColor;
 
             if (lcdColor === steelseries.LcdColor.STANDARD || lcdColor === steelseries.LcdColor.STANDARD_GREEN) {
-                mainCtx.shadowColor = 'gray';
-                mainCtx.shadowOffsetX = imageWidth * 0.007;
-                mainCtx.shadowOffsetY = imageWidth * 0.007;
-                mainCtx.shadowBlur = imageWidth * 0.007;
+                ctx.shadowColor = 'gray';
+                ctx.shadowOffsetX = imageWidth * 0.007;
+                ctx.shadowOffsetY = imageWidth * 0.007;
+                ctx.shadowBlur = imageWidth * 0.007;
             }
 
             if (digitalFont) {
-                mainCtx.font = lcdFont;
+                ctx.font = lcdFont;
             } else {
-                mainCtx.font = stdFont;
+                ctx.font = stdFont;
             }
-            mainCtx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth * 0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
+            ctx.fillText(value.toFixed(lcdDecimals), lcdPosX + lcdWidth - lcdWidth * 0.05, lcdPosY + lcdHeight * 0.5 + lcdFontHeight * 0.38, lcdWidth * 0.9);
 
-            mainCtx.restore();
+            ctx.restore();
         };
 
         var drawTickmarksImage = function (ctx, labelNumberFormat) {
@@ -1806,7 +1807,6 @@ var steelseries = (function () {
                         ledBlinking = false;
                         blink(ledBlinking);
                     }
-
                     gauge.repaint();
                 };
                 tween.start();
@@ -1972,7 +1972,7 @@ var steelseries = (function () {
                       foreground: true});
             }
 
-            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+            mainCtx.clearRect(0, 0, size, size);
 
             // Draw frame image
             if (frameVisible) {
@@ -2017,7 +2017,7 @@ var steelseries = (function () {
 
             // Draw lcd display
             if (lcdVisible) {
-                drawLcdText(value);
+                drawLcdText(mainCtx, value);
             }
 
             // Draw led
@@ -2051,6 +2051,7 @@ var steelseries = (function () {
             if (foregroundVisible) {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
+
         };
 
         // Visualize the component
@@ -2653,7 +2654,6 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-
                 self.repaint();
             }
         };
@@ -2703,6 +2703,7 @@ var steelseries = (function () {
                         tween.stop();
                     }
                 }
+
                 tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
                 tween.onMotionChanged = function (event) {
@@ -2725,7 +2726,6 @@ var steelseries = (function () {
 
                     gauge.repaint();
                 };
-
                 tween.start();
             }
         };
@@ -2814,7 +2814,7 @@ var steelseries = (function () {
                       foreground: true});
             }
 
-            mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
+            mainCtx.clearRect(0, 0, size, size);
             mainCtx.save();
 
             // Draw frame
@@ -12970,7 +12970,7 @@ var steelseries = (function () {
             shadowOffset = imageWidth * 0.008,
             gradHighlight, gradHighlight2,
             cacheKey = foregroundType.type + imageWidth + imageHeight + withCenterKnob + (knob !== undefined ? knob.type : '-') +
-                       (style !== undefined ? style.style : '-') + (gaugeType !== undefined ? gaugeType.type : '-') + (orientation !== undefined ? orientation.type : '-');
+                       (style !== undefined ? style.style : '-') + (orientation !== undefined ? orientation.type : '-');
 
         // check if we have already created and cached this buffer, if so return it and exit
         if (!drawRadialForegroundImage.cache[cacheKey]) {

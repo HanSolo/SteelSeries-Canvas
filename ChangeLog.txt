@@ -1,5 +1,10 @@
 Main Changes
 
+v0.11.8
+> General
+  * Fixed drawRadialForegroundImage() image caching, which treated radialBargraph gauage
+    types as different in error. Fixed the cacheKey used.
+
 v0.11.7
 > Radial
   * Added .setFractionalScaleDecimals() and .setLabelNumberFormat()
