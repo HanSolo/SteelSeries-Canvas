@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 23.05.2012
- * Revision      : 0.11.8
+ * Last modified : 29.05.2012
+ * Revision      : 0.11.9
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -92,6 +92,7 @@ var steelseries = (function () {
 
         var ledTimerId = 0;
         var tween;
+        var repainting = false;
 
         var trendIndicator = steelseries.TrendState.OFF;
         var trendSize = size * 0.06;
@@ -747,7 +748,10 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-                self.repaint();
+                if (!repainting) {
+                    repainting = true;
+                    requestAnimFrame(self.repaint);
+                }
             }
         };
 
@@ -836,7 +840,10 @@ var steelseries = (function () {
                     if (value < minMeasuredValue) {
                         minMeasuredValue = value;
                     }
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -1143,6 +1150,7 @@ var steelseries = (function () {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
 
+            repainting = false;
         };
 
         // Visualize the component
@@ -1200,6 +1208,7 @@ var steelseries = (function () {
         var ledTimerId = 0;
         var tween;
         var self = this;
+        var repainting = false;
 
         // GaugeType specific private variables
         var freeAreaAngle;
@@ -1754,7 +1763,10 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-                self.repaint();
+                if (!repainting) {
+                    repainting = true;
+                    requestAnimFrame(self.repaint);
+                }
             }
         };
 
@@ -1807,7 +1819,10 @@ var steelseries = (function () {
                         ledBlinking = false;
                         blink(ledBlinking);
                     }
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -2052,6 +2067,7 @@ var steelseries = (function () {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
 
+            repainting = false;
         };
 
         // Visualize the component
@@ -2110,6 +2126,7 @@ var steelseries = (function () {
 
         var ledTimerId = 0;
         var tween;
+        var repainting = false;
 
         // Constants
         var HALF_PI = Math.PI / 2;
@@ -2654,7 +2671,10 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-                self.repaint();
+                if (!repainting) {
+                    repainting = true;
+                    requestAnimFrame(self.repaint);
+                }
             }
         };
 
@@ -2724,7 +2744,10 @@ var steelseries = (function () {
                         minMeasuredValue = value;
                     }
 
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -2903,6 +2926,8 @@ var steelseries = (function () {
                 mainCtx.restore();
             }
             mainCtx.restore();
+
+            repainting = false;
         };
 
         // Visualize the component
@@ -2963,6 +2988,7 @@ var steelseries = (function () {
 
         var tween;
         var ledBlinking = false;
+        var repainting = false;
 
         var ledTimerId = 0;
 
@@ -3477,7 +3503,10 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-                self.repaint();
+                if (!repainting) {
+                    repainting = true;
+                    requestAnimFrame(self.repaint);
+                }
             }
         };
 
@@ -3800,7 +3829,31 @@ var steelseries = (function () {
                 var gauge = this;
 
                 tween.onMotionChanged = function (event) {
-                    gauge.setValue(event.target._pos);
+                    value = event.target._pos;
+                    if (value > maxMeasuredValue) {
+                        maxMeasuredValue = value;
+                    }
+                    if (value < minMeasuredValue) {
+                        minMeasuredValue = value;
+                    }
+    
+                    if (value >= threshold && !ledBlinking) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (value < threshold) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
 
                 tween.start();
@@ -4019,6 +4072,8 @@ var steelseries = (function () {
             if (foregroundVisible || gaugeType.type === 'type2') {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
+
+            repainting = false;
         };
 
         // Visualize the component
@@ -4076,6 +4131,7 @@ var steelseries = (function () {
 
         var tween;
         var ledBlinking = false;
+        var repainting = false;
         var isSectionsVisible = false;
         var isGradientVisible = false;
         var sectionPixels = [];
@@ -4651,8 +4707,10 @@ var steelseries = (function () {
                 } else {
                     ledBuffer = ledBufferOn;
                 }
-
-                self.repaint();
+                if (!repainting) {
+                    repainting = true;
+                    requestAnimFrame(self.repaint);
+                }
             }
         };
 
@@ -4968,7 +5026,10 @@ var steelseries = (function () {
                         minMeasuredValue = value;
                     }
 
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
 
                 tween.start();
@@ -5210,6 +5271,8 @@ var steelseries = (function () {
             if (foregroundVisible) {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
+
+            repainting = false;
         };
 
         // Visualize the component
@@ -5235,6 +5298,7 @@ var steelseries = (function () {
         var scrolling = false;
         var scrollX = 0;
         var scrollTimer;
+        var repainting = false;
 
         var self = this;
 
@@ -5414,7 +5478,10 @@ var steelseries = (function () {
             } else {
                 scrollX = 0;
             }
-            self.repaint();
+            if (!repainting) {
+                repainting = true;
+                requestAnimFrame(self.repaint);
+            }
         };
 
         // **************   Initialization  ********************
@@ -5512,6 +5579,8 @@ var steelseries = (function () {
 
             // Draw lcd text
             drawLcdText(value, lcdTextColor);
+
+            repainting = false;
         };
 
         // Visualize the component
@@ -5669,6 +5738,7 @@ var steelseries = (function () {
         var foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible);
 
         var tween;
+        var repainting = false;
 
         var value = 0;
         var stepValue = 0;
@@ -6197,7 +6267,10 @@ var steelseries = (function () {
                         visibleValue = Math.abs(value) - 270;
                     }
 
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -6289,6 +6362,8 @@ var steelseries = (function () {
             }
 
             mainCtx.restore();
+
+            repainting = false;
         };
 
         // Visualize the component
@@ -6316,6 +6391,7 @@ var steelseries = (function () {
         var roseVisible = (undefined === parameters.roseVisible ? true : parameters.roseVisible);
 
         var tween;
+        var repainting = false;
         var value = 0;
         var angleStep = 2 * Math.PI / 360;
         var angle = this.value;
@@ -6746,7 +6822,10 @@ var steelseries = (function () {
                 tween = new Tween({}, '', Tween.elasticEaseOut, value, value + diff, 2);
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos % 360;
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -6834,6 +6913,7 @@ var steelseries = (function () {
             }
 
             mainCtx.restore();
+            repainting = false;
         };
 
         // Visualize the component
@@ -6880,6 +6960,7 @@ var steelseries = (function () {
         var rotationOffset = -Math.PI / 2;
         var angleRange = Math.PI * 2;
         var range = 360;
+        var repainting = false;
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
@@ -7377,13 +7458,19 @@ var steelseries = (function () {
                 tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 2.5);
                 tweenLatest.onMotionChanged = function (event) {
                     valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 // Use onMotionFinished to set end value in case targetValue = 360
                 if (targetValue === 360) {
                     tweenLatest.onMotionFinished = function (event) {
                         valueLatest = targetValue;
-                        gauge.repaint();
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
                     };
                 }
 
@@ -7409,13 +7496,19 @@ var steelseries = (function () {
                 tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 2.5);
                 tweenAverage.onMotionChanged = function (event) {
                     valueAverage = event.target._pos === 360 ? 360 : event.target._pos % 360;
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 // Use onMotionFinished to set end value in case targetValue = 360
                 if (targetValue === 360) {
                     tweenLatest.onMotionFinished = function (event) {
                         valueAverage = targetValue;
-                        gauge.repaint();
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
                     };
                 }
                 tweenAverage.start();
@@ -7575,6 +7668,7 @@ var steelseries = (function () {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
 
+            repainting = false;
         };
 
         // Visualize the component
@@ -7594,6 +7688,7 @@ var steelseries = (function () {
 
         var tweenRoll;
         var tweenPitch;
+        var repainting = false;
         var roll = 0;
         var pitch = 0;
         var pitchPixel = (Math.PI * size) / 360;
@@ -7881,7 +7976,10 @@ var steelseries = (function () {
 
                 tweenRoll.onMotionChanged = function (event) {
                     roll = event.target._pos;
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tweenRoll.start();
             }
@@ -7928,8 +8026,26 @@ var steelseries = (function () {
                 }
                 tweenPitch = new Tween({}, '', Tween.regularEaseInOut, pitch, newPitch, 1);
                 tweenPitch.onMotionChanged = function (event) {
-                    //pitch = event.target._pos;
-                    //gauge.repaint();
+                    pitch = event.target._pos;
+                    if (pitch > 90) {
+                        pitch = 90 - (pitch - 90);
+                        if (!upsidedown) {
+                            this.setRoll(roll - 180);
+                        }
+                        upsidedown = true;
+                    } else if (pitch < -90) {
+                        pitch = -90 + (-90 - pitch);
+                        if (!upsidedown) {
+                            this.setRoll(roll + 180);
+                        }
+                        upsidedown = true;
+                    } else {
+                        upsidedown = false;
+                    }
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                     gauge.setPitch(event.target._pos);
                 };
                 tweenPitch.start();
@@ -9594,6 +9710,7 @@ var steelseries = (function () {
             angleStep100ft, angleStep1000ft, angleStep10000ft,
             tickLabelPeriod = 1, // Draw value at every 10th tickmark
             tween,
+            repainting = false,
             imageWidth, imageHeight,
             centerX, centerY,
             stdFont,
@@ -10014,7 +10131,10 @@ var steelseries = (function () {
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
                 tween.onMotionChanged = function (event) {
                         value = event.target._pos;
-                        gauge.repaint();
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
                     };
 
                 tween.start();
@@ -10148,6 +10268,7 @@ var steelseries = (function () {
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
             }
 
+            repainting = false;
         };
 
         // Visualize the component
@@ -11160,6 +11281,7 @@ var steelseries = (function () {
             //
             initialized = false,
             tween, ctx,
+            repainting = false,
             digitHeight, digitWidth, stdFont,
             width, columnHeight, verticalSpace, zeroOffset,
             wobble = [],
@@ -11329,7 +11451,10 @@ var steelseries = (function () {
                 tween = new Tween({}, '', Tween.strongEaseOut, value, newVal, 2);
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
-                    gauge.repaint();
+                    if (!repainting) {
+                        repainting = true;
+                        requestAnimFrame(gauge.repaint);
+                    }
                 };
                 tween.start();
             }
@@ -11363,6 +11488,7 @@ var steelseries = (function () {
             // paint back to the main context
             ctx.drawImage(backgroundBuffer, 0, 0);
 
+            repainting = false;
         };
 
         this.repaint();
@@ -14664,6 +14790,19 @@ var steelseries = (function () {
     function getShortestAngle(from, to) {
         return wrap((to - from), -180, 180);
     }
+
+    // shim layer
+    var requestAnimFrame = (function () {
+        return  window.requestAnimationFrame   ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            window.oRequestAnimationFrame      ||
+            window.msRequestAnimationFrame     ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 16);
+            };
+    }());
+
 /*
     function blur(ctx, width, height, radius) {
     // This function is too CPU expensive
