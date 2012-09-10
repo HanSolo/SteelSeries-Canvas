@@ -1,5 +1,11 @@
 Main Changes
 
+v0.11.10
+> General
+  * Changed Conical gradient to use Gerrits raster scan rather than line rotation,
+    changed the .fill() method to .fillCircle() and added .fillRect()
+  * Some general typo fixes and minor code restructuring
+
 v0.11.9
 > General
   * Added requestAnimationFrame processing to setValueAnimted() in:
@@ -16,8 +22,6 @@ v0.11.7
   * Added .setFractionalScaleDecimals() and .setLabelNumberFormat()
 > RadialBargraph
   * Added .setFractionalScaleDecimals(), .setLabelNumberFormat() and .setLcdDecimals()
-
-
 
 v0.11.6
 > Radial
@@ -232,7 +236,7 @@ v0.9.1
   * Added pointer type14
   * Optimised conicalGradient to calculate a step size relevant to gauge size
   * Code size reduction exercise continues
-  
+
 v0.9.0
 > General Changes
   * Added section handling to DisplaySingle
