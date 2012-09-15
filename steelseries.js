@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 10.09.2012
- * Revision      : 0.11.10
+ * Last modified : 15.09.2012
+ * Revision      : 0.11.11
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -117,7 +117,6 @@ var steelseries = (function () {
 
         // Get the canvas context and clear it
         var mainCtx = doc.getElementById(canvas).getContext('2d');
-        mainCtx.save();
         mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
         // Set the size
@@ -141,6 +140,7 @@ var steelseries = (function () {
         var lcdPosX = (imageWidth - lcdWidth) / 2;
         var lcdPosY = imageHeight * 0.57;
         var odoPosX, odoPosY = imageHeight * 0.61;
+        var shadowOffset = imageWidth * 0.006;
 
         // Constants
         var initialized = false;
@@ -250,10 +250,6 @@ var steelseries = (function () {
         // Buffer for pointer shadow
         var pointerShadowBuffer = createBuffer(size, size);
         var pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-        // Buffer for pointer shadow rotation
-        var pointerRotBuffer = createBuffer(size, size);
-        var pointerRotContext = pointerRotBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -733,10 +729,6 @@ var steelseries = (function () {
                 pointerShadowBuffer.width = size;
                 pointerShadowBuffer.height = size;
                 pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-                pointerRotBuffer.width = size;
-                pointerRotBuffer.height = size;
-                pointerRotContext = pointerRotBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -1055,7 +1047,6 @@ var steelseries = (function () {
                       foreground: true,
                       odo: true});
             }
-
             mainCtx.clearRect(0, 0, size, size);
 
             // Draw frame
@@ -1125,28 +1116,18 @@ var steelseries = (function () {
 
             angle = rotationOffset + HALF_PI + (value - minValue) * angleStep;
 
-            // have to draw to a rotated temporary image area so we can translate in
-            // absolute x, y values when drawing to main context
-            var shadowOffset = imageWidth * 0.006;
-
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(angle);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointerShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
-            mainCtx.save();
-
             // Define rotation center
+            mainCtx.save();
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(angle);
-
-            // Draw pointer
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
+            // Draw the pointer
             mainCtx.drawImage(pointerBuffer, 0, 0);
+            // Undo the translations & shadow settings
             mainCtx.restore();
 
             // Draw foreground
@@ -2124,6 +2105,8 @@ var steelseries = (function () {
         // Properties
         var minMeasuredValue = maxValue;
         var maxMeasuredValue = minValue;
+        var imageWidth = size;
+        var imageHeight = size;
 
         var ledBlinking = false;
 
@@ -2146,6 +2129,8 @@ var steelseries = (function () {
         var tickmarkOffset = 1.25 * PI;
         var angleRange = HALF_PI;
         var angleStep = angleRange / range;
+        var shadowOffset = imageWidth * 0.006;
+        var pointerOffset = imageWidth * 1.17 / 2;
 
         var initialized = false;
 
@@ -2158,9 +2143,6 @@ var steelseries = (function () {
         // Set the size
         mainCtx.canvas.width = size;
         mainCtx.canvas.height = size;
-
-        var imageWidth = size;
-        var imageHeight = size;
 
         var centerX = imageWidth / 2;
         var centerY = imageHeight * 0.733644;
@@ -2234,10 +2216,6 @@ var steelseries = (function () {
         // Buffer for pointer shadow
         var pointerShadowBuffer = createBuffer(size, size);
         var pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-        // Buffer for pointer shadow rotation
-        var pointerRotBuffer = createBuffer(size, size);
-        var pointerRotContext = pointerRotBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -2639,10 +2617,6 @@ var steelseries = (function () {
                 pointerShadowBuffer.width = size;
                 pointerShadowBuffer.height = size;
                 pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-                pointerRotBuffer.width = size;
-                pointerRotBuffer.height = size;
-                pointerRotContext = pointerRotBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -2881,45 +2855,28 @@ var steelseries = (function () {
 
             angle = rotationOffset + HALF_PI + (value - minValue) * angleStep;
 
-            // we have to draw to a rotated temporary image area so we can translate in
-            // absolute x, y values when drawing to main context
-            var shadowOffset = imageWidth * 0.006;
-            var pointerOffset = imageWidth * 1.17 / 2;
-
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(angle);
-            pointerRotContext.translate(-pointerOffset, -pointerOffset);
-            pointerRotContext.drawImage(pointerShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            if (steelseries.Orientation.NORTH === orientation) {
-                mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-            } else {
-                mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, -shadowOffset, shadowOffset, imageWidth - shadowOffset, imageHeight + shadowOffset);
-            }
-
-            mainCtx.save();
-
             // Define rotation center
+            mainCtx.save();
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(angle);
-
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
             // Draw pointer
             mainCtx.translate(-pointerOffset, -pointerOffset);
             mainCtx.drawImage(pointerBuffer, 0, 0);
+            // Undo the translations & shadow settings
             mainCtx.restore();
 
             // Draw foreground
             if (foregroundVisible) {
-                mainCtx.save();
                 if (steelseries.Orientation.WEST === orientation) {
                     mainCtx.translate(centerX, centerX);
                     mainCtx.rotate(HALF_PI);
                     mainCtx.translate(-centerX, -centerX);
                 }
                 mainCtx.drawImage(foregroundBuffer, 0, 0);
-                mainCtx.restore();
             }
             mainCtx.restore();
 

@@ -1,5 +1,10 @@
 Main Changes
 
+v0.11.11
+> Radial & RadialVertical
+  * Simplified the pointer shadow drawing - note shadows do not display correctly in the
+    Chrome browser because of a bug http://code.google.com/p/chromium/issues/detail?id=90001
+
 v0.11.10
 > General
   * Changed Conical gradient to use Gerrits raster scan rather than line rotation,
