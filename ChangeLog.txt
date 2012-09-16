@@ -1,5 +1,9 @@
 Main Changes
 
+v0.11.12
+> General
+  * Removed all remaining 'shadow' drawing code, now relying on native browser capabilities.
+
 v0.11.11
 > Radial & RadialVertical
   * Simplified the pointer shadow drawing - note shadows do not display correctly in the

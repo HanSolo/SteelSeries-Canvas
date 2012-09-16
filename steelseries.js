@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 15.09.2012
- * Revision      : 0.11.11
+ * Last modified : 16.09.2012
+ * Revision      : 0.11.12
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -246,10 +246,6 @@ var steelseries = (function () {
         // Buffer for pointer image painting code
         var pointerBuffer = createBuffer(size, size);
         var pointerContext = pointerBuffer.getContext('2d');
-
-        // Buffer for pointer shadow
-        var pointerShadowBuffer = createBuffer(size, size);
-        var pointerShadowContext = pointerShadowBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -669,8 +665,7 @@ var steelseries = (function () {
 
             // Create pointer image in pointer buffer (contentBuffer)
             if (drawPointer) {
-                drawPointerImage(pointerContext, imageWidth, pointerType, pointerColor, backgroundColor.labelColor, false);
-                drawPointerImage(pointerShadowContext, imageWidth, pointerType, pointerColor, backgroundColor.labelColor, true);
+                drawPointerImage(pointerContext, imageWidth, pointerType, pointerColor, backgroundColor.labelColor);
             }
 
             // Create foreground in foreground buffer (foregroundBuffer)
@@ -725,10 +720,6 @@ var steelseries = (function () {
                 pointerBuffer.width = size;
                 pointerBuffer.height = size;
                 pointerContext = pointerBuffer.getContext('2d');
-
-                pointerShadowBuffer.width = size;
-                pointerShadowBuffer.height = size;
-                pointerShadowContext = pointerShadowBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -2213,10 +2204,6 @@ var steelseries = (function () {
         var pointerBuffer = createBuffer(size, size);
         var pointerContext = pointerBuffer.getContext('2d');
 
-        // Buffer for pointer shadow
-        var pointerShadowBuffer = createBuffer(size, size);
-        var pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
         var foregroundContext = foregroundBuffer.getContext('2d');
@@ -2564,8 +2551,7 @@ var steelseries = (function () {
 
             // Create pointer image in pointer buffer (contentBuffer)
             if (drawPointer) {
-                drawPointerImage(pointerContext, imageWidth * 1.17, pointerType, pointerColor, backgroundColor.labelColor, false);
-                drawPointerImage(pointerShadowContext, imageWidth * 1.17, pointerType, pointerColor, backgroundColor.labelColor, true);
+                drawPointerImage(pointerContext, imageWidth * 1.17, pointerType, pointerColor, backgroundColor.labelColor);
 
             }
 
@@ -2613,10 +2599,6 @@ var steelseries = (function () {
                 pointerBuffer.width = size;
                 pointerBuffer.height = size;
                 pointerContext = pointerBuffer.getContext('2d');
-
-                pointerShadowBuffer.width = size;
-                pointerShadowBuffer.height = size;
-                pointerShadowContext = pointerShadowBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -6367,6 +6349,8 @@ var steelseries = (function () {
         var centerX = imageWidth / 2;
         var centerY = imageHeight / 2;
 
+        var shadowOffset = imageWidth * 0.006;
+
         var initialized = false;
 
         // **************   Buffer creation  ********************
@@ -6377,14 +6361,6 @@ var steelseries = (function () {
         // Buffer for pointer image painting code
         var pointerBuffer = createBuffer(size, size);
         var pointerContext = pointerBuffer.getContext('2d');
-
-        // Buffer for pointer shadow
-        var pointerShadowBuffer = createBuffer(size, size);
-        var pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-        // Buffer for pointer shadow rotation
-        var pointerRotBuffer = createBuffer(size, size);
-        var pointerRotContext = pointerRotBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -6554,13 +6530,8 @@ var steelseries = (function () {
             ctx.restore();
         };
 
-        var drawPointerImage = function (ctx, shadow) {
+        var drawPointerImage = function (ctx) {
             ctx.save();
-
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            }
 
             switch (pointerType.type) {
             case "type2":
@@ -6573,15 +6544,13 @@ var steelseries = (function () {
                 ctx.bezierCurveTo(imageWidth * 0.443925, imageHeight * 0.5, imageWidth * 0.556074, imageHeight * 0.5, imageWidth * 0.556074, imageHeight * 0.5);
                 ctx.bezierCurveTo(imageWidth * 0.556074, imageHeight * 0.481308, imageWidth * 0.546728, imageHeight * 0.462616, imageWidth * 0.532710, imageHeight * 0.453271);
                 ctx.closePath();
-                if (!shadow) {
-                    var NORTHPOINTER2_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                    NORTHPOINTER2_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER2_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER2_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
-                    NORTHPOINTER2_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
-                    ctx.fillStyle = NORTHPOINTER2_GRADIENT;
-                    ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                }
+                var NORTHPOINTER2_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
+                NORTHPOINTER2_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
+                NORTHPOINTER2_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
+                NORTHPOINTER2_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
+                NORTHPOINTER2_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = NORTHPOINTER2_GRADIENT;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'square';
                 ctx.lineJoin = 'miter';
@@ -6597,16 +6566,14 @@ var steelseries = (function () {
                 ctx.bezierCurveTo(imageWidth * 0.556074, imageHeight * 0.5, imageWidth * 0.443925, imageHeight * 0.5, imageWidth * 0.443925, imageHeight * 0.5);
                 ctx.bezierCurveTo(imageWidth * 0.443925, imageHeight * 0.518691, imageWidth * 0.453271, imageHeight * 0.537383, imageWidth * 0.467289, imageHeight * 0.546728);
                 ctx.closePath();
-                if (!shadow) {
-                    var SOUTHPOINTER2_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                    SOUTHPOINTER2_GRADIENT.addColorStop(0, '#e3e5e8');
-                    SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#e3e5e8');
-                    SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#abb1b8');
-                    SOUTHPOINTER2_GRADIENT.addColorStop(1, '#abb1b8');
-                    ctx.fillStyle = SOUTHPOINTER2_GRADIENT;
-                    var strokeColor_SOUTHPOINTER2 = '#abb1b8';
-                    ctx.strokeStyle = strokeColor_SOUTHPOINTER2;
-                }
+                var SOUTHPOINTER2_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
+                SOUTHPOINTER2_GRADIENT.addColorStop(0, '#e3e5e8');
+                SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#e3e5e8');
+                SOUTHPOINTER2_GRADIENT.addColorStop(0.48, '#abb1b8');
+                SOUTHPOINTER2_GRADIENT.addColorStop(1, '#abb1b8');
+                ctx.fillStyle = SOUTHPOINTER2_GRADIENT;
+                var strokeColor_SOUTHPOINTER2 = '#abb1b8';
+                ctx.strokeStyle = strokeColor_SOUTHPOINTER2;
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'square';
                 ctx.lineJoin = 'miter';
@@ -6623,15 +6590,13 @@ var steelseries = (function () {
                 ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.556074, imageWidth * 0.556074, imageHeight * 0.532710, imageWidth * 0.556074, imageHeight * 0.5);
                 ctx.bezierCurveTo(imageWidth * 0.556074, imageHeight * 0.490654, imageWidth * 0.5, imageHeight * 0.149532, imageWidth * 0.5, imageHeight * 0.149532);
                 ctx.closePath();
-                if (!shadow) {
-                    var NORTHPOINTER3_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                    NORTHPOINTER3_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER3_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER3_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
-                    NORTHPOINTER3_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
-                    ctx.fillStyle = NORTHPOINTER3_GRADIENT;
-                    ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                }
+                var NORTHPOINTER3_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
+                NORTHPOINTER3_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
+                NORTHPOINTER3_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
+                NORTHPOINTER3_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
+                NORTHPOINTER3_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = NORTHPOINTER3_GRADIENT;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'square';
                 ctx.lineJoin = 'miter';
@@ -6650,15 +6615,13 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.471962, imageHeight * 0.495327);
                 ctx.lineTo(imageWidth * 0.5, imageHeight * 0.495327);
                 ctx.closePath();
-                if (!shadow) {
-                    var NORTHPOINTER1_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                    NORTHPOINTER1_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER1_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
-                    NORTHPOINTER1_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
-                    NORTHPOINTER1_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
-                    ctx.fillStyle = NORTHPOINTER1_GRADIENT;
-                    ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                }
+                var NORTHPOINTER1_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
+                NORTHPOINTER1_GRADIENT.addColorStop(0, pointerColor.light.getRgbaColor());
+                NORTHPOINTER1_GRADIENT.addColorStop(0.46, pointerColor.light.getRgbaColor());
+                NORTHPOINTER1_GRADIENT.addColorStop(0.47, pointerColor.medium.getRgbaColor());
+                NORTHPOINTER1_GRADIENT.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = NORTHPOINTER1_GRADIENT;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'square';
                 ctx.lineJoin = 'miter';
@@ -6673,25 +6636,20 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.528037, imageHeight * 0.504672);
                 ctx.lineTo(imageWidth * 0.5, imageHeight * 0.504672);
                 ctx.closePath();
-                if (!shadow) {
-                    var SOUTHPOINTER1_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
-                    SOUTHPOINTER1_GRADIENT.addColorStop(0, '#e3e5e8');
-                    SOUTHPOINTER1_GRADIENT.addColorStop(0.48, '#e3e5e8');
-                    SOUTHPOINTER1_GRADIENT.addColorStop(0.480099, '#abb1b8');
-                    SOUTHPOINTER1_GRADIENT.addColorStop(1, '#abb1b8');
-                    ctx.fillStyle = SOUTHPOINTER1_GRADIENT;
-                    var strokeColor_SOUTHPOINTER = '#abb1b8';
-                    ctx.strokeStyle = strokeColor_SOUTHPOINTER;
-                }
+                var SOUTHPOINTER1_GRADIENT = ctx.createLinearGradient(0.471962 * imageWidth, 0, 0.528036 * imageWidth, 0);
+                SOUTHPOINTER1_GRADIENT.addColorStop(0, '#e3e5e8');
+                SOUTHPOINTER1_GRADIENT.addColorStop(0.48, '#e3e5e8');
+                SOUTHPOINTER1_GRADIENT.addColorStop(0.480099, '#abb1b8');
+                SOUTHPOINTER1_GRADIENT.addColorStop(1, '#abb1b8');
+                ctx.fillStyle = SOUTHPOINTER1_GRADIENT;
+                var strokeColor_SOUTHPOINTER = '#abb1b8';
+                ctx.strokeStyle = strokeColor_SOUTHPOINTER;
                 ctx.lineWidth = 1;
                 ctx.lineCap = 'square';
                 ctx.lineJoin = 'miter';
                 ctx.fill();
                 ctx.stroke();
                 break;
-            }
-            if (shadow) {
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
             }
             ctx.restore();
         };
@@ -6717,7 +6675,6 @@ var steelseries = (function () {
             }
 
             drawPointerImage(pointerContext, false);
-            drawPointerImage(pointerShadowContext, true);
 
             if (foregroundVisible) {
                 drawRadialForegroundImage(foregroundContext, foregroundType, imageWidth, imageHeight, true, knobType, knobStyle);
@@ -6734,14 +6691,6 @@ var steelseries = (function () {
             pointerBuffer.width = size;
             pointerBuffer.height = size;
             pointerContext = pointerBuffer.getContext('2d');
-
-            pointerShadowBuffer.width = size;
-            pointerShadowBuffer.height = size;
-            pointerShadowContext = pointerShadowBuffer.getContext('2d');
-
-            pointerRotBuffer.width = size;
-            pointerRotBuffer.height = size;
-            pointerRotContext = pointerRotBuffer.getContext('2d');
 
             // Buffer for static foreground painting code
             foregroundBuffer.width = size;
@@ -6843,25 +6792,18 @@ var steelseries = (function () {
             // Define rotation center
             angle = HALF_PI + value * angleStep - HALF_PI;
 
-            // have to draw to a rotated temporary image area so we can translate in
-            // absolute x, y values when drawing to main context
-            var shadowOffset = imageWidth * 0.006;
-
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(angle);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointerShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
+            // Define rotation center
             mainCtx.save();
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(angle);
-
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
+            // Draw the pointer
             mainCtx.drawImage(pointerBuffer, 0, 0);
+            // Undo the translations & shadow settings
             mainCtx.restore();
 
             if (foregroundVisible) {
@@ -6956,21 +6898,9 @@ var steelseries = (function () {
         var pointerBufferLatest = createBuffer(size, size);
         var pointerContextLatest = pointerBufferLatest.getContext('2d');
 
-        // Buffer for latest pointer shadow
-        var pointerShadowBufferLatest = createBuffer(size, size);
-        var pointerShadowContextLatest = pointerShadowBufferLatest.getContext('2d');
-
         // Buffer for average pointer image
         var pointerBufferAverage = createBuffer(size, size);
         var pointerContextAverage = pointerBufferAverage.getContext('2d');
-
-        // Buffer for pointer shadow
-        var pointerShadowBufferAverage = createBuffer(size, size);
-        var pointerShadowContextAverage = pointerShadowBufferAverage.getContext('2d');
-
-        // Buffer for pointer shadow rotation
-        var pointerRotBuffer = createBuffer(size, size);
-        var pointerRotContext = pointerRotBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -7311,9 +7241,7 @@ var steelseries = (function () {
 
             if (drawPointer) {
                 drawPointerImage(pointerContextAverage, imageWidth, pointerTypeAverage, pointerColorAverage, backgroundColor.labelColor);
-                drawPointerImage(pointerShadowContextAverage, imageWidth, pointerTypeAverage, pointerColor, backgroundColor.labelColor, true);
                 drawPointerImage(pointerContextLatest, imageWidth, pointerTypeLatest, pointerColor, backgroundColor.labelColor);
-                drawPointerImage(pointerShadowContextLatest, imageWidth, pointerTypeLatest, pointerColor, backgroundColor.labelColor, true);
             }
 
             if (drawForeground && foregroundVisible) {
@@ -7340,21 +7268,9 @@ var steelseries = (function () {
                 pointerBufferLatest.height = size;
                 pointerContextLatest = pointerBufferLatest.getContext('2d');
 
-                pointerShadowBufferLatest.width = size;
-                pointerShadowBufferLatest.height = size;
-                pointerShadowContextLatest = pointerShadowBufferLatest.getContext('2d');
-
                 pointerBufferAverage.width = size;
                 pointerBufferAverage.height = size;
                 pointerContextAverage = pointerBufferAverage.getContext('2d');
-
-                pointerShadowBufferAverage.width = size;
-                pointerShadowBufferAverage.height = size;
-                pointerShadowContextAverage = pointerShadowBufferAverage.getContext('2d');
-
-                pointerRotBuffer.width = size;
-                pointerRotBuffer.height = size;
-                pointerRotContext = pointerRotBuffer.getContext('2d');
             }
             // Buffer for static foreground painting code
             if (resetForeground) {
@@ -7577,46 +7493,28 @@ var steelseries = (function () {
                 drawLcdText(valueAverage, false);
             }
 
-            // Define rotation center
-            angleAverage = HALF_PI + valueAverage * angleStep - HALF_PI;
+            // Define rotation angle
+            angleAverage = valueAverage * angleStep;
 
             // we have to draw to a rotated temporary image area so we can translate in
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(angleAverage);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointerShadowBufferAverage, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
+            // Define rotation center
             mainCtx.save();
-
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(angleAverage);
-
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
+            // Draw the pointer
             mainCtx.drawImage(pointerBufferAverage, 0, 0);
-            mainCtx.restore();
-
-            angleLatest = valueLatest * angleStep;
-
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(angleLatest);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointerShadowBufferLatest, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
-            mainCtx.save();
+            // Define rotation angle difference for average pointer
+            angleLatest = valueLatest * angleStep  - angleAverage;
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(angleLatest);
-
             mainCtx.translate(-centerX, -centerY);
             mainCtx.drawImage(pointerBufferLatest, 0, 0);
             mainCtx.restore();
@@ -8246,29 +8144,13 @@ var steelseries = (function () {
         var hourBuffer = createBuffer(size, size);
         var hourContext = hourBuffer.getContext('2d');
 
-        // Buffer for hour pointer shadow
-        var hourShadowBuffer = createBuffer(size, size);
-        var hourShadowContext = hourShadowBuffer.getContext('2d');
-
         // Buffer for minute pointer image painting code
         var minuteBuffer = createBuffer(size, size);
         var minuteContext = minuteBuffer.getContext('2d');
 
-        // Buffer for hour pointer shadow
-        var minuteShadowBuffer = createBuffer(size, size);
-        var minuteShadowContext = minuteShadowBuffer.getContext('2d');
-
         // Buffer for second pointer image painting code
         var secondBuffer = createBuffer(size, size);
         var secondContext = secondBuffer.getContext('2d');
-
-        // Buffer for hour pointer shadow
-        var secondShadowBuffer = createBuffer(size, size);
-        var secondShadowContext = secondShadowBuffer.getContext('2d');
-
-        // Buffer for pointer shadow painting code
-        var pointerRotBuffer = createBuffer(size, size);
-        var pointerRotContext = pointerRotBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
         var foregroundBuffer = createBuffer(size, size);
@@ -8352,14 +8234,9 @@ var steelseries = (function () {
             ctx.restore();
         };
 
-        var drawHourPointer = function (ctx, ptrType, shadow) {
+        var drawHourPointer = function (ctx, ptrType) {
             ctx.save();
             var grad;
-
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            }
 
             switch (ptrType.type) {
             case 'type2':
@@ -8367,9 +8244,7 @@ var steelseries = (function () {
                 ctx.lineWidth = imageWidth * 0.046728;
                 ctx.moveTo(centerX, imageWidth * 0.289719);
                 ctx.lineTo(centerX, imageWidth * 0.289719 + imageWidth * 0.224299);
-                if (!shadow) {
-                    ctx.strokeStyle = pointerColor.medium.getRgbaColor();
-                }
+                ctx.strokeStyle = pointerColor.medium.getRgbaColor();
                 ctx.closePath();
                 ctx.stroke();
                 break;
@@ -8385,32 +8260,21 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.528037, imageHeight * 0.560747);
                 ctx.lineTo(imageWidth * 0.471962, imageHeight * 0.560747);
                 ctx.closePath();
-                if (!shadow) {
-                    grad = ctx.createLinearGradient(imageWidth * 0.471962, imageHeight * 0.560747, imageWidth * 0.528037, imageHeight * 0.214953);
-                    grad.addColorStop(1, pointerColor.veryLight.getRgbaColor());
-                    grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = pointerColor.light.getRgbaColor();
-                }
+                grad = ctx.createLinearGradient(imageWidth * 0.471962, imageHeight * 0.560747, imageWidth * 0.528037, imageHeight * 0.214953);
+                grad.addColorStop(1, pointerColor.veryLight.getRgbaColor());
+                grad.addColorStop(0, pointerColor.light.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.light.getRgbaColor();
                 ctx.fill();
                 ctx.stroke();
                 break;
             }
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-            }
             ctx.restore();
         };
 
-        var drawMinutePointer = function (ctx, ptrType, shadow) {
+        var drawMinutePointer = function (ctx, ptrType) {
             ctx.save();
             var grad;
-
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-            }
 
             switch (ptrType.type) {
             case 'type2':
@@ -8418,9 +8282,7 @@ var steelseries = (function () {
                 ctx.lineWidth = imageWidth * 0.032710;
                 ctx.moveTo(centerX, imageWidth * 0.116822);
                 ctx.lineTo(centerX, imageWidth * 0.116822 + imageWidth * 0.387850);
-                if (!shadow) {
-                    ctx.strokeStyle = pointerColor.medium.getRgbaColor();
-                }
+                ctx.strokeStyle = pointerColor.medium.getRgbaColor();
                 ctx.closePath();
                 ctx.stroke();
                 break;
@@ -8436,35 +8298,21 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.476635, imageHeight * 0.574766);
                 ctx.lineTo(imageWidth * 0.518691, imageHeight * 0.574766);
                 ctx.closePath();
-                if (!shadow) {
-                    grad = ctx.createLinearGradient(imageWidth * 0.518691, imageHeight * 0.574766, imageWidth * 0.476635, imageHeight * 0.140186);
-                    grad.addColorStop(1, pointerColor.veryLight.getRgbaColor());
-                    grad.addColorStop(0, pointerColor.light.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = pointerColor.light.getRgbaColor();
-                }
+                grad = ctx.createLinearGradient(imageWidth * 0.518691, imageHeight * 0.574766, imageWidth * 0.476635, imageHeight * 0.140186);
+                grad.addColorStop(1, pointerColor.veryLight.getRgbaColor());
+                grad.addColorStop(0, pointerColor.light.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.light.getRgbaColor();
                 ctx.fill();
                 ctx.stroke();
                 break;
             }
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-            }
             ctx.restore();
         };
 
-        var drawSecondPointer = function (ctx, ptrType, shadow) {
+        var drawSecondPointer = function (ctx, ptrType) {
             ctx.save();
             var grad;
-
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            } else {
-                ctx.fillStyle = steelseries.ColorDef.RED.medium.getRgbaColor();
-                ctx.strokeStyle = steelseries.ColorDef.RED.medium.getRgbaColor();
-            }
 
             switch (ptrType.type) {
             case 'type2':
@@ -8500,21 +8348,15 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.490654, imageHeight * 0.116822);
                 ctx.lineTo(imageWidth * 0.509345, imageHeight * 0.116822);
                 ctx.closePath();
-                if (!shadow) {
-                    grad = ctx.createLinearGradient(imageWidth * 0.509345, imageHeight * 0.116822, imageWidth * 0.490654, imageHeight * 0.574766);
-                    grad.addColorStop(0, steelseries.ColorDef.RED.light.getRgbaColor());
-                    grad.addColorStop(0.47, steelseries.ColorDef.RED.medium.getRgbaColor());
-                    grad.addColorStop(1, steelseries.ColorDef.RED.dark.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = steelseries.ColorDef.RED.dark.getRgbaColor();
-                }
+                grad = ctx.createLinearGradient(imageWidth * 0.509345, imageHeight * 0.116822, imageWidth * 0.490654, imageHeight * 0.574766);
+                grad.addColorStop(0, steelseries.ColorDef.RED.light.getRgbaColor());
+                grad.addColorStop(0.47, steelseries.ColorDef.RED.medium.getRgbaColor());
+                grad.addColorStop(1, steelseries.ColorDef.RED.dark.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = steelseries.ColorDef.RED.dark.getRgbaColor();
                 ctx.fill();
                 ctx.stroke();
                 break;
-            }
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
             }
             ctx.restore();
         };
@@ -8646,12 +8488,9 @@ var steelseries = (function () {
             }
 
             if (drawPointers) {
-                drawHourPointer(hourContext, pointerType, false);
-                drawHourPointer(hourShadowContext, pointerType, true);
-                drawMinutePointer(minuteContext, pointerType, false);
-                drawMinutePointer(minuteShadowContext, pointerType, true);
-                drawSecondPointer(secondContext, pointerType, false);
-                drawSecondPointer(secondShadowContext, pointerType, true);
+                drawHourPointer(hourContext, pointerType);
+                drawMinutePointer(minuteContext, pointerType);
+                drawSecondPointer(secondContext, pointerType);
             }
 
             if (drawForeground && foregroundVisible) {
@@ -8684,29 +8523,13 @@ var steelseries = (function () {
                 hourBuffer.height = size;
                 hourContext = hourBuffer.getContext('2d');
 
-                hourShadowBuffer.width = size;
-                hourShadowBuffer.height = size;
-                hourShadowContext = hourShadowBuffer.getContext('2d');
-
                 minuteBuffer.width = size;
                 minuteBuffer.height = size;
                 minuteContext = minuteBuffer.getContext('2d');
 
-                minuteShadowBuffer.width = size;
-                minuteShadowBuffer.height = size;
-                minuteShadowContext = minuteShadowBuffer.getContext('2d');
-
                 secondBuffer.width = size;
                 secondBuffer.height = size;
                 secondContext = secondBuffer.getContext('2d');
-
-                secondShadowBuffer.width = size;
-                secondShadowBuffer.height = size;
-                secondShadowContext = secondShadowBuffer.getContext('2d');
-
-                pointerRotBuffer.width = size;
-                pointerRotBuffer.height = size;
-                pointerRotContext = pointerRotBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -8883,38 +8706,23 @@ var steelseries = (function () {
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
-            // draw hour pointer shadow
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(hourPointerAngle);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(hourShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
             // draw hour pointer
+            // Define rotation center
             mainCtx.save();
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate(hourPointerAngle);
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
+            // Draw the pointer
             mainCtx.drawImage(hourBuffer, 0, 0);
-            mainCtx.restore();
-
-            // draw minute pointer shadow
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(minutePointerAngle);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(minuteShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
 
             // draw minute pointer
-            mainCtx.save();
+            // Define rotation center
             mainCtx.translate(centerX, centerY);
-            mainCtx.rotate(minutePointerAngle);
+            mainCtx.rotate(minutePointerAngle - hourPointerAngle);
             mainCtx.translate(-centerX, -centerY);
             mainCtx.drawImage(minuteBuffer, 0, 0);
             mainCtx.restore();
@@ -8924,21 +8732,17 @@ var steelseries = (function () {
             }
 
             if (secondPointerVisible) {
-                // draw second pointer shadow
-                pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-                pointerRotContext.save();
-                pointerRotContext.translate(centerX, centerY);
-                pointerRotContext.rotate(secondPointerAngle);
-                pointerRotContext.translate(-centerX, -centerY);
-                pointerRotContext.drawImage(secondShadowBuffer, 0, 0);
-                pointerRotContext.restore();
-                mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
                 // draw second pointer
+                // Define rotation center
                 mainCtx.save();
                 mainCtx.translate(centerX, centerY);
                 mainCtx.rotate(secondPointerAngle);
                 mainCtx.translate(-centerX, -centerY);
+                // Set the pointer shadow params
+                mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+                mainCtx.shadowBlur = shadowOffset * 2;
+                // Draw the pointer
                 mainCtx.drawImage(secondBuffer, 0, 0);
                 mainCtx.restore();
             }
@@ -9128,21 +8932,9 @@ var steelseries = (function () {
             smallPointerBuffer = createBuffer(size, size),
             smallPointerContext = smallPointerBuffer.getContext('2d'),
 
-            // Buffer for small pointer shadow
-            smallPointerShadowBuffer = createBuffer(size, size),
-            smallPointerShadowContext = smallPointerShadowBuffer.getContext('2d'),
-
             // Buffer for large pointer image painting code
             largePointerBuffer = createBuffer(size, size),
             largePointerContext = largePointerBuffer.getContext('2d'),
-
-            // Buffer for hour pointer shadow
-            largePointerShadowBuffer = createBuffer(size, size),
-            largePointerShadowContext = largePointerShadowBuffer.getContext('2d'),
-
-            // Buffer for pointer shadow painting code
-            pointerRotBuffer = createBuffer(size, size),
-            pointerRotContext = pointerRotBuffer.getContext('2d'),
 
             // Buffer for static foreground painting code
             foregroundBuffer = createBuffer(size, size),
@@ -9239,7 +9031,7 @@ var steelseries = (function () {
                 ctx.restore();
             },
 
-            drawLargePointer = function (ctx, shadow) {
+            drawLargePointer = function (ctx) {
                 var grad, radius;
 
                 ctx.save();
@@ -9259,56 +9051,45 @@ var steelseries = (function () {
                 ctx.bezierCurveTo(imageWidth * 0.542056, imageWidth * 0.481308, imageWidth * 0.528037, imageWidth * 0.462616, imageWidth * 0.509345, imageWidth * 0.457943);
                 ctx.bezierCurveTo(imageWidth * 0.509345, imageWidth * 0.457943, imageWidth * 0.509345, imageWidth * 0.457943, imageWidth * 0.509345, imageWidth * 0.457943);
                 ctx.closePath();
-                if (shadow) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fill();
-                } else {
-                    grad = ctx.createLinearGradient(0, 0, 0, imageWidth * 0.621495);
-                    grad.addColorStop(0, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(0.388888, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                    grad.addColorStop(0.611111, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    ctx.fill();
-                    ctx.stroke();
-                }
-                if (!shadow) {
-                    // Draw the rings
-                    ctx.beginPath();
-                    radius = imageWidth * 0.065420 / 2;
-                    ctx.arc(centerX, centerY, radius, 0, TWO_PI);
-                    grad = ctx.createLinearGradient(centerX - radius, centerX + radius, 0, centerX + radius);
-                    grad.addColorStop(0, '#e6b35c');
-                    grad.addColorStop(0.01, '#e6b35c');
-                    grad.addColorStop(0.99, '#c48200');
-                    grad.addColorStop(1, '#c48200');
-                    ctx.fillStyle = grad;
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.beginPath();
-                    radius = imageWidth * 0.046728 / 2;
-                    ctx.arc(centerX, centerY, radius, 0, TWO_PI);
-                    grad = ctx.createRadialGradient(centerX, centerX, 0, centerX, centerX, radius);
-                    grad.addColorStop(0, '#c5c5c5');
-                    grad.addColorStop(0.19, '#c5c5c5');
-                    grad.addColorStop(0.22, '#000000');
-                    grad.addColorStop(0.8, '#000000');
-                    grad.addColorStop(0.99, '#707070');
-                    grad.addColorStop(1, '#707070');
-                    ctx.fillStyle = grad;
-                    ctx.closePath();
-                    ctx.fill();
-                } else {
-                    // Apply a blur
-                    blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-                }
+                grad = ctx.createLinearGradient(0, 0, 0, imageWidth * 0.621495);
+                grad.addColorStop(0, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.388888, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
+                grad.addColorStop(0.611111, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
+                ctx.fill();
+                ctx.stroke();
+                // Draw the rings
+                ctx.beginPath();
+                radius = imageWidth * 0.065420 / 2;
+                ctx.arc(centerX, centerY, radius, 0, TWO_PI);
+                grad = ctx.createLinearGradient(centerX - radius, centerX + radius, 0, centerX + radius);
+                grad.addColorStop(0, '#e6b35c');
+                grad.addColorStop(0.01, '#e6b35c');
+                grad.addColorStop(0.99, '#c48200');
+                grad.addColorStop(1, '#c48200');
+                ctx.fillStyle = grad;
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.046728 / 2;
+                ctx.arc(centerX, centerY, radius, 0, TWO_PI);
+                grad = ctx.createRadialGradient(centerX, centerX, 0, centerX, centerX, radius);
+                grad.addColorStop(0, '#c5c5c5');
+                grad.addColorStop(0.19, '#c5c5c5');
+                grad.addColorStop(0.22, '#000000');
+                grad.addColorStop(0.8, '#000000');
+                grad.addColorStop(0.99, '#707070');
+                grad.addColorStop(1, '#707070');
+                ctx.fillStyle = grad;
+                ctx.closePath();
+                ctx.fill();
                 ctx.restore();
             },
 
-            drawSmallPointer = function (ctx, shadow) {
+            drawSmallPointer = function (ctx) {
                 var grad, radius;
 
                 ctx.save();
@@ -9324,46 +9105,35 @@ var steelseries = (function () {
                 ctx.bezierCurveTo(imageWidth * 0.5, imageWidth * 0.200934, imageWidth * 0.495327, imageWidth * 0.289719, imageWidth * 0.495327, imageWidth * 0.289719);
                 ctx.bezierCurveTo(imageWidth * 0.485981, imageWidth * 0.294392, imageWidth * 0.476635, imageWidth * 0.303738, imageWidth * 0.476635, imageWidth * 0.313084);
                 ctx.closePath();
-                if (shadow) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.fill();
-                } else {
-                    grad = ctx.createLinearGradient(0, 0, imageWidth, 0);
-                    grad.addColorStop(0, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(0.388888, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
-                    grad.addColorStop(0.611111, pointerColor.medium.getRgbaColor());
-                    grad.addColorStop(1, pointerColor.medium.getRgbaColor());
-                    ctx.fillStyle = grad;
-                    ctx.strokeStyle = pointerColor.dark.getRgbaColor();
-                    ctx.fill();
-                    ctx.stroke();
-                }
-                if (!shadow) {
-                    // Draw the rings
-                    ctx.beginPath();
-                    radius = imageWidth * 0.037383 / 2;
-                    ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
-                    ctx.fillStyle = '#C48200';
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.beginPath();
-                    radius = imageWidth * 0.028037 / 2;
-                    ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
-                    ctx.fillStyle = '#999999';
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.beginPath();
-                    radius = imageWidth * 0.018691 / 2;
-                    ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
-                    ctx.fillStyle = '#000000';
-                    ctx.closePath();
-                    ctx.fill();
-                } else {
-                    // Apply a blur
-                    blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-                }
+                grad = ctx.createLinearGradient(0, 0, imageWidth, 0);
+                grad.addColorStop(0, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.388888, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(0.5, pointerColor.light.getRgbaColor());
+                grad.addColorStop(0.611111, pointerColor.medium.getRgbaColor());
+                grad.addColorStop(1, pointerColor.medium.getRgbaColor());
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = pointerColor.dark.getRgbaColor();
+                ctx.fill();
+                ctx.stroke();
+                // Draw the rings
+                ctx.beginPath();
+                radius = imageWidth * 0.037383 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#C48200';
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.028037 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#999999';
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                radius = imageWidth * 0.018691 / 2;
+                ctx.arc(centerX, smallPointerY_Offset + smallPointerSize / 2, radius, 0, TWO_PI);
+                ctx.fillStyle = '#000000';
+                ctx.closePath();
+                ctx.fill();
                 ctx.restore();
             },
 
@@ -9401,10 +9171,8 @@ var steelseries = (function () {
                     drawTickmarksImage(backgroundContext, smallPointerSize, 30, 0.095, 0.13, smallPointerX_Offset, smallPointerY_Offset);
                 }
                 if (drawPointers) {
-                    drawLargePointer(largePointerContext, false);
-                    drawLargePointer(largePointerShadowContext, true);
-                    drawSmallPointer(smallPointerContext, false);
-                    drawSmallPointer(smallPointerShadowContext, true);
+                    drawLargePointer(largePointerContext);
+                    drawSmallPointer(smallPointerContext);
                 }
 
                 if (drawForeground && foregroundVisible) {
@@ -9436,21 +9204,9 @@ var steelseries = (function () {
                     smallPointerBuffer.height = size;
                     smallPointerContext = smallPointerBuffer.getContext('2d');
 
-                    smallPointerShadowBuffer.width = size;
-                    smallPointerShadowBuffer.height = size;
-                    smallPointerShadowContext = smallPointerShadowBuffer.getContext('2d');
-
                     largePointerBuffer.width = size;
                     largePointerBuffer.height = size;
                     largePointerContext = largePointerBuffer.getContext('2d');
-
-                    largePointerShadowBuffer.width = size;
-                    largePointerShadowBuffer.height = size;
-                    largePointerShadowContext = largePointerShadowBuffer.getContext('2d');
-
-                    pointerRotBuffer.width = size;
-                    pointerRotBuffer.height = size;
-                    pointerRotContext = pointerRotBuffer.getContext('2d');
                 }
 
                 if (resetForeground) {
@@ -9578,42 +9334,36 @@ var steelseries = (function () {
             // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006;
 
-            // Draw minute pointer shadow
             var rotationAngle = (minutePointerAngle + (2 * Math.sin(minutePointerAngle * RAD_FACTOR))) * RAD_FACTOR;
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, smallPointerY_Offset + smallPointerSize / 2);
-            pointerRotContext.rotate(rotationAngle);
-            pointerRotContext.translate(-centerX, -(smallPointerY_Offset + smallPointerSize / 2));
-            pointerRotContext.drawImage(smallPointerShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset / 2, shadowOffset / 2, imageWidth + shadowOffset / 2, imageHeight + shadowOffset / 2);
+            var secRotationAngle = (secondPointerAngle + (2 * Math.sin(secondPointerAngle * RAD_FACTOR))) * RAD_FACTOR;
 
             // Draw the minute pointer
+            // Define rotation center
             mainCtx.save();
             mainCtx.translate(centerX, smallPointerY_Offset + smallPointerSize / 2);
             mainCtx.rotate(rotationAngle);
             mainCtx.translate(-centerX, -(smallPointerY_Offset + smallPointerSize / 2));
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset / 2;
+            mainCtx.shadowBlur = shadowOffset;
+            // Draw the pointer
             mainCtx.drawImage(smallPointerBuffer, 0, 0);
             mainCtx.restore();
 
-            // Draw second pointer shadow
-            rotationAngle = (secondPointerAngle + (2 * Math.sin(secondPointerAngle * RAD_FACTOR))) * RAD_FACTOR;
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate(rotationAngle);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(largePointerShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
             // Draw the second pointer
+            // Define rotation center
             mainCtx.save();
             mainCtx.translate(centerX, centerY);
-            mainCtx.rotate(rotationAngle);
+            mainCtx.rotate(secRotationAngle);
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset / 2;
+            mainCtx.shadowBlur = shadowOffset;
+            // Draw the pointer
             mainCtx.drawImage(largePointerBuffer, 0, 0);
+            // Undo the translations & shadow settings
             mainCtx.restore();
 
             // Draw the foreground
@@ -9682,29 +9432,13 @@ var steelseries = (function () {
             pointer10000Buffer = createBuffer(size, size),
             pointer10000Context = pointer10000Buffer.getContext('2d'),
 
-            // Buffer for 10000ft pointer shadow
-            pointer10000ShadowBuffer = createBuffer(size, size),
-            pointer10000ShadowContext = pointer10000ShadowBuffer.getContext('2d'),
-
             // Buffer for 1000ft pointer image painting code
             pointer1000Buffer = createBuffer(size, size),
             pointer1000Context = pointer1000Buffer.getContext('2d'),
 
-            // Buffer for 1000ft pointer shadow
-            pointer1000ShadowBuffer = createBuffer(size, size),
-            pointer1000ShadowContext = pointer1000ShadowBuffer.getContext('2d'),
-
             // Buffer for 100ft pointer image painting code
             pointer100Buffer = createBuffer(size, size),
             pointer100Context = pointer100Buffer.getContext('2d'),
-
-            // Buffer for 100ft pointer shadow
-            pointer100ShadowBuffer = createBuffer(size, size),
-            pointer100ShadowContext = pointer100ShadowBuffer.getContext('2d'),
-
-            // Buffer for pointer shadow rotation
-            pointerRotBuffer = createBuffer(size, size),
-            pointerRotContext = pointerRotBuffer.getContext('2d'),
 
             // Buffer for static foreground painting code
             foregroundBuffer = createBuffer(size, size),
@@ -9849,29 +9583,20 @@ var steelseries = (function () {
             ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.490654, imageWidth * 0.528037, imageHeight * 0.481308, imageWidth * 0.518691, imageHeight * 0.471962);
             ctx.closePath();
             ctx.fill();
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-            }
             ctx.restore();
         };
 
-        var draw1000ftPointer = function (ctx, shadow) {
+        var draw1000ftPointer = function (ctx) {
             var grad;
 
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            } else {
-                grad = ctx.createLinearGradient(0, imageHeight * 0.401869, 0, imageHeight * 0.616822);
-                grad.addColorStop(0, '#ffffff');
-                grad.addColorStop(0.51, '#ffffff');
-                grad.addColorStop(0.52, '#ffffff');
-                grad.addColorStop(0.5201, '#202020');
-                grad.addColorStop(0.53, '#202020');
-                grad.addColorStop(1, '#202020');
-                ctx.fillStyle = grad;
-            }
+            grad = ctx.createLinearGradient(0, imageHeight * 0.401869, 0, imageHeight * 0.616822);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.51, '#ffffff');
+            grad.addColorStop(0.52, '#ffffff');
+            grad.addColorStop(0.5201, '#202020');
+            grad.addColorStop(0.53, '#202020');
+            grad.addColorStop(1, '#202020');
+            ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.moveTo(imageWidth * 0.518691, imageHeight * 0.471962);
             ctx.bezierCurveTo(imageWidth * 0.514018, imageHeight * 0.462616, imageWidth * 0.528037, imageHeight * 0.401869, imageWidth * 0.528037, imageHeight * 0.401869);
@@ -9888,20 +9613,11 @@ var steelseries = (function () {
             ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.490654, imageWidth * 0.528037, imageHeight * 0.481308, imageWidth * 0.518691, imageHeight * 0.471962);
             ctx.closePath();
             ctx.fill();
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-            }
             ctx.restore();
         };
 
-        var draw10000ftPointer = function (ctx, shadow) {
-            if (shadow) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            } else {
-                ctx.fillStyle = '#ffffff';
-            }
+        var draw10000ftPointer = function (ctx) {
+            ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.moveTo(imageWidth * 0.518691, imageHeight * 0.471962);
             ctx.bezierCurveTo(imageWidth * 0.514018, imageHeight * 0.471962, imageWidth * 0.514018, imageHeight * 0.467289, imageWidth * 0.514018, imageHeight * 0.467289);
@@ -9921,10 +9637,6 @@ var steelseries = (function () {
             ctx.bezierCurveTo(imageWidth * 0.532710, imageHeight * 0.490654, imageWidth * 0.528037, imageHeight * 0.481308, imageWidth * 0.518691, imageHeight * 0.471962);
             ctx.closePath();
             ctx.fill();
-            if (shadow) {
-                // Apply a blur
-                blur(ctx, imageWidth, imageHeight, Math.floor(imageWidth * 0.006));
-            }
         };
 
         function calcAngleStep() {
@@ -9978,16 +9690,10 @@ var steelseries = (function () {
             if (drawPointers) {
                 // Create 100ft pointer in buffer
                 draw100ftPointer(pointer100Context, false);
-                // Create 100ft pointer shadow in buffer
-                draw100ftPointer(pointer100ShadowContext, true);
                 // Create 1000ft pointer in buffer
                 draw1000ftPointer(pointer1000Context, false);
-                // Create 1000ft pointer shadow in buffer
-                draw1000ftPointer(pointer1000ShadowContext, true);
                 // Create 10000ft pointer in buffer
                 draw10000ftPointer(pointer10000Context, false);
-                // Create 10000ft pointer shadow in buffer
-                draw10000ftPointer(pointer10000ShadowContext, true);
             }
 
             if (drawForeground && foregroundVisible) {
@@ -10019,29 +9725,13 @@ var steelseries = (function () {
                 pointer100Buffer.height = size;
                 pointer100Context = pointer100Buffer.getContext('2d');
 
-                pointer100ShadowBuffer.width = size;
-                pointer100ShadowBuffer.height = size;
-                pointer100ShadowContext = pointer100ShadowBuffer.getContext('2d');
-
                 pointer1000Buffer.width = size;
                 pointer1000Buffer.height = size;
                 pointer1000Context = pointer1000Buffer.getContext('2d');
 
-                pointer1000ShadowBuffer.width = size;
-                pointer1000ShadowBuffer.height = size;
-                pointer1000ShadowContext = pointer1000ShadowBuffer.getContext('2d');
-
                 pointer10000Buffer.width = size;
                 pointer10000Buffer.height = size;
                 pointer10000Context = pointer10000Buffer.getContext('2d');
-
-                pointer10000ShadowBuffer.width = size;
-                pointer10000ShadowBuffer.height = size;
-                pointer10000ShadowContext = pointer10000ShadowBuffer.getContext('2d');
-
-                pointerRotBuffer.width = size;
-                pointerRotBuffer.height = size;
-                pointerRotContext = pointerRotBuffer.getContext('2d');
             }
 
             if (resetForeground) {
@@ -10148,64 +9838,36 @@ var steelseries = (function () {
             // re-calculate the spearate pointer values
             calcValues();
 
-            // have to draw to a rotated temporary image area so we can translate in
-            // absolute x, y values when drawing to main context
             var shadowOffset = imageWidth * 0.006 * 0.5;
 
-            //Draw 10000ft pointer shadow
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate((value10000 - minValue) * angleStep10000ft);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointer10000ShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
-
-            //Draw 10000ft pointer
             mainCtx.save();
+            //Draw 10000ft pointer
+            // Define rotation center
             mainCtx.translate(centerX, centerY);
             mainCtx.rotate((value10000 - minValue) * angleStep10000ft);
             mainCtx.translate(-centerX, -centerY);
+            // Set the pointer shadow params
+            mainCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
+            mainCtx.shadowBlur = shadowOffset * 2;
+            // Draw the pointer
             mainCtx.drawImage(pointer10000Buffer, 0, 0);
-            mainCtx.restore();
-
-            //Draw 1000ft pointer shadow
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate((value1000 - minValue) * angleStep1000ft);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointer1000ShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
 
             shadowOffset = imageWidth * 0.006 * 0.75;
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
 
             //Draw 1000ft pointer
-            mainCtx.save();
             mainCtx.translate(centerX, centerY);
-            mainCtx.rotate((value1000 - minValue) * angleStep1000ft);
+            mainCtx.rotate((value1000 - minValue) * angleStep1000ft - (value10000 - minValue) * angleStep10000ft);
             mainCtx.translate(-centerX, -centerY);
             mainCtx.drawImage(pointer1000Buffer, 0, 0);
-            mainCtx.restore();
 
             shadowOffset = imageWidth * 0.006;
-
-            //Draw 100ft pointer shadow
-            pointerRotContext.clearRect(0, 0, imageWidth, imageHeight);
-            pointerRotContext.save();
-            pointerRotContext.translate(centerX, centerY);
-            pointerRotContext.rotate((value100 - minValue) * angleStep100ft);
-            pointerRotContext.translate(-centerX, -centerY);
-            pointerRotContext.drawImage(pointer100ShadowBuffer, 0, 0);
-            pointerRotContext.restore();
-            mainCtx.drawImage(pointerRotBuffer, 0, 0, imageWidth, imageHeight, shadowOffset, shadowOffset, imageWidth + shadowOffset, imageHeight + shadowOffset);
+            mainCtx.shadowOffsetX = mainCtx.shadowOffsetY = shadowOffset;
 
             //Draw 100ft pointer
-            mainCtx.save();
             mainCtx.translate(centerX, centerY);
-            mainCtx.rotate((value100 - minValue) * angleStep100ft);
+            mainCtx.rotate((value100 - minValue) * angleStep100ft - (value1000 - minValue) * angleStep1000ft);
             mainCtx.translate(-centerX, -centerY);
             mainCtx.drawImage(pointer100Buffer, 0, 0);
             mainCtx.restore();
@@ -11659,10 +11321,10 @@ var steelseries = (function () {
 
     };
 
-    var drawPointerImage = function (ctx, size, ptrType, ptrColor, lblColor, shadow) {
+    var drawPointerImage = function (ctx, size, ptrType, ptrColor, lblColor) {
         var ptrBuffer, ptrCtx,
             grad, radius,
-            cacheKey = size.toString() + ptrType.type + ptrColor.light.getHexColor() + ptrColor.medium.getHexColor() + shadow;
+            cacheKey = size.toString() + ptrType.type + ptrColor.light.getHexColor() + ptrColor.medium.getHexColor();
 
         // check if we have already created and cached this buffer, if not create it
         if (!drawPointerImage.cache[cacheKey]) {
@@ -11670,23 +11332,15 @@ var steelseries = (function () {
             ptrBuffer = createBuffer(size, size);
             ptrCtx = ptrBuffer.getContext('2d');
 
-            if (shadow) {
-                ptrCtx.fillStyle = 'rgba(0, 0, 0, 1)';
-                ptrCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
-                ptrCtx.shadowBlur = 3;
-                ptrCtx.globalAlpha = 0.5;
-            }
 
             switch (ptrType.type) {
             case 'type2':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0, size * 0.471962, 0, size * 0.130841);
-                    grad.addColorStop(0, lblColor.getRgbaColor());
-                    grad.addColorStop(0.36, lblColor.getRgbaColor());
-                    grad.addColorStop(0.361, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.light.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                }
+                grad = ptrCtx.createLinearGradient(0, size * 0.471962, 0, size * 0.130841);
+                grad.addColorStop(0, lblColor.getRgbaColor());
+                grad.addColorStop(0.36, lblColor.getRgbaColor());
+                grad.addColorStop(0.361, ptrColor.light.getRgbaColor());
+                grad.addColorStop(1, ptrColor.light.getRgbaColor());
+                ptrCtx.fillStyle = grad;
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.518691, size * 0.471962);
                 ptrCtx.lineTo(size * 0.509345, size * 0.462616);
@@ -11704,21 +11358,17 @@ var steelseries = (function () {
                 ptrCtx.beginPath();
                 ptrCtx.rect(size * 0.495327, size * 0.130841, size * 0.009345, size * 0.373831);
                 ptrCtx.closePath();
-                if (!shadow) {
-                    ptrCtx.fillStyle = ptrColor.light.getRgbaColor();
-                }
+                ptrCtx.fillStyle = ptrColor.light.getRgbaColor();
                 ptrCtx.fill();
                 break;
 
             case 'type4':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.467289 * size, 0, 0.528036 * size, 0);
-                    grad.addColorStop(0, ptrColor.dark.getRgbaColor());
-                    grad.addColorStop(0.51, ptrColor.dark.getRgbaColor());
-                    grad.addColorStop(0.52, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.light.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                }
+                grad = ptrCtx.createLinearGradient(0.467289 * size, 0, 0.528036 * size, 0);
+                grad.addColorStop(0, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(0.51, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(0.52, ptrColor.light.getRgbaColor());
+                grad.addColorStop(1, ptrColor.light.getRgbaColor());
+                ptrCtx.fillStyle = grad;
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.5, size * 0.126168);
                 ptrCtx.lineTo(size * 0.514018, size * 0.135514);
@@ -11733,14 +11383,12 @@ var steelseries = (function () {
                 break;
 
             case 'type5':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
-                    grad.addColorStop(0, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                }
+                grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
+                grad.addColorStop(0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                ptrCtx.fillStyle = grad;
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.5, size * 0.495327);
                 ptrCtx.lineTo(size * 0.528037, size * 0.495327);
@@ -11753,16 +11401,12 @@ var steelseries = (function () {
                 ptrCtx.lineWidth = 1;
                 ptrCtx.lineCap = 'square';
                 ptrCtx.lineJoin = 'miter';
-                if (!shadow) {
-                    ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
-                }
+                ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
                 ptrCtx.stroke();
                 break;
 
             case 'type6':
-                if (!shadow) {
-                    ptrCtx.fillStyle = ptrColor.medium.getRgbaColor();
-                }
+                ptrCtx.fillStyle = ptrColor.medium.getRgbaColor();
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.481308, size * 0.485981);
                 ptrCtx.lineTo(size * 0.481308, size * 0.392523);
@@ -11783,12 +11427,10 @@ var steelseries = (function () {
                 break;
 
             case 'type7':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.481308 * size, 0, 0.518691 * size, 0);
-                    grad.addColorStop(0, ptrColor.dark.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                }
+                grad = ptrCtx.createLinearGradient(0.481308 * size, 0, 0.518691 * size, 0);
+                grad.addColorStop(0, ptrColor.dark.getRgbaColor());
+                grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                ptrCtx.fillStyle = grad;
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.490654, size * 0.130841);
                 ptrCtx.lineTo(size * 0.481308, size * 0.5);
@@ -11800,15 +11442,13 @@ var steelseries = (function () {
                 break;
 
             case 'type8':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
-                    grad.addColorStop(0, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
-                }
+                grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
+                grad.addColorStop(0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.5, size * 0.532710);
                 ptrCtx.lineTo(size * 0.532710, size * 0.5);
@@ -11821,14 +11461,12 @@ var steelseries = (function () {
                 break;
 
             case 'type9':
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
-                    grad.addColorStop(0, 'rgb(50, 50, 50)');
-                    grad.addColorStop(0.5, '#666666');
-                    grad.addColorStop(1, 'rgb(50, 50, 50)');
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = '#2E2E2E';
-                }
+                grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
+                grad.addColorStop(0, 'rgb(50, 50, 50)');
+                grad.addColorStop(0.5, '#666666');
+                grad.addColorStop(1, 'rgb(50, 50, 50)');
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = '#2E2E2E';
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.495327, size * 0.233644);
                 ptrCtx.lineTo(size * 0.504672, size * 0.233644);
@@ -11857,9 +11495,7 @@ var steelseries = (function () {
                 ptrCtx.lineTo(size * 0.495327, size * 0.219626);
                 ptrCtx.closePath();
 
-                if (!shadow) {
-                    ptrCtx.fillStyle = ptrColor.medium.getRgbaColor();
-                }
+                ptrCtx.fillStyle = ptrColor.medium.getRgbaColor();
                 ptrCtx.fill();
                 break;
 
@@ -11872,15 +11508,13 @@ var steelseries = (function () {
                 ptrCtx.bezierCurveTo(size * 0.532710, size * 0.556074, size * 0.556074, size * 0.532710, size * 0.556074, size * 0.5);
                 ptrCtx.bezierCurveTo(size * 0.556074, size * 0.490654, size * 0.5, size * 0.149532, size * 0.5, size * 0.149532);
                 ptrCtx.closePath();
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
-                    grad.addColorStop(0, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = ptrColor.medium.getRgbaColor();
-                }
+                grad = ptrCtx.createLinearGradient(0.471962 * size, 0, 0.528036 * size, 0);
+                grad.addColorStop(0, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = ptrColor.medium.getRgbaColor();
                 ptrCtx.lineWidth = 1;
                 ptrCtx.lineCap = 'square';
                 ptrCtx.lineJoin = 'miter';
@@ -11897,13 +11531,11 @@ var steelseries = (function () {
                 ptrCtx.bezierCurveTo(0.514018 * size, 0.584112 * size, 0.509345 * size, 0.5 * size, 0.509345 * size, 0.5 * size);
                 ptrCtx.lineTo(0.5 * size, 0.168224 * size);
                 ptrCtx.closePath();
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0, 0.168224 * size, 0, 0.584112 * size);
-                    grad.addColorStop(0, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.dark.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
-                }
+                grad = ptrCtx.createLinearGradient(0, 0.168224 * size, 0, 0.584112 * size);
+                grad.addColorStop(0, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.dark.getRgbaColor());
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
                 ptrCtx.fill();
                 ptrCtx.stroke();
                 break;
@@ -11917,13 +11549,11 @@ var steelseries = (function () {
                 ptrCtx.lineTo(0.509345 * size, 0.5 * size);
                 ptrCtx.lineTo(0.5 * size, 0.168224 * size);
                 ptrCtx.closePath();
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0, 0.168224 * size, 0, 0.504672 * size);
-                    grad.addColorStop(0, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.dark.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
-                }
+                grad = ptrCtx.createLinearGradient(0, 0.168224 * size, 0, 0.504672 * size);
+                grad.addColorStop(0, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.dark.getRgbaColor());
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
                 ptrCtx.fill();
                 ptrCtx.stroke();
                 break;
@@ -11940,23 +11570,21 @@ var steelseries = (function () {
                 ptrCtx.lineTo(0.485981 * size, 0.509345 * size);
                 ptrCtx.lineTo(0.485981 * size, 0.168224 * size);
                 ptrCtx.closePath();
-                if (!shadow) {
-                    if (ptrType.type === 'type13') {
-                        // TYPE13
-                        grad = ptrCtx.createLinearGradient(0, 0.5 * size, 0, 0.130841 * size);
-                        grad.addColorStop(0, lblColor.getRgbaColor());
-                        grad.addColorStop(0.85, lblColor.getRgbaColor());
-                        grad.addColorStop(0.85, ptrColor.medium.getRgbaColor());
-                        grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                        ptrCtx.fillStyle = grad;
-                    } else {
-                        // TYPE14
-                        grad = ptrCtx.createLinearGradient(0.485981 * size, 0, 0.509345 * size, 0);
-                        grad.addColorStop(0, ptrColor.veryDark.getRgbaColor());
-                        grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
-                        grad.addColorStop(1, ptrColor.veryDark.getRgbaColor());
-                        ptrCtx.fillStyle = grad;
-                    }
+                if (ptrType.type === 'type13') {
+                    // TYPE13
+                    grad = ptrCtx.createLinearGradient(0, 0.5 * size, 0, 0.130841 * size);
+                    grad.addColorStop(0, lblColor.getRgbaColor());
+                    grad.addColorStop(0.85, lblColor.getRgbaColor());
+                    grad.addColorStop(0.85, ptrColor.medium.getRgbaColor());
+                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                    ptrCtx.fillStyle = grad;
+                } else {
+                    // TYPE14
+                    grad = ptrCtx.createLinearGradient(0.485981 * size, 0, 0.509345 * size, 0);
+                    grad.addColorStop(0, ptrColor.veryDark.getRgbaColor());
+                    grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
+                    grad.addColorStop(1, ptrColor.veryDark.getRgbaColor());
+                    ptrCtx.fillStyle = grad;
                 }
                 ptrCtx.fill();
                 break;
@@ -11991,64 +11619,56 @@ var steelseries = (function () {
                 ptrCtx.bezierCurveTo(size * 0.542056, size * 0.481308, size * 0.528037, size * 0.462616, size * 0.509345, size * 0.457943);
                 ptrCtx.bezierCurveTo(size * 0.509345, size * 0.457943, size * 0.509345, size * 0.457943, size * 0.509345, size * 0.457943);
                 ptrCtx.closePath();
-                if (shadow) {
-                    ptrCtx.fill();
+                if (ptrType.type === 'type15') {
+                    grad = ptrCtx.createLinearGradient(0, 0, 0, size * 0.63);
                 } else {
-                    if (ptrType.type === 'type15') {
-                        grad = ptrCtx.createLinearGradient(0, 0, 0, size * 0.63);
-                    } else {
-                        grad = ptrCtx.createLinearGradient(0, 0, 0, size * 0.621495);
-                    }
-                    grad.addColorStop(0, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(0.388888, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
-                    grad.addColorStop(0.611111, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.medium.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
-                    ptrCtx.fill();
-                    ptrCtx.stroke();
+                    grad = ptrCtx.createLinearGradient(0, 0, 0, size * 0.621495);
                 }
-                if (!shadow) {
-                    // Draw the rings
-                    ptrCtx.beginPath();
-                    radius = size * 0.065420 / 2;
-                    ptrCtx.arc(size * 0.5, size * 0.5, radius, 0, TWO_PI);
-                    grad = ptrCtx.createLinearGradient(size * 0.5 - radius, size * 0.5 + radius, 0, size * 0.5 + radius);
-                    grad.addColorStop(0, '#e6b35c');
-                    grad.addColorStop(0.01, '#e6b35c');
-                    grad.addColorStop(0.99, '#c48200');
-                    grad.addColorStop(1, '#c48200');
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.closePath();
-                    ptrCtx.fill();
-                    ptrCtx.beginPath();
-                    radius = size * 0.046728 / 2;
-                    ptrCtx.arc(size * 0.5, size * 0.5, radius, 0, TWO_PI);
-                    grad = ptrCtx.createRadialGradient(size * 0.5, size * 0.5, 0, size * 0.5, size * 0.5, radius);
-                    grad.addColorStop(0, '#c5c5c5');
-                    grad.addColorStop(0.19, '#c5c5c5');
-                    grad.addColorStop(0.22, '#000000');
-                    grad.addColorStop(0.8, '#000000');
-                    grad.addColorStop(0.99, '#707070');
-                    grad.addColorStop(1, '#707070');
-                    ptrCtx.fillStyle = grad;
-                    ptrCtx.closePath();
-                    ptrCtx.fill();
-                }
+                grad.addColorStop(0, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(0.388888, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(0.5, ptrColor.light.getRgbaColor());
+                grad.addColorStop(0.611111, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.medium.getRgbaColor());
+                ptrCtx.fillStyle = grad;
+                ptrCtx.strokeStyle = ptrColor.dark.getRgbaColor();
+                ptrCtx.fill();
+                ptrCtx.stroke();
+                // Draw the rings
+                ptrCtx.beginPath();
+                radius = size * 0.065420 / 2;
+                ptrCtx.arc(size * 0.5, size * 0.5, radius, 0, TWO_PI);
+                grad = ptrCtx.createLinearGradient(size * 0.5 - radius, size * 0.5 + radius, 0, size * 0.5 + radius);
+                grad.addColorStop(0, '#e6b35c');
+                grad.addColorStop(0.01, '#e6b35c');
+                grad.addColorStop(0.99, '#c48200');
+                grad.addColorStop(1, '#c48200');
+                ptrCtx.fillStyle = grad;
+                ptrCtx.closePath();
+                ptrCtx.fill();
+                ptrCtx.beginPath();
+                radius = size * 0.046728 / 2;
+                ptrCtx.arc(size * 0.5, size * 0.5, radius, 0, TWO_PI);
+                grad = ptrCtx.createRadialGradient(size * 0.5, size * 0.5, 0, size * 0.5, size * 0.5, radius);
+                grad.addColorStop(0, '#c5c5c5');
+                grad.addColorStop(0.19, '#c5c5c5');
+                grad.addColorStop(0.22, '#000000');
+                grad.addColorStop(0.8, '#000000');
+                grad.addColorStop(0.99, '#707070');
+                grad.addColorStop(1, '#707070');
+                ptrCtx.fillStyle = grad;
+                ptrCtx.closePath();
+                ptrCtx.fill();
                 break;
 
             case 'type1':
             /* falls through */
             default:
-                if (!shadow) {
-                    grad = ptrCtx.createLinearGradient(0, size * 0.471962, 0, size * 0.130841);
-                    grad.addColorStop(0, ptrColor.veryDark.getRgbaColor());
-                    grad.addColorStop(0.3, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(0.59, ptrColor.medium.getRgbaColor());
-                    grad.addColorStop(1, ptrColor.veryDark.getRgbaColor());
-                    ptrCtx.fillStyle = grad;
-                }
+                grad = ptrCtx.createLinearGradient(0, size * 0.471962, 0, size * 0.130841);
+                grad.addColorStop(0, ptrColor.veryDark.getRgbaColor());
+                grad.addColorStop(0.3, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(0.59, ptrColor.medium.getRgbaColor());
+                grad.addColorStop(1, ptrColor.veryDark.getRgbaColor());
+                ptrCtx.fillStyle = grad;
                 ptrCtx.beginPath();
                 ptrCtx.moveTo(size * 0.518691, size * 0.471962);
                 ptrCtx.bezierCurveTo(size * 0.514018, size * 0.457943, size * 0.509345, size * 0.415887, size * 0.509345, size * 0.401869);
@@ -12063,10 +11683,6 @@ var steelseries = (function () {
                 ptrCtx.fill();
                 break;
             }
-//            if (shadow) {
-                // Apply the blur
-//                blur(ptrCtx, size, size, Math.floor(size * 0.006));
-//            }
             // cache buffer
             drawPointerImage.cache[cacheKey] = ptrBuffer;
         }
@@ -13051,20 +12667,25 @@ var steelseries = (function () {
 
             // center post
             if (withCenterKnob) {
+                // Set the pointer shadow params
+                radFgCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                radFgCtx.shadowOffsetX = radFgCtx.shadowOffsetY = shadowOffset;
+                radFgCtx.shadowBlur = shadowOffset * 2;
+
                 if (gaugeType === steelseries.GaugeType.TYPE5) {
                     if (steelseries.Orientation.WEST === orientation) {
                         knobX = imageWidth * 0.733644 - knobSize / 2;
-                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, knobY + shadowOffset);
-                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, knobY);
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style), knobX, knobY);
                     } else {
                         knobY = imageHeight * 0.733644 - knobSize / 2;
-                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, imageHeight * 0.6857 + shadowOffset);
-                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, imageHeight * 0.6857);
+                        radFgCtx.drawImage(createKnobImage(knobSize, knob, style), knobX, imageHeight * 0.6857);
                     }
                 } else {
-                    radFgCtx.drawImage(createKnobImage(knobSize, knob, style, true), knobX + shadowOffset, knobY + shadowOffset);
-                    radFgCtx.drawImage(createKnobImage(knobSize, knob, style, false), knobX, knobY);
+                    radFgCtx.drawImage(createKnobImage(knobSize, knob, style), knobX, knobY);
                 }
+                // Undo shadow drawing
+                radFgCtx.shadowOffsetX = radFgCtx.shadowOffsetY = 0;
+                radFgCtx.shadowBlur = 0;
             }
 
             // highlight
@@ -13225,26 +12846,17 @@ var steelseries = (function () {
     };
     drawLinearForegroundImage.cache = {};
 
-    var createKnobImage = function (size, knob, style, shadow) {
+    var createKnobImage = function (size, knob, style) {
         var knobBuffer, knobCtx,
             maxPostCenterX = size / 2,
             maxPostCenterY = size / 2,
             grad,
-            cacheKey = size.toString() + knob.type + style.style + shadow;
+            cacheKey = size.toString() + knob.type + style.style;
 
         // check if we have already created and cached this buffer, if not create it
         if (!createKnobImage.cache[cacheKey]) {
             knobBuffer = createBuffer(size * 1.18889, size * 1.18889);
             knobCtx = knobBuffer.getContext('2d');
-
-            if (shadow) {
-                knobCtx.fillStyle = 'rgba(0, 0, 0, 1)';
-                knobCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
-                knobCtx.shadowBlur = 3;
-                knobCtx.globalAlpha = 0.5;
-            }
-            // Offset the drawing to leave room for shadows
-//            knobCtx.translate(size * 0.06, size * 0.06);
 
             switch (knob.type) {
             case 'metalKnob':
@@ -13256,13 +12868,11 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size, size * 0.777777, size * 0.777777, size, size * 0.5, size);
                 knobCtx.bezierCurveTo(size * 0.222222, size, 0, size * 0.777777, 0, size * 0.5);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, 0, 0, size);
-                    grad.addColorStop(0, 'rgb(92, 95, 101)');
-                    grad.addColorStop(0.47, 'rgb(46, 49, 53)');
-                    grad.addColorStop(1, 'rgb(22, 23, 26)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createLinearGradient(0, 0, 0, size);
+                grad.addColorStop(0, 'rgb(92, 95, 101)');
+                grad.addColorStop(0.47, 'rgb(46, 49, 53)');
+                grad.addColorStop(1, 'rgb(22, 23, 26)');
+                knobCtx.fillStyle = grad;
                 knobCtx.fill();
 
                 // METALKNOB_MAIN
@@ -13273,31 +12883,27 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size * 0.944444, size * 0.722222, size * 0.722222, size * 0.944444, size * 0.5, size * 0.944444);
                 knobCtx.bezierCurveTo(size * 0.277777, size * 0.944444, size * 0.055555, size * 0.722222, size * 0.055555, size * 0.5);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, 0.055555 * size, 0, 0.944443 * size);
-                    switch (style.style) {
-                    case 'black':
-                        grad.addColorStop(0, 'rgb(43, 42, 47)');
-                        grad.addColorStop(1, 'rgb(26, 27, 32)');
-                        break;
+                grad = knobCtx.createLinearGradient(0, 0.055555 * size, 0, 0.944443 * size);
+                switch (style.style) {
+                case 'black':
+                    grad.addColorStop(0, 'rgb(43, 42, 47)');
+                    grad.addColorStop(1, 'rgb(26, 27, 32)');
+                    break;
 
-                    case 'brass':
-                        grad.addColorStop(0, 'rgb(150, 110, 54)');
-                        grad.addColorStop(1, 'rgb(124, 95, 61)');
-                        break;
+                case 'brass':
+                    grad.addColorStop(0, 'rgb(150, 110, 54)');
+                    grad.addColorStop(1, 'rgb(124, 95, 61)');
+                    break;
 
-                    case 'silver':
-                    /* falls through */
-                    default:
-                        grad.addColorStop(0, 'rgb(204, 204, 204)');
-                        grad.addColorStop(1, 'rgb(87, 92, 98)');
-                        break;
-                    }
-                    knobCtx.fillStyle = grad;
-                    knobCtx.fill();
-                } else {
-                    knobCtx.fill();
+                case 'silver':
+                /* falls through */
+                default:
+                    grad.addColorStop(0, 'rgb(204, 204, 204)');
+                    grad.addColorStop(1, 'rgb(87, 92, 98)');
+                    break;
                 }
+                knobCtx.fillStyle = grad;
+                knobCtx.fill();
 
                 // METALKNOB_LOWERHL
                 knobCtx.beginPath();
@@ -13307,12 +12913,10 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size * 0.277777, size * 0.888888, size * 0.388888, size * 0.944444, size * 0.5, size * 0.944444);
                 knobCtx.bezierCurveTo(size * 0.611111, size * 0.944444, size * 0.722222, size * 0.888888, size * 0.777777, size * 0.833333);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createRadialGradient((0.555555) * size, ((0.944444) * size), 0, ((0.555555) * size), ((0.944444) * size), 0.388888 * size);
-                    grad.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-                    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createRadialGradient((0.555555) * size, ((0.944444) * size), 0, ((0.555555) * size), ((0.944444) * size), 0.388888 * size);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                knobCtx.fillStyle = grad;
                 knobCtx.fill();
 
                 // METALKNOB_UPPERHL
@@ -13323,12 +12927,10 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size * 0.166666, size * 0.333333, size * 0.333333, size * 0.388888, size * 0.5, size * 0.388888);
                 knobCtx.bezierCurveTo(size * 0.666666, size * 0.388888, size * 0.833333, size * 0.333333, size * 0.944444, size * 0.277777);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createRadialGradient(0.5 * size, 0, 0, ((0.5) * size), 0, 0.583333 * size);
-                    grad.addColorStop(0, 'rgba(255, 255, 255, 0.749019)');
-                    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createRadialGradient(0.5 * size, 0, 0, ((0.5) * size), 0, 0.583333 * size);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 0.749019)');
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                knobCtx.fillStyle = grad;
                 knobCtx.fill();
 
                 // METALKNOB_INNERFRAME
@@ -13339,12 +12941,10 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size * 0.777777, size * 0.666666, size * 0.611111, size * 0.777777, size * 0.5, size * 0.777777);
                 knobCtx.bezierCurveTo(size * 0.388888, size * 0.777777, size * 0.277777, size * 0.666666, size * 0.277777, size * 0.555555);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, 0.277777 * size, 0, 0.722221 * size);
-                    grad.addColorStop(0, '#000000');
-                    grad.addColorStop(1, 'rgb(204, 204, 204)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createLinearGradient(0, 0.277777 * size, 0, 0.722221 * size);
+                grad.addColorStop(0, '#000000');
+                grad.addColorStop(1, 'rgb(204, 204, 204)');
+                knobCtx.fillStyle = grad;
                 knobCtx.fill();
 
                 // METALKNOB_INNERBACKGROUND
@@ -13355,74 +12955,63 @@ var steelseries = (function () {
                 knobCtx.bezierCurveTo(size * 0.722222, size * 0.611111, size * 0.611111, size * 0.722222, size * 0.5, size * 0.722222);
                 knobCtx.bezierCurveTo(size * 0.388888, size * 0.722222, size * 0.333333, size * 0.611111, size * 0.333333, size * 0.555555);
                 knobCtx.closePath();
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, 0.333333 * size, 0, 0.666666 * size);
-                    grad.addColorStop(0, 'rgb(10, 9, 1)');
-                    grad.addColorStop(1, 'rgb(42, 41, 37)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createLinearGradient(0, 0.333333 * size, 0, 0.666666 * size);
+                grad.addColorStop(0, 'rgb(10, 9, 1)');
+                grad.addColorStop(1, 'rgb(42, 41, 37)');
+                knobCtx.fillStyle = grad;
                 knobCtx.fill();
                 break;
 
             case 'standardKnob':
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, 0, 0, size);
-                    grad.addColorStop(0, 'rgb(180, 180, 180)');
-                    grad.addColorStop(0.46, 'rgb(63, 63, 63)');
-                    grad.addColorStop(1, 'rgb(40, 40, 40)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createLinearGradient(0, 0, 0, size);
+                grad.addColorStop(0, 'rgb(180, 180, 180)');
+                grad.addColorStop(0.46, 'rgb(63, 63, 63)');
+                grad.addColorStop(1, 'rgb(40, 40, 40)');
+                knobCtx.fillStyle = grad;
                 knobCtx.beginPath();
                 knobCtx.arc(maxPostCenterX, maxPostCenterY, size / 2, 0, TWO_PI, true);
                 knobCtx.closePath();
                 knobCtx.fill();
+                grad = knobCtx.createLinearGradient(0, size - size * 0.77, 0, size - size * 0.77 + size * 0.77);
+                switch (style.style) {
+                case 'black':
+                    grad.addColorStop(0, 'rgb(191, 191, 191)');
+                    grad.addColorStop(0.5, 'rgb(45, 44, 49)');
+                    grad.addColorStop(1, 'rgb(125, 126, 128)');
+                    break;
 
-                if (!shadow) {
-                    grad = knobCtx.createLinearGradient(0, size - size * 0.77, 0, size - size * 0.77 + size * 0.77);
-                    switch (style.style) {
-                    case 'black':
-                        grad.addColorStop(0, 'rgb(191, 191, 191)');
-                        grad.addColorStop(0.5, 'rgb(45, 44, 49)');
-                        grad.addColorStop(1, 'rgb(125, 126, 128)');
-                        break;
+                case 'brass':
+                    grad.addColorStop(0, 'rgb(223, 208, 174)');
+                    grad.addColorStop(0.5, 'rgb(123, 95, 63)');
+                    grad.addColorStop(1, 'rgb(207, 190, 157)');
+                    break;
 
-                    case 'brass':
-                        grad.addColorStop(0, 'rgb(223, 208, 174)');
-                        grad.addColorStop(0.5, 'rgb(123, 95, 63)');
-                        grad.addColorStop(1, 'rgb(207, 190, 157)');
-                        break;
-
-                    case 'silver':
-                    /* falls through */
-                    default:
-                        grad.addColorStop(0, 'rgb(215, 215, 215)');
-                        grad.addColorStop(0.5, 'rgb(116, 116, 116)');
-                        grad.addColorStop(1, 'rgb(215, 215, 215)');
-                        break;
-                    }
-                    knobCtx.fillStyle = grad;
+                case 'silver':
+                /* falls through */
+                default:
+                    grad.addColorStop(0, 'rgb(215, 215, 215)');
+                    grad.addColorStop(0.5, 'rgb(116, 116, 116)');
+                    grad.addColorStop(1, 'rgb(215, 215, 215)');
+                    break;
                 }
+                knobCtx.fillStyle = grad;
                 knobCtx.beginPath();
                 knobCtx.arc(maxPostCenterX, maxPostCenterY, size * 0.77 / 2, 0, TWO_PI, true);
                 knobCtx.closePath();
                 knobCtx.fill();
 
-                if (!shadow) {
-                    grad = knobCtx.createRadialGradient(maxPostCenterX, maxPostCenterY, 0, maxPostCenterX, maxPostCenterY, size * 0.77 / 2);
-                    grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-                    grad.addColorStop(0.75, 'rgba(0, 0, 0, 0)');
-                    grad.addColorStop(0.76, 'rgba(0, 0, 0, 0.01)');
-                    grad.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
-                    knobCtx.fillStyle = grad;
-                }
+                grad = knobCtx.createRadialGradient(maxPostCenterX, maxPostCenterY, 0, maxPostCenterX, maxPostCenterY, size * 0.77 / 2);
+                grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                grad.addColorStop(0.75, 'rgba(0, 0, 0, 0)');
+                grad.addColorStop(0.76, 'rgba(0, 0, 0, 0.01)');
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
+                knobCtx.fillStyle = grad;
                 knobCtx.beginPath();
                 knobCtx.arc(maxPostCenterX, maxPostCenterY, size * 0.77 / 2, 0, TWO_PI, true);
                 knobCtx.closePath();
                 knobCtx.fill();
                 break;
             }
-            //  Negate the offset the drawing to leave room for shadows
-//            knobCtx.translate(-size * 0.06, -size * 0.06);
 
             // cache the buffer
             createKnobImage.cache[cacheKey] = knobBuffer;
