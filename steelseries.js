@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 16.09.2012
- * Revision      : 0.11.12
+ * Last modified : 25.09.2012
+ * Revision      : 0.11.13
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -5231,6 +5231,7 @@ var steelseries = (function () {
             digitalFont = (undefined === parameters.digitalFont ? false : parameters.digitalFont),
             valuesNumeric = (undefined === parameters.valuesNumeric ? true : parameters.valuesNumeric),
             value = (undefined === parameters.value ? 0 : parameters.value),
+            alwaysScroll = (undefined === parameters.alwaysScroll ? false : parameters.alwaysScroll),
             autoScroll = (undefined === parameters.autoScroll ? false : parameters.autoScroll),
             section = (undefined === parameters.section ? null : parameters.section);
 
@@ -5287,11 +5288,7 @@ var steelseries = (function () {
                 mainCtx.shadowBlur = imageHeight * 0.06;
             }
  */
-            if (digitalFont) {
-                mainCtx.font = lcdFont;
-            } else {
-                mainCtx.font = stdFont;
-            }
+            mainCtx.font = digitalFont ? lcdFont : stdFont;
 
             if (valuesNumeric) {
                 // Numeric value
@@ -5317,9 +5314,13 @@ var steelseries = (function () {
             } else {
                 // Text value
                 textWidth = mainCtx.measureText(value).width;
-                if (autoScroll && textWidth > imageWidth - 4) {
+                if (alwaysScroll || (autoScroll && textWidth > imageWidth - 4)) {
                     if (!scrolling) {
-                        scrollX = imageWidth - textWidth - imageWidth * 0.2; // leave 20% blank leading space to give time to read start of message
+                        if (textWidth > imageWidth * 0.8) {
+                            scrollX = imageWidth - textWidth - imageWidth * 0.2; // leave 20% blank leading space to give time to read start of message
+                        } else {
+                            scrollX = 0;
+                        }
                         scrolling = true;
                         clearTimeout(scrollTimer);  // kill any pending animate
                         scrollTimer = setTimeout(animate, 200);
@@ -5413,7 +5414,7 @@ var steelseries = (function () {
                     scrollX = -textWidth;
                 }
                 scrollX += 2;
-                scrollTimer = setTimeout(animate, 60);
+                scrollTimer = setTimeout(animate, 50);
             } else {
                 scrollX = 0;
             }
@@ -5471,23 +5472,6 @@ var steelseries = (function () {
             } else { //disable scrolling
                 scrolling = scroll;
             }
-
- /*
-            if (scrolling) {
-                return;
-            }
-            if (scroll) {
-                oldValue = value;
-                scrollTimer = setInterval(function(){ animate(); }, 60);
-            } else {
-                clearInterval(scrollTimer);
-                value = oldValue;
-                scrollX = 0;
-                this.repaint();
-            }
-
-            scrolling = scroll;
-*/
         };
 
         this.repaint = function () {
@@ -7438,16 +7422,24 @@ var steelseries = (function () {
         };
 
         this.setPointerType = function (newPointerType) {
-            resetBuffers({pointer: true});
             pointerTypeLatest = newPointerType;
-            init({pointer: true});
+            resetBuffers({pointer: true,
+                          foreground: true
+                         });
+            init({pointer: true,
+                  foreground: true
+                  });
             this.repaint();
         };
 
         this.setPointerTypeAverage = function (newPointerType) {
-            resetBuffers({pointer: true});
             pointerTypeAverage = newPointerType;
-            init({pointer: true});
+            resetBuffers({pointer: true,
+                          foreground: true
+                         });
+            init({pointer: true,
+                  foreground: true
+                  });
             this.repaint();
         };
 

@@ -1,5 +1,11 @@
 Main Changes
 
+v0.11.13
+> DisplaySingle
+  * Added configuation parameter alwaysScroll [false]|true
+> WindDirection
+  * Fixed bug in changing pointer types that did not redraw the knob if required.
+
 v0.11.12
 > General
   * Removed all remaining 'shadow' drawing code, now relying on native browser capabilities.
