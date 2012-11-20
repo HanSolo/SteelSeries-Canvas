@@ -1,5 +1,8 @@
 Main Changes
 
+v0.11.14
+> * Added parseFloat value checks to set() and setAnimated() methods
+
 v0.11.13
 > DisplaySingle
   * Added configuation parameter alwaysScroll [false]|true

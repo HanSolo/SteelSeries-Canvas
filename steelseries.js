@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 25.09.2012
- * Revision      : 0.11.13
+ * Last modified : 20.11.2012
+ * Revision      : 0.11.14
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -753,6 +753,7 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             if (value !== targetValue) {
                 value = targetValue;
@@ -786,6 +787,7 @@ var steelseries = (function () {
         };
 
         this.setOdoValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < 0 ? 0 : newValue);
             if (odoValue !== targetValue) {
                 odoValue = targetValue;
@@ -798,6 +800,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this;
 
@@ -910,6 +913,7 @@ var steelseries = (function () {
         };
 
         this.setThreshold = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             threshold = targetValue;
             resetBuffers({background: true});
@@ -1747,6 +1751,7 @@ var steelseries = (function () {
 
         //********************************* Public methods *********************************
         this.setValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
@@ -1772,6 +1777,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this;
 
@@ -1899,6 +1905,7 @@ var steelseries = (function () {
         };
 
         this.setThreshold = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             threshold = targetValue;
             resetBuffers({background: true});
@@ -2632,6 +2639,7 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
@@ -2666,6 +2674,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this;
 
@@ -3719,6 +3728,7 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
@@ -3753,6 +3763,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 if (undefined !== tween) {
@@ -3923,6 +3934,7 @@ var steelseries = (function () {
         };
 
         this.setThreshold = function (threshVal) {
+            threshVal = parseFloat(threshVal);
             var targetValue = (threshVal < minValue ? minValue : (threshVal > maxValue ? maxValue : threshVal));
             threshold = targetValue;
             resetBuffers({background: true});
@@ -4901,6 +4913,7 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
@@ -4935,6 +4948,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this;
 
@@ -5127,6 +5141,7 @@ var steelseries = (function () {
         };
 
         this.setThreshold = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (threshold !== targetValue) {
                 threshold = targetValue;
@@ -11038,6 +11053,7 @@ var steelseries = (function () {
 
         this.setValueAnimated = function (newVal) {
             var gauge = this;
+            newVal = parseFloat(newVal);
 
             if (newVal < 0) {
                 newVal = 0;
