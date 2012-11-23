@@ -26,12 +26,12 @@
 var steelseries = (function () {
 
     // Constants
-    var HALF_PI = Math.PI / 2,
-        TWO_PI = Math.PI * 2,
-        PI = Math.PI,
-        RAD_FACTOR = Math.PI / 180,
-        DEG_FACTOR = 180 / Math.PI,
-        doc = document,
+    var HALF_PI     = Math.PI * 0.5,
+        TWO_PI      = Math.PI * 2,
+        PI          = Math.PI,
+        RAD_FACTOR  = Math.PI / 180,
+        DEG_FACTOR  = 180 / Math.PI,
+        doc         = document,
         lcdFontName = 'LCDMono2Ultra,sans-serif';
 
     //*************************************   C O M P O N O N E N T S   ************************************************
@@ -5124,16 +5124,14 @@ var steelseries = (function () {
         };
 
         this.setMaxValue = function (value) {
-            if (maxValue !== value) {
-                maxValue = value;
-                resetBuffers({background: true,
-                              foreground: true,
-                              pointer: true});
-                init({background: true,
-                    foreground: true,
-                    pointer: true});
-                this.repaint();
-            }
+            maxValue = value;
+            resetBuffers({background: true,
+                          foreground: true,
+                          pointer: true});
+            init({background: true,
+                  foreground: true,
+                  pointer: true});
+            this.repaint();
         };
 
         this.getMaxValue = function () {
