@@ -1,5 +1,29 @@
 Main Changes
 
+v0.11.14
+> * Added parseFloat value checks to set() and setAnimated() methods
+
+v0.11.13
+> DisplaySingle
+  * Added configuation parameter alwaysScroll [false]|true
+> WindDirection
+  * Fixed bug in changing pointer types that did not redraw the knob if required.
+
+v0.11.12
+> General
+  * Removed all remaining 'shadow' drawing code, now relying on native browser capabilities.
+
+v0.11.11
+> Radial & RadialVertical
+  * Simplified the pointer shadow drawing - note shadows do not display correctly in the
+    Chrome browser because of a bug http://code.google.com/p/chromium/issues/detail?id=90001
+
+v0.11.10
+> General
+  * Changed Conical gradient to use Gerrits raster scan rather than line rotation,
+    changed the .fill() method to .fillCircle() and added .fillRect()
+  * Some general typo fixes and minor code restructuring
+
 v0.11.9
 > General
   * Added requestAnimationFrame processing to setValueAnimted() in:
@@ -16,8 +40,6 @@ v0.11.7
   * Added .setFractionalScaleDecimals() and .setLabelNumberFormat()
 > RadialBargraph
   * Added .setFractionalScaleDecimals(), .setLabelNumberFormat() and .setLcdDecimals()
-
-
 
 v0.11.6
 > Radial
@@ -232,7 +254,7 @@ v0.9.1
   * Added pointer type14
   * Optimised conicalGradient to calculate a step size relevant to gauge size
   * Code size reduction exercise continues
-  
+
 v0.9.0
 > General Changes
   * Added section handling to DisplaySingle
