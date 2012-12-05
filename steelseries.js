@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 20.11.2012
- * Revision      : 0.11.14
+ * Last modified : 05.12.2012
+ * Revision      : 0.11.15
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -820,9 +820,15 @@ var steelseries = (function () {
                     if (value >= threshold && !ledBlinking) {
                         ledBlinking = true;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
                     } else if (value < threshold) {
                         ledBlinking = false;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
 
                     if (value > maxMeasuredValue) {
@@ -1796,9 +1802,15 @@ var steelseries = (function () {
                     if (value >= threshold && !ledBlinking) {
                         ledBlinking = true;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
                     } else if (value < threshold) {
                         ledBlinking = false;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
                     if (!repainting) {
                         repainting = true;
@@ -2693,9 +2705,15 @@ var steelseries = (function () {
                     if (value >= threshold && !ledBlinking) {
                         ledBlinking = true;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
                     } else if (value < threshold) {
                         ledBlinking = false;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
 
                     if (value > maxMeasuredValue) {
@@ -4967,9 +4985,15 @@ var steelseries = (function () {
                     if (value >= threshold && !ledBlinking) {
                         ledBlinking = true;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
                     } else if (value < threshold) {
                         ledBlinking = false;
                         blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
 
                     if (value > maxMeasuredValue) {

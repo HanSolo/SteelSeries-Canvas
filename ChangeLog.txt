@@ -1,5 +1,8 @@
 Main Changes
 
+v0.11.15
+> * Added playAlarm() to all setValueAnimated() methods where it was missing.
+
 v0.11.14
 > * Added parseFloat value checks to set() and setAnimated() methods
 
