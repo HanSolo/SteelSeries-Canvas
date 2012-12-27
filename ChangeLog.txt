@@ -1,5 +1,13 @@
 Main Changes
 
+v0.12.0
+> Linear & LinearBargraph
+  * Fixed bug that stopped min/max/threshold indicators displaying correctly on gauges with
+    scales that did not have a minimum value of zero.
+> All Gauges
+  * Added ability for all 'set' methods to be chained. So for example you can now use code like...
+    gauge.setMinValue(5).setMaxValue(25).setValue(10);
+
 v0.11.15
 > * Added playAlarm() to all setValueAnimated() methods where it was missing.
 

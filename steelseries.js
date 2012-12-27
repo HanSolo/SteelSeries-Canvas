@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 05.12.2012
- * Revision      : 0.11.15
+ * Last modified : 27.12.2012
+ * Revision      : 0.12.0
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -780,6 +780,7 @@ var steelseries = (function () {
                 }
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -793,6 +794,7 @@ var steelseries = (function () {
                 odoValue = targetValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.getOdoValue = function () {
@@ -844,6 +846,7 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
+            return this;
         };
 
         this.resetMinMeasuredValue = function () {
@@ -854,28 +857,35 @@ var steelseries = (function () {
         this.resetMaxMeasuredValue = function () {
             maxMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
             minMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
             maxMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             maxMeasuredValue = targetValue;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
             minMeasuredValue = targetValue;
             this.repaint();
+            return this;
         };
 
         this.setTitleString = function (title) {
@@ -883,6 +893,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setUnitString = function (unit) {
@@ -890,15 +901,17 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setMinValue = function (value) {
-            minValue = value;
+            minValue = parseFloat(value);
             resetBuffers({frame: true,
                           background: true});
             init({frame: true,
                   background: true});
             this.repaint();
+            return this;
         };
 
         this.getMinValue = function () {
@@ -906,12 +919,13 @@ var steelseries = (function () {
         };
 
         this.setMaxValue = function (value) {
-            maxValue = value;
+            maxValue = parseFloat(value);
             resetBuffers({frame: true,
                           background: true});
             init({frame: true,
                   background: true});
             this.repaint();
+            return this;
         };
 
         this.getMaxValue = function () {
@@ -925,6 +939,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setArea = function (areaVal) {
@@ -935,6 +950,7 @@ var steelseries = (function () {
                   foreground: true
                   });
             this.repaint();
+            return this;
         };
 
         this.setSection = function (areaSec) {
@@ -945,16 +961,19 @@ var steelseries = (function () {
                   foreground: true
                   });
             this.repaint();
+            return this;
         };
 
         this.setThresholdVisible = function (visible) {
             thresholdVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setLcdDecimals = function (decimals) {
-            lcdDecimals = decimals;
+            lcdDecimals = parseInt(decimals, 10);
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -962,6 +981,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -973,6 +993,7 @@ var steelseries = (function () {
                   pointer: (pointerType.type === 'type2' || pointerType.type === 'type13' ? true : false)
                 });
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -980,6 +1001,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerType = function (newPointerType) {
@@ -991,6 +1013,7 @@ var steelseries = (function () {
                   foreground: true
                   });
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -998,6 +1021,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init({pointer: true});
             this.repaint();
+            return this;
         };
 
         this.setLedColor = function (newLedColor) {
@@ -1005,6 +1029,7 @@ var steelseries = (function () {
             ledColor = newLedColor;
             init({led: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -1012,23 +1037,27 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setTrend = function (newValue) {
             trendIndicator = newValue;
             this.repaint();
+            return this;
         };
 
         this.setTrendVisible = function (visible) {
             trendVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setFractionalScaleDecimals = function (decimals) {
-            fractionalScaleDecimals = decimals;
+            fractionalScaleDecimals = parseInt(decimals, 10);
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setLabelNumberFormat = function (format) {
@@ -1036,6 +1065,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -1776,6 +1806,7 @@ var steelseries = (function () {
                 }
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -1819,6 +1850,7 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -1826,6 +1858,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -1835,6 +1868,7 @@ var steelseries = (function () {
             init({background: true,
                   led: true});
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -1842,6 +1876,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setValueColor = function (newValueColor) {
@@ -1849,6 +1884,7 @@ var steelseries = (function () {
             valueColor = newValueColor;
             init({value: true});
             this.repaint();
+            return this;
         };
 
         this.setLedColor = function (newLedColor) {
@@ -1856,6 +1892,7 @@ var steelseries = (function () {
             ledColor = newLedColor;
             init({led: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -1863,35 +1900,41 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdDecimals = function (decimals) {
-            lcdDecimals = decimals;
+            lcdDecimals = parseInt(decimals, 10);
             this.repaint();
+            return this;
         };
 
         this.setSection = function (areaSec) {
             section = areaSec;
             init();
             this.repaint();
+            return this;
         };
 
         this.setSectionActive = function (value) {
             useSectionColors = value;
             init();
             this.repaint();
+            return this;
         };
 
         this.setGradient = function (grad) {
             valueGradient = grad;
             init();
             this.repaint();
+            return this;
         };
 
         this.setGradientActive = function (value) {
             useValueGradient = value;
             init();
             this.repaint();
+            return this;
         };
 
         this.setMinValue = function (value) {
@@ -1899,6 +1942,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.getMinValue = function () {
@@ -1910,6 +1954,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.getMaxValue = function () {
@@ -1923,6 +1968,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setTitleString = function (title) {
@@ -1930,6 +1976,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setUnitString = function (unit) {
@@ -1937,20 +1984,23 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setTrend = function (newValue) {
-            trendIndicator = newValue;
+            trendIndicator = parseFloat(newValue);
             this.repaint();
+            return this;
         };
 
         this.setTrendVisible = function (visible) {
             trendVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setFractionalScaleDecimals = function (decimals) {
-            fractionalScaleDecimals = decimals;
+            fractionalScaleDecimals = parseInt(decimals, 10);
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
@@ -1961,6 +2011,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -2679,6 +2730,7 @@ var steelseries = (function () {
 
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -2730,31 +2782,37 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
+            return this;
         };
 
         this.resetMinMeasuredValue = function () {
             minMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.resetMaxMeasuredValue = function () {
             maxMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
             minMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
             maxMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setThresholdVisible = function (visible) {
             thresholdVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -2762,6 +2820,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -2773,6 +2832,7 @@ var steelseries = (function () {
                   pointer: (pointerType.type === 'type2' || pointerType.type === 'type13' ? true : false)       // type2 & 13 depend on background
                 });
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -2780,6 +2840,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerType = function (newPointerType) {
@@ -2791,6 +2852,7 @@ var steelseries = (function () {
                   foreground: true
                  });
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -2798,6 +2860,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init({pointer: true});
             this.repaint();
+            return this;
         };
 
         this.setLedColor = function (newLedColor) {
@@ -2805,6 +2868,7 @@ var steelseries = (function () {
             ledColor = newLedColor;
             init({led: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -3378,13 +3442,13 @@ var steelseries = (function () {
                     // Vertical orientation
                     yOffset = (gaugeType.type === 'type1' ? 0.856796 : 0.7475);
                     yRange = yOffset - 0.128640;
-                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (threshold / (maxValue - minValue));
+                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (threshold - minValue) / (maxValue - minValue);
                     backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
                 } else {
                     // Horizontal orientation
                     yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.82);
                     yRange = yOffset - (gaugeType.type === 'type1' ? 0.142857 : 0.19857);
-                    valuePos = imageWidth * yRange * threshold / (maxValue - minValue);
+                    valuePos = imageWidth * yRange * (threshold - minValue) / (maxValue - minValue);
                     backgroundContext.translate(imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
                 }
                 backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
@@ -3774,6 +3838,7 @@ var steelseries = (function () {
 
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -3824,36 +3889,43 @@ var steelseries = (function () {
 
                 tween.start();
             }
+            return this;
         };
 
         this.resetMinMeasuredValue = function () {
             minMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.resetMaxMeasuredValue = function () {
             maxMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
             minMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
             maxMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setThresholdVisible = function (visible) {
             thresholdVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setLcdDecimals = function (decimals) {
-            lcdDecimals = decimals;
+            lcdDecimals = parseInt(decimals, 10);
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -3861,6 +3933,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -3868,6 +3941,7 @@ var steelseries = (function () {
             backgroundColor = newBackgroundColor;
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setValueColor = function (newValueColor) {
@@ -3875,6 +3949,7 @@ var steelseries = (function () {
             valueColor = newValueColor;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setLedColor = function (newLedColor) {
@@ -3882,6 +3957,7 @@ var steelseries = (function () {
             ledColor = newLedColor;
             init({led: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -3889,18 +3965,23 @@ var steelseries = (function () {
             lcdColor = newLcdColor;
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValue = function (newVal) {
+            newVal = parseFloat(newVal);
             var targetValue = (newVal < minValue ? minValue : (newVal > maxValue ? maxValue : newVal));
             maxMeasuredValue = targetValue;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValue = function (newVal) {
+            newVal = parseFloat(newVal);
             var targetValue = (newVal < minValue ? minValue : (newVal > maxValue ? maxValue : newVal));
             minMeasuredValue = targetValue;
             this.repaint();
+            return this;
         };
 
         this.setTitleString = function (title) {
@@ -3908,6 +3989,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setUnitString = function (unit) {
@@ -3915,11 +3997,12 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setMinValue = function (newVal) {
             resetBuffers({background: true});
-            minValue = newVal;
+            minValue = parseFloat(newVal);
             if (minMeasuredValue < minValue) {
                 minMeasuredValue = minValue;
             }
@@ -3928,6 +4011,7 @@ var steelseries = (function () {
             }
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.getMinValue = function () {
@@ -3936,7 +4020,7 @@ var steelseries = (function () {
 
         this.setMaxValue = function (newVal) {
             resetBuffers({background: true});
-            maxValue = newVal;
+            maxValue = parseFloat(newVal);
             if (maxMeasuredValue > maxValue) {
                 maxMeasuredValue = maxValue;
             }
@@ -3945,6 +4029,7 @@ var steelseries = (function () {
             }
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.getMaxValue = function () {
@@ -3958,6 +4043,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -4002,13 +4088,13 @@ var steelseries = (function () {
                 if (vertical) {
                     yOffset = (gaugeType.type === 'type1' ? 0.856796 : 0.7475);
                     yRange = (yOffset - 0.128640);
-                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (minMeasuredValue / (maxValue - minValue));
+                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (minMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.34 - minMeasuredValueBuffer.width;
                     minMaxY = valuePos - minMeasuredValueBuffer.height / 2;
                 } else {
                     yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.82);
                     yRange = yOffset - (gaugeType.type === 'type1' ? 0.142857 : 0.19857);
-                    valuePos = (imageWidth * yRange) * minMeasuredValue / (maxValue - minValue);
+                    valuePos = (imageWidth * yRange) * (minMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - minMeasuredValueBuffer.height / 2 + valuePos;
                     minMaxY = imageHeight * 0.65;
                 }
@@ -4018,13 +4104,13 @@ var steelseries = (function () {
             // Draw max measured value indicator
             if (maxMeasuredValueVisible) {
                 if (vertical) {
-                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (maxMeasuredValue / (maxValue - minValue));
+                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (maxMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.34 - maxMeasuredValueBuffer.width;
                     minMaxY = valuePos - maxMeasuredValueBuffer.height / 2;
                 } else {
                     yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.8);
                     yRange = yOffset - (gaugeType.type === 'type1' ? 0.14857 : 0.19857);
-                    valuePos = (imageWidth * yRange) * maxMeasuredValue / (maxValue - minValue);
+                    valuePos = (imageWidth * yRange) * (maxMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - maxMeasuredValueBuffer.height / 2 + valuePos;
                     minMaxY = imageHeight * 0.65;
                 }
@@ -4521,11 +4607,11 @@ var steelseries = (function () {
                     backgroundContext.save();
                     if (vertical) {
                         // Vertical orientation
-                        valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold / (maxValue - minValue));
+                        valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold - minValue) / (maxValue - minValue);
                         backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
                     } else {
                         // Horizontal orientation
-                        valuePos = (imageWidth * 0.856796 - imageWidth * 0.128640) * threshold / (maxValue - minValue);
+                        valuePos = (imageWidth * 0.856796 - imageWidth * 0.128640) * (threshold - minValue) / (maxValue - minValue);
                         backgroundContext.translate(imageWidth * 0.142857 - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
                     }
                     backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
@@ -4959,6 +5045,7 @@ var steelseries = (function () {
 
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -5011,36 +5098,43 @@ var steelseries = (function () {
 
                 tween.start();
             }
+            return this;
         };
 
         this.resetMinMeasuredValue = function () {
             minMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.resetMaxMeasuredValue = function () {
             maxMeasuredValue = value;
             this.repaint();
+            return this;
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
             minMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
             maxMeasuredValueVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setThresholdVisible = function (visible) {
             thresholdVisible = visible;
             this.repaint();
+            return this;
         };
 
         this.setLcdDecimals = function (decimals) {
-            lcdDecimals = decimals;
+            lcdDecimals = parseInt(decimals, 10);
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -5048,6 +5142,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -5055,6 +5150,7 @@ var steelseries = (function () {
             backgroundColor = newBackgroundColor;
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setValueColor = function (newValueColor) {
@@ -5062,6 +5158,7 @@ var steelseries = (function () {
             valueColor = newValueColor;
             init({bargraphled: true});
             this.repaint();
+            return this;
         };
 
         this.setLedColor = function (newLedColor) {
@@ -5069,6 +5166,7 @@ var steelseries = (function () {
             ledColor = newLedColor;
             init({led: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -5076,46 +5174,55 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setSection = function (areaSec) {
             section = areaSec;
             init();
             this.repaint();
+            return this;
         };
 
         this.setSectionActive = function (value) {
             useSectionColors = value;
             init();
             this.repaint();
+            return this;
         };
 
         this.setGradient = function (grad) {
             valueGradient = grad;
             init();
             this.repaint();
+            return this;
         };
 
         this.setGradientActive = function (value) {
             useValueGradient = value;
             init();
             this.repaint();
+            return this;
         };
 
         this.setMaxMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (maxMeasuredValue !== targetValue) {
                 maxMeasuredValue = targetValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.setMinMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (minMeasuredValue !== targetValue) {
                 minMeasuredValue = targetValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.setTitleString = function (title) {
@@ -5123,6 +5230,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setUnitString = function (unit) {
@@ -5130,10 +5238,11 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setMinValue = function (value) {
-            minValue = value;
+            minValue = parseFloat(value);
             resetBuffers({background: true,
                           foreground: true,
                           pointer: true});
@@ -5141,6 +5250,7 @@ var steelseries = (function () {
                 foreground: true,
                 pointer: true});
             this.repaint();
+            return this;
         };
 
         this.getMinValue = function () {
@@ -5148,7 +5258,7 @@ var steelseries = (function () {
         };
 
         this.setMaxValue = function (value) {
-            maxValue = value;
+            maxValue = parseFloat(value);
             resetBuffers({background: true,
                           foreground: true,
                           pointer: true});
@@ -5156,6 +5266,7 @@ var steelseries = (function () {
                   foreground: true,
                   pointer: true});
             this.repaint();
+            return this;
         };
 
         this.getMaxValue = function () {
@@ -5171,6 +5282,7 @@ var steelseries = (function () {
                 init({background: true});
                 this.repaint();
             }
+            return this;
         };
 
         this.repaint = function () {
@@ -5214,11 +5326,11 @@ var steelseries = (function () {
            // Draw min measured value indicator
             if (minMeasuredValueVisible) {
                 if (vertical) {
-                    valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (minMeasuredValue / (maxValue - minValue));
+                    valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (minMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.34 - minMeasuredValueBuffer.width;
                     minMaxY = valuePos - minMeasuredValueBuffer.height / 2;
                 } else {
-                    valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * minMeasuredValue / (maxValue - minValue);
+                    valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * (minMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.142857 - minMeasuredValueBuffer.height / 2 + valuePos;
                     minMaxY = imageHeight * 0.65;
                 }
@@ -5228,11 +5340,11 @@ var steelseries = (function () {
             // Draw max measured value indicator
             if (maxMeasuredValueVisible) {
                 if (vertical) {
-                    valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (maxMeasuredValue / (maxValue - minValue));
+                    valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (maxMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.34 - maxMeasuredValueBuffer.width;
                     minMaxY = valuePos - maxMeasuredValueBuffer.height / 2;
                 } else {
-                    valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * maxMeasuredValue / (maxValue - minValue);
+                    valuePos = ((imageWidth * 0.856796) - (imageWidth * 0.128640)) * (maxMeasuredValue - minValue) / (maxValue - minValue);
                     minMaxX = imageWidth * 0.142857 - maxMeasuredValueBuffer.height / 2 + valuePos;
                     minMaxY = imageHeight * 0.65;
                 }
@@ -5484,18 +5596,21 @@ var steelseries = (function () {
                 value = newValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.setSection = function (newSection) {
             section = newSection;
             init({background: true, foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setScrolling = function (scroll) {
@@ -5509,6 +5624,7 @@ var steelseries = (function () {
             } else { //disable scrolling
                 scrolling = scroll;
             }
+            return this;
         };
 
         this.repaint = function () {
@@ -5654,12 +5770,14 @@ var steelseries = (function () {
                 value = newValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -6111,7 +6229,7 @@ var steelseries = (function () {
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
             var targetValue;
-
+            newValue = parseFloat(newValue);
             targetValue = 0 > newValue ? (360 + newValue) : newValue;
             targetValue = 359.9 < newValue ? (newValue - 360) : newValue;
 
@@ -6160,6 +6278,7 @@ var steelseries = (function () {
 
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
@@ -6167,6 +6286,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             if (360 - newValue + value < newValue - value) {
                 newValue = 360 - newValue;
             }
@@ -6233,6 +6353,7 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -6240,6 +6361,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init();
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -6247,6 +6369,7 @@ var steelseries = (function () {
             backgroundColor = newBackgroundColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -6254,6 +6377,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init();
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -6261,6 +6385,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -6721,20 +6846,20 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
-            newValue = newValue % 360;
+            newValue = parseFloat(newValue) % 360;
             if (value !== newValue) {
                 value = newValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.getValue = function () {
-
             return value;
         };
 
         this.setValueAnimated = function (newValue) {
-            var targetValue = newValue % 360;
+            var targetValue = parseFloat(newValue) % 360;
             var gauge = this;
             var diff;
             if (value !== targetValue) {
@@ -6755,6 +6880,7 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -6762,6 +6888,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init();
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -6769,6 +6896,7 @@ var steelseries = (function () {
             backgroundColor = newBackgroundColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -6776,6 +6904,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init();
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -6783,6 +6912,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init();
             this.repaint();
+            return this;
         };
 
         this.setPointerType = function (newPointerType) {
@@ -6790,6 +6920,7 @@ var steelseries = (function () {
             pointerType = newPointerType;
             init();
             this.repaint();
+            return this;
         };
 
         this.setPointSymbols = function (newPointSymbols) {
@@ -6797,6 +6928,7 @@ var steelseries = (function () {
             pointSymbols = newPointSymbols;
             init();
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -7306,11 +7438,13 @@ var steelseries = (function () {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
+            newValue = parseFloat(newValue);
             newValue = newValue === 360 ? 360 : newValue % 360;
             if (valueLatest !== newValue) {
                 valueLatest = newValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.getValueLatest = function () {
@@ -7321,11 +7455,13 @@ var steelseries = (function () {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
+            newValue = parseFloat(newValue);
             newValue = newValue === 360 ? 360 : newValue % 360;
             if (valueAverage !== newValue) {
                 valueAverage = newValue;
                 this.repaint();
             }
+            return this;
         };
 
         this.getValueAverage = function () {
@@ -7336,6 +7472,7 @@ var steelseries = (function () {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
+            newValue = parseFloat(newValue);
             var targetValue = (newValue === 360 ? 360 : newValue % 360),
                 gauge = this,
                 diff;
@@ -7370,12 +7507,14 @@ var steelseries = (function () {
 
                 tweenLatest.start();
             }
+            return this;
         };
 
         this.setValueAnimatedAverage = function (newValue) {
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
+            newValue = parseFloat(newValue);
             var targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueAverage !== newValue) {
                 var gauge = this;
@@ -7407,6 +7546,7 @@ var steelseries = (function () {
                 }
                 tweenAverage.start();
             }
+            return this;
         };
 
         this.setArea = function (areaVal) {
@@ -7414,6 +7554,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setSection = function (areaSec) {
@@ -7421,6 +7562,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -7428,6 +7570,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -7435,6 +7578,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -7442,6 +7586,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -7449,6 +7594,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init({pointer: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerColorAverage = function (newPointerColor) {
@@ -7456,6 +7602,7 @@ var steelseries = (function () {
             pointerColorAverage = newPointerColor;
             init({pointer: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerType = function (newPointerType) {
@@ -7467,6 +7614,7 @@ var steelseries = (function () {
                   foreground: true
                   });
             this.repaint();
+            return this;
         };
 
         this.setPointerTypeAverage = function (newPointerType) {
@@ -7478,6 +7626,7 @@ var steelseries = (function () {
                   foreground: true
                   });
             this.repaint();
+            return this;
         };
 
         this.setPointSymbols = function (newPointSymbols) {
@@ -7485,6 +7634,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -7492,6 +7642,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdTitleStrings = function (titles) {
@@ -7499,6 +7650,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -7834,11 +7986,12 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setRoll = function (newRoll) {
-            newRoll = newRoll % 360;
+            newRoll = parseFloat(newRoll) % 360;
             if (roll !== newRoll) {
                 roll = newRoll;
                 this.repaint();
             }
+            return this;
         };
 
         this.getRoll = function () {
@@ -7847,7 +8000,7 @@ var steelseries = (function () {
 
         this.setRollAnimated = function (newRoll) {
             var gauge = this;
-            newRoll = newRoll % 360;
+            newRoll = parseFloat(newRoll) % 360;
             if (roll !== newRoll) {
 
                 if (undefined !== tweenRoll) {
@@ -7867,12 +8020,13 @@ var steelseries = (function () {
                 };
                 tweenRoll.start();
             }
+            return this;
         };
 
         this.setPitch = function (newPitch) {
             // constrain to range -180..180
             // normal range -90..90 and -180..-90/90..180 indicate inverted
-            newPitch = ((newPitch + 180 - pitchOffset) % 360) - 180;
+            newPitch = ((parseFloat(newPitch) + 180 - pitchOffset) % 360) - 180;
             //pitch = -(newPitch + pitchOffset) % 180;
             if (pitch !== newPitch) {
                 pitch = newPitch;
@@ -7893,6 +8047,7 @@ var steelseries = (function () {
                 }
                 this.repaint();
             }
+            return this;
         };
 
         this.getPitch = function () {
@@ -7901,6 +8056,7 @@ var steelseries = (function () {
 
         this.setPitchAnimated = function (newPitch) {
             var gauge = this;
+            newPitch = parseFloat(newPitch);
             // perform all range checking in setPitch()
             if (pitch !== newPitch) {
                 if (undefined !== tweenPitch) {
@@ -7934,11 +8090,13 @@ var steelseries = (function () {
                 };
                 tweenPitch.start();
             }
+            return this;
         };
 
         this.setPitchOffset = function (newPitchOffset) {
-            pitchOffset = newPitchOffset;
+            pitchOffset = parseFloat(newPitchOffset);
             this.repaint();
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -7946,6 +8104,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init();
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -7953,6 +8112,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init();
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -8052,12 +8212,14 @@ var steelseries = (function () {
                 ledBuffer = ledBufferOn;
             }
             repaint();
+            return this;
         };
 
         this.setLedColor = function (newColor) {
             ledColor = newColor;
             initialized = false;
             repaint();
+            return this;
         };
 
         this.setLedOnOff = function (on) {
@@ -8067,6 +8229,7 @@ var steelseries = (function () {
                 ledBuffer = ledBufferOff;
             }
             repaint();
+            return this;
         };
 
 /*        this.blink = function(blinking) {
@@ -8089,6 +8252,7 @@ var steelseries = (function () {
                     ledBlinking = false;
                 }
             }
+            return this;
         };
 
         var repaint = function () {
@@ -8583,6 +8747,7 @@ var steelseries = (function () {
                 isAutomatic = newValue;
                 tickTock();
             }
+            return this;
         };
 
         this.getHour = function () {
@@ -8590,12 +8755,13 @@ var steelseries = (function () {
         };
 
         this.setHour = function (newValue) {
-            newValue = newValue % 12;
+            newValue = parseInt(newValue, 10) % 12;
             if (hour !== newValue) {
                 hour = newValue;
                 calculateAngles(hour, minute, second);
                 this.repaint();
             }
+            return this;
         };
 
         this.getMinute = function () {
@@ -8603,12 +8769,13 @@ var steelseries = (function () {
         };
 
         this.setMinute = function (newValue) {
-            newValue = newValue % 60;
+            newValue = parseInt(newValue, 60) % 60;
             if (minute !== newValue) {
                 minute = newValue;
                 calculateAngles(hour, minute, second);
                 this.repaint();
             }
+            return this;
         };
 
         this.getSecond = function () {
@@ -8616,12 +8783,13 @@ var steelseries = (function () {
         };
 
         this.setSecond = function (newValue) {
-            second = newValue % 60;
+            second = parseInt(newValue, 10) % 60;
             if (second !== newValue) {
                 second = newValue;
                 calculateAngles(hour, minute, second);
                 this.repaint();
             }
+            return this;
         };
 
         this.getTimeZoneOffsetHour = function () {
@@ -8629,8 +8797,9 @@ var steelseries = (function () {
         };
 
         this.setTimeZoneOffsetHour = function (newValue) {
-            timeZoneOffsetHour = newValue;
+            timeZoneOffsetHour = parseInt(newValue, 10);
             this.repaint();
+            return this;
         };
 
         this.getTimeZoneOffsetMinute = function () {
@@ -8638,8 +8807,9 @@ var steelseries = (function () {
         };
 
         this.setTimeZoneOffsetMinute = function (newValue) {
-            timeZoneOffsetMinute = newValue;
+            timeZoneOffsetMinute = parseInt(newValue, 10);
             this.repaint();
+            return this;
         };
 
         this.getSecondPointerVisible = function () {
@@ -8649,6 +8819,7 @@ var steelseries = (function () {
         this.setSecondPointerVisible = function (newValue) {
             secondPointerVisible = newValue;
             this.repaint();
+            return this;
         };
 
         this.getSecondMovesContinuous = function () {
@@ -8659,6 +8830,7 @@ var steelseries = (function () {
             secondMovesContinuous = newValue;
             tickInterval = (secondMovesContinuous ? 100 : 1000);
             tickInterval = (secondPointerVisible ? tickInterval : 100);
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -8666,7 +8838,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
-
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -8676,6 +8848,7 @@ var steelseries = (function () {
             init({ frame: true,
                    background: true });
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -8683,6 +8856,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerType = function (newPointerType) {
@@ -8701,6 +8875,7 @@ var steelseries = (function () {
                    foreground: true,
                    pointers: true });
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -8708,6 +8883,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init({pointers: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -8891,7 +9067,7 @@ var steelseries = (function () {
                 value = newValue;
                 this.repaint();
             }
-
+            return this;
         };
 
         this.getValue = function () {
@@ -9269,6 +9445,7 @@ var steelseries = (function () {
                 start = new Date().getTime() - currentMilliSeconds;
                 tickTock();
             }
+            return this;
         };
 
         // Stops the stopwatch
@@ -9283,6 +9460,7 @@ var steelseries = (function () {
                 calculateAngles();
                 this.repaint();
             }
+            return this;
         };
 
         // Resets the stopwatch
@@ -9295,6 +9473,7 @@ var steelseries = (function () {
             start = new Date().getTime();
             calculateAngles();
             this.repaint();
+            return this;
         };
 
         // Laptimer, stop/restart stopwatch
@@ -9304,6 +9483,7 @@ var steelseries = (function () {
             } else if (lap) {
                 lap = false;
             }
+            return this;
         };
 
         this.getMeasuredTime = function () {
@@ -9315,7 +9495,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
-
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -9323,6 +9503,7 @@ var steelseries = (function () {
             backgroundColor = newBackgroundColor;
             init({ background: true });
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -9330,6 +9511,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setPointerColor = function (newPointerColor) {
@@ -9337,6 +9519,7 @@ var steelseries = (function () {
             pointerColor = newPointerColor;
             init({pointers: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -9772,7 +9955,7 @@ var steelseries = (function () {
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
-            value = newValue;
+            value = parseFloat(newValue);
             this.repaint();
         };
 
@@ -9781,6 +9964,7 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : newValue),
                 gauge = this,
                 time;
@@ -9805,6 +9989,7 @@ var steelseries = (function () {
 
                 tween.start();
             }
+            return this;
         };
 
         this.setFrameDesign = function (newFrameDesign) {
@@ -9812,6 +9997,7 @@ var steelseries = (function () {
             frameDesign = newFrameDesign;
             init({frame: true});
             this.repaint();
+            return this;
         };
 
         this.setBackgroundColor = function (newBackgroundColor) {
@@ -9823,6 +10009,7 @@ var steelseries = (function () {
                   pointer: true
                 });
             this.repaint();
+            return this;
         };
 
         this.setForegroundType = function (newForegroundType) {
@@ -9830,6 +10017,7 @@ var steelseries = (function () {
             foregroundType = newForegroundType;
             init({foreground: true});
             this.repaint();
+            return this;
         };
 
         this.setLcdColor = function (newLcdColor) {
@@ -9837,6 +10025,7 @@ var steelseries = (function () {
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
+            return this;
         };
 
         this.repaint = function () {
@@ -10850,6 +11039,7 @@ var steelseries = (function () {
         this.setOn = function (on) {
             lightOn = on;
             this.repaint();
+            return this;
         };
 
         this.isOn = function () {
@@ -10859,6 +11049,7 @@ var steelseries = (function () {
         this.setAlpha = function (a) {
             alpha = a;
             this.repaint();
+            return this;
         };
 
         this.getAlpha = function () {
@@ -10869,6 +11060,7 @@ var steelseries = (function () {
             glowColor = color;
             init();
             this.repaint();
+            return this;
         };
 
         this.getGlowColor = function () {
@@ -11097,16 +11289,17 @@ var steelseries = (function () {
                 };
                 tween.start();
             }
-
             this.repaint();
+            return this;
         };
 
         this.setValue = function (newVal) {
-            value = newVal;
+            value = parseFloat(newVal);
             if (value < 0) {
                 value = 0;
             }
             this.repaint();
+            return this;
         };
 
         this.getValue = function () {
