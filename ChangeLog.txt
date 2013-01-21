@@ -1,5 +1,12 @@
 Main Changes
 
+v0.12.1
+> Radial, radialBargraph, RadialVertical, linear, linearBargraph, windDirection
+  * Added initialisation parameter 'fullScaleDeflectionTime' default 2.5 seconds
+  * Change deflection time to be a proportion of fullScaleDeflectionTime, with a minimum value of fullScaleDeflectionTime/5
+> WindDirection
+  * Fixed cut'n'paste error in setValueAnimatedAverage to affected value=360
+
 v0.12.0
 > Linear & LinearBargraph
   * Fixed bug that stopped min/max/threshold indicators displaying correctly on gauges with

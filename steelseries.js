@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 27.12.2012
- * Revision      : 0.12.0
+ * Last modified : 12.01.2013
+ * Revision      : 0.12.1
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -76,7 +76,8 @@ var steelseries = (function () {
             trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED, steelseries.LedColor.GREEN_LED, steelseries.LedColor.CYAN_LED] : parameters.trendColors),
             useOdometer = (undefined === parameters.useOdometer ? false : parameters.useOdometer),
             odometerParams = (undefined === parameters.odometerParams ? {} : parameters.odometerParams),
-            odometerUseValue = (undefined === parameters.odometerUseValue ? false : parameters.odometerUseValue);
+            odometerUseValue = (undefined === parameters.odometerUseValue ? false : parameters.odometerUseValue),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Create audio tag for alarm sound
         var audioElement;
@@ -804,7 +805,8 @@ var steelseries = (function () {
         this.setValueAnimated = function (newValue) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
-                gauge = this;
+                gauge = this,
+                time;
 
             if (value !== targetValue) {
                 if (undefined !== tween) {
@@ -812,8 +814,10 @@ var steelseries = (function () {
                         tween.stop();
                     }
                 }
-
-                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                time = fullScaleDeflectionTime * Math.abs(targetValue - value) / (maxValue - minValue);
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
 
                 tween.onMotionChanged = function (event) {
@@ -1209,7 +1213,8 @@ var steelseries = (function () {
             useValueGradient = (undefined === parameters.useValueGradient ? false : parameters.useValueGradient),
             tickLabelOrientation = (undefined === parameters.tickLabelOrientation ? (gaugeType === steelseries.GaugeType.TYPE1 ? steelseries.TickLabelOrientation.TANGENT : steelseries.TickLabelOrientation.NORMAL) : parameters.tickLabelOrientation),
             trendVisible = (undefined === parameters.trendVisible ? false : parameters.trendVisible),
-            trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED, steelseries.LedColor.GREEN_LED, steelseries.LedColor.CYAN_LED] : parameters.trendColors);
+            trendColors = (undefined === parameters.trendColors ? [steelseries.LedColor.RED_LED, steelseries.LedColor.GREEN_LED, steelseries.LedColor.CYAN_LED] : parameters.trendColors),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -1816,7 +1821,8 @@ var steelseries = (function () {
         this.setValueAnimated = function (newValue) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
-                gauge = this;
+                gauge = this,
+                time;
 
             if (value !== targetValue) {
                 if (undefined !== tween) {
@@ -1825,7 +1831,10 @@ var steelseries = (function () {
                     }
                 }
 
-                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                time = fullScaleDeflectionTime * Math.abs(targetValue - value) / (maxValue - minValue);
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, this.value, targetValue, 1);
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
@@ -2150,7 +2159,8 @@ var steelseries = (function () {
             foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible),
             labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat),
             playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm),
-            alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
+            alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -2740,7 +2750,8 @@ var steelseries = (function () {
         this.setValueAnimated = function (newValue) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
-                gauge = this;
+                gauge = this,
+                time;
 
             if (value !== targetValue) {
                 if (undefined !==  tween) {
@@ -2749,7 +2760,10 @@ var steelseries = (function () {
                     }
                 }
 
-                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                time = fullScaleDeflectionTime * Math.abs(targetValue - value) / (maxValue - minValue);
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
@@ -2990,7 +3004,8 @@ var steelseries = (function () {
             labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat),
             foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible),
             playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm),
-            alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound);
+            alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -3846,8 +3861,11 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            var targetValue,
+                gauge = this,
+                time;
             newValue = parseFloat(newValue);
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
+            targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 if (undefined !== tween) {
                     if (tween.playing) {
@@ -3855,9 +3873,10 @@ var steelseries = (function () {
                     }
                 }
 
-                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
-
-                var gauge = this;
+                time = fullScaleDeflectionTime * Math.abs(targetValue - value) / (maxValue - minValue);
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
 
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
@@ -4166,7 +4185,8 @@ var steelseries = (function () {
             playAlarm = (undefined === parameters.playAlarm ? false : parameters.playAlarm),
             alarmSound = (undefined === parameters.alarmSound ? false : parameters.alarmSound),
             valueGradient = (undefined === parameters.valueGradient ? null : parameters.valueGradient),
-            useValueGradient = (undefined === parameters.useValueGradient ? false : parameters.useValueGradient);
+            useValueGradient = (undefined === parameters.useValueGradient ? false : parameters.useValueGradient),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Create audio tag for alarm sound
         if (playAlarm && alarmSound !== false) {
@@ -5053,9 +5073,11 @@ var steelseries = (function () {
         };
 
         this.setValueAnimated = function (newValue) {
+            var targetValue,
+                gauge = this,
+                time;
             newValue = parseFloat(newValue);
-            var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
-                gauge = this;
+            targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
 
             if (value !== targetValue) {
                 if (undefined !== tween) {
@@ -5064,7 +5086,10 @@ var steelseries = (function () {
                     }
                 }
 
-                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
+                time = fullScaleDeflectionTime * Math.abs(targetValue - value) / (maxValue - minValue);
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, time);
+                //tween = new Tween({}, '', Tween.regularEaseInOut, value, targetValue, 1);
                 //tween = new Tween(new Object(), '', Tween.strongEaseInOut, value, targetValue, 1);
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
@@ -6999,7 +7024,8 @@ var steelseries = (function () {
             area = (undefined === parameters.area ? null : parameters.area),
             lcdTitleStrings = (undefined === parameters.lcdTitleStrings ? ["Latest", "Average"] : parameters.lcdTitleStrings),
             titleString = (undefined === parameters.titleString ? "" : parameters.titleString),
-            useColorLabels = (undefined === parameters.useColorLabels ? false : parameters.useColorLabels);
+            useColorLabels = (undefined === parameters.useColorLabels ? false : parameters.useColorLabels),
+            fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         var tweenLatest;
         var tweenAverage;
@@ -7469,13 +7495,15 @@ var steelseries = (function () {
         };
 
         this.setValueAnimatedLatest = function (newValue) {
+            var targetValue,
+                gauge = this,
+                diff,
+                time;
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
             newValue = parseFloat(newValue);
-            var targetValue = (newValue === 360 ? 360 : newValue % 360),
-                gauge = this,
-                diff;
+            targetValue = (newValue === 360 ? 360 : newValue % 360);
 
             if (valueLatest !== targetValue) {
 
@@ -7486,7 +7514,10 @@ var steelseries = (function () {
                 }
 
                 diff = getShortestAngle(valueLatest, targetValue);
-                tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, 2.5);
+
+                time = fullScaleDeflectionTime * Math.abs(diff) / 180;
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, time);
                 tweenLatest.onMotionChanged = function (event) {
                     valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
                     if (!repainting) {
@@ -7511,13 +7542,15 @@ var steelseries = (function () {
         };
 
         this.setValueAnimatedAverage = function (newValue) {
+            var targetValue,
+                gauge = this,
+                diff, time;
             // Actually need to handle 0-360 rather than 0-359
             // 1-360 are used for directions
             // 0 is used as a special case to indicate 'calm'
             newValue = parseFloat(newValue);
-            var targetValue = (newValue === 360 ? 360 : newValue % 360);
+            targetValue = (newValue === 360 ? 360 : newValue % 360);
             if (valueAverage !== newValue) {
-                var gauge = this;
 
                 if (undefined !== tweenAverage) {
                     if (tweenAverage.playing) {
@@ -7525,8 +7558,10 @@ var steelseries = (function () {
                     }
                 }
 
-                var diff = getShortestAngle(valueAverage, targetValue);
-                tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, 2.5);
+                diff = getShortestAngle(valueAverage, targetValue);
+                time = fullScaleDeflectionTime * Math.abs(diff) / 180;
+                time = Math.max(time, fullScaleDeflectionTime / 5);
+                tweenAverage = new Tween({}, '', Tween.regularEaseInOut, valueAverage, valueAverage + diff, time);
                 tweenAverage.onMotionChanged = function (event) {
                     valueAverage = event.target._pos === 360 ? 360 : event.target._pos % 360;
                     if (!repainting) {
@@ -7536,7 +7571,7 @@ var steelseries = (function () {
                 };
                 // Use onMotionFinished to set end value in case targetValue = 360
                 if (targetValue === 360) {
-                    tweenLatest.onMotionFinished = function (event) {
+                    tweenAverage.onMotionFinished = function (event) {
                         valueAverage = targetValue;
                         if (!repainting) {
                             repainting = true;
