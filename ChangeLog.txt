@@ -1,7 +1,47 @@
 Main Changes
 
+v0.13.0
+> Radial, RadialBargraph
+  * Added an additional "user" LED...
+    Initialisation parameters: userLedColor, userLedVisible [def: false]
+    Additional methods: .setUserLedColor(), .toggleUserLed(), .setUserLedOnOff(), .blinkUserLed()
+> RadialBargraph
+  * Fixed trend indicator display bug
+> Radial, RadialBargraph, RadialVertical, Level, Compass, WindDirection,
+> Horizon, Led, Clock, StopWatch, Altimeter
+  * Removed default 'size' value, now if no 'size' value is passed, the gauges take their size from the canvas. This
+    makes it easy to specify the gauge size from the HTML or CSS. Takes: size = min(width, height)
+> Linear, LinearBargraph, DisplaySingle, DisplayMulti,
+> TrafficLight, Lightbulb
+  * Removed default 'width' & 'height', if no values are passed, the gauges take these values from the canvas. This
+    makes it easy to specify the gauge size from the HTML or CSS.
+> Battery
+  * Removed default 'size' value, now if no 'size' value is passed, the gauge takes its size from the canvas. This
+    makes it easy to specify the gauge size from the HTML or CSS. Takes: size = canvas.width
+> Odometer
+  * Removed default 'height' value, now if no 'height' value is passed, the gauge takes its height from the canvas. This
+    makes it easy to specify the gauge size from the HTML or CSS.
+> WindDirection, Compass
+  * Added degreeScaleHalf:true|[false] parameter, this changes the gauge from using 0 -> 360 to -180 -> +180,
+    useful for apparent wind.
+  * Added pointSymbolsVisible:[true]|false parameter, useful for apparent wind, points must be hidden to show negative
+    degree values when using degreeScaleHalf
+> DisplaySingle, DisplayMulti
+  * Added headerString:'text' and headerStringVisible:true|[false] parameters, puts some static header text on
+    the display panel above the value.
+> DisplayMulti
+  * Added detailString:'text' and detailStringVisible:true|[false] parameters, adds a prefix string to the 'oldValue'
+  * Added linkAltValue:[true]|false parameter, optionally unlinks the 'altValue' so it can be set independently
+  * Added altValue:<value> parameter and setAltValue() method to set the alternative (minor) value when linkAltValue = false
+> Level, Compass
+  * Added rotateFace:true|[false] parameter, when set the indicator is fixed and the dial face rotates.
+> VerticalRadial
+  * Added steelseries.Orientation.EAST option
+> Tween
+  * fixed bug in .playing()
+
 v0.12.1
-> Radial, radialBargraph, RadialVertical, linear, linearBargraph, windDirection
+> Radial, RadialBargraph, RadialVertical, Linear, LinearBargraph, WindDirection
   * Added initialisation parameter 'fullScaleDeflectionTime' default 2.5 seconds
   * Change deflection time to be a proportion of fullScaleDeflectionTime, with a minimum value of fullScaleDeflectionTime/5
 > WindDirection

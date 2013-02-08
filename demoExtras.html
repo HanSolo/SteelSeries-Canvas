@@ -166,26 +166,34 @@
         </tr>
         <tr>
             <td width="100%">
-                <canvas id="canvasRadial1" width="201" height="201">No canvas in your browser...sorry...</canvas>
-                <canvas id="canvasRadial2" width="201" height="201"></canvas>
-                <canvas id="canvasRadial3" width="201" height="201"></canvas>
-                <canvas id="canvasRadial4" width="201" height="201"></canvas>
+                <canvas id="canvasCompass1" width="201" height="201">No canvas in your browser...sorry...</canvas>
+                <canvas id="canvasCompass2" width="201" height="201"></canvas>
+                <canvas id="canvasWindDir1" width="201" height="201"></canvas>
+                <canvas id="canvasWindDir2" width="201" height="201"></canvas>
             </td>
         </tr>
         <tr>
             <td width="100%">
+                <canvas id="canvasLeve1" width="201" height="201"></canvas>
+                <canvas id="canvasHorizon1" width="201" height="201"></canvas>
                 <canvas id="canvasClock1" width="201" height="201"></canvas>
                 <canvas id="canvasAltimeter1" width="201" height="201"></canvas>
-                <canvas id="canvasSingle1" width="120" height="50"></canvas>
-                <canvas id="canvasSingle2" width="200" height="50"></canvas>
             </td>
         </tr>
         <tr>
             <td width="100%">
+                <canvas id="canvasSingle1" width="120" height="50"></canvas>
+                <canvas id="canvasSingle2" width="200" height="50"></canvas>
                 <canvas id="canvasMulti1" width="100" height="80"></canvas>
                 <canvas id="canvasLed1" width="50" height="50"></canvas>
                 <canvas id="canvasBattery1" width="80" height="36"></canvas>
                 <canvas id="canvasOdometer1" width="100" height="40"></canvas>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <canvas id="canvasSingle3" width="120" height="50"></canvas>
+                <canvas id="canvasMulti2" width="200" height="80"></canvas>
             </td>
         </tr>
     </tbody></table>
@@ -193,42 +201,57 @@
 
 <script>
     var scroll = false;
-    var radial1;
-    var radial2;
-    var radial3;
-    var radial4;
+    var compass1;
+    var compass2;
+    var windDir1;
+    var windDir2;
+    var level1;
+    var horizon1;
     var single1;
     var single2;
+    var single3;
     var multi1;
     var led1;
     var clock1;
     var battery1;
-	var altimete1;
+	var altimeter1;
     var odometer1, n = 999997.7;
 
     function init() {
         // Initialzing gauge
-        radial1 = new steelseries.Compass('canvasRadial1', {
+        compass1 = new steelseries.Compass('canvasCompass1', {
                             size: 201
                             });
 
-        radial2 = new steelseries.WindDirection('canvasRadial2', {
+        compass2 = new steelseries.Compass('canvasCompass2', {
+                            size: 201,
+                            rotateFace: true
+                            });
+
+        windDir1 = new steelseries.WindDirection('canvasWindDir1', {
                             size: 201,
                             lcdVisible: true
                             });
 
-        radial3 = new steelseries.Level('canvasRadial3', {
+        windDir2 = new steelseries.WindDirection('canvasWindDir2', {
+                            size: 201,
+                            lcdVisible: true,
+                            degreeScaleHalf: true,
+                            pointSymbolsVisible: false
+                            });
+
+        level1 = new steelseries.Level('canvasLeve1', {
                             size: 201,
                             decimalsVisible: false
                             });
 
-        radial4 = new steelseries.Horizon('canvasRadial4', {
+        horizon1 = new steelseries.Horizon('canvasHorizon1', {
                             size: 201
                             });
 
         single1 = new steelseries.DisplaySingle('canvasSingle1', {
                             width: 120,
-                            height: 50,
+                            height: 50
                             });
 
         single2 = new steelseries.DisplaySingle('canvasSingle2', {
@@ -239,14 +262,37 @@
                             valuesNumeric: false
                             });
 
+        single3 = new steelseries.DisplaySingle('canvasSingle3', {
+                            width: 200,
+                            height: 50,
+                            unitString: "unit",
+                            unitStringVisible: true,
+                            headerString: "header",
+                            headerStringVisible: true
+                            });
+
+
         multi1 = new steelseries.DisplayMulti('canvasMulti1', {
                             width: 150,
+                            height: 80
+                            });
+
+        multi2 = new steelseries.DisplayMulti('canvasMulti2', {
+                            width: 200,
                             height: 80,
+                            unitString: "unit",
+                            unitStringVisible: true,
+                            headerString: "header",
+                            headerStringVisible: true,
+                            detailString: "detail: ",
+                            detailStringVisible: true,
+                            linkOldValue: false,
+                            oldValue: 99.9
                             });
 
         led1 = new steelseries.Led('canvasLed1', {
                             width: 50,
-                            height: 50,
+                            height: 50
                             });
 
         led1.blink(true);
@@ -265,13 +311,17 @@
         odometer1 = new steelseries.Odometer('canvasOdometer1', {});
 
         // Start the random update
-        setInterval(function(){ setRandomValue(radial1, 360); }, 3000);
-        setInterval(function(){ setDirRandomValue(radial2, 360); }, 3100);
-        setInterval(function(){ setRandomValue(radial3, 360); }, 3200);
-        setInterval(function(){ setHorRandomValue(radial4); }, 3400);
+        setInterval(function(){ setRandomValue(compass1, 360); }, 3000);
+        setInterval(function(){ setRandomValue(compass2, 360); }, 3000);
+        setInterval(function(){ setDirRandomValue(windDir1, 360); }, 3100);
+        setInterval(function(){ setDirRandomValue2(windDir2); }, 3100);
+        setInterval(function(){ setRandomValue(level1, 360); }, 3200);
+        setInterval(function(){ setHorRandomValue(horizon1); }, 3400);
         setInterval(function(){ setRandomValue2(single1, 100); }, 1500);
         setInterval(function(){ setRandomValue3(single2, 100); }, 8000);
+        setInterval(function(){ setRandomValue2(single3, 100); }, 1500);
         setInterval(function(){ setRandomValue2(multi1, 100); }, 2000);
+        setInterval(function(){ setRandomValue2(multi2, 100); }, 2000);
         setInterval(function(){ battery(); }, 200);
         setInterval(function(){ setRandomValue(altimeter1, 10000);}, 5000);
         updateOdo();
@@ -307,6 +357,11 @@
         gauge.setValueAnimatedAverage(Math.random() * range);
     }
 
+    function setDirRandomValue2(gauge) {
+        gauge.setValueAnimatedLatest(Math.random() * 360 - 180);
+        gauge.setValueAnimatedAverage(Math.random() * 360 - 180);
+    }
+
     function setHorRandomValue(gauge) {
         var pitch = Math.random() * 100 - 50;
         var roll = Math.random() * 120 - 60;
@@ -324,90 +379,112 @@
     function setFrameDesign(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "BLACK_METAL":
-                radial1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
-                radial2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
-                radial3.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
-                radial4.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                compass1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                compass2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                windDir1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                windDir2.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                level1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
+                horizon1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.BLACK_METAL);
                 break;
             case "METAL":
-                radial1.setFrameDesign(steelseries.FrameDesign.METAL);
-                radial2.setFrameDesign(steelseries.FrameDesign.METAL);
-                radial3.setFrameDesign(steelseries.FrameDesign.METAL);
-                radial4.setFrameDesign(steelseries.FrameDesign.METAL);
+                compass1.setFrameDesign(steelseries.FrameDesign.METAL);
+                compass2.setFrameDesign(steelseries.FrameDesign.METAL);
+                windDir1.setFrameDesign(steelseries.FrameDesign.METAL);
+                windDir2.setFrameDesign(steelseries.FrameDesign.METAL);
+                level1.setFrameDesign(steelseries.FrameDesign.METAL);
+                horizon1.setFrameDesign(steelseries.FrameDesign.METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.METAL);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.METAL);
                 break;
             case "SHINY_METAL":
-                radial1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
-                radial2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
-                radial3.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
-                radial4.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                compass1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                compass2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                windDir1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                windDir2.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                level1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
+                horizon1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.SHINY_METAL);
                 break;
             case "BRASS":
-                radial1.setFrameDesign(steelseries.FrameDesign.BRASS);
-                radial2.setFrameDesign(steelseries.FrameDesign.BRASS);
-                radial3.setFrameDesign(steelseries.FrameDesign.BRASS);
-                radial4.setFrameDesign(steelseries.FrameDesign.BRASS);
+                compass1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                compass2.setFrameDesign(steelseries.FrameDesign.BRASS);
+                windDir2.setFrameDesign(steelseries.FrameDesign.BRASS);
+                windDir1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                level1.setFrameDesign(steelseries.FrameDesign.BRASS);
+                horizon1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 clock1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.BRASS);
                 break;
             case "STEEL":
-                radial1.setFrameDesign(steelseries.FrameDesign.STEEL);
-                radial2.setFrameDesign(steelseries.FrameDesign.STEEL);
-                radial3.setFrameDesign(steelseries.FrameDesign.STEEL);
-                radial4.setFrameDesign(steelseries.FrameDesign.STEEL);
+                compass1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                compass2.setFrameDesign(steelseries.FrameDesign.STEEL);
+                windDir1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                windDir2.setFrameDesign(steelseries.FrameDesign.STEEL);
+                level1.setFrameDesign(steelseries.FrameDesign.STEEL);
+                horizon1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 clock1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.STEEL);
                 break;
             case "CHROME":
-                radial1.setFrameDesign(steelseries.FrameDesign.CHROME);
-                radial2.setFrameDesign(steelseries.FrameDesign.CHROME);
-                radial3.setFrameDesign(steelseries.FrameDesign.CHROME);
-                radial4.setFrameDesign(steelseries.FrameDesign.CHROME);
+                compass1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                compass2.setFrameDesign(steelseries.FrameDesign.CHROME);
+                windDir1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                windDir2.setFrameDesign(steelseries.FrameDesign.CHROME);
+                level1.setFrameDesign(steelseries.FrameDesign.CHROME);
+                horizon1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 clock1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.CHROME);
                 break;
             case "GOLD":
-                radial1.setFrameDesign(steelseries.FrameDesign.GOLD);
-                radial2.setFrameDesign(steelseries.FrameDesign.GOLD);
-                radial3.setFrameDesign(steelseries.FrameDesign.GOLD);
-                radial4.setFrameDesign(steelseries.FrameDesign.GOLD);
+                compass1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                compass2.setFrameDesign(steelseries.FrameDesign.GOLD);
+                windDir1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                windDir2.setFrameDesign(steelseries.FrameDesign.GOLD);
+                level1.setFrameDesign(steelseries.FrameDesign.GOLD);
+                horizon1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 clock1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.GOLD);
                 break;
             case "ANTHRACITE":
-                radial1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
-                radial2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
-                radial3.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
-                radial4.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                compass1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                compass2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                windDir1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                windDir2.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                level1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
+                horizon1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 clock1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.ANTHRACITE);
                 break;
             case "TILTED_GRAY":
-                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
-                radial2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
-                radial3.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
-                radial4.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                compass1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                compass2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                windDir1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                windDir2.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                level1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
+                horizon1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 clock1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.TILTED_GRAY);
                 break;
             case "TILTED_BLACK":
-                radial1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
-                radial2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
-                radial3.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
-                radial4.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                compass1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                compass2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                windDir1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                windDir2.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                level1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
+                horizon1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 clock1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.TILTED_BLACK);
                 break;
             case "GLOSSY_METAL":
-                radial1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
-                radial2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
-                radial3.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
-                radial4.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                compass1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                compass2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                windDir1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                windDir2.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                level1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
+                horizon1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
                 clock1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
                 altimeter1.setFrameDesign(steelseries.FrameDesign.GLOSSY_METAL);
                 break;
@@ -417,128 +494,164 @@
     function setBackgroundColor(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "DARK_GRAY":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
+                level1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.DARK_GRAY);
                 break;
             case "SATIN_GRAY":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
+                level1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.SATIN_GRAY);
                 break;
             case "LIGHT_GRAY":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
+                level1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.LIGHT_GRAY);
                 break;
             case "WHITE":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.WHITE);
+                level1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.WHITE);
                 break;
             case "BLACK":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BLACK);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BLACK);
                 break;
             case "BEIGE":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BEIGE);
                 break;
             case "BROWN":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BROWN);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BROWN);
                 break;
             case "RED":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.RED);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.RED);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.RED);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.RED);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.RED);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.RED);
+                level1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.RED);
                 break;
             case "GREEN":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.GREEN);
+                level1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.GREEN);
                 break;
             case "BLUE":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BLUE);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BLUE);
                 break;
             case "ANTHRACITE":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
+                level1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.ANTHRACITE);
                 break;
             case "MUD":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.MUD);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.MUD);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.MUD);
+                level1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.MUD);
                 break;
             case "PUNCHED_SHEET":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
+                level1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.PUNCHED_SHEET);
                 break;
             case "CARBON":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.CARBON);
+                level1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.CARBON);
                 break;
             case "STAINLESS":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
+                level1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.STAINLESS);
                 break;
             case "BRUSHED_METAL":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_METAL);
                 break;
             case "BRUSHED_STAINLESS":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
+                level1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.BRUSHED_STAINLESS);
                 break;
             case "TURNED":
-                radial1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
-                radial2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
-                radial3.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                compass1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                compass2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                windDir1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                windDir2.setBackgroundColor(steelseries.BackgroundColor.TURNED);
+                level1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
                 clock1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
                 altimeter1.setBackgroundColor(steelseries.BackgroundColor.TURNED);
                 break;
@@ -548,42 +661,52 @@
     function setForegroundType(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "TYPE1":
-                radial1.setForegroundType(steelseries.ForegroundType.TYPE1);
-                radial2.setForegroundType(steelseries.ForegroundType.TYPE1);
-                radial3.setForegroundType(steelseries.ForegroundType.TYPE1);
-                radial4.setForegroundType(steelseries.ForegroundType.TYPE1);
+                compass1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                compass2.setForegroundType(steelseries.ForegroundType.TYPE1);
+                windDir1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                windDir2.setForegroundType(steelseries.ForegroundType.TYPE1);
+                level1.setForegroundType(steelseries.ForegroundType.TYPE1);
+                horizon1.setForegroundType(steelseries.ForegroundType.TYPE1);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE1);
                 altimeter1.setForegroundType(steelseries.ForegroundType.TYPE1);
                 break;
             case "TYPE2":
-                radial1.setForegroundType(steelseries.ForegroundType.TYPE2);
-                radial2.setForegroundType(steelseries.ForegroundType.TYPE2);
-                radial3.setForegroundType(steelseries.ForegroundType.TYPE2);
-                radial4.setForegroundType(steelseries.ForegroundType.TYPE2);
+                compass1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                compass2.setForegroundType(steelseries.ForegroundType.TYPE2);
+                windDir1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                windDir2.setForegroundType(steelseries.ForegroundType.TYPE2);
+                level1.setForegroundType(steelseries.ForegroundType.TYPE2);
+                horizon1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 altimeter1.setForegroundType(steelseries.ForegroundType.TYPE2);
                 break;
             case "TYPE3":
-                radial1.setForegroundType(steelseries.ForegroundType.TYPE3);
-                radial2.setForegroundType(steelseries.ForegroundType.TYPE3);
-                radial3.setForegroundType(steelseries.ForegroundType.TYPE3);
-                radial4.setForegroundType(steelseries.ForegroundType.TYPE3);
+                compass1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                compass2.setForegroundType(steelseries.ForegroundType.TYPE3);
+                windDir1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                windDir2.setForegroundType(steelseries.ForegroundType.TYPE3);
+                level1.setForegroundType(steelseries.ForegroundType.TYPE3);
+                horizon1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 altimeter1.setForegroundType(steelseries.ForegroundType.TYPE3);
                 break;
             case "TYPE4":
-                radial1.setForegroundType(steelseries.ForegroundType.TYPE4);
-                radial2.setForegroundType(steelseries.ForegroundType.TYPE4);
-                radial3.setForegroundType(steelseries.ForegroundType.TYPE4);
-                radial4.setForegroundType(steelseries.ForegroundType.TYPE4);
+                compass1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                compass2.setForegroundType(steelseries.ForegroundType.TYPE4);
+                windDir1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                windDir2.setForegroundType(steelseries.ForegroundType.TYPE4);
+                level1.setForegroundType(steelseries.ForegroundType.TYPE4);
+                horizon1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 altimeter1.setForegroundType(steelseries.ForegroundType.TYPE4);
                 break;
             case "TYPE5":
-                radial1.setForegroundType(steelseries.ForegroundType.TYPE5);
-                radial2.setForegroundType(steelseries.ForegroundType.TYPE5);
-                radial3.setForegroundType(steelseries.ForegroundType.TYPE5);
-                radial4.setForegroundType(steelseries.ForegroundType.TYPE5);
+                compass1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                compass2.setForegroundType(steelseries.ForegroundType.TYPE5);
+                windDir1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                windDir2.setForegroundType(steelseries.ForegroundType.TYPE5);
+                level1.setForegroundType(steelseries.ForegroundType.TYPE5);
+                horizon1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 clock1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 altimeter1.setForegroundType(steelseries.ForegroundType.TYPE5);
                 break;
@@ -593,81 +716,107 @@
     function setPointerColor(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "RED":
-                radial1.setPointerColor(steelseries.ColorDef.RED);
-                radial2.setPointerColor(steelseries.ColorDef.RED);
-                radial3.setPointerColor(steelseries.ColorDef.RED);
+                compass1.setPointerColor(steelseries.ColorDef.RED);
+                compass2.setPointerColor(steelseries.ColorDef.RED);
+                windDir1.setPointerColor(steelseries.ColorDef.RED);
+                windDir2.setPointerColor(steelseries.ColorDef.RED);
+                level1.setPointerColor(steelseries.ColorDef.RED);
                 clock1.setPointerColor(steelseries.ColorDef.RED);
                 break;
             case "GREEN":
-                radial1.setPointerColor(steelseries.ColorDef.GREEN);
-                radial2.setPointerColor(steelseries.ColorDef.GREEN);
-                radial3.setPointerColor(steelseries.ColorDef.GREEN);
+                compass1.setPointerColor(steelseries.ColorDef.GREEN);
+                compass2.setPointerColor(steelseries.ColorDef.GREEN);
+                windDir1.setPointerColor(steelseries.ColorDef.GREEN);
+                windDir2.setPointerColor(steelseries.ColorDef.GREEN);
+                level1.setPointerColor(steelseries.ColorDef.GREEN);
                 clock1.setPointerColor(steelseries.ColorDef.GREEN);
                 break;
             case "BLUE":
-                radial1.setPointerColor(steelseries.ColorDef.BLUE);
-                radial2.setPointerColor(steelseries.ColorDef.BLUE);
-                radial3.setPointerColor(steelseries.ColorDef.BLUE);
+                compass1.setPointerColor(steelseries.ColorDef.BLUE);
+                compass2.setPointerColor(steelseries.ColorDef.BLUE);
+                windDir1.setPointerColor(steelseries.ColorDef.BLUE);
+                windDir2.setPointerColor(steelseries.ColorDef.BLUE);
+                level1.setPointerColor(steelseries.ColorDef.BLUE);
                 clock1.setPointerColor(steelseries.ColorDef.BLUE);
                 break;
             case "ORANGE":
-                radial1.setPointerColor(steelseries.ColorDef.ORANGE);
-                radial2.setPointerColor(steelseries.ColorDef.ORANGE);
-                radial3.setPointerColor(steelseries.ColorDef.ORANGE);
+                compass1.setPointerColor(steelseries.ColorDef.ORANGE);
+                compass2.setPointerColor(steelseries.ColorDef.ORANGE);
+                windDir1.setPointerColor(steelseries.ColorDef.ORANGE);
+                windDir2.setPointerColor(steelseries.ColorDef.ORANGE);
+                level1.setPointerColor(steelseries.ColorDef.ORANGE);
                 clock1.setPointerColor(steelseries.ColorDef.ORANGE);
                 break;
             case "YELLOW":
-                radial1.setPointerColor(steelseries.ColorDef.YELLOW);
-                radial2.setPointerColor(steelseries.ColorDef.YELLOW);
-                radial3.setPointerColor(steelseries.ColorDef.YELLOW);
+                compass1.setPointerColor(steelseries.ColorDef.YELLOW);
+                compass2.setPointerColor(steelseries.ColorDef.YELLOW);
+                windDir1.setPointerColor(steelseries.ColorDef.YELLOW);
+                windDir2.setPointerColor(steelseries.ColorDef.YELLOW);
+                level1.setPointerColor(steelseries.ColorDef.YELLOW);
                 clock1.setPointerColor(steelseries.ColorDef.YELLOW);
                 break;
             case "CYAN":
-                radial1.setPointerColor(steelseries.ColorDef.CYAN);
-                radial2.setPointerColor(steelseries.ColorDef.CYAN);
-                radial3.setPointerColor(steelseries.ColorDef.CYAN);
+                compass1.setPointerColor(steelseries.ColorDef.CYAN);
+                compass2.setPointerColor(steelseries.ColorDef.CYAN);
+                windDir1.setPointerColor(steelseries.ColorDef.CYAN);
+                windDir2.setPointerColor(steelseries.ColorDef.CYAN);
+                level1.setPointerColor(steelseries.ColorDef.CYAN);
                 clock1.setPointerColor(steelseries.ColorDef.CYAN);
                 break;
             case "MAGENTA":
-                radial1.setPointerColor(steelseries.ColorDef.MAGENTA);
-                radial2.setPointerColor(steelseries.ColorDef.MAGENTA);
-                radial3.setPointerColor(steelseries.ColorDef.MAGENTA);
+                compass1.setPointerColor(steelseries.ColorDef.MAGENTA);
+                compass2.setPointerColor(steelseries.ColorDef.MAGENTA);
+                windDir1.setPointerColor(steelseries.ColorDef.MAGENTA);
+                windDir2.setPointerColor(steelseries.ColorDef.MAGENTA);
+                level1.setPointerColor(steelseries.ColorDef.MAGENTA);
                 clock1.setPointerColor(steelseries.ColorDef.MAGENTA);
                 break;
             case "WHITE":
-                radial1.setPointerColor(steelseries.ColorDef.WHITE);
-                radial2.setPointerColor(steelseries.ColorDef.WHITE);
-                radial3.setPointerColor(steelseries.ColorDef.WHITE);
+                compass1.setPointerColor(steelseries.ColorDef.WHITE);
+                compass2.setPointerColor(steelseries.ColorDef.WHITE);
+                windDir1.setPointerColor(steelseries.ColorDef.WHITE);
+                windDir2.setPointerColor(steelseries.ColorDef.WHITE);
+                level1.setPointerColor(steelseries.ColorDef.WHITE);
                 clock1.setPointerColor(steelseries.ColorDef.WHITE);
                 break;
             case "GRAY":
-                radial1.setPointerColor(steelseries.ColorDef.GRAY);
-                radial2.setPointerColor(steelseries.ColorDef.GRAY);
-                radial3.setPointerColor(steelseries.ColorDef.GRAY);
+                compass1.setPointerColor(steelseries.ColorDef.GRAY);
+                compass2.setPointerColor(steelseries.ColorDef.GRAY);
+                windDir1.setPointerColor(steelseries.ColorDef.GRAY);
+                windDir2.setPointerColor(steelseries.ColorDef.GRAY);
+                level1.setPointerColor(steelseries.ColorDef.GRAY);
                 clock1.setPointerColor(steelseries.ColorDef.GRAY);
                 break;
             case "BLACK":
-                radial1.setPointerColor(steelseries.ColorDef.BLACK);
-                radial2.setPointerColor(steelseries.ColorDef.BLACK);
-                radial3.setPointerColor(steelseries.ColorDef.BLACK);
+                compass1.setPointerColor(steelseries.ColorDef.BLACK);
+                compass2.setPointerColor(steelseries.ColorDef.BLACK);
+                windDir1.setPointerColor(steelseries.ColorDef.BLACK);
+                windDir2.setPointerColor(steelseries.ColorDef.BLACK);
+                level1.setPointerColor(steelseries.ColorDef.BLACK);
                 clock1.setPointerColor(steelseries.ColorDef.BLACK);
                 break;
             case "RAITH":
-                radial1.setPointerColor(steelseries.ColorDef.RAITH);
-                radial2.setPointerColor(steelseries.ColorDef.RAITH);
-                radial3.setPointerColor(steelseries.ColorDef.RAITH);
+                compass1.setPointerColor(steelseries.ColorDef.RAITH);
+                compass2.setPointerColor(steelseries.ColorDef.RAITH);
+                windDir1.setPointerColor(steelseries.ColorDef.RAITH);
+                windDir2.setPointerColor(steelseries.ColorDef.RAITH);
+                level1.setPointerColor(steelseries.ColorDef.RAITH);
                 clock1.setPointerColor(steelseries.ColorDef.RAITH);
                 break;
             case "GREEN_LCD":
-                radial1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
-                radial2.setPointerColor(steelseries.ColorDef.GREEN_LCD);
-                radial3.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                compass1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                compass2.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                windDir1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                windDir2.setPointerColor(steelseries.ColorDef.GREEN_LCD);
+                level1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
                 clock1.setPointerColor(steelseries.ColorDef.GREEN_LCD);
                 break;
             case "JUG_GREEN":
-                radial1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
-                radial2.setPointerColor(steelseries.ColorDef.JUG_GREEN);
-                radial3.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                compass1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                compass2.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                windDir1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                windDir2.setPointerColor(steelseries.ColorDef.JUG_GREEN);
+                level1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
                 clock1.setPointerColor(steelseries.ColorDef.JUG_GREEN);
                 break;
         }
@@ -676,70 +825,102 @@
     function setPointerType(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "TYPE1":
-                radial1.setPointerType(steelseries.PointerType.TYPE1);
-                radial2.setPointerType(steelseries.PointerType.TYPE1);
+                compass1.setPointerType(steelseries.PointerType.TYPE1);
+                compass2.setPointerType(steelseries.PointerType.TYPE1);
+                windDir1.setPointerType(steelseries.PointerType.TYPE1);
+                windDir2.setPointerType(steelseries.PointerType.TYPE1);
                 clock1.setPointerType(steelseries.PointerType.TYPE1);
                 break;
             case "TYPE2":
-                radial1.setPointerType(steelseries.PointerType.TYPE2);
-                radial2.setPointerType(steelseries.PointerType.TYPE2);
+                compass1.setPointerType(steelseries.PointerType.TYPE2);
+                compass2.setPointerType(steelseries.PointerType.TYPE2);
+                windDir1.setPointerType(steelseries.PointerType.TYPE2);
+                windDir2.setPointerType(steelseries.PointerType.TYPE2);
                 clock1.setPointerType(steelseries.PointerType.TYPE2);
                 break;
             case "TYPE3":
-                radial1.setPointerType(steelseries.PointerType.TYPE3);
-                radial2.setPointerType(steelseries.PointerType.TYPE3);
+                compass1.setPointerType(steelseries.PointerType.TYPE3);
+                compass2.setPointerType(steelseries.PointerType.TYPE3);
+                windDir1.setPointerType(steelseries.PointerType.TYPE3);
+                windDir2.setPointerType(steelseries.PointerType.TYPE3);
                 break;
             case "TYPE4":
-                radial1.setPointerType(steelseries.PointerType.TYPE4);
-                radial2.setPointerType(steelseries.PointerType.TYPE4);
+                compass1.setPointerType(steelseries.PointerType.TYPE4);
+                compass2.setPointerType(steelseries.PointerType.TYPE4);
+                windDir1.setPointerType(steelseries.PointerType.TYPE4);
+                windDir2.setPointerType(steelseries.PointerType.TYPE4);
                 break;
             case "TYPE5":
-                radial1.setPointerType(steelseries.PointerType.TYPE5);
-                radial2.setPointerType(steelseries.PointerType.TYPE5);
+                compass1.setPointerType(steelseries.PointerType.TYPE5);
+                compass2.setPointerType(steelseries.PointerType.TYPE5);
+                windDir1.setPointerType(steelseries.PointerType.TYPE5);
+                windDir2.setPointerType(steelseries.PointerType.TYPE5);
                 break;
             case "TYPE6":
-                radial1.setPointerType(steelseries.PointerType.TYPE6);
-                radial2.setPointerType(steelseries.PointerType.TYPE6);
+                compass1.setPointerType(steelseries.PointerType.TYPE6);
+                compass2.setPointerType(steelseries.PointerType.TYPE6);
+                windDir1.setPointerType(steelseries.PointerType.TYPE6);
+                windDir1.setPointerType(steelseries.PointerType.TYPE6);
                 break;
             case "TYPE7":
-                radial1.setPointerType(steelseries.PointerType.TYPE7);
-                radial2.setPointerType(steelseries.PointerType.TYPE7);
+                compass1.setPointerType(steelseries.PointerType.TYPE7);
+                compass2.setPointerType(steelseries.PointerType.TYPE7);
+                windDir1.setPointerType(steelseries.PointerType.TYPE7);
+                windDir2.setPointerType(steelseries.PointerType.TYPE7);
                 break;
             case "TYPE8":
-                radial1.setPointerType(steelseries.PointerType.TYPE8);
-                radial2.setPointerType(steelseries.PointerType.TYPE8);
+                compass1.setPointerType(steelseries.PointerType.TYPE8);
+                compass2.setPointerType(steelseries.PointerType.TYPE8);
+                windDir1.setPointerType(steelseries.PointerType.TYPE8);
+                windDir2.setPointerType(steelseries.PointerType.TYPE8);
                 break;
             case "TYPE9":
-                radial1.setPointerType(steelseries.PointerType.TYPE9);
-                radial2.setPointerType(steelseries.PointerType.TYPE9);
+                compass1.setPointerType(steelseries.PointerType.TYPE9);
+                compass2.setPointerType(steelseries.PointerType.TYPE9);
+                windDir1.setPointerType(steelseries.PointerType.TYPE9);
+                windDir2.setPointerType(steelseries.PointerType.TYPE9);
                 break;
             case "TYPE10":
-                radial1.setPointerType(steelseries.PointerType.TYPE10);
-                radial2.setPointerType(steelseries.PointerType.TYPE10);
+                compass1.setPointerType(steelseries.PointerType.TYPE10);
+                compass2.setPointerType(steelseries.PointerType.TYPE10);
+                windDir1.setPointerType(steelseries.PointerType.TYPE10);
+                windDir2.setPointerType(steelseries.PointerType.TYPE10);
                 break;
             case "TYPE11":
-                radial1.setPointerType(steelseries.PointerType.TYPE11);
-                radial2.setPointerType(steelseries.PointerType.TYPE11);
+                compass1.setPointerType(steelseries.PointerType.TYPE11);
+                compass2.setPointerType(steelseries.PointerType.TYPE11);
+                windDir1.setPointerType(steelseries.PointerType.TYPE11);
+                windDir2.setPointerType(steelseries.PointerType.TYPE11);
                 break;
             case "TYPE12":
-                radial1.setPointerType(steelseries.PointerType.TYPE12);
-                radial2.setPointerType(steelseries.PointerType.TYPE12);
+                compass1.setPointerType(steelseries.PointerType.TYPE12);
+                compass2.setPointerType(steelseries.PointerType.TYPE12);
+                windDir1.setPointerType(steelseries.PointerType.TYPE12);
+                windDir2.setPointerType(steelseries.PointerType.TYPE12);
                 break;
             case "TYPE13":
-                radial1.setPointerType(steelseries.PointerType.TYPE13);
-                radial2.setPointerType(steelseries.PointerType.TYPE13);
+                compass1.setPointerType(steelseries.PointerType.TYPE13);
+                compass2.setPointerType(steelseries.PointerType.TYPE13);
+                windDir1.setPointerType(steelseries.PointerType.TYPE13);
+                windDir2.setPointerType(steelseries.PointerType.TYPE13);
                 break;
             case "TYPE14":
-                radial1.setPointerType(steelseries.PointerType.TYPE14);
-                radial2.setPointerType(steelseries.PointerType.TYPE14);
+                compass1.setPointerType(steelseries.PointerType.TYPE14);
+                compass2.setPointerType(steelseries.PointerType.TYPE14);
+                windDir1.setPointerType(steelseries.PointerType.TYPE14);
+                windDir2.setPointerType(steelseries.PointerType.TYPE14);
                 break;
             case "TYPE15":
-                radial1.setPointerType(steelseries.PointerType.TYPE15);
-                radial2.setPointerType(steelseries.PointerType.TYPE15);
+                compass1.setPointerType(steelseries.PointerType.TYPE15);
+                compass2.setPointerType(steelseries.PointerType.TYPE15);
+                windDir1.setPointerType(steelseries.PointerType.TYPE15);
+                windDir2.setPointerType(steelseries.PointerType.TYPE15);
                 break;
             case "TYPE16":
-                radial1.setPointerType(steelseries.PointerType.TYPE16);
-                radial2.setPointerType(steelseries.PointerType.TYPE16);
+                compass1.setPointerType(steelseries.PointerType.TYPE16);
+                compass2.setPointerType(steelseries.PointerType.TYPE16);
+                windDir1.setPointerType(steelseries.PointerType.TYPE16);
+                windDir2.setPointerType(steelseries.PointerType.TYPE16);
                 break;
         }
     }
@@ -747,168 +928,192 @@
     function setLcdColor(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "BEIGE":
-                radial2.setLcdColor(steelseries.LcdColor.BEIGE);
+                windDir1.setLcdColor(steelseries.LcdColor.BEIGE);
+                windDir2.setLcdColor(steelseries.LcdColor.BEIGE);
                 single1.setLcdColor(steelseries.LcdColor.BEIGE);
                 single2.setLcdColor(steelseries.LcdColor.BEIGE);
                 multi1.setLcdColor(steelseries.LcdColor.BEIGE);
                 altimeter1.setLcdColor(steelseries.LcdColor.BEIGE);
                 break;
             case "BLUE":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLUE);
                 break;
             case "ORANGE":
-                radial2.setLcdColor(steelseries.LcdColor.ORANGE);
+                windDir1.setLcdColor(steelseries.LcdColor.ORANGE);
+                windDir2.setLcdColor(steelseries.LcdColor.ORANGE);
                 single1.setLcdColor(steelseries.LcdColor.ORANGE);
                 single2.setLcdColor(steelseries.LcdColor.ORANGE);
                 multi1.setLcdColor(steelseries.LcdColor.ORANGE);
                 altimeter1.setLcdColor(steelseries.LcdColor.ORANGE);
                 break;
             case "RED":
-                radial2.setLcdColor(steelseries.LcdColor.RED);
+                windDir1.setLcdColor(steelseries.LcdColor.RED);
+                windDir2.setLcdColor(steelseries.LcdColor.RED);
                 single1.setLcdColor(steelseries.LcdColor.RED);
                 single2.setLcdColor(steelseries.LcdColor.RED);
                 multi1.setLcdColor(steelseries.LcdColor.RED);
                 altimeter1.setLcdColor(steelseries.LcdColor.RED);
                 break;
             case "YELLOW":
-                radial2.setLcdColor(steelseries.LcdColor.YELLOW);
+                windDir1.setLcdColor(steelseries.LcdColor.YELLOW);
+                windDir2.setLcdColor(steelseries.LcdColor.YELLOW);
                 single1.setLcdColor(steelseries.LcdColor.YELLOW);
                 single2.setLcdColor(steelseries.LcdColor.YELLOW);
                 multi1.setLcdColor(steelseries.LcdColor.YELLOW);
                 altimeter1.setLcdColor(steelseries.LcdColor.YELLOW);
                 break;
             case "WHITE":
-                radial2.setLcdColor(steelseries.LcdColor.WHITE);
+                windDir1.setLcdColor(steelseries.LcdColor.WHITE);
+                windDir2.setLcdColor(steelseries.LcdColor.WHITE);
                 single1.setLcdColor(steelseries.LcdColor.WHITE);
                 single2.setLcdColor(steelseries.LcdColor.WHITE);
                 multi1.setLcdColor(steelseries.LcdColor.WHITE);
                 altimeter1.setLcdColor(steelseries.LcdColor.WHITE);
                 break;
             case "GRAY":
-                radial2.setLcdColor(steelseries.LcdColor.GRAY);
+                windDir1.setLcdColor(steelseries.LcdColor.GRAY);
+                windDir2.setLcdColor(steelseries.LcdColor.GRAY);
                 single1.setLcdColor(steelseries.LcdColor.GRAY);
                 single2.setLcdColor(steelseries.LcdColor.GRAY);
                 multi1.setLcdColor(steelseries.LcdColor.GRAY);
                 altimeter1.setLcdColor(steelseries.LcdColor.GRAY);
                 break;
             case "BLACK":
-                radial2.setLcdColor(steelseries.LcdColor.BLACK);
+                windDir1.setLcdColor(steelseries.LcdColor.BLACK);
+                windDir2.setLcdColor(steelseries.LcdColor.BLACK);
                 single1.setLcdColor(steelseries.LcdColor.BLACK);
                 single2.setLcdColor(steelseries.LcdColor.BLACK);
                 multi1.setLcdColor(steelseries.LcdColor.BLACK);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLACK);
                 break;
             case "GREEN":
-                radial2.setLcdColor(steelseries.LcdColor.GREEN);
+                windDir1.setLcdColor(steelseries.LcdColor.GREEN);
+                windDir2.setLcdColor(steelseries.LcdColor.GREEN);
                 single1.setLcdColor(steelseries.LcdColor.GREEN);
                 single2.setLcdColor(steelseries.LcdColor.GREEN);
                 multi1.setLcdColor(steelseries.LcdColor.GREEN);
                 altimeter1.setLcdColor(steelseries.LcdColor.GREEN);
                 break;
             case "BLUE2":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE2);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE2);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE2);
                 single1.setLcdColor(steelseries.LcdColor.BLUE2);
                 single2.setLcdColor(steelseries.LcdColor.BLUE2);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE2);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLUE2);
                 break;
             case "BLUE_BLACK":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLUE_BLACK);
                 break;
             case "BLUE_DARKBLUE":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLUE_DARKBLUE);
                 break;
             case "BLUE_GRAY":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLUE_GRAY);
                  break;
             case "STANDARD":
-                radial2.setLcdColor(steelseries.LcdColor.STANDARD);
+                windDir1.setLcdColor(steelseries.LcdColor.STANDARD);
+                windDir2.setLcdColor(steelseries.LcdColor.STANDARD);
                 single1.setLcdColor(steelseries.LcdColor.STANDARD);
                 single2.setLcdColor(steelseries.LcdColor.STANDARD);
                 multi1.setLcdColor(steelseries.LcdColor.STANDARD);
                 altimeter1.setLcdColor(steelseries.LcdColor.STANDARD);
                 break;
             case "STANDARD_GREEN":
-                radial2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                windDir1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
+                windDir2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 single1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 single2.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 multi1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 altimeter1.setLcdColor(steelseries.LcdColor.STANDARD_GREEN);
                 break;
             case "BLUE_BLUE":
-                radial2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                windDir1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
+                windDir2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 single1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 single2.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 multi1.setLcdColor(steelseries.LcdColor.BLUE_BLUE);
                 break;
             case "RED_DARKRED":
-                radial2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                windDir1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
+                windDir2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 single1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 single2.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 multi1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 altimeter1.setLcdColor(steelseries.LcdColor.RED_DARKRED);
                 break;
             case "DARKBLUE":
-                radial2.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                windDir1.setLcdColor(steelseries.LcdColor.DARKBLUE);
+                windDir2.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 single1.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 single2.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 multi1.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 altimeter1.setLcdColor(steelseries.LcdColor.DARKBLUE);
                 break;
             case "LILA":
-                radial2.setLcdColor(steelseries.LcdColor.LILA);
+                windDir1.setLcdColor(steelseries.LcdColor.LILA);
+                windDir2.setLcdColor(steelseries.LcdColor.LILA);
                 single1.setLcdColor(steelseries.LcdColor.LILA);
                 single2.setLcdColor(steelseries.LcdColor.LILA);
                 multi1.setLcdColor(steelseries.LcdColor.LILA);
                 altimeter1.setLcdColor(steelseries.LcdColor.LILA);
                 break;
             case "BLACKRED":
-                radial2.setLcdColor(steelseries.LcdColor.BLACKRED);
+                windDir1.setLcdColor(steelseries.LcdColor.BLACKRED);
+                windDir2.setLcdColor(steelseries.LcdColor.BLACKRED);
                 single1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 single2.setLcdColor(steelseries.LcdColor.BLACKRED);
                 multi1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 altimeter1.setLcdColor(steelseries.LcdColor.BLACKRED);
                 break;
             case "DARKGREEN":
-                radial2.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                windDir1.setLcdColor(steelseries.LcdColor.DARKGREEN);
+                windDir2.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 single2.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 multi1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 altimeter1.setLcdColor(steelseries.LcdColor.DARKGREEN);
                 break;
             case "AMBER":
-                radial2.setLcdColor(steelseries.LcdColor.AMBER);
+                windDir1.setLcdColor(steelseries.LcdColor.AMBER);
+                windDir2.setLcdColor(steelseries.LcdColor.AMBER);
                 single1.setLcdColor(steelseries.LcdColor.AMBER);
                 single2.setLcdColor(steelseries.LcdColor.AMBER);
                 multi1.setLcdColor(steelseries.LcdColor.AMBER);
                 altimeter1.setLcdColor(steelseries.LcdColor.AMBER);
                 break;
             case "LIGHTBLUE":
-                radial2.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
+                windDir1.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
+                windDir2.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
                 single1.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
                 single2.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
                 multi1.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
                 altimeter1.setLcdColor(steelseries.LcdColor.LIGHTBLUE);
                 break;
 	        case "SECTIONS":
-	            radial2.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            windDir1.setLcdColor(steelseries.LcdColor.SECTIONS);
+	            windDir2.setLcdColor(steelseries.LcdColor.SECTIONS);
 	            single1.setLcdColor(steelseries.LcdColor.SECTIONS);
 	            single2.setLcdColor(steelseries.LcdColor.SECTIONS);
 	            multi1.setLcdColor(steelseries.LcdColor.SECTIONS);
@@ -946,52 +1151,68 @@
     function setPointerAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "TYPE1":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE1);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE1);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE1);
                 break;
             case "TYPE2":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE2);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE2);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE2);
                 break;
             case "TYPE3":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE3);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE3);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE3);
                 break;
             case "TYPE4":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE4);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE4);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE4);
                 break;
             case "TYPE5":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE5);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE5);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE5);
                 break;
             case "TYPE6":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE6);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE6);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE6);
                 break;
             case "TYPE7":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE7);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE7);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE7);
                 break;
             case "TYPE8":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE8);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE8);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE8);
                 break;
             case "TYPE9":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE9);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE9);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE9);
                 break;
             case "TYPE10":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE10);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE10);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE10);
                 break;
             case "TYPE11":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE11);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE11);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE11);
                 break;
             case "TYPE12":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE12);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE12);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE12);
                 break;
             case "TYPE13":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE13);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE13);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE13);
                 break;
             case "TYPE14":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE14);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE14);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE14);
                 break;
             case "TYPE15":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE15);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE15);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE15);
                 break;
             case "TYPE16":
-                radial2.setPointerTypeAverage(steelseries.PointerType.TYPE16);
+                windDir1.setPointerTypeAverage(steelseries.PointerType.TYPE16);
+                windDir2.setPointerTypeAverage(steelseries.PointerType.TYPE16);
                 break;
         }
     }
@@ -999,43 +1220,56 @@
     function setPointerColorAvg(sel) {
         switch(sel.options[sel.selectedIndex].value) {
             case "RED":
-                radial2.setPointerColorAverage(steelseries.ColorDef.RED);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.RED);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.RED);
                 break;
             case "GREEN":
-                radial2.setPointerColorAverage(steelseries.ColorDef.GREEN);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.GREEN);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.GREEN);
                 break;
             case "BLUE":
-                radial2.setPointerColorAverage(steelseries.ColorDef.BLUE);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.BLUE);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.BLUE);
                 break;
             case "ORANGE":
-                radial2.setPointerColorAverage(steelseries.ColorDef.ORANGE);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.ORANGE);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.ORANGE);
                 break;
             case "YELLOW":
-                radial2.setPointerColorAverage(steelseries.ColorDef.YELLOW);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.YELLOW);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.YELLOW);
                 break;
             case "CYAN":
-                radial2.setPointerColorAverage(steelseries.ColorDef.CYAN);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.CYAN);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.CYAN);
                 break;
             case "MAGENTA":
-                radial2.setPointerColorAverage(steelseries.ColorDef.MAGENTA);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.MAGENTA);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.MAGENTA);
                 break;
             case "WHITE":
-                radial2.setPointerColorAverage(steelseries.ColorDef.WHITE);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.WHITE);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.WHITE);
                 break;
             case "GRAY":
-                radial2.setPointerColorAverage(steelseries.ColorDef.GRAY);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.GRAY);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.GRAY);
                 break;
             case "BLACK":
-                radial2.setPointerColorAverage(steelseries.ColorDef.BLACK);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.BLACK);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.BLACK);
                 break;
             case "RAITH":
-                radial2.setPointerColorAverage(steelseries.ColorDef.RAITH);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.RAITH);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.RAITH);
                 break;
             case "GREEN_LCD":
-                radial2.setPointerColorAverage(steelseries.ColorDef.GREEN_LCD);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.GREEN_LCD);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.GREEN_LCD);
                 break;
             case "JUG_GREEN":
-                radial2.setPointerColorAverage(steelseries.ColorDef.JUG_GREEN);
+                windDir1.setPointerColorAverage(steelseries.ColorDef.JUG_GREEN);
+                windDir2.setPointerColorAverage(steelseries.ColorDef.JUG_GREEN);
                 break;
         }
     }

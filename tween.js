@@ -68,7 +68,7 @@ suffixe:
    A string to append to the updated property ('%','pt','em' ...).
 */
 
-Tween = function (obj, prop, func, begin, finish, duration, suffixe) {
+var Tween = function (obj, prop, func, begin, finish, duration, suffixe) {
 	this.init(obj, prop, func, begin, finish, duration, suffixe);
 };
 var t = Tween.prototype;
@@ -201,7 +201,7 @@ t.stopEnterFrame = function () {
 	this.isPlaying = false;
 };
 t.playing = function () {
-    return isPlaying();
+    return this.isPlaying;
 };
 t.continueTo = function (finish, duration) {
 	this.begin = this._pos;
