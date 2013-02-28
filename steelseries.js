@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 08.02.2013
- * Revision      : 0.13.0
+ * Last modified : 27.02.2013
+ * Revision      : 0.14.0
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -44,6 +44,7 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
@@ -443,7 +444,7 @@ var steelseries = (function () {
 
 
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
-                TEXT_WIDTH = imageWidth * 0.035;
+                TEXT_WIDTH = imageWidth * 0.04;
             }
 
             for (i = minValue; parseFloat(i.toFixed(2)) <= MAX_VALUE_ROUNDED; i += minorTickSpacing) {
@@ -808,6 +809,7 @@ var steelseries = (function () {
                 ledTimerId = setInterval(toggleAndRepaintLed, 1000);
             } else {
                 clearInterval(ledTimerId);
+                ledBuffer = ledBufferOff;
             }
         };
 
@@ -816,6 +818,7 @@ var steelseries = (function () {
                 userLedTimerId = setInterval(toggleAndRepaintUserLed, 1000);
             } else {
                 clearInterval(userLedTimerId);
+                userLedBuffer = userLedBufferOff;
             }
         };
 
@@ -834,13 +837,15 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if (value >= threshold && !ledBlinking) {
+                if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                    (value <= threshold && !ledBlinking && !thresholdRising)) {
                     ledBlinking = true;
                     blink(ledBlinking);
                     if (playAlarm) {
                         audioElement.play();
                     }
-                } else if (value < threshold) {
+                } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                           (value > threshold && ledBlinking && !thresholdRising)) {
                     ledBlinking = false;
                     blink(ledBlinking);
                     if (playAlarm) {
@@ -889,13 +894,15 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if (value >= threshold && !ledBlinking) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
                         ledBlinking = true;
                         blink(ledBlinking);
                         if (playAlarm) {
                             audioElement.play();
                         }
-                    } else if (value < threshold) {
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
                         ledBlinking = false;
                         blink(ledBlinking);
                         if (playAlarm) {
@@ -931,13 +938,13 @@ var steelseries = (function () {
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
-            minMeasuredValueVisible = visible;
+            minMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
-            maxMeasuredValueVisible = visible;
+            maxMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
@@ -1035,7 +1042,16 @@ var steelseries = (function () {
         };
 
         this.setThresholdVisible = function (visible) {
-            thresholdVisible = visible;
+            thresholdVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setThresholdRising = function (rising) {
+            thresholdRising = !!rising;
+            // reset existing threshold alerts
+            ledBlinking = !ledBlinking;
+            blink(ledBlinking);
             this.repaint();
             return this;
         };
@@ -1145,6 +1161,18 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setLedVisible = function (visible) {
+            ledVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setUserLedVisible = function (visible) {
+            userLedVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
             resetBuffers({background: true});
@@ -1160,7 +1188,7 @@ var steelseries = (function () {
         };
 
         this.setTrendVisible = function (visible) {
-            trendVisible = visible;
+            trendVisible = !!visible;
             this.repaint();
             return this;
         };
@@ -1214,10 +1242,6 @@ var steelseries = (function () {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold) {
-                    ledBlinking = false;
-                    ledBuffer = ledBufferOff;
-                }
                 mainCtx.drawImage(ledBuffer, ledPosX, ledPosY);
             }
 
@@ -1302,6 +1326,7 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
@@ -1930,6 +1955,7 @@ var steelseries = (function () {
                 ledTimerId = setInterval(toggleAndRepaintLed, 1000);
             } else {
                 clearInterval(ledTimerId);
+                ledBuffer = ledBufferOff;
             }
         };
 
@@ -1938,6 +1964,7 @@ var steelseries = (function () {
                 userLedTimerId = setInterval(toggleAndRepaintUserLed, 1000);
             } else {
                 clearInterval(userLedTimerId);
+                userLedBuffer = userLedBufferOff;
             }
         };
 
@@ -1975,13 +2002,15 @@ var steelseries = (function () {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
-                if (value >= threshold && !ledBlinking) {
+                if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                    (value <= threshold && !ledBlinking && !thresholdRising)) {
                     ledBlinking = true;
                     blink(ledBlinking);
                     if (playAlarm) {
                         audioElement.play();
                     }
-                } else if (value < threshold) {
+                } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                           (value > threshold && ledBlinking && !thresholdRising)) {
                     ledBlinking = false;
                     blink(ledBlinking);
                     if (playAlarm) {
@@ -2016,13 +2045,15 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if (value >= threshold && !ledBlinking) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
                         ledBlinking = true;
                         blink(ledBlinking);
                         if (playAlarm) {
                             audioElement.play();
                         }
-                    } else if (value < threshold) {
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
                         ledBlinking = false;
                         blink(ledBlinking);
                         if (playAlarm) {
@@ -2124,6 +2155,18 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setLedVisible = function (visible) {
+            ledVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setUserLedVisible = function (visible) {
+            userLedVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
             resetBuffers({background: true});
@@ -2200,6 +2243,15 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setThresholdRising = function (rising) {
+            thresholdRising = !!rising;
+            // reset existing threshold alerts
+            ledBlinking = !ledBlinking;
+            blink(ledBlinking);
+            this.repaint();
+            return this;
+        };
+
         this.setTitleString = function (title) {
             titleString = title;
             resetBuffers({background: true});
@@ -2223,7 +2275,7 @@ var steelseries = (function () {
         };
 
         this.setTrendVisible = function (visible) {
-            trendVisible = visible;
+            trendVisible = !!visible;
             this.repaint();
             return this;
         };
@@ -2312,10 +2364,6 @@ var steelseries = (function () {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold) {
-                    ledBlinking = false;
-                    ledBuffer = ledBufferOff;
-                }
                 mainCtx.drawImage(ledBuffer, LED_POS_X, LED_POS_Y);
             }
 
@@ -2379,6 +2427,7 @@ var steelseries = (function () {
             ledColor = (undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor),
             ledVisible = (undefined === parameters.ledVisible ? true : parameters.ledVisible),
             thresholdVisible = (undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible),
+            thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible),
             maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
@@ -2650,7 +2699,7 @@ var steelseries = (function () {
             var MED_INNER_POINT = imageWidth * 0.415;
             var MINOR_INNER_POINT = imageWidth * 0.42;
             var TEXT_TRANSLATE_X = imageWidth * 0.48;
-            var TEXT_WIDTH = imageWidth * 0.0375;
+            var TEXT_WIDTH = imageWidth * 0.04;
             var HALF_MAX_NO_OF_MINOR_TICKS = maxNoOfMinorTicks / 2;
             var MAX_VALUE_ROUNDED = parseFloat(maxValue.toFixed(2));
             var i;
@@ -2946,6 +2995,7 @@ var steelseries = (function () {
                 ledTimerId = setInterval(toggleAndRepaintLed, 1000);
             } else {
                 clearInterval(ledTimerId);
+                ledBuffer = ledBufferOff;
             }
         };
 
@@ -2977,13 +3027,15 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if (value >= threshold && !ledBlinking) {
+                if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                    (value <= threshold && !ledBlinking && !thresholdRising)) {
                     ledBlinking = true;
                     blink(ledBlinking);
                     if (playAlarm) {
                         audioElement.play();
                     }
-                } else if (value < threshold) {
+                } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                           (value > threshold && ledBlinking && !thresholdRising)) {
                     ledBlinking = false;
                     blink(ledBlinking);
                     if (playAlarm) {
@@ -3019,13 +3071,15 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if (value >= threshold && !ledBlinking) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
                         ledBlinking = true;
                         blink(ledBlinking);
                         if (playAlarm) {
                             audioElement.play();
                         }
-                    } else if (value < threshold) {
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
                         ledBlinking = false;
                         blink(ledBlinking);
                         if (playAlarm) {
@@ -3063,19 +3117,28 @@ var steelseries = (function () {
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
-            minMeasuredValueVisible = visible;
+            minMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
-            maxMeasuredValueVisible = visible;
+            maxMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setThresholdVisible = function (visible) {
-            thresholdVisible = visible;
+            thresholdVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setThresholdRising = function (rising) {
+            thresholdRising = !!rising;
+            // reset existing threshold alerts
+            ledBlinking = !ledBlinking;
+            blink(ledBlinking);
             this.repaint();
             return this;
         };
@@ -3136,6 +3199,12 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setLedVisible = function (visible) {
+            ledVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
         this.repaint = function () {
             if (!initialized) {
                 init({frame: true,
@@ -3158,10 +3227,6 @@ var steelseries = (function () {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold) {
-                    ledBlinking = false;
-                    ledBuffer = ledBufferOff;
-                }
                 mainCtx.drawImage(ledBuffer, ledPosX, ledPosY);
             }
 
@@ -3259,6 +3324,7 @@ var steelseries = (function () {
             ledColor = (undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor),
             ledVisible = (undefined === parameters.ledVisible ? true : parameters.ledVisible),
             thresholdVisible = (undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible),
+            thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible),
             maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible),
             labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat),
@@ -3802,6 +3868,7 @@ var steelseries = (function () {
                 ledTimerId = setInterval(toggleAndRepaintLed, 1000);
             } else {
                 clearInterval(ledTimerId);
+                ledBuffer = ledBufferOff;
             }
         };
 
@@ -4103,13 +4170,15 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if (value >= threshold && !ledBlinking) {
+                if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                    (value <= threshold && !ledBlinking && !thresholdRising)) {
                     ledBlinking = true;
                     blink(ledBlinking);
                     if (playAlarm) {
                         audioElement.play();
                     }
-                } else if (value < threshold) {
+                } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                           (value > threshold && ledBlinking && !thresholdRising)) {
                     ledBlinking = false;
                     blink(ledBlinking);
                     if (playAlarm) {
@@ -4151,13 +4220,15 @@ var steelseries = (function () {
                         minMeasuredValue = value;
                     }
 
-                    if (value >= threshold && !ledBlinking) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
                         ledBlinking = true;
                         blink(ledBlinking);
                         if (playAlarm) {
                             audioElement.play();
                         }
-                    } else if (value < threshold) {
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
                         ledBlinking = false;
                         blink(ledBlinking);
                         if (playAlarm) {
@@ -4188,19 +4259,38 @@ var steelseries = (function () {
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
-            minMeasuredValueVisible = visible;
+            minMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
-            maxMeasuredValueVisible = visible;
+            maxMeasuredValueVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setThreshold = function (threshVal) {
+            threshVal = parseFloat(threshVal);
+            var targetValue = (threshVal < minValue ? minValue : (threshVal > maxValue ? maxValue : threshVal));
+            threshold = targetValue;
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
 
         this.setThresholdVisible = function (visible) {
-            thresholdVisible = visible;
+            thresholdVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setThresholdRising = function (rising) {
+            thresholdRising = !!rising;
+            // reset existing threshold alerts
+            ledBlinking = !ledBlinking;
+            blink(ledBlinking);
             this.repaint();
             return this;
         };
@@ -4239,6 +4329,12 @@ var steelseries = (function () {
             resetBuffers({led: true});
             ledColor = newLedColor;
             init({led: true});
+            this.repaint();
+            return this;
+        };
+
+        this.setLedVisible = function (visible) {
+            ledVisible = !!visible;
             this.repaint();
             return this;
         };
@@ -4319,16 +4415,6 @@ var steelseries = (function () {
             return maxValue;
         };
 
-        this.setThreshold = function (threshVal) {
-            threshVal = parseFloat(threshVal);
-            var targetValue = (threshVal < minValue ? minValue : (threshVal > maxValue ? maxValue : threshVal));
-            threshold = targetValue;
-            resetBuffers({background: true});
-            init({background: true});
-            this.repaint();
-            return this;
-        };
-
         this.repaint = function () {
             if (!initialized) {
                 init({frame: true,
@@ -4355,10 +4441,6 @@ var steelseries = (function () {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold) {
-                    ledBlinking = false;
-                    ledBuffer = ledBufferOff;
-                }
                 mainCtx.drawImage(ledBuffer, ledPosX, ledPosY);
             }
 
@@ -4442,6 +4524,7 @@ var steelseries = (function () {
             ledColor = (undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor),
             ledVisible = (undefined === parameters.ledVisible ? true : parameters.ledVisible),
             thresholdVisible = (undefined === parameters.thresholdVisible ? true : parameters.thresholdVisible),
+            thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             minMeasuredValueVisible = (undefined === parameters.minMeasuredValueVisible ? false : parameters.minMeasuredValueVisible),
             maxMeasuredValueVisible = (undefined === parameters.maxMeasuredValueVisible ? false : parameters.maxMeasuredValueVisible),
             labelNumberFormat = (undefined === parameters.labelNumberFormat ? steelseries.LabelNumberFormat.STANDARD : parameters.labelNumberFormat),
@@ -5042,6 +5125,7 @@ var steelseries = (function () {
                 ledTimerId = setInterval(toggleAndRepaintLed, 1000);
             } else {
                 clearInterval(ledTimerId);
+                ledBuffer = ledBufferOff;
             }
         };
 
@@ -5319,13 +5403,15 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if (value >= threshold && !ledBlinking) {
+                if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                    (value <= threshold && !ledBlinking && !thresholdRising)) {
                     ledBlinking = true;
                     blink(ledBlinking);
                     if (playAlarm) {
                         audioElement.play();
                     }
-                } else if (value < threshold) {
+                } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                           (value > threshold && ledBlinking && !thresholdRising)) {
                     ledBlinking = false;
                     blink(ledBlinking);
                     if (playAlarm) {
@@ -5362,13 +5448,15 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if (value >= threshold && !ledBlinking) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
                         ledBlinking = true;
                         blink(ledBlinking);
                         if (playAlarm) {
                             audioElement.play();
                         }
-                    } else if (value < threshold) {
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
                         ledBlinking = false;
                         blink(ledBlinking);
                         if (playAlarm) {
@@ -5407,19 +5495,28 @@ var steelseries = (function () {
         };
 
         this.setMinMeasuredValueVisible = function (visible) {
-            minMeasuredValueVisible = visible;
+            minMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setMaxMeasuredValueVisible = function (visible) {
-            maxMeasuredValueVisible = visible;
+            maxMeasuredValueVisible = !!visible;
             this.repaint();
             return this;
         };
 
         this.setThresholdVisible = function (visible) {
-            thresholdVisible = visible;
+            thresholdVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
+        this.setThresholdRising = function (rising) {
+            thresholdRising = !!rising;
+            // reset existing threshold alerts
+            ledBlinking = !ledBlinking;
+            blink(ledBlinking);
             this.repaint();
             return this;
         };
@@ -5458,6 +5555,12 @@ var steelseries = (function () {
             resetBuffers({led: true});
             ledColor = newLedColor;
             init({led: true});
+            this.repaint();
+            return this;
+        };
+
+        this.setLedVisible = function (visible) {
+            ledVisible = !!visible;
             this.repaint();
             return this;
         };
@@ -5578,6 +5681,12 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setThresholdVisible = function (visible) {
+            thresholdVisible = !!visible;
+            this.repaint();
+            return this;
+        };
+
         this.repaint = function () {
             if (!initialized) {
                 init({frame: true,
@@ -5608,10 +5717,6 @@ var steelseries = (function () {
 
             // Draw led
             if (ledVisible) {
-                if (value < threshold) {
-                    ledBlinking = false;
-                    ledBuffer = ledBufferOff;
-                }
                 mainCtx.drawImage(ledBuffer, ledPosX, ledPosY);
             }
             var valuePos;
@@ -8676,7 +8781,7 @@ var steelseries = (function () {
         };
 
         this.setLedOnOff = function (on) {
-            if (true === on) {
+            if (!!on) {
                 ledBuffer = ledBufferOn;
             } else {
                 ledBuffer = ledBufferOff;
@@ -8685,16 +8790,8 @@ var steelseries = (function () {
             return this;
         };
 
-/*        this.blink = function(blinking) {
-            if (blinking) {
-                ledTimerId = setInterval(this.toggleLed, 1000);
-            } else {
-                clearInterval(ledTimerId);
-            }
-        };
-*/
         this.blink = function (blink) {
-            if (blink) {
+            if (!!blink) {
                 if (!ledBlinking) {
                     ledTimerId = setInterval(this.toggleLed, 1000);
                     ledBlinking = true;
@@ -8703,6 +8800,7 @@ var steelseries = (function () {
                 if (ledBlinking) {
                     clearInterval(ledTimerId);
                     ledBlinking = false;
+                    ledBuffer = ledBufferOff;
                 }
             }
             return this;
@@ -9193,6 +9291,7 @@ var steelseries = (function () {
         };
 
         this.setAutomatic = function (newValue) {
+            newValue = !!newValue;
             if (isAutomatic && !newValue) {
                 // stop the clock!
                 clearTimeout(tickTimer);
@@ -9272,7 +9371,7 @@ var steelseries = (function () {
         };
 
         this.setSecondPointerVisible = function (newValue) {
-            secondPointerVisible = newValue;
+            secondPointerVisible = !!newValue;
             this.repaint();
             return this;
         };
@@ -9282,7 +9381,7 @@ var steelseries = (function () {
         };
 
         this.setSecondMovesContinuous = function (newValue) {
-            secondMovesContinuous = newValue;
+            secondMovesContinuous = !!newValue;
             tickInterval = (secondMovesContinuous ? 100 : 1000);
             tickInterval = (secondPointerVisible ? tickInterval : 100);
             return this;
@@ -11147,7 +11246,7 @@ var steelseries = (function () {
 
         // **************   P U B L I C   M E T H O D S   ********************************
         this.setRedOn = function (on) {
-            redOn = on;
+            redOn = !!on;
             this.repaint();
         };
 
@@ -11156,7 +11255,7 @@ var steelseries = (function () {
         };
 
         this.setYellowOn = function (on) {
-            yellowOn = on;
+            yellowOn = !!on;
             this.repaint();
         };
 
@@ -11165,7 +11264,7 @@ var steelseries = (function () {
         };
 
         this.setGreenOn = function (on) {
-            greenOn = on;
+            greenOn = !!on;
             this.repaint();
         };
 
@@ -11523,7 +11622,7 @@ var steelseries = (function () {
 
         // **************   P U B L I C   M E T H O D S   ********************************
         this.setOn = function (on) {
-            lightOn = on;
+            lightOn = !!on;
             this.repaint();
             return this;
         };

@@ -1,5 +1,15 @@
 Main Changes
 
+v0.14.0
+> Radial, RadialBargraph, RadialVertical, Linear
+  * Added initialisation parameter thresholdRising [def: true], to change the threshold from the default rising
+    alert to a falling alert.
+  * Added method setThresholdRising(bool)
+> Radial, RadialBargraph
+  * Added methods to set the threshold and user LED visibility: .setLedVisible(bool), .setUserLedVisible(bool)
+> RadialVertical, Linear, LinearBargraph
+ * Added method to set the threshold LED visibility: .setLedVisible(bool)
+
 v0.13.0
 > Radial, RadialBargraph
   * Added an additional "user" LED...
