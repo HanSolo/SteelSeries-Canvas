@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 27.02.2013
- * Revision      : 0.14.0
+ * Last modified : 06.05.2013
+ * Revision      : 0.14.1
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -43,7 +43,7 @@ var steelseries = (function () {
             minValue = (undefined === parameters.minValue ? 0 : parameters.minValue),
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
-            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
@@ -1325,7 +1325,7 @@ var steelseries = (function () {
             minValue = (undefined === parameters.minValue ? 0 : parameters.minValue),
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
-            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
@@ -2296,7 +2296,7 @@ var steelseries = (function () {
         };
 
         this.repaint = function () {
-            var activeLedAngle = ((value + Math.abs(minValue)) / (maxValue - minValue)) * degAngleRange,
+            var activeLedAngle = ((value - minValue) / (maxValue - minValue)) * degAngleRange,
                 activeLedColor,
                 lastActiveLedColor = valueColor,
                 angle, i,
@@ -2411,7 +2411,7 @@ var steelseries = (function () {
             minValue = (undefined === parameters.minValue ? 0 : parameters.minValue),
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
-            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
@@ -3309,7 +3309,7 @@ var steelseries = (function () {
             minValue = (undefined === parameters.minValue ? 0 : parameters.minValue),
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
-            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -4509,7 +4509,7 @@ var steelseries = (function () {
             section = (undefined === parameters.section ? null : parameters.section),
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
-            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 : parameters.threshold),
+            threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -5276,14 +5276,14 @@ var steelseries = (function () {
             // Draw the value
             if (vertical) {
                 // Draw the inactive leds
-                inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                inactiveLeds = fullSize;
                 for (translateY = 0 ; translateY <= inactiveLeds ; translateY += ledH + 1) {
                     ctx.translate(0, -translateY);
                     ctx.drawImage(inActiveLedBuffer, ledX, ledY);
                     ctx.translate(0, translateY);
                 }
                 // Draw the active leds in dependence on the current value
-                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                activeLeds = ((value - minValue) / (maxValue - minValue)) * fullSize;
                 for (translateY = 0 ; translateY <= activeLeds ; translateY += ledH + 1) {
                     //check for LED color
                     activeLedColor = valueColor;

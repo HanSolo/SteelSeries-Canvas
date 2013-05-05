@@ -1,5 +1,11 @@
 Main Changes
 
+v0.14.1
+> RadialBargraph, LinearBargraph
+  * Fixed scale issues when the minValue is non-zero
+> Radial, RadialBargraph, RadialVertical, Linear, LinearBargraph
+  * Fixed default threshold value to be mid-scale when minValue is non-zero
+
 v0.14.0
 > Radial, RadialBargraph, RadialVertical, Linear
   * Added initialisation parameter thresholdRising [def: true], to change the threshold from the default rising
