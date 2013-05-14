@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 06.05.2013
- * Revision      : 0.14.1
+ * Last modified : 14.05.2013
+ * Revision      : 0.14.2
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -5315,14 +5315,14 @@ var steelseries = (function () {
                 }
             } else {
                 // Draw the inactive leds
-                inactiveLeds = ((maxValue + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                inactiveLeds = fullSize;
                 for (translateX = -(ledW / 2) ; translateX <= inactiveLeds ; translateX += ledW + 1) {
                     ctx.translate(translateX, 0);
                     ctx.drawImage(inActiveLedBuffer, ledX, ledY);
                     ctx.translate(-translateX, 0);
                 }
                 // Draw the active leds in dependence on the current value
-                activeLeds = ((value + Math.abs(minValue)) / (maxValue - minValue)) * fullSize;
+                activeLeds = ((value - minValue) / (maxValue - minValue)) * fullSize;
                 for (translateX = -(ledW / 2) ; translateX <= activeLeds ; translateX += ledW + 1) {
                     //check for LED color
                     activeLedColor = valueColor;

@@ -1,5 +1,10 @@
 Main Changes
 
+v0.14.2
+> Updated the minimised version
+> LinearBargraph
+  * Added missing fix for scale issues when the minValue is non-zero in horizontal gauges
+
 v0.14.1
 > RadialBargraph, LinearBargraph
   * Fixed scale issues when the minValue is non-zero
