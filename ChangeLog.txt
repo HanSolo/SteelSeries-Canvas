@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.3
+> Updated a number of Canvas drawing routines that were using an 'illegal' .clip() call with a parameter.
+  These were throwing exceptions in FireFox version 21+
+
 v0.14.2
 > Updated the minimised version
 > LinearBargraph

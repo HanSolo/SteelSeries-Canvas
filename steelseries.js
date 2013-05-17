@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 14.05.2013
- * Revision      : 0.14.2
+ * Last modified : 17.05.2013
+ * Revision      : 0.14.3
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -12666,7 +12666,8 @@ var steelseries = (function () {
                            new RgbaColor(254, 254, 254, 1)];
 
                 radFCtx.save();
-                radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true));
+                radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true);
+                radFCtx.clip();
                 outerX = imageWidth * 0.495327;
                 innerX = imageWidth * 0.420560;
                 grad = new ConicalGradient(fractions, colors);
@@ -12704,7 +12705,8 @@ var steelseries = (function () {
                            new RgbaColor(254, 254, 254, 1)];
 
                 radFCtx.save();
-                radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true));
+                radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true);
+                radFCtx.clip();
                 outerX = imageWidth * 0.495327;
                 innerX = imageWidth * 0.420560;
                 grad = new ConicalGradient(fractions, colors);
@@ -12758,7 +12760,8 @@ var steelseries = (function () {
                            new RgbaColor(255, 255, 255, 1)];
 
                 radFCtx.save();
-                radFCtx.clip(radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true));
+                radFCtx.arc(centerX, centerY, imageWidth * 0.990654 / 2, 0, TWO_PI, true);
+                radFCtx.clip();
                 outerX = imageWidth * 0.495327;
                 innerX = imageWidth * 0.420560;
                 grad = new ConicalGradient(fractions, colors);
@@ -12943,17 +12946,21 @@ var steelseries = (function () {
                                         ];
                 var frameMainGradient4 = new contourGradient(linFCtx, 0, 0, imageWidth,  imageHeight, frameMainFractions4, frameMainColors4);
                 // Outer frame rim
-                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth-2, imageHeight-2, OUTER_FRAME_CORNER_RADIUS));
+                roundedRectangle(linFCtx, 1, 1, imageWidth-2, imageHeight-2, OUTER_FRAME_CORNER_RADIUS);
+                linFCtx.clip();
                 frameMainGradient4.paintContext();
     */
                 // Outer frame rim
-    //                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth-2, imageHeight-2, OUTER_FRAME_CORNER_RADIUS));
+    //                roundedRectangle(linFCtx, 1, 1, imageWidth-2, imageHeight-2, OUTER_FRAME_CORNER_RADIUS);
+    //                linFCtx.clip();
     //                linFCtx.fillStyle = '#cfcfcf';
     //                linFCtx.fill();
 
                 // Main frame
-    //                linFCtx.clip(roundedRectangle(linFCtx, 2, 2, imageWidth - 4, imageHeight - 4, FRAME_MAIN_CORNER_RADIUS));
-                linFCtx.clip(roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, OUTER_FRAME_CORNER_RADIUS));
+    //                roundedRectangle(linFCtx, 2, 2, imageWidth - 4, imageHeight - 4, FRAME_MAIN_CORNER_RADIUS);
+    //                linFCtx.clip();
+                roundedRectangle(linFCtx, 1, 1, imageWidth - 2, imageHeight - 2, OUTER_FRAME_CORNER_RADIUS);
+                linFCtx.clip();
                 grad = linFCtx.createLinearGradient(0, 1, 0, imageHeight - 2);
     // The fractions from the Java version of linear gauge
     /*
@@ -12974,12 +12981,14 @@ var steelseries = (function () {
                 linFCtx.fill();
 
                 // Inner frame bright
-                linFCtx.clip(roundedRectangle(linFCtx, frameWidth - 2, frameWidth - 2, imageWidth - (frameWidth - 2) * 2, imageHeight - (frameWidth - 2) * 2, SUBTRACT_CORNER_RADIUS));
+                roundedRectangle(linFCtx, frameWidth - 2, frameWidth - 2, imageWidth - (frameWidth - 2) * 2, imageHeight - (frameWidth - 2) * 2, SUBTRACT_CORNER_RADIUS);
+                linFCtx.clip();
                 linFCtx.fillStyle = '#f6f6f6';
                 linFCtx.fill();
 
                 // Inner frame dark
-                linFCtx.clip(roundedRectangle(linFCtx, frameWidth - 1, frameWidth - 1, imageWidth - (frameWidth - 1) * 2, imageHeight - (frameWidth - 1) * 2, SUBTRACT_CORNER_RADIUS));
+                roundedRectangle(linFCtx, frameWidth - 1, frameWidth - 1, imageWidth - (frameWidth - 1) * 2, imageHeight - (frameWidth - 1) * 2, SUBTRACT_CORNER_RADIUS);
+                linFCtx.clip();
                 linFCtx.fillStyle = '#333333';
                 linFCtx.fill();
                 break;
@@ -13352,7 +13361,8 @@ var steelseries = (function () {
                               new RgbaColor('#FDFDFD')];
                     grad = new ConicalGradient(fractions, colors);
                     // Set a clip as we will be drawing outside the required area
-                    linBCtx.clip(roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4));
+                    roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
+                    linBCtx.clip();
                     grad.fillRect(linBCtx, imageWidth / 2, imageHeight / 2, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, imageWidth / 2, imageHeight / 2);
                     // Add an additional inner shadow to fade out brightness at the top
                     grad = linBCtx.createLinearGradient(0, frameWidth, 0, imageHeight - frameWidth * 2);
