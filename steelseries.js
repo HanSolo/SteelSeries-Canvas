@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 17.05.2013
- * Revision      : 0.14.3
+ * Last modified : 17.10.2013
+ * Revision      : 0.14.4
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -22,6 +22,8 @@
  *   OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*globals Tween */
+/*jshint onevar:false,plusplus:false,nomen:false,bitwise:false*/
+'option strict';
 
 var steelseries = (function () {
 
@@ -442,7 +444,6 @@ var steelseries = (function () {
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
 
-
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
                 TEXT_WIDTH = imageWidth * 0.04;
             }
@@ -821,7 +822,6 @@ var steelseries = (function () {
                 userLedBuffer = userLedBufferOff;
             }
         };
-
 
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
@@ -4423,7 +4423,6 @@ var steelseries = (function () {
                       foreground: true});
             }
 
-
             mainCtx.clearRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
 
             // Draw frame
@@ -7326,7 +7325,6 @@ var steelseries = (function () {
             roseBuffer.height = size;
             roseContext = roseBuffer.getContext('2d');
 
-
             // Buffer for pointer image painting code
             pointerBuffer.width = size;
             pointerBuffer.height = size;
@@ -7578,7 +7576,6 @@ var steelseries = (function () {
             mainCtx.strokeStyle = lcdColor.textColor;
             mainCtx.fillStyle = lcdColor.textColor;
 
-
             //convert value from -180,180 range into 0-360 range
             while (value < -180) {
                 value += 360;
@@ -7653,7 +7650,6 @@ var steelseries = (function () {
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-
 
             ctx.save();
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -7933,7 +7929,6 @@ var steelseries = (function () {
                     while (0 < areaIndex);
                 }
 
-
                 drawTickmarksImage(backgroundContext);
             }
 
@@ -8049,6 +8044,13 @@ var steelseries = (function () {
                     time = Math.max(time, fullScaleDeflectionTime / 5);
                     tweenLatest = new Tween({}, '', Tween.regularEaseInOut, valueLatest, valueLatest + diff, time);
                     tweenLatest.onMotionChanged = function (event) {
+                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
+                    };
+                    tweenLatest.onMotionStopped = function (event) {
                         valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
                         if (!repainting) {
                             repainting = true;
@@ -10724,7 +10726,6 @@ var steelseries = (function () {
         mainCtx.canvas.width = width;
         mainCtx.canvas.height = height;
 
-
         prefHeight = width < (height * 0.352517) ? (width * 2.836734) : height;
         imageWidth = prefHeight * 0.352517;
         imageHeight = prefHeight;
@@ -11767,7 +11768,6 @@ var steelseries = (function () {
             foregroundContext.fillStyle = grad;
             foregroundContext.fill();
 
-
             // Create a digit column
             // background
             digitContext.rect(0, 0, digitWidth, columnHeight * 1.1);
@@ -12142,7 +12142,6 @@ var steelseries = (function () {
             // create a pointer buffer
             ptrBuffer = createBuffer(size, size);
             ptrCtx = ptrBuffer.getContext('2d');
-
 
             switch (ptrType.type) {
             case 'type2':
