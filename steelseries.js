@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 17.10.2013
- * Revision      : 0.14.4
+ * Last modified : 13.12.2013
+ * Revision      : 0.14.5
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.

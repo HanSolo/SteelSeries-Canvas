@@ -1,5 +1,11 @@
 Main Changes
 
+v0.14.5
+> All gauges will now accept the canvas parameter as both an ID string as before, and now also as a canvas object.
+
+v0.14.4
+> Some white space tidying, and yet another attempt to make the WindDirection gauge show 000 for 0 rather than 360!
+
 v0.14.3
 > Updated a number of Canvas drawing routines that were using an 'illegal' .clip() call with a parameter.
   These were throwing exceptions in FireFox version 21+
