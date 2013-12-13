@@ -86,7 +86,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -1359,7 +1359,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -2438,7 +2438,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -3334,7 +3334,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (width === 0) {
             width = mainCtx.canvas.width;
@@ -4535,7 +4535,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (width === 0) {
             width = mainCtx.canvas.width;
@@ -5791,7 +5791,7 @@ var steelseries = (function () {
         var self = this;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (width === 0) {
             width = mainCtx.canvas.width;
@@ -6093,7 +6093,7 @@ var steelseries = (function () {
             altValue = (undefined === parameters.altValue ? 0 : parameters.altValue);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (width === 0) {
             width = mainCtx.canvas.width;
@@ -6280,7 +6280,7 @@ var steelseries = (function () {
             rotateFace = (undefined === parameters.rotateFace ? false : parameters.rotateFace);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -6952,7 +6952,7 @@ var steelseries = (function () {
         var angle = this.value;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -7522,7 +7522,7 @@ var steelseries = (function () {
         var repainting = false;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -8292,7 +8292,7 @@ var steelseries = (function () {
         var upsidedown = false;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -8726,7 +8726,7 @@ var steelseries = (function () {
         var ledTimerId = 0;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -8862,7 +8862,7 @@ var steelseries = (function () {
         var ANGLE_STEP = 6;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -9526,7 +9526,7 @@ var steelseries = (function () {
             value = (undefined === parameters.value ? 50 : parameters.value);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
 
         // Has a size been specified?
         if (size === 0) {
@@ -9670,7 +9670,7 @@ var steelseries = (function () {
             running = false,
             lap = false,
             // Get the canvas context
-            mainCtx = doc.getElementById(canvas).getContext('2d'),
+            mainCtx = getCanvasContext(canvas),
 
             imageWidth, imageHeight,
             centerX, centerY,
@@ -10203,7 +10203,7 @@ var steelseries = (function () {
             imageWidth, imageHeight,
             centerX, centerY,
             stdFont,
-            mainCtx = doc.getElementById(canvas).getContext('2d'),  // Get the canvas context
+            mainCtx = getCanvasContext(canvas),  // Get the canvas context
             // Constants
             TICKMARK_OFFSET = PI,
             //
@@ -10686,7 +10686,7 @@ var steelseries = (function () {
         var width = (undefined === parameters.width ? 0 : parameters.width),
             height = (undefined === parameters.height ? 0 : parameters.height),
             //
-            mainCtx = doc.getElementById(canvas).getContext('2d'),
+            mainCtx = getCanvasContext(canvas),
             prefHeight, imageWidth, imageHeight,
             redOn = false,
             yellowOn = false,
@@ -11712,7 +11712,7 @@ var steelseries = (function () {
         if (_context) {
             ctx = _context;
         } else {
-            ctx = doc.getElementById(canvas).getContext('2d');
+            ctx = getCanvasContext(canvas);
         }
 
         // Has a height been specified?
@@ -15262,6 +15262,12 @@ var steelseries = (function () {
                 window.setTimeout(callback, 1000 / 16);
             };
     }());
+
+    function getCanvasContext(elementOrId) {
+        var element = (typeof elementOrId == 'string' || elementOrId instanceof String) ?
+            doc.getElementById(elementOrId) : elementOrId;
+        return element.getContext('2d');
+    }
 
 /*
     function blur(ctx, width, height, radius) {
