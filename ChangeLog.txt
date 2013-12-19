@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.6
+> Minor code tidy, no functional changes
+> Added source map for minified version
+
 v0.14.5
 > All gauges will now accept the canvas parameter as both an ID string as before, and now also as a canvas object.
 

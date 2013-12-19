@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 13.12.2013
- * Revision      : 0.14.5
+ * Last modified : 18.12.2013
+ * Revision      : 0.14.6
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -1461,7 +1461,7 @@ var steelseries = (function () {
             angleStep = angleRange / range;
             break;
 
-        case "type4":
+        case 'type4':
         /* falls through */
         default:
             freeAreaAngle = 60 * RAD_FACTOR;
@@ -10134,41 +10134,41 @@ var steelseries = (function () {
         };
 
         // Has a size been specified?
-        size = (size === 0 ? Math.min(mainCtx.canvas.width, mainCtx.canvas.height) : size),
+        size = (size === 0 ? Math.min(mainCtx.canvas.width, mainCtx.canvas.height) : size);
 
         // Set the size - also clears it
         mainCtx.canvas.width = size;
         mainCtx.canvas.height = size;
 
-        imageWidth = size,
-        imageHeight = size,
+        imageWidth = size;
+        imageHeight = size;
 
-        centerX = imageWidth / 2,
-        centerY = imageHeight / 2,
+        centerX = imageWidth / 2;
+        centerY = imageHeight / 2;
 
-        smallPointerSize = 0.285 * imageWidth,
-        smallPointerX_Offset = centerX - smallPointerSize / 2,
-        smallPointerY_Offset = 0.17 * imageWidth,
+        smallPointerSize = 0.285 * imageWidth;
+        smallPointerX_Offset = centerX - smallPointerSize / 2;
+        smallPointerY_Offset = 0.17 * imageWidth;
 
         // Buffer for the frame
-        frameBuffer = createBuffer(size, size),
-        frameContext = frameBuffer.getContext('2d'),
+        frameBuffer = createBuffer(size, size);
+        frameContext = frameBuffer.getContext('2d');
 
         // Buffer for static background painting code
-        backgroundBuffer = createBuffer(size, size),
-        backgroundContext = backgroundBuffer.getContext('2d'),
+        backgroundBuffer = createBuffer(size, size);
+        backgroundContext = backgroundBuffer.getContext('2d');
 
         // Buffer for small pointer image painting code
-        smallPointerBuffer = createBuffer(size, size),
-        smallPointerContext = smallPointerBuffer.getContext('2d'),
+        smallPointerBuffer = createBuffer(size, size);
+        smallPointerContext = smallPointerBuffer.getContext('2d');
 
         // Buffer for large pointer image painting code
-        largePointerBuffer = createBuffer(size, size),
-        largePointerContext = largePointerBuffer.getContext('2d'),
+        largePointerBuffer = createBuffer(size, size);
+        largePointerContext = largePointerBuffer.getContext('2d');
 
         // Buffer for static foreground painting code
-        foregroundBuffer = createBuffer(size, size),
-        foregroundContext = foregroundBuffer.getContext('2d'),
+        foregroundBuffer = createBuffer(size, size);
+        foregroundContext = foregroundBuffer.getContext('2d');
 
         // Visualize the component
         start = new Date().getTime();
@@ -10238,7 +10238,7 @@ var steelseries = (function () {
         // Get the canvas context and clear it
         mainCtx.save();
         // Has a size been specified?
-        size = (size === 0 ? Math.min(mainCtx.canvas.width, mainCtx.canvas.height) : size),
+        size = (size === 0 ? Math.min(mainCtx.canvas.width, mainCtx.canvas.height) : size);
 
         // Set the size
         mainCtx.canvas.width = size;
@@ -10275,7 +10275,7 @@ var steelseries = (function () {
             mainCtx.restore();
         };
 
-        var drawTickmarksImage = function (ctx, freeAreaAngle, offset, minVal, maxVal, angleStep, tickLabelPeriod, scaleDividerPower, drawTicks, drawTickLabels) {
+        var drawTickmarksImage = function (ctx, freeAreaAngle, offset, minVal, maxVal, angleStep) {
             var MEDIUM_STROKE = Math.max(imageWidth * 0.012, 2),
                 THIN_STROKE = Math.max(imageWidth * 0.007, 1.5),
                 TEXT_DISTANCE = imageWidth * 0.13,
@@ -11681,9 +11681,9 @@ var steelseries = (function () {
 
     var odometer = function (canvas, parameters) {
         parameters = parameters || {};
-        var doc = document,
-            // parameters
-            _context = (undefined === parameters._context ? null : parameters._context),  // If component used internally by steelseries
+
+        // parameters
+        var _context = (undefined === parameters._context ? null : parameters._context),  // If component used internally by steelseries
             height = (undefined === parameters.height ? 0 : parameters.height),
             digits = (undefined === parameters.digits ? 6 : parameters.digits),
             decimals = (undefined === parameters.decimals ? 1 : parameters.decimals),
@@ -15264,7 +15264,7 @@ var steelseries = (function () {
     }());
 
     function getCanvasContext(elementOrId) {
-        var element = (typeof elementOrId == 'string' || elementOrId instanceof String) ?
+        var element = (typeof elementOrId === 'string' || elementOrId instanceof String) ?
             doc.getElementById(elementOrId) : elementOrId;
         return element.getContext('2d');
     }
