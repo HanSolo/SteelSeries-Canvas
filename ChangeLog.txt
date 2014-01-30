@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.7
+> Added an optional callback function as a second parameter to all value animation functions .setXxxAnimated(value, callback)
+  The callback will be executed on completion on the gauge value animation.
+
 v0.14.6
 > Minor code tidy, no functional changes
 > Added source map for minified version

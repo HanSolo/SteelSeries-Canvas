@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 18.12.2013
- * Revision      : 0.14.6
+ * Last modified : 29.01.2014
+ * Revision      : 0.14.7
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -101,7 +101,6 @@ var steelseries = (function () {
         if (playAlarm && alarmSound !== false) {
             audioElement = doc.createElement('audio');
             audioElement.setAttribute('src', alarmSound);
-            //audioElement.setAttribute('src', 'js/alarm.mp3');
             audioElement.setAttribute('preload', 'auto');
         }
 
@@ -405,7 +404,6 @@ var steelseries = (function () {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-//            ctx.closePath();
             if (filled) {
                 ctx.moveTo(0, 0);
                 ctx.fill();
@@ -875,7 +873,7 @@ var steelseries = (function () {
             return odoValue;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this,
@@ -921,6 +919,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -1419,7 +1423,7 @@ var steelseries = (function () {
         var ACTIVE_LED_POS_X = imageWidth * 0.116822;
         var ACTIVE_LED_POS_Y = imageWidth * 0.485981;
         var LED_SIZE = Math.ceil(size * 0.093457);
-//        var LED_POS_X = imageWidth * 0.453271;
+        //var LED_POS_X = imageWidth * 0.453271;
         var LED_POS_X = imageWidth * 0.53;
         var LED_POS_Y = imageHeight * 0.61;
         var USER_LED_POS_X = gaugeType === steelseries.GaugeType.TYPE3 ? 0.7 * imageWidth : centerX - LED_SIZE / 2;
@@ -1547,8 +1551,8 @@ var steelseries = (function () {
                 niceMinValue = minValue;
                 niceMaxValue = maxValue;
                 range = niceRange;
-//                minorTickSpacing = 1;
-//                majorTickSpacing = 10;
+                //minorTickSpacing = 1;
+                //majorTickSpacing = 10;
                 majorTickSpacing = calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true);
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
@@ -2026,7 +2030,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this,
@@ -2065,6 +2069,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -2636,7 +2646,6 @@ var steelseries = (function () {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-//            ctx.closePath();
             if (filled) {
                 ctx.moveTo(0, 0);
                 ctx.fill();
@@ -3052,7 +3061,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this,
@@ -3099,6 +3108,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -3514,9 +3529,8 @@ var steelseries = (function () {
 
         var createThresholdImage = function (vertical) {
             var thresholdBuffer = doc.createElement('canvas');
-            thresholdBuffer.height = thresholdBuffer.width = minMaxIndSize;
-//            thresholdBuffer.width;
             var thresholdCtx = thresholdBuffer.getContext('2d');
+            thresholdBuffer.height = thresholdBuffer.width = minMaxIndSize;
 
             thresholdCtx.save();
             var gradThreshold = thresholdCtx.createLinearGradient(0, 0.1, 0, thresholdBuffer.height * 0.9);
@@ -4195,7 +4209,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 time;
@@ -4240,6 +4254,11 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
 
                 tween.start();
             }
@@ -5427,7 +5446,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 time;
@@ -5475,6 +5494,11 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
 
                 tween.start();
             }
@@ -5824,7 +5848,7 @@ var steelseries = (function () {
         var drawLcdText = function (value, color) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
-//            mainCtx.textBaseline = 'top';
+            //mainCtx.textBaseline = 'top';
             mainCtx.strokeStyle = color;
             mainCtx.fillStyle = color;
 
@@ -6752,7 +6776,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             if (360 - newValue + value < newValue - value) {
                 newValue = 360 - newValue;
@@ -6816,6 +6840,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -7350,7 +7380,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             var targetValue = newValue % 360;
             var gauge = this;
             var diff;
@@ -7372,6 +7402,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -7625,7 +7661,6 @@ var steelseries = (function () {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-//            ctx.closePath();
             if (filled) {
                 ctx.moveTo(0, 0);
                 ctx.fill();
@@ -7640,7 +7675,7 @@ var steelseries = (function () {
         var drawTickmarksImage = function (ctx) {
             var OUTER_POINT = imageWidth * 0.38,
                 MAJOR_INNER_POINT = imageWidth * 0.35,
-//                MED_INNER_POINT = imageWidth * 0.355,
+                //MED_INNER_POINT = imageWidth * 0.355,
                 MINOR_INNER_POINT = imageWidth * 0.36,
                 TEXT_WIDTH = imageWidth * 0.1,
                 TEXT_TRANSLATE_X = imageWidth * 0.31,
@@ -8021,7 +8056,7 @@ var steelseries = (function () {
             return valueAverage;
         };
 
-        this.setValueAnimatedLatest = function (newValue) {
+        this.setValueAnimatedLatest = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 diff,
@@ -8050,13 +8085,19 @@ var steelseries = (function () {
                             requestAnimFrame(gauge.repaint);
                         }
                     };
-                    tweenLatest.onMotionStopped = function (event) {
+
+                    tweenLatest.onMotionFinished = function (event) {
                         valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
                         if (!repainting) {
                             repainting = true;
                             requestAnimFrame(gauge.repaint);
                         }
+                        // do we have a callback function to process?
+                        if (callback && typeof(callback) === "function") {
+                            callback();
+                        }
                     };
+
                     tweenLatest.start();
                 } else {
                     // target different from current, but diff is zero (0 -> 360 for instance), so just repaint
@@ -8070,7 +8111,7 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setValueAnimatedAverage = function (newValue) {
+        this.setValueAnimatedAverage = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 diff, time;
@@ -8096,6 +8137,19 @@ var steelseries = (function () {
                             requestAnimFrame(gauge.repaint);
                         }
                     };
+
+                    tweenAverage.onMotionFinished = function (event) {
+                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
+                        // do we have a callback function to process?
+                        if (callback && typeof(callback) === "function") {
+                            callback();
+                        }
+                    };
+                    
                     tweenAverage.start();
                 } else {
                     // target different from current, but diff is zero (0 -> 360 for instance), so just repaint
@@ -8445,7 +8499,6 @@ var steelseries = (function () {
             // Tickmarks
             var step = 5;
             var stepRad = 5 * RAD_FACTOR;
-//            ctx.save();
             ctx.translate(centerX, centerY);
             ctx.rotate(-HALF_PI);
             ctx.translate(-centerX, -centerY);
@@ -8560,7 +8613,7 @@ var steelseries = (function () {
             return roll;
         };
 
-        this.setRollAnimated = function (newRoll) {
+        this.setRollAnimated = function (newRoll, callback) {
             var gauge = this;
             newRoll = parseFloat(newRoll) % 360;
             if (roll !== newRoll) {
@@ -8578,6 +8631,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tweenRoll.onMotionFinished = callback;
+                }
+
                 tweenRoll.start();
             }
             return this;
@@ -8614,7 +8673,7 @@ var steelseries = (function () {
             return pitch;
         };
 
-        this.setPitchAnimated = function (newPitch) {
+        this.setPitchAnimated = function (newPitch, callback) {
             var gauge = this;
             newPitch = parseFloat(newPitch);
             // perform all range checking in setPitch()
@@ -8646,6 +8705,12 @@ var steelseries = (function () {
                     }
                     gauge.setPitch(event.target._pos);
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tweenPitch.onMotionFinished = callback;
+                }
+
                 tweenPitch.start();
             }
             return this;
@@ -10542,7 +10607,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : newValue),
                 gauge = this,
@@ -10563,6 +10628,11 @@ var steelseries = (function () {
                             requestAnimFrame(gauge.repaint);
                         }
                     };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
 
                 tween.start();
             }
@@ -11855,7 +11925,7 @@ var steelseries = (function () {
             }
         }
 
-        this.setValueAnimated = function (newVal) {
+        this.setValueAnimated = function (newVal, callback) {
             var gauge = this;
             newVal = parseFloat(newVal);
 
@@ -11875,6 +11945,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             this.repaint();
