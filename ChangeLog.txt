@@ -1,5 +1,10 @@
 Main Changes
 
+v0.14.8
+> Clock
+  * Clock.setSecond() method was broken, now fixed.
+  * Fixed time-zone offset handling.
+
 v0.14.7
 > Added an optional callback function as a second parameter to all value animation functions .setXxxAnimated(value, callback)
   The callback will be executed on completion on the gauge value animation.

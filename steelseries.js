@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 29.01.2014
- * Revision      : 0.14.7
+ * Last modified : 27.05.2014
+ * Revision      : 0.14.9
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -9243,7 +9243,7 @@ var steelseries = (function () {
             second = objDate.getSeconds() + (secondMovesContinuous ? objDate.getMilliseconds() / 1000 : 0);
 
             // Hours
-            if (timeZoneOffsetHour !== 0 && timeZoneOffsetMinute !== 0) {
+            if (timeZoneOffsetHour !== 0) {
                 hour = objDate.getUTCHours() + timeZoneOffsetHour;
             } else {
                 hour = objDate.getHours();
@@ -9251,7 +9251,7 @@ var steelseries = (function () {
             hour = hour % 12;
 
             // Minutes
-            if (timeZoneOffsetHour !== 0 && timeZoneOffsetMinute !== 0) {
+            if (timeZoneOffsetMinute !== 0) {
                 minute = objDate.getUTCMinutes() + timeZoneOffsetMinute;
             } else {
                 minute = objDate.getMinutes();
@@ -9404,7 +9404,7 @@ var steelseries = (function () {
         };
 
         this.setSecond = function (newValue) {
-            second = parseInt(newValue, 10) % 60;
+            newValue = parseInt(newValue, 10) % 60;
             if (second !== newValue) {
                 second = newValue;
                 calculateAngles(hour, minute, second);
