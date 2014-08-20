@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.9
+> RadialBargraph & LinearBargraph
+  * Fixed gradient drawing when gauge min value <> 0
+
 v0.14.8
 > Clock
   * Clock.setSecond() method was broken, now fixed.

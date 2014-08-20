@@ -2343,7 +2343,7 @@ var steelseries = (function () {
                     // Convert angle back to value
                     currentValue = minValue + (angle / degAngleRange) * (maxValue - minValue);
                     gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                    fraction = currentValue / gradRange;
+                    fraction = (currentValue - minValue) / gradRange;
                     fraction = Math.max(Math.min(fraction, 1), 0);
                     activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
                 } else if (isSectionsVisible) {
@@ -5310,7 +5310,7 @@ var steelseries = (function () {
                         // Convert pixel back to value
                         currentValue = minValue + (translateY / fullSize) * (maxValue - minValue);
                         gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                        fraction = currentValue / gradRange;
+                        fraction = (currentValue - minValue) / gradRange;
                         fraction = Math.max(Math.min(fraction, 1), 0);
                         activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
                     } else if (isSectionsVisible) {
@@ -5348,7 +5348,7 @@ var steelseries = (function () {
                         // Convert pixel back to value
                         currentValue = minValue + (translateX / fullSize) * (maxValue - minValue);
                         gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                        fraction = currentValue / gradRange;
+                        fraction = (currentValue - minValue) / gradRange;
                         fraction = Math.max(Math.min(fraction, 1), 0);
                         activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
                     } else if (isSectionsVisible) {
