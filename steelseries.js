@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 27.05.2014
- * Revision      : 0.14.9
+ * Last modified : 05.10.2014
+ * Revision      : 0.14.10
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -13533,9 +13533,8 @@ var steelseries = (function () {
                      ];
 
             for (i = 0 ; i < 7 ; i++) {
-                roundedRectangle(linBCtx, frameWidth + i, frameWidth + i, imageWidth - frameWidth * 2 - (2 * i), imageHeight - frameWidth * 2 - (2 * i), 4);
                 linBCtx.strokeStyle = colors[i];
-                linBCtx.stroke();
+                roundedRectangle(linBCtx, frameWidth + i, frameWidth + i, imageWidth - frameWidth * 2 - (2 * i), imageHeight - frameWidth * 2 - (2 * i), 4);
             }
             // cache the buffer
             drawLinearBackgroundImage.cache[cacheKey] = linBBuffer;

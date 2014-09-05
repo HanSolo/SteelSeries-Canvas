@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.10
+> Linear Gauges background
+  * Fixed a minor bug in the inner shadow drawing
+
 v0.14.9
 > RadialBargraph & LinearBargraph
   * Fixed gradient drawing when gauge min value <> 0
