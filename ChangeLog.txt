@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.11
+> Linear gauges background
+  * Further improvements to appeance
+
 v0.14.10
 > Linear Gauges background
   * Fixed a minor bug in the inner shadow drawing

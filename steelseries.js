@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 05.10.2014
- * Revision      : 0.14.10
+ * Last modified : 06.10.2014
+ * Revision      : 0.14.11
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -12891,7 +12891,7 @@ var steelseries = (function () {
         // check if we have already created and cached this buffer, if not create it
         if (!drawLinearFrameImage.cache[cacheKey]) {
             frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
-            frameWidth = Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1);
+            frameWidth = Math.ceil(Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1));
 
             // Setup buffer
             linFBuffer = createBuffer(imageWidth, imageHeight);
@@ -12899,13 +12899,13 @@ var steelseries = (function () {
 
             // Calculate corner radii
             if (vertical) {
-                OUTER_FRAME_CORNER_RADIUS = imageWidth * 0.05;
+                OUTER_FRAME_CORNER_RADIUS = Math.ceil(imageWidth * 0.05);
                 FRAME_MAIN_CORNER_RADIUS = OUTER_FRAME_CORNER_RADIUS - 1;
-                SUBTRACT_CORNER_RADIUS = imageWidth * 0.028571;
+                SUBTRACT_CORNER_RADIUS = Math.floor(imageWidth * 0.028571);
             } else {
-                OUTER_FRAME_CORNER_RADIUS = imageHeight * 0.05;
+                OUTER_FRAME_CORNER_RADIUS = Math.ceil(imageHeight * 0.05);
                 FRAME_MAIN_CORNER_RADIUS = OUTER_FRAME_CORNER_RADIUS - 1;
-                SUBTRACT_CORNER_RADIUS = imageHeight * 0.028571;
+                SUBTRACT_CORNER_RADIUS = Math.floor(imageHeight * 0.028571);
             }
 
             roundedRectangle(linFCtx, 0, 0, imageWidth, imageHeight, OUTER_FRAME_CORNER_RADIUS);
@@ -13065,7 +13065,7 @@ var steelseries = (function () {
                 roundedRectangle(linFCtx, frameWidth - 1, frameWidth - 1, imageWidth - (frameWidth - 1) * 2, imageHeight - (frameWidth - 1) * 2, SUBTRACT_CORNER_RADIUS);
                 linFCtx.clip();
                 linFCtx.fillStyle = '#333333';
-                linFCtx.fill();
+//                linFCtx.fill();
                 break;
 
             case 'blackMetal':
@@ -13168,12 +13168,12 @@ var steelseries = (function () {
                 break;
             }
 
-            roundedRectangle(linFCtx, frameWidth - 1, frameWidth - 1, imageWidth - (frameWidth - 1) * 2, imageHeight - (frameWidth - 1) * 2, SUBTRACT_CORNER_RADIUS - 1);
+            roundedRectangle(linFCtx, frameWidth, frameWidth, imageWidth - (frameWidth) * 2, imageHeight - (frameWidth) * 2, SUBTRACT_CORNER_RADIUS);
             linFCtx.fillStyle = 'rgb(192, 192, 192)';
 
             // clip out the center of the frame for transparent backgrounds
             linFCtx.globalCompositeOperation = 'destination-out';
-            roundedRectangle(linFCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
+            roundedRectangle(linFCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, SUBTRACT_CORNER_RADIUS);
             linFCtx.fill();
 
             // cache the buffer
@@ -13377,14 +13377,16 @@ var steelseries = (function () {
         // check if we have already created and cached this buffer, if not create it
         if (!drawLinearBackgroundImage.cache[cacheKey]) {
             frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
-            frameWidth = Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1);
+            frameWidth = Math.ceil(Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1)) - 1;
 
+            CORNER_RADIUS = Math.floor((vertical ? imageWidth : imageHeight) * 0.028571);
             // Setup buffer
             linBBuffer = createBuffer(imageWidth, imageHeight);
             linBCtx = linBBuffer.getContext('2d');
             linBColor = backgroundColor;
+            linBCtx.lineWidth = 0;
 
-            roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
+            roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, CORNER_RADIUS);
 
             // If the backgroundColor is a texture fill it with the texture instead of the gradient
             if (backgroundColor.name === 'CARBON' || backgroundColor.name === 'PUNCHED_SHEET' ||
@@ -13436,7 +13438,6 @@ var steelseries = (function () {
                               new RgbaColor('#FDFDFD')];
                     grad = new ConicalGradient(fractions, colors);
                     // Set a clip as we will be drawing outside the required area
-                    roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
                     linBCtx.clip();
                     grad.fillRect(linBCtx, imageWidth / 2, imageHeight / 2, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, imageWidth / 2, imageHeight / 2);
                     // Add an additional inner shadow to fade out brightness at the top
@@ -13445,9 +13446,7 @@ var steelseries = (function () {
                     grad.addColorStop(0.1, 'rgba(0, 0, 0, 0.05)');
                     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
                     linBCtx.fillStyle = grad;
-                    roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
                     linBCtx.fill();
-                    linBCtx.restore();
 
                     if (backgroundColor.name === 'TURNED') {
                         // Define the turning radius
@@ -13462,8 +13461,7 @@ var steelseries = (function () {
                         linBCtx.save();
 
                         // Set a clip as we will be drawing outside the required area
-                        linBCtx.beginPath();
-                        roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
+                        roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, CORNER_RADIUS);
                         linBCtx.clip();
 
                         // set the style for the turnings
@@ -13504,7 +13502,7 @@ var steelseries = (function () {
                 grad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
                 grad.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
                 linBCtx.fillStyle = grad;
-                roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, 4);
+                roundedRectangle(linBCtx, frameWidth, frameWidth, imageWidth - frameWidth * 2, imageHeight - frameWidth * 2, CORNER_RADIUS);
                 linBCtx.fill();
 
                 if (backgroundColor.name === 'BRUSHED_METAL' || backgroundColor.name === 'BRUSHED_STAINLESS') {
@@ -13523,18 +13521,18 @@ var steelseries = (function () {
                 linBCtx.fill();
             }
             // Add a simple inner shadow
-            colors = [ 'rgba(0, 0, 0, 0.3)',
-                       'rgba(0, 0, 0, 0.15)',
-                       'rgba(0, 0, 0, 0.07)',
-                       'rgba(0, 0, 0, 0.03)',
-                       'rgba(0, 0, 0, 0)',
-                       'rgba(0, 0, 0, 0)',
-                       'rgba(0, 0, 0, 0)'
+            colors = [ 'rgba(0, 0, 0, 0.30)',
+                       'rgba(0, 0, 0, 0.20)',
+                       'rgba(0, 0, 0, 0.13)',
+                       'rgba(0, 0, 0, 0.09)',
+                       'rgba(0, 0, 0, 0.06)',
+                       'rgba(0, 0, 0, 0.04)',
+                       'rgba(0, 0, 0, 0.03)'
                      ];
-
             for (i = 0 ; i < 7 ; i++) {
                 linBCtx.strokeStyle = colors[i];
-                roundedRectangle(linBCtx, frameWidth + i, frameWidth + i, imageWidth - frameWidth * 2 - (2 * i), imageHeight - frameWidth * 2 - (2 * i), 4);
+                roundedRectangle(linBCtx, frameWidth + i, frameWidth + i, imageWidth - frameWidth * 2 - (2 * i), imageHeight - frameWidth * 2 - (2 * i), CORNER_RADIUS);
+                linBCtx.stroke();
             }
             // cache the buffer
             drawLinearBackgroundImage.cache[cacheKey] = linBBuffer;
@@ -14908,7 +14906,7 @@ var steelseries = (function () {
             for (y = 0; y < height; y++) {
                 dy = height2 - y;
                 for (x = 0; x < width; x++) {
-                    if (y > thicknessY && y < height - thicknessY) {
+                    if (y > thicknessY && y <= height - thicknessY) {
                         // we are in the range where we only draw the sides
                         if (x > thicknessX && x < width - thicknessX) {
                             // we are in the empty 'middle', jump to the next edge
@@ -15068,7 +15066,7 @@ var steelseries = (function () {
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
-        ctx.stroke();
+//        ctx.stroke();
     }
 
     function createBuffer(width, height) {
