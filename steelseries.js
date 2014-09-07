@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 06.10.2014
- * Revision      : 0.14.11
+ * Last modified : 07.09.2014
+ * Revision      : 0.14.12
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -6243,7 +6243,7 @@ var steelseries = (function () {
 
         // **************   Public methods  ********************
         this.setValue = function (newValue) {
-            if (value !== newValue || altValue !== newValue) {
+            if (value !== newValue) {
                 if (linkAltValue) {
                     altValue = value;
                 }
@@ -6253,9 +6253,9 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setAltValue = function (altValue) {
-            if (altValue !== altValue) {
-                altValue = altValue;
+        this.setAltValue = function (altValueNew) {
+            if (altValue !== altValueNew) {
+                altValue = altValueNew;
                 this.repaint();
             }
             return this;

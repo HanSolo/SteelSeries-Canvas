@@ -1,5 +1,9 @@
 Main Changes
 
+v0.4.12
+> DisplayMulti
+  * Fixed alternate value updates via .setAltValue()
+
 v0.14.11
 > Linear gauges background
   * Further improvements to appeance
