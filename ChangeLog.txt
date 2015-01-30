@@ -1,5 +1,10 @@
 Main Changes
 
+v0.4.13
+> windDirection
+  * Fixed bug in .setValueAnimatedAverage() that was overwriting the latest value.
+> Fixed 'this' error in setAlpha()
+
 v0.4.12
 > DisplayMulti
   * Fixed alternate value updates via .setAltValue()

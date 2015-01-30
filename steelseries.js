@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 07.09.2014
- * Revision      : 0.14.12
+ * Last modified : 30.01.2015
+ * Revision      : 0.14.13
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -23,10 +23,8 @@
  */
 /*globals Tween */
 /*jshint onevar:false,plusplus:false,nomen:false,bitwise:false*/
-'option strict';
 
 var steelseries = (function () {
-
     // Constants
     var HALF_PI     = Math.PI * 0.5,
         TWO_PI      = Math.PI * 2,
@@ -8086,8 +8084,8 @@ var steelseries = (function () {
                         }
                     };
 
-                    tweenLatest.onMotionFinished = function (event) {
-                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                    tweenLatest.onMotionFinished = function () {
+                        valueLatest = targetValue;
                         if (!repainting) {
                             repainting = true;
                             requestAnimFrame(gauge.repaint);
@@ -8138,8 +8136,8 @@ var steelseries = (function () {
                         }
                     };
 
-                    tweenAverage.onMotionFinished = function (event) {
-                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                    tweenAverage.onMotionFinished = function () {
+                        valueAverage = targetValue;
                         if (!repainting) {
                             repainting = true;
                             requestAnimFrame(gauge.repaint);
@@ -8149,7 +8147,7 @@ var steelseries = (function () {
                             callback();
                         }
                     };
-                    
+
                     tweenAverage.start();
                 } else {
                     // target different from current, but diff is zero (0 -> 360 for instance), so just repaint
@@ -13379,7 +13377,7 @@ var steelseries = (function () {
             frameWidth = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight) * 0.04;
             frameWidth = Math.ceil(Math.min(frameWidth, (vertical ? imageWidth : imageHeight) * 0.1)) - 1;
 
-            CORNER_RADIUS = Math.floor((vertical ? imageWidth : imageHeight) * 0.028571);
+            var CORNER_RADIUS = Math.floor((vertical ? imageWidth : imageHeight) * 0.028571);
             // Setup buffer
             linBBuffer = createBuffer(imageWidth, imageHeight);
             linBCtx = linBBuffer.getContext('2d');
@@ -14004,12 +14002,12 @@ var steelseries = (function () {
 
                 // Corona
                 grad = ledCtx.createRadialGradient(ledCenterX, ledCenterY, 0, ledCenterX, ledCenterY, size / 2);
-                grad.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
-                grad.addColorStop(0.6, setAlpha(ledColor.coronaColor, 0.4).color);
-                grad.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.25).color);
-                grad.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.15).color);
-                grad.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
-                grad.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                grad.addColorStop(0, setAlpha(ledColor.coronaColor, 0));
+                grad.addColorStop(0.6, setAlpha(ledColor.coronaColor, 0.4));
+                grad.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.25));
+                grad.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.15));
+                grad.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05));
+                grad.addColorStop(1, setAlpha(ledColor.coronaColor, 0));
                 ledCtx.fillStyle = grad;
 
                 ledCtx.beginPath();
@@ -14165,12 +14163,12 @@ var steelseries = (function () {
                 } else {
                     // draw halo
                     fill = trendCtx.createRadialGradient(0.5 * width, 0.2 * height, 0, 0.5 * width, 0.2 * height, 0.7 * width);
-                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
-                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
-                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
-                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
-                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
-                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0));
+                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3));
+                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2));
+                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1));
+                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05));
+                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0));
                     trendCtx.fillStyle = fill;
 
                     trendCtx.beginPath();
@@ -14236,12 +14234,12 @@ var steelseries = (function () {
                 } else {
                     // draw halo
                     fill = trendCtx.createRadialGradient(0.5 * width, 0.5 * height, 0, 0.5 * width, 0.5 * height, 0.7 * width);
-                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
-                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
-                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
-                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
-                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
-                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0));
+                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3));
+                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2));
+                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1));
+                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05));
+                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0));
                     trendCtx.fillStyle = fill;
                     trendCtx.beginPath();
                     trendCtx.arc(0.5 * width, 0.5 * height, 0.7 * width, 0, TWO_PI, true);
@@ -14301,12 +14299,12 @@ var steelseries = (function () {
                 } else {
                     // draw halo
                     fill = trendCtx.createRadialGradient(0.5 * width, 0.8 * height, 0, 0.5 * width, 0.8 * height, 0.7 * width);
-                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0).color);
-                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3).color);
-                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2).color);
-                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1).color);
-                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05).color);
-                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0).color);
+                    fill.addColorStop(0, setAlpha(ledColor.coronaColor, 0));
+                    fill.addColorStop(0.5, setAlpha(ledColor.coronaColor, 0.3));
+                    fill.addColorStop(0.7, setAlpha(ledColor.coronaColor, 0.2));
+                    fill.addColorStop(0.8, setAlpha(ledColor.coronaColor, 0.1));
+                    fill.addColorStop(0.85, setAlpha(ledColor.coronaColor, 0.05));
+                    fill.addColorStop(1, setAlpha(ledColor.coronaColor, 0));
                     trendCtx.fillStyle = fill;
                     trendCtx.beginPath();
                     trendCtx.arc(0.5 * width, 0.8 * height, 0.7 * width, 0, TWO_PI, true);
@@ -14981,11 +14979,10 @@ var steelseries = (function () {
         var hexColor = ('#' === hex.charAt(0)) ? hex.substring(1, 7) : hex,
             red = parseInt((hexColor).substring(0, 2), 16),
             green = parseInt((hexColor).substring(2, 4), 16),
-            blue = parseInt((hexColor).substring(4, 6), 16);
+            blue = parseInt((hexColor).substring(4, 6), 16),
+            color = 'rgba(' + red + ',' + green + ',' + blue + ',' + alpha + ')';
 
-        this.color = 'rgba(' + red + ',' + green + ',' + blue + ',' + alpha + ')';
-
-        return this;
+        return color;
     }
 
     function getColorFromFraction(sourceColor, destinationColor, range, fraction, returnRawData) {
