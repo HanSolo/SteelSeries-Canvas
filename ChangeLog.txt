@@ -1,11 +1,15 @@
 Main Changes
 
-v0.4.13
+v0.14.14
+> Altimeter
+  * Added optional title and unit strings, and corresponding set methods.
+
+v0.14.13
 > windDirection
   * Fixed bug in .setValueAnimatedAverage() that was overwriting the latest value.
 > Fixed 'this' error in setAlpha()
 
-v0.4.12
+v0.14.12
 > DisplayMulti
   * Fixed alternate value updates via .setAltValue()
 

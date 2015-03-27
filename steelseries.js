@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 30.01.2015
- * Revision      : 0.14.13
+ * Last modified : 27.03.2015
+ * Revision      : 0.14.14
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -10248,6 +10248,9 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
+            titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
+            unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
+            unitAltPos = (undefined === parameters.unitAltPos ? false : true),
             knobType = (undefined === parameters.knobType ? steelseries.KnobType.METAL_KNOB : parameters.knobType),
             knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.BLACK : parameters.knobStyle),
             lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.BLACK : parameters.lcdColor),
@@ -10313,6 +10316,9 @@ var steelseries = (function () {
         centerX = imageWidth / 2;
         centerY = imageHeight / 2;
 
+        var unitStringPosY = unitAltPos ? imageHeight * 0.68 : false;
+
+
         stdFont = Math.floor(imageWidth * 0.09) + 'px ' + stdFontName;
 
         // **************   Image creation  ********************
@@ -10332,7 +10338,7 @@ var steelseries = (function () {
             if (digitalFont) {
                 mainCtx.font = Math.floor(imageWidth * 0.075) + 'px ' + lcdFontName;
             } else {
-                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px ' + stdFontName;
+                mainCtx.font = Math.floor(imageWidth * 0.075) + 'px bold ' + stdFontName;
             }
             mainCtx.fillText(Math.round(value), (imageWidth + (imageWidth * 0.4)) / 2 - 4, imageWidth * 0.607, imageWidth * 0.4);
             mainCtx.restore();
@@ -10533,6 +10539,9 @@ var steelseries = (function () {
 
                 // Create tickmarks in background buffer (backgroundBuffer)
                 drawTickmarksImage(backgroundContext, 0, TICKMARK_OFFSET, 0, 10, angleStep100ft, tickLabelPeriod, 0, true, true, null);
+
+                // Create title in background buffer (backgroundBuffer)
+                drawTitleImage(backgroundContext, imageWidth, imageHeight, titleString, unitString, backgroundColor, true, true, unitStringPosY);
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -10667,6 +10676,22 @@ var steelseries = (function () {
 
         this.setLcdColor = function (newLcdColor) {
             lcdColor = newLcdColor;
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+            return this;
+        };
+
+        this.setTitleString = function (title) {
+            titleString = title;
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+            return this;
+        };
+
+        this.setUnitString = function (unit) {
+            unitString = unit;
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
