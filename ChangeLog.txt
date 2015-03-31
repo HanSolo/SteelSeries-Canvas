@@ -1,5 +1,9 @@
 Main Changes
 
+v0.14.15
+> Radial
+  * Fixed the 'non-scaling' of the scale numbers - Issue #17
+
 v0.14.14
 > Altimeter
   * Added optional title and unit strings, and corresponding set methods.

@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 27.03.2015
- * Revision      : 0.14.14
+ * Last modified : 31.03.2015
+ * Revision      : 0.14.15
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -434,7 +434,7 @@ var steelseries = (function () {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.font = fontSize + 'px' + stdFontName;
+            ctx.font = fontSize + 'px ' + stdFontName;
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
