@@ -5910,7 +5910,27 @@ var steelseries = (function () {
                     scrollX = 0;
                     scrolling = false;
                 }
-                mainCtx.fillText(value, imageWidth - 2 - scrollX, imageHeight * 0.5 + fontHeight * 0.38);
+
+                if (headerStringVisible) {
+                    var unitWidth = 0;
+                    textWidth = 0;
+                    if (unitStringVisible) {
+                        mainCtx.font = Math.floor(imageHeight / 2.5) + 'px ' + stdFontName;
+                        unitWidth = mainCtx.measureText(unitString).width;
+                    }
+
+                    vPos = 0.52;
+                    mainCtx.fillText(value, imageWidth - unitWidth - 4 - scrollX, imageHeight * 0.5 + fontHeight * vPos);
+
+                    mainCtx.textAlign = 'center';
+                    mainCtx.font = Math.floor(imageHeight / 3.5) + 'px ' + stdFontName;
+                    mainCtx.fillText(headerString, imageWidth / 2, imageHeight * 0.3);
+
+                }
+                else
+                {
+                    mainCtx.fillText(value, imageWidth - 2 - scrollX, imageHeight * 0.5 + fontHeight * 0.38);
+                }
             }
             mainCtx.restore();
         };
