@@ -14380,9 +14380,9 @@ var steelseries = (function () {
         ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
 
         if (radial) {
-            ctx.font = 0.046728 * imageWidth + 'px ' + stdFontName;
-            ctx.fillText(titleString, imageWidth / 2, imageHeight * 0.3, imageWidth * 0.3);
-            ctx.fillText(unitString, imageWidth / 2, imageHeight * 0.38, imageWidth * 0.3);
+            ctx.font = 0.06 * imageWidth + 'px ' + stdFontName;
+            ctx.fillText(titleString, imageWidth / 2, imageHeight * 0.38, imageWidth * 0.3);
+            ctx.fillText(unitString, imageWidth / 2, imageHeight * 0.8, imageWidth * 0.3);
         } else {
             // linear
             if (vertical) {
