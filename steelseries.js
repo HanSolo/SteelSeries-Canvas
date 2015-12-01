@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 31.03.2015
- * Revision      : 0.14.15
+ * Last modified : 01.12.2015
+ * Revision      : 0.14.16
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -13941,8 +13941,9 @@ var steelseries = (function () {
 
     var createLedImage = function (size, state, ledColor) {
         var ledBuffer, ledCtx,
-            ledCenterX = size / 2,
-            ledCenterY = size / 2,
+            // Bug in Chrome browser, radialGradients do not draw correctly if the center is not an integer value
+            ledCenterX = 2 * Math.round(size / 4),
+            ledCenterY = 2 * Math.round(size / 4),
             grad,
             cacheKey = size.toString() + state + ledColor.outerColor_ON;
 
