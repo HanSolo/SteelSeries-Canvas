@@ -1379,6 +1379,7 @@ var steelseries = (function () {
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),            
+            thresholdRange = (undefined === parameters.thresholdRange ? false : parameters.thresholdRange),
             thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
@@ -2055,21 +2056,41 @@ var steelseries = (function () {
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue));
             if (value !== targetValue) {
                 value = targetValue;
-                if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                    (value <= threshold && !ledBlinking && !thresholdRising)) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.play();
+
+                if (!thresholdRange) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
-                } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                           (value > threshold && ledBlinking && !thresholdRising)) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.pause();
-                    }
+                } else {
+                    if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                        ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                               ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }                     
                 }
+                             
                 this.repaint();
             }
             return this;
@@ -2098,21 +2119,40 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                        (value <= threshold && !ledBlinking && !thresholdRising)) {
-                        ledBlinking = true;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.play();
-                        }
-                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                               (value > threshold && ledBlinking && !thresholdRising)) {
-                        ledBlinking = false;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.pause();
-                        }
+                    if (!thresholdRange) {
+                        if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                            (value <= threshold && !ledBlinking && !thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                                   (value > threshold && ledBlinking && !thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }              
+                    } else {
+                        if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                            ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                                   ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }                           
                     }
+
                     if (!repainting) {
                         repainting = true;
                         requestAnimFrame(gauge.repaint);
@@ -2472,6 +2512,7 @@ var steelseries = (function () {
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
+            thresholdRange = (undefined === parameters.thresholdRange ? false : parameters.thresholdRange),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
@@ -2989,22 +3030,25 @@ var steelseries = (function () {
                 backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
                 backgroundContext.restore();
                 
-                backgroundContext.save();
-                if (steelseries.Orientation.WEST === orientation) {
-                    backgroundContext.translate(centerX, centerX);
-                    backgroundContext.rotate(-HALF_PI);
-                    backgroundContext.translate(-centerX, -centerX);
+                
+                if (thresholdRange) {    
+                    backgroundContext.save();
+                    if (steelseries.Orientation.WEST === orientation) {
+                        backgroundContext.translate(centerX, centerX);
+                        backgroundContext.rotate(-HALF_PI);
+                        backgroundContext.translate(-centerX, -centerX);
+                    }
+                    if (steelseries.Orientation.EAST === orientation) {
+                        backgroundContext.translate(centerX, centerX);
+                        backgroundContext.rotate(HALF_PI);
+                        backgroundContext.translate(-centerX, -centerX);
+                    }
+                    backgroundContext.translate(centerX, centerY);
+                    backgroundContext.rotate(rotationOffset + (threshold2 - minValue) * angleStep + HALF_PI);
+                    backgroundContext.translate(-centerX, -centerY);
+                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
+                    backgroundContext.restore();
                 }
-                if (steelseries.Orientation.EAST === orientation) {
-                    backgroundContext.translate(centerX, centerX);
-                    backgroundContext.rotate(HALF_PI);
-                    backgroundContext.translate(-centerX, -centerX);
-                }
-                backgroundContext.translate(centerX, centerY);
-                backgroundContext.rotate(rotationOffset + (threshold2 - minValue) * angleStep + HALF_PI);
-                backgroundContext.translate(-centerX, -centerY);
-                backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
-                backgroundContext.restore();                
             }
 
             // Create pointer image in pointer buffer (contentBuffer)
@@ -3103,20 +3147,38 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                    (value <= threshold && !ledBlinking && !thresholdRising)) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.play();
+                if (!thresholdRange) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
-                } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                           (value > threshold && ledBlinking && !thresholdRising)) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.pause();
-                    }
+                } else {
+                    if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                        ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                               ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }                     
                 }
 
                 this.repaint();
@@ -3147,20 +3209,38 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                        (value <= threshold && !ledBlinking && !thresholdRising)) {
-                        ledBlinking = true;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.play();
-                        }
-                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                               (value > threshold && ledBlinking && !thresholdRising)) {
-                        ledBlinking = false;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.pause();
-                        }
+                    if (!thresholdRange) {
+                        if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                            (value <= threshold && !ledBlinking && !thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                                   (value > threshold && ledBlinking && !thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }              
+                    } else {
+                        if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                            ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                                   ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }                           
                     }
 
                     if (value > maxMeasuredValue) {
@@ -3393,6 +3473,7 @@ var steelseries = (function () {
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
+            thresholdRange = (undefined === parameters.thresholdRange ? false : parameters.thresholdRange),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -3883,22 +3964,24 @@ var steelseries = (function () {
                 backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
                 backgroundContext.restore();
                 
-                backgroundContext.save();
-                if (vertical) {
-                    // Vertical orientation
-                    yOffset = (gaugeType.type === 'type1' ? 0.856796 : 0.7475);
-                    yRange = yOffset - 0.128640;
-                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (threshold2 - minValue) / (maxValue - minValue);
-                    backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
-                } else {
-                    // Horizontal orientation
-                    yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.82);
-                    yRange = yOffset - (gaugeType.type === 'type1' ? 0.142857 : 0.19857);
-                    valuePos = imageWidth * yRange * (threshold2 - minValue) / (maxValue - minValue);
-                    backgroundContext.translate(imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                if (thresholdRange) {           
+                    backgroundContext.save();
+                    if (vertical) {
+                        // Vertical orientation
+                        yOffset = (gaugeType.type === 'type1' ? 0.856796 : 0.7475);
+                        yRange = yOffset - 0.128640;
+                        valuePos = imageHeight * yOffset - (imageHeight * yRange) * (threshold2 - minValue) / (maxValue - minValue);
+                        backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
+                    } else {
+                        // Horizontal orientation
+                        yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.82);
+                        yRange = yOffset - (gaugeType.type === 'type1' ? 0.142857 : 0.19857);
+                        valuePos = imageWidth * yRange * (threshold2 - minValue) / (maxValue - minValue);
+                        backgroundContext.translate(imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                    }
+                    backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
+                    backgroundContext.restore();
                 }
-                backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
-                backgroundContext.restore();                
                 
             }
 
@@ -4270,20 +4353,38 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                    (value <= threshold && !ledBlinking && !thresholdRising)) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.play();
+                if (!thresholdRange) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
-                } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                           (value > threshold && ledBlinking && !thresholdRising)) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.pause();
-                    }
+                } else {
+                    if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                        ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                               ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }                     
                 }
 
                 this.repaint();
@@ -4320,21 +4421,40 @@ var steelseries = (function () {
                         minMeasuredValue = value;
                     }
 
-                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                        (value <= threshold && !ledBlinking && !thresholdRising)) {
-                        ledBlinking = true;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.play();
-                        }
-                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                               (value > threshold && ledBlinking && !thresholdRising)) {
-                        ledBlinking = false;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.pause();
-                        }
+                    if (!thresholdRange) {
+                        if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                            (value <= threshold && !ledBlinking && !thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                                   (value > threshold && ledBlinking && !thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }              
+                    } else {
+                        if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                            ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                                   ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }                           
                     }
+
                     if (!repainting) {
                         repainting = true;
                         requestAnimFrame(gauge.repaint);
@@ -4615,6 +4735,7 @@ var steelseries = (function () {
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
             threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
+            thresholdRange = (undefined === parameters.thresholdRange ? false : parameters.thresholdRange),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -5095,18 +5216,20 @@ var steelseries = (function () {
                     backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
                     backgroundContext.restore();
                     
-                    backgroundContext.save();
-                    if (vertical) {
-                        // Vertical orientation
-                        valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold2 - minValue) / (maxValue - minValue);
-                        backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
-                    } else {
-                        // Horizontal orientation
-                        valuePos = (imageWidth * 0.856796 - imageWidth * 0.128640) * (threshold2 - minValue) / (maxValue - minValue);
-                        backgroundContext.translate(imageWidth * 0.142857 - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                    if (thresholdRange) {               
+                        backgroundContext.save();
+                        if (vertical) {
+                            // Vertical orientation
+                            valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold2 - minValue) / (maxValue - minValue);
+                            backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
+                        } else {
+                            // Horizontal orientation
+                            valuePos = (imageWidth * 0.856796 - imageWidth * 0.128640) * (threshold2 - minValue) / (maxValue - minValue);
+                            backgroundContext.translate(imageWidth * 0.142857 - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                        }
+                        backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
+                        backgroundContext.restore();
                     }
-                    backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
-                    backgroundContext.restore();                    
                     
                 }
 
@@ -5522,20 +5645,38 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                    (value <= threshold && !ledBlinking && !thresholdRising)) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.play();
+                if (!thresholdRange) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
-                } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                           (value > threshold && ledBlinking && !thresholdRising)) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.pause();
-                    }
+                } else {
+                    if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                        ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                               ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }                     
                 }
 
                 this.repaint();
@@ -5567,20 +5708,38 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                        (value <= threshold && !ledBlinking && !thresholdRising)) {
-                        ledBlinking = true;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.play();
-                        }
-                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                               (value > threshold && ledBlinking && !thresholdRising)) {
-                        ledBlinking = false;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.pause();
-                        }
+                    if (!thresholdRange) {
+                        if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                            (value <= threshold && !ledBlinking && !thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                                   (value > threshold && ledBlinking && !thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }              
+                    } else {
+                        if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                            ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                                   ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }                           
                     }
 
                     if (value > maxMeasuredValue) {
