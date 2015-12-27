@@ -44,6 +44,8 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
+            threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
+            thresholdRange = (undefined === parameters.thresholdRange ? false : parameters.thresholdRange),
             thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
@@ -669,6 +671,17 @@ var steelseries = (function () {
                 backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.13);
                 backgroundContext.translate(centerX, centerY);
                 backgroundContext.restore();
+                
+                if (thresholdRange) {
+                    backgroundContext.save();
+                    backgroundContext.translate(centerX, centerY);
+                    backgroundContext.rotate(rotationOffset + (threshold2 - minValue) * angleStep + HALF_PI);
+                    backgroundContext.translate(-centerX, -centerY);
+                    backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.13);
+                    backgroundContext.translate(centerX, centerY);
+                    backgroundContext.restore();
+                }
+                
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -833,21 +846,40 @@ var steelseries = (function () {
                     minMeasuredValue = value;
                 }
 
-                if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                    (value <= threshold && !ledBlinking && !thresholdRising)) {
-                    ledBlinking = true;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.play();
+                if (!thresholdRange) {
+                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                        (value <= threshold && !ledBlinking && !thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                               (value > threshold && ledBlinking && !thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
                     }
-                } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                           (value > threshold && ledBlinking && !thresholdRising)) {
-                    ledBlinking = false;
-                    blink(ledBlinking);
-                    if (playAlarm) {
-                        audioElement.pause();
-                    }
+                } else {
+                    if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                        ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                        ledBlinking = true;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.play();
+                        }
+                    } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                               ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                        ledBlinking = false;
+                        blink(ledBlinking);
+                        if (playAlarm) {
+                            audioElement.pause();
+                        }
+                    }                     
                 }
+            
                 this.repaint();
             }
             return this;
@@ -890,20 +922,38 @@ var steelseries = (function () {
                 tween.onMotionChanged = function (event) {
                     value = event.target._pos;
 
-                    if ((value >= threshold && !ledBlinking && thresholdRising) ||
-                        (value <= threshold && !ledBlinking && !thresholdRising)) {
-                        ledBlinking = true;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.play();
-                        }
-                    } else if ((value < threshold && ledBlinking && thresholdRising) ||
-                               (value > threshold && ledBlinking && !thresholdRising)) {
-                        ledBlinking = false;
-                        blink(ledBlinking);
-                        if (playAlarm) {
-                            audioElement.pause();
-                        }
+                    if (!thresholdRange) {
+                        if ((value >= threshold && !ledBlinking && thresholdRising) ||
+                            (value <= threshold && !ledBlinking && !thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if ((value < threshold && ledBlinking && thresholdRising) ||
+                                   (value > threshold && ledBlinking && !thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }              
+                    } else {
+                        if (((value >= threshold2 || value < threshold) && !ledBlinking && !thresholdRising) ||
+                            ((value <= threshold2 && value > threshold) && !ledBlinking && thresholdRising)) {
+                            ledBlinking = true;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.play();
+                            }
+                        } else if (((value < threshold2 && value >= threshold) && ledBlinking && !thresholdRising) ||
+                                   ((value > threshold2 || value <= threshold) && ledBlinking && thresholdRising)) {
+                            ledBlinking = false;
+                            blink(ledBlinking);
+                            if (playAlarm) {
+                                audioElement.pause();
+                            }
+                        }                           
                     }
 
                     if (value > maxMeasuredValue) {
@@ -1328,6 +1378,7 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
+            threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),            
             thresholdRising = (undefined === parameters.thresholdRising ? true : parameters.thresholdRising),
             section = (undefined === parameters.section ? null : parameters.section),
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
@@ -2420,6 +2471,7 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
+            threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
             section = (undefined === parameters.section ? null : parameters.section),
             area = (undefined === parameters.area ? null : parameters.area),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
@@ -2936,6 +2988,23 @@ var steelseries = (function () {
                 backgroundContext.translate(-centerX, -centerY);
                 backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
                 backgroundContext.restore();
+                
+                backgroundContext.save();
+                if (steelseries.Orientation.WEST === orientation) {
+                    backgroundContext.translate(centerX, centerX);
+                    backgroundContext.rotate(-HALF_PI);
+                    backgroundContext.translate(-centerX, -centerX);
+                }
+                if (steelseries.Orientation.EAST === orientation) {
+                    backgroundContext.translate(centerX, centerX);
+                    backgroundContext.rotate(HALF_PI);
+                    backgroundContext.translate(-centerX, -centerX);
+                }
+                backgroundContext.translate(centerX, centerY);
+                backgroundContext.rotate(rotationOffset + (threshold2 - minValue) * angleStep + HALF_PI);
+                backgroundContext.translate(-centerX, -centerY);
+                backgroundContext.drawImage(createThresholdImage(), imageWidth * 0.475, imageHeight * 0.32);
+                backgroundContext.restore();                
             }
 
             // Create pointer image in pointer buffer (contentBuffer)
@@ -3323,6 +3392,7 @@ var steelseries = (function () {
             maxValue = (undefined === parameters.maxValue ? (minValue + 100) : parameters.maxValue),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
+            threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -3812,6 +3882,24 @@ var steelseries = (function () {
                 }
                 backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
                 backgroundContext.restore();
+                
+                backgroundContext.save();
+                if (vertical) {
+                    // Vertical orientation
+                    yOffset = (gaugeType.type === 'type1' ? 0.856796 : 0.7475);
+                    yRange = yOffset - 0.128640;
+                    valuePos = imageHeight * yOffset - (imageHeight * yRange) * (threshold2 - minValue) / (maxValue - minValue);
+                    backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
+                } else {
+                    // Horizontal orientation
+                    yOffset = (gaugeType.type === 'type1' ? 0.871012 : 0.82);
+                    yRange = yOffset - (gaugeType.type === 'type1' ? 0.142857 : 0.19857);
+                    valuePos = imageWidth * yRange * (threshold2 - minValue) / (maxValue - minValue);
+                    backgroundContext.translate(imageWidth * (gaugeType.type === 'type1' ? 0.142857 : 0.19857) - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                }
+                backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
+                backgroundContext.restore();                
+                
             }
 
             // Create lcd background if selected in background buffer (backgroundBuffer)
@@ -4526,6 +4614,7 @@ var steelseries = (function () {
             useSectionColors = (undefined === parameters.useSectionColors ? false : parameters.useSectionColors),
             niceScale = (undefined === parameters.niceScale ? true : parameters.niceScale),
             threshold = (undefined === parameters.threshold ? (maxValue - minValue) / 2 + minValue: parameters.threshold),
+            threshold2 = (undefined === parameters.threshold2 ? (maxValue - minValue) / 2 + minValue: parameters.threshold2),
             titleString = (undefined === parameters.titleString ? '' : parameters.titleString),
             unitString = (undefined === parameters.unitString ? '' : parameters.unitString),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
@@ -5005,6 +5094,20 @@ var steelseries = (function () {
                     }
                     backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
                     backgroundContext.restore();
+                    
+                    backgroundContext.save();
+                    if (vertical) {
+                        // Vertical orientation
+                        valuePos = imageHeight * 0.856796 - (imageHeight * 0.728155) * (threshold2 - minValue) / (maxValue - minValue);
+                        backgroundContext.translate(imageWidth * 0.365, valuePos - minMaxIndSize / 2);
+                    } else {
+                        // Horizontal orientation
+                        valuePos = (imageWidth * 0.856796 - imageWidth * 0.128640) * (threshold2 - minValue) / (maxValue - minValue);
+                        backgroundContext.translate(imageWidth * 0.142857 - minMaxIndSize / 2 + valuePos, imageHeight * 0.58);
+                    }
+                    backgroundContext.drawImage(createThresholdImage(vertical), 0, 0);
+                    backgroundContext.restore();                    
+                    
                 }
 
                 // Create title in background buffer (backgroundBuffer)
