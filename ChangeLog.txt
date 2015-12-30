@@ -1,5 +1,8 @@
 Main Changes
 
+v0.14.16
+> Added a workaround for bug in Chrome browser radialGradients
+
 v0.14.15
 > Radial
   * Fixed the 'non-scaling' of the scale numbers - Issue #17
