@@ -54,7 +54,7 @@ var steelseries = (function () {
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.RED : parameters.pointerColor),
             knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType),
             knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle),
             lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor),
@@ -621,12 +621,12 @@ var steelseries = (function () {
 
             // Draw min measured value indicator in minMeasuredValueBuffer
             if (minMeasuredValueVisible) {
-                minMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.BLUE.dark.getRgbaColor(), true, true), 0, 0);
+                minMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.Color.BLUE.dark.getRgbaColor(), true, true), 0, 0);
             }
 
             // Draw max measured value indicator in maxMeasuredValueBuffer
             if (maxMeasuredValueVisible) {
-                maxMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.RED.medium.getRgbaColor(), true), 0, 0);
+                maxMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.Color.RED.medium.getRgbaColor(), true), 0, 0);
             }
 
             // Create alignment posts in background buffer (backgroundBuffer)
@@ -1337,7 +1337,7 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
-            valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor),
+            valueColor = (undefined === parameters.valueColor ? steelseries.Color.RED : parameters.valueColor),
             lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor),
             lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible),
             lcdDecimals = (undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals),
@@ -2429,7 +2429,7 @@ var steelseries = (function () {
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.RED : parameters.pointerColor),
             knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType),
             knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle),
             ledColor = (undefined === parameters.ledColor ? steelseries.LedColor.RED_LED : parameters.ledColor),
@@ -2855,13 +2855,13 @@ var steelseries = (function () {
 
             // Draw min measured value indicator in minMeasuredValueBuffer
             if (minMeasuredValueVisible) {
-                minMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.BLUE.dark.getRgbaColor(), true, true), 0, 0);
+                minMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.Color.BLUE.dark.getRgbaColor(), true, true), 0, 0);
                 minMeasuredValueCtx.restore();
             }
 
             // Draw max measured value indicator in maxMeasuredValueBuffer
             if (maxMeasuredValueVisible) {
-                maxMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.ColorDef.RED.medium.getRgbaColor(), true), 0, 0);
+                maxMeasuredValueCtx.drawImage(createMeasuredValueImage(Math.ceil(size * 0.028037), steelseries.Color.RED.medium.getRgbaColor(), true), 0, 0);
                 maxMeasuredValueCtx.restore();
             }
 
@@ -3329,7 +3329,7 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
-            valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor),
+            valueColor = (undefined === parameters.valueColor ? steelseries.Color.RED : parameters.valueColor),
             lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor),
             lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible),
             lcdDecimals = (undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals),
@@ -3765,18 +3765,18 @@ var steelseries = (function () {
             // Draw min measured value indicator in minMeasuredValueBuffer
             if (minMeasuredValueVisible) {
                 if (vertical) {
-                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
+                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
                 } else {
-                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
+                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
                 }
             }
 
             // Draw max measured value indicator in maxMeasuredValueBuffer
             if (maxMeasuredValueVisible) {
                 if (vertical) {
-                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.RED.medium.getRgbaColor(), false, vertical), 0, 0);
+                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.RED.medium.getRgbaColor(), false, vertical), 0, 0);
                 } else {
-                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.RED.medium.getRgbaColor(), false, vertical), 0, 0);
+                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.RED.medium.getRgbaColor(), false, vertical), 0, 0);
                 }
             }
 
@@ -4532,7 +4532,7 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
-            valueColor = (undefined === parameters.valueColor ? steelseries.ColorDef.RED : parameters.valueColor),
+            valueColor = (undefined === parameters.valueColor ? steelseries.Color.RED : parameters.valueColor),
             lcdColor = (undefined === parameters.lcdColor ? steelseries.LcdColor.STANDARD : parameters.lcdColor),
             lcdVisible = (undefined === parameters.lcdVisible ? true : parameters.lcdVisible),
             lcdDecimals = (undefined === parameters.lcdDecimals ? 2 : parameters.lcdDecimals),
@@ -4970,18 +4970,18 @@ var steelseries = (function () {
             // Draw min measured value indicator in minMeasuredValueBuffer
             if (minMeasuredValueVisible) {
                 if (vertical) {
-                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
+                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
                 } else {
-                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
+                    minMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.BLUE.dark.getRgbaColor(), false, vertical), 0, 0);
                 }
             }
 
             // Draw max measured value indicator in maxMeasuredValueBuffer
             if (maxMeasuredValueVisible) {
                 if (vertical) {
-                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.RED.medium.getRgbaColor(), false, vertical), 0, 0);
+                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.RED.medium.getRgbaColor(), false, vertical), 0, 0);
                 } else {
-                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.ColorDef.RED.medium.getRgbaColor(), false, vertical), 0, 0);
+                    maxMeasuredValueCtx.drawImage(createMeasuredValueImage(minMaxIndSize, steelseries.Color.RED.medium.getRgbaColor(), false, vertical), 0, 0);
                 }
             }
 
@@ -6296,7 +6296,7 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.RED : parameters.pointerColor),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
             foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible),
             rotateFace = (undefined === parameters.rotateFace ? false : parameters.rotateFace);
@@ -6961,7 +6961,7 @@ var steelseries = (function () {
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.DARK_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE2 : parameters.pointerType),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.RED : parameters.pointerColor),
             knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType),
             knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
@@ -7521,8 +7521,8 @@ var steelseries = (function () {
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             pointerTypeLatest = (undefined === parameters.pointerTypeLatest ? steelseries.PointerType.TYPE1 : parameters.pointerTypeLatest),
             pointerTypeAverage = (undefined === parameters.pointerTypeAverage ? steelseries.PointerType.TYPE8 : parameters.pointerTypeAverage),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.RED : parameters.pointerColor),
-            pointerColorAverage = (undefined === parameters.pointerColorAverage ? steelseries.ColorDef.BLUE : parameters.pointerColorAverage),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.RED : parameters.pointerColor),
+            pointerColorAverage = (undefined === parameters.pointerColorAverage ? steelseries.Color.BLUE : parameters.pointerColorAverage),
             knobType = (undefined === parameters.knobType ? steelseries.KnobType.STANDARD_KNOB : parameters.knobType),
             knobStyle = (undefined === parameters.knobStyle ? steelseries.KnobStyle.SILVER : parameters.knobStyle),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
@@ -8332,7 +8332,7 @@ var steelseries = (function () {
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
             foregroundVisible = (undefined === parameters.foregroundVisible ? true : parameters.foregroundVisible),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.WHITE : parameters.pointerColor);
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.WHITE : parameters.pointerColor);
 
         var tweenRoll;
         var tweenPitch;
@@ -8895,7 +8895,7 @@ var steelseries = (function () {
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
             pointerType = (undefined === parameters.pointerType ? steelseries.PointerType.TYPE1 : parameters.pointerType),
-            pointerColor = (undefined === parameters.pointerColor ? (pointerType === steelseries.PointerType.TYPE1 ? steelseries.ColorDef.GRAY : steelseries.ColorDef.BLACK) : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? (pointerType === steelseries.PointerType.TYPE1 ? steelseries.Color.GRAY : steelseries.Color.BLACK) : parameters.pointerColor),
             backgroundColor = (undefined === parameters.backgroundColor ? (pointerType === steelseries.PointerType.TYPE1 ? steelseries.BackgroundColor.ANTHRACITE : steelseries.BackgroundColor.LIGHT_GRAY) : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
@@ -9160,11 +9160,11 @@ var steelseries = (function () {
                 ctx.lineTo(imageWidth * 0.509345, imageHeight * 0.116822);
                 ctx.closePath();
                 grad = ctx.createLinearGradient(imageWidth * 0.509345, imageHeight * 0.116822, imageWidth * 0.490654, imageHeight * 0.574766);
-                grad.addColorStop(0, steelseries.ColorDef.RED.light.getRgbaColor());
-                grad.addColorStop(0.47, steelseries.ColorDef.RED.medium.getRgbaColor());
-                grad.addColorStop(1, steelseries.ColorDef.RED.dark.getRgbaColor());
+                grad.addColorStop(0, steelseries.Color.RED.light.getRgbaColor());
+                grad.addColorStop(0.47, steelseries.Color.RED.medium.getRgbaColor());
+                grad.addColorStop(1, steelseries.Color.RED.dark.getRgbaColor());
                 ctx.fillStyle = grad;
-                ctx.strokeStyle = steelseries.ColorDef.RED.dark.getRgbaColor();
+                ctx.strokeStyle = steelseries.Color.RED.dark.getRgbaColor();
                 ctx.fill();
                 ctx.stroke();
                 break;
@@ -9484,10 +9484,10 @@ var steelseries = (function () {
                            pointers: true });
             pointerType = newPointerType;
             if (pointerType.type === 'type1') {
-                pointerColor = steelseries.ColorDef.GRAY;
+                pointerColor = steelseries.Color.GRAY;
                 backgroundColor = steelseries.BackgroundColor.ANTHRACITE;
             } else {
-                pointerColor = steelseries.ColorDef.BLACK;
+                pointerColor = steelseries.Color.BLACK;
                 backgroundColor = steelseries.BackgroundColor.LIGHT_GRAY;
             }
             init({ background: true,
@@ -9712,7 +9712,7 @@ var steelseries = (function () {
         var size = (undefined === parameters.size ? 0 : parameters.size),
             frameDesign = (undefined === parameters.frameDesign ? steelseries.FrameDesign.METAL : parameters.frameDesign),
             frameVisible = (undefined === parameters.frameVisible ? true : parameters.frameVisible),
-            pointerColor = (undefined === parameters.pointerColor ? steelseries.ColorDef.BLACK : parameters.pointerColor),
+            pointerColor = (undefined === parameters.pointerColor ? steelseries.Color.BLACK : parameters.pointerColor),
             backgroundColor = (undefined === parameters.backgroundColor ? steelseries.BackgroundColor.LIGHT_GRAY : parameters.backgroundColor),
             backgroundVisible = (undefined === parameters.backgroundVisible ? true : parameters.backgroundVisible),
             foregroundType = (undefined === parameters.foregroundType ? steelseries.ForegroundType.TYPE1 : parameters.foregroundType),
@@ -15774,11 +15774,16 @@ var steelseries = (function () {
         setAlpha : setAlpha,
         getColorFromFraction : getColorFromFraction,
         gradientWrapper : GradientWrapper,
+        customColorDef : customColorDef,
 
         // Constants
+        BackgroundColorDef : BackgroundColorDef,
         BackgroundColor : backgroundColor,
+        LcdColorDef : LcdColorDef,
         LcdColor : lcdColor,
-        ColorDef : color,
+        ColorDef : ColorDef,
+        Color : color,
+        LedColorDef : LedColorDef,
         LedColor : ledColor,
         GaugeType : gaugeType,
         Orientation: orientation,
