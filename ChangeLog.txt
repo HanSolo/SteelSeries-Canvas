@@ -1,5 +1,11 @@
 Main Changes
 
+v0.14.17
+> RadialVertical
+  * Added missing methods: setMinVal getMinVal setMaxVal getMaxVal setMinMeasuredValue setMaxMeasuredValue
+> Radial, RadialBargraph, RadialVertical, Linear, LinearBargraph
+  * Added some range checking on re-scale for: value, minMeasuredValue, maxMeasuredValue, threshold
+
 v0.14.16
 > Added a workaround for bug in Chrome browser radialGradients
 

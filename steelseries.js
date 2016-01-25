@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 01.12.2015
- * Revision      : 0.14.16
+ * Last modified : 25.01.2016
+ * Revision      : 0.14.17
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -186,6 +186,11 @@ var steelseries = (function () {
                 majorTickSpacing = calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true);
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
+            // Make sure values are still in range
+            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
+            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
+            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
 
             switch (gaugeType.type) {
             case 'type1':
@@ -983,12 +988,10 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setMinValue = function (value) {
-            minValue = parseFloat(value);
-            resetBuffers({frame: true,
-                          background: true});
-            init({frame: true,
-                  background: true});
+        this.setMinValue = function (newValue) {
+            minValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
@@ -997,12 +1000,10 @@ var steelseries = (function () {
             return minValue;
         };
 
-        this.setMaxValue = function (value) {
-            maxValue = parseFloat(value);
-            resetBuffers({frame: true,
-                          background: true});
-            init({frame: true,
-                  background: true});
+        this.setMaxValue = function (newValue) {
+            maxValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
@@ -1023,22 +1024,16 @@ var steelseries = (function () {
 
         this.setArea = function (areaVal) {
             area = areaVal;
-            resetBuffers({background: true,
-                          foreground: true});
-            init({background: true,
-                  foreground: true
-                  });
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
 
         this.setSection = function (areaSec) {
             section = areaSec;
-            resetBuffers({background: true,
-                          foreground: true});
-            init({background: true,
-                  foreground: true
-                  });
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
@@ -1099,7 +1094,7 @@ var steelseries = (function () {
             pointerType = newPointerType;
             init({pointer: true,
                   foreground: true
-                  });
+                });
             this.repaint();
             return this;
         };
@@ -1554,6 +1549,11 @@ var steelseries = (function () {
                 majorTickSpacing = calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true);
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
+            // Make sure values are still in range
+            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
+            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
+            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
 
             switch (gaugeType.type) {
             case 'type1':
@@ -2217,8 +2217,8 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setMinValue = function (value) {
-            minValue = value;
+        this.setMinValue = function (newValue) {
+            minValue = newValue;
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
@@ -2229,8 +2229,8 @@ var steelseries = (function () {
             return minValue;
         };
 
-        this.setMaxValue = function (value) {
-            maxValue = value;
+        this.setMaxValue = function (newValue) {
+            maxValue = newValue;
             resetBuffers({background: true});
             init({background: true});
             this.repaint();
@@ -2528,6 +2528,11 @@ var steelseries = (function () {
                 minorTickSpacing = 1;
                 majorTickSpacing = 10;
             }
+            // Make sure values are still in range
+            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
+            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
+            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
 
             freeAreaAngle = 0;
             rotationOffset = 1.25 * PI;
@@ -3117,6 +3122,46 @@ var steelseries = (function () {
             return this;
         };
 
+        this.setMinValue = function (newValue) {
+            minValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+            return this;
+        };
+
+        this.getMinValue = function () {
+            return minValue;
+        };
+
+        this.setMaxValue = function (newValue) {
+            maxValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
+            this.repaint();
+            return this;
+        };
+
+        this.getMaxValue = function () {
+            return maxValue;
+        };
+
+        this.setMaxMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            maxMeasuredValue = targetValue;
+            this.repaint();
+            return this;
+        };
+
+        this.setMinMeasuredValue = function (newValue) {
+            newValue = parseFloat(newValue);
+            var targetValue = newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue);
+            minMeasuredValue = targetValue;
+            this.repaint();
+            return this;
+        };
+
         this.resetMinMeasuredValue = function () {
             minMeasuredValue = value;
             this.repaint();
@@ -3443,6 +3488,11 @@ var steelseries = (function () {
                 minorTickSpacing = 1;
                 majorTickSpacing = 10;
             }
+            // Make sure values are still in range
+            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
+            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
+            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
         };
 
         // **************   Buffer creation  ********************
@@ -4399,12 +4449,6 @@ var steelseries = (function () {
         this.setMinValue = function (newVal) {
             resetBuffers({background: true});
             minValue = parseFloat(newVal);
-            if (minMeasuredValue < minValue) {
-                minMeasuredValue = minValue;
-            }
-            if (value < minValue) {
-                value = minValue;
-            }
             init({background: true});
             this.repaint();
             return this;
@@ -4417,12 +4461,6 @@ var steelseries = (function () {
         this.setMaxValue = function (newVal) {
             resetBuffers({background: true});
             maxValue = parseFloat(newVal);
-            if (maxMeasuredValue > maxValue) {
-                maxMeasuredValue = maxValue;
-            }
-            if (value > maxValue) {
-                value = maxValue;
-            }
             init({background: true});
             this.repaint();
             return this;
@@ -4643,6 +4681,11 @@ var steelseries = (function () {
                 minorTickSpacing = 1;
                 majorTickSpacing = 10;
             }
+            // Make sure values are still in range
+            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
+            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
+            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
         };
 
         // **************   Buffer creation  ********************
@@ -5658,14 +5701,10 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setMinValue = function (value) {
-            minValue = parseFloat(value);
-            resetBuffers({background: true,
-                          foreground: true,
-                          pointer: true});
-            init({background: true,
-                foreground: true,
-                pointer: true});
+        this.setMinValue = function (newValue) {
+            minValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
@@ -5674,14 +5713,10 @@ var steelseries = (function () {
             return minValue;
         };
 
-        this.setMaxValue = function (value) {
-            maxValue = parseFloat(value);
-            resetBuffers({background: true,
-                          foreground: true,
-                          pointer: true});
-            init({background: true,
-                  foreground: true,
-                  pointer: true});
+        this.setMaxValue = function (newValue) {
+            maxValue = parseFloat(newValue);
+            resetBuffers({background: true});
+            init({background: true});
             this.repaint();
             return this;
         };
