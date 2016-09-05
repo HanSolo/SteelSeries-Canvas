@@ -1399,6 +1399,8 @@ var steelseries = (function () {
 
         var imageWidth = size;
         var imageHeight = size;
+        var minMeasuredValue = maxValue;
+        var maxMeasuredValue = minValue;
 
         var centerX = imageWidth / 2;
         var centerY = imageHeight / 2;
