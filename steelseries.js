@@ -1550,45 +1550,45 @@ var steelseries = (function () {
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
             // Make sure values are still in range
-            value = value < minValue ? minValue : value > maxValue ? maxValue : value;
-            minMeasuredValue = minMeasuredValue < minValue ? minValue : minMeasuredValue > maxValue ? maxValue : minMeasuredValue;
-            maxMeasuredValue = maxMeasuredValue < minValue ? minValue : maxMeasuredValue > maxValue ? maxValue : maxMeasuredValue;
+            this.value = this.value < this.minValue ? this.minValue : this.value > this.maxValue ? this.maxValue : this.value;
+            this.minMeasuredValue = this.minMeasuredValue < minValue ? minValue : this.minMeasuredValue > maxValue ? maxValue : this.minMeasuredValue;
+            this.maxMeasuredValue = this.maxMeasuredValue < minValue ? minValue : this.maxMeasuredValue > maxValue ? maxValue : this.maxMeasuredValue;
             threshold = threshold < minValue ? minValue : threshold > maxValue ? maxValue : threshold;
 
             switch (gaugeType.type) {
-            case 'type1':
-                freeAreaAngle = 0;
-                rotationOffset = PI;
-                tickmarkOffset = HALF_PI;
-                angleRange = HALF_PI;
-                angleStep = angleRange / range;
-                break;
+              case 'type1':
+                  freeAreaAngle = 0;
+                  rotationOffset = PI;
+                  tickmarkOffset = HALF_PI;
+                  angleRange = HALF_PI;
+                  angleStep = angleRange / range;
+                  break;
 
-            case 'type2':
-                freeAreaAngle = 0;
-                rotationOffset = PI;
-                tickmarkOffset = HALF_PI;
-                angleRange = PI;
-                angleStep = angleRange / range;
-                break;
+              case 'type2':
+                  freeAreaAngle = 0;
+                  rotationOffset = PI;
+                  tickmarkOffset = HALF_PI;
+                  angleRange = PI;
+                  angleStep = angleRange / range;
+                  break;
 
-            case 'type3':
-                freeAreaAngle = 0;
-                rotationOffset = HALF_PI;
-                tickmarkOffset = 0;
-                angleRange = 1.5 * PI;
-                angleStep = angleRange / range;
-                break;
+              case 'type3':
+                  freeAreaAngle = 0;
+                  rotationOffset = HALF_PI;
+                  tickmarkOffset = 0;
+                  angleRange = 1.5 * PI;
+                  angleStep = angleRange / range;
+                  break;
 
-            case 'type4':       // fall through
-            /* falls through */
-            default:
-                freeAreaAngle = 60 * RAD_FACTOR;
-                rotationOffset = HALF_PI + (freeAreaAngle / 2);
-                tickmarkOffset = 0;
-                angleRange = TWO_PI - freeAreaAngle;
-                angleStep = angleRange / range;
-                break;
+              case 'type4':       // fall through
+              /* falls through */
+              default:
+                  freeAreaAngle = 60 * RAD_FACTOR;
+                  rotationOffset = HALF_PI + (freeAreaAngle / 2);
+                  tickmarkOffset = 0;
+                  angleRange = TWO_PI - freeAreaAngle;
+                  angleStep = angleRange / range;
+                  break;
             }
             angle = rotationOffset + (value - minValue) * angleStep;
         };
